@@ -14,7 +14,7 @@ struct AuthBackground: View {
             VStack{
                 Color.customYellow
                     .ignoresSafeArea()
-                    .frame(height: 300)
+                    .frame(height: 200)
                     .overlay {
                         Image("road")
                             .offset(x:-60)

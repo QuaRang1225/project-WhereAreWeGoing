@@ -43,9 +43,8 @@ struct CustomTextField: View {
             Divider()
                 .frame(height: 3)
                 .overlay(Color.customYellow)
-                
         }
-        .padding()
+        .padding(.horizontal)
         .foregroundColor(.black)
        
     }

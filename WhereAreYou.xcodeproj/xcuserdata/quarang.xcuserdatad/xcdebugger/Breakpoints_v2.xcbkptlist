@@ -1,0 +1,222 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Bucket
+   uuid = "AB2D1D64-AC5A-4696-A2B6-84B63AA0CABF"
+   type = "1"
+   version = "2.0">
+   <Breakpoints>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            uuid = "A579D307-A317-49DB-A1B7-B5D6D0C7E26A"
+            shouldBeEnabled = "No"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "WhereAreYou/Auth/ViewModel/AuthViewModel.swift"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "15"
+            endingLineNumber = "15"
+            landmarkName = "signUp(email:password:)"
+            landmarkType = "7">
+            <Locations>
+               <Location
+                  uuid = "A579D307-A317-49DB-A1B7-B5D6D0C7E26A - c2854f8bfa38e214"
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "property wrapper backing initializer of WhereAreYou.AuthViewModel.user : Swift.Optional&lt;WhereAreYou.UserDataBase&gt;"
+                  moduleName = "WhereAreYou"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/quarang/Documents/QUARANG&apos;S/Project/WhereAreYou/WhereAreYou/Auth/ViewModel/AuthViewModel.swift"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "15"
+                  endingLineNumber = "15"
+                  offsetFromSymbolStart = "112">
+               </Location>
+               <Location
+                  uuid = "A579D307-A317-49DB-A1B7-B5D6D0C7E26A - 2a8253d2f1bde10b"
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "WhereAreYou.AuthViewModel.user.getter : Swift.Optional&lt;WhereAreYou.UserDataBase&gt;"
+                  moduleName = "WhereAreYou"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/quarang/Documents/QUARANG&apos;S/Project/WhereAreYou/WhereAreYou/Auth/ViewModel/AuthViewModel.swift"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "15"
+                  endingLineNumber = "15"
+                  offsetFromSymbolStart = "108">
+               </Location>
+               <Location
+                  uuid = "A579D307-A317-49DB-A1B7-B5D6D0C7E26A - eee07821becfa137"
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "WhereAreYou.AuthViewModel.user.setter : Swift.Optional&lt;WhereAreYou.UserDataBase&gt;"
+                  moduleName = "WhereAreYou"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/quarang/Documents/QUARANG&apos;S/Project/WhereAreYou/WhereAreYou/Auth/ViewModel/AuthViewModel.swift"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "15"
+                  endingLineNumber = "15"
+                  offsetFromSymbolStart = "208">
+               </Location>
+               <Location
+                  uuid = "A579D307-A317-49DB-A1B7-B5D6D0C7E26A - 38ba83b2c2ed6104"
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "WhereAreYou.AuthViewModel.user.modify : Swift.Optional&lt;WhereAreYou.UserDataBase&gt;"
+                  moduleName = "WhereAreYou"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/quarang/Documents/QUARANG&apos;S/Project/WhereAreYou/WhereAreYou/Auth/ViewModel/AuthViewModel.swift"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "15"
+                  endingLineNumber = "15"
+                  offsetFromSymbolStart = "0">
+               </Location>
+               <Location
+                  uuid = "A579D307-A317-49DB-A1B7-B5D6D0C7E26A - a01f5498bb0d4a0a"
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "WhereAreYou.AuthViewModel.user.modify : Swift.Optional&lt;WhereAreYou.UserDataBase&gt; with unmangled suffix &quot;.resume.0&quot;"
+                  moduleName = "WhereAreYou"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/quarang/Documents/QUARANG&apos;S/Project/WhereAreYou/WhereAreYou/Auth/ViewModel/AuthViewModel.swift"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "15"
+                  endingLineNumber = "15"
+                  offsetFromSymbolStart = "20">
+               </Location>
+               <Location
+                  uuid = "A579D307-A317-49DB-A1B7-B5D6D0C7E26A - 453535ef305851e0"
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "WhereAreYou.AuthViewModel.$user.getter : Combine.Published&lt;Swift.Optional&lt;WhereAreYou.UserDataBase&gt;&gt;.Publisher"
+                  moduleName = "WhereAreYou"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/quarang/Documents/QUARANG&apos;S/Project/WhereAreYou/WhereAreYou/Auth/ViewModel/AuthViewModel.swift"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "15"
+                  endingLineNumber = "15"
+                  offsetFromSymbolStart = "96">
+               </Location>
+               <Location
+                  uuid = "A579D307-A317-49DB-A1B7-B5D6D0C7E26A - 453535ef305851e0"
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "WhereAreYou.AuthViewModel.$user.setter : Combine.Published&lt;Swift.Optional&lt;WhereAreYou.UserDataBase&gt;&gt;.Publisher"
+                  moduleName = "WhereAreYou"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/quarang/Documents/QUARANG&apos;S/Project/WhereAreYou/WhereAreYou/Auth/ViewModel/AuthViewModel.swift"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "15"
+                  endingLineNumber = "15"
+                  offsetFromSymbolStart = "216">
+               </Location>
+               <Location
+                  uuid = "A579D307-A317-49DB-A1B7-B5D6D0C7E26A - 98f76d2b3c1a6640"
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "WhereAreYou.AuthViewModel.$user.modify : Combine.Published&lt;Swift.Optional&lt;WhereAreYou.UserDataBase&gt;&gt;.Publisher"
+                  moduleName = "WhereAreYou"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/quarang/Documents/QUARANG&apos;S/Project/WhereAreYou/%3Ccompiler-generated%3E"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "0"
+                  endingLineNumber = "0"
+                  offsetFromSymbolStart = "56">
+               </Location>
+               <Location
+                  uuid = "A579D307-A317-49DB-A1B7-B5D6D0C7E26A - 4d2b8949965174db"
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "WhereAreYou.AuthViewModel.$user.modify : Combine.Published&lt;Swift.Optional&lt;WhereAreYou.UserDataBase&gt;&gt;.Publisher with unmangled suffix &quot;.resume.0&quot;"
+                  moduleName = "WhereAreYou"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/quarang/Documents/QUARANG&apos;S/Project/WhereAreYou/WhereAreYou/Auth/ViewModel/AuthViewModel.swift"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "15"
+                  endingLineNumber = "15"
+                  offsetFromSymbolStart = "24">
+               </Location>
+               <Location
+                  uuid = "A579D307-A317-49DB-A1B7-B5D6D0C7E26A - 20b789a33a224441"
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "WhereAreYou.AuthViewModel.init() -&gt; WhereAreYou.AuthViewModel"
+                  moduleName = "WhereAreYou"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/quarang/Documents/QUARANG&apos;S/Project/WhereAreYou/WhereAreYou/Auth/ViewModel/AuthViewModel.swift"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "15"
+                  endingLineNumber = "15"
+                  offsetFromSymbolStart = "172">
+               </Location>
+               <Location
+                  uuid = "A579D307-A317-49DB-A1B7-B5D6D0C7E26A - a07ec8ea9e850b0"
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "WhereAreYou.AuthViewModel.signUp(email: Swift.String, password: Swift.String) async throws -&gt; ()"
+                  moduleName = "WhereAreYou"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/quarang/Documents/QUARANG&apos;S/Project/WhereAreYou/WhereAreYou/Auth/ViewModel/AuthViewModel.swift"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "15"
+                  endingLineNumber = "15"
+                  offsetFromSymbolStart = "224">
+               </Location>
+               <Location
+                  uuid = "A579D307-A317-49DB-A1B7-B5D6D0C7E26A - c074a56c3ac512f9"
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "(1) suspend resume partial function for WhereAreYou.AuthViewModel.signUp(email: Swift.String, password: Swift.String) async throws -&gt; ()"
+                  moduleName = "WhereAreYou"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/quarang/Documents/QUARANG&apos;S/Project/WhereAreYou/WhereAreYou/Auth/ViewModel/AuthViewModel.swift"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "15"
+                  endingLineNumber = "15"
+                  offsetFromSymbolStart = "60">
+               </Location>
+            </Locations>
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            uuid = "CCE4E12A-ED49-4B13-ACB9-A219591021E3"
+            shouldBeEnabled = "No"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "WhereAreYou/Auth/ViewModel/AuthViewModel.swift"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "17"
+            endingLineNumber = "17"
+            landmarkName = "signUp(email:password:)"
+            landmarkType = "7">
+         </BreakpointContent>
+      </BreakpointProxy>
+   </Breakpoints>
+</Bucket>

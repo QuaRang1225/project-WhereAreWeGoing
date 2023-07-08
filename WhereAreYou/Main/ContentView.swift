@@ -19,8 +19,8 @@ struct ContentView: View {
                 StartView()
             }else{
                 NavigationStack{
-//                    LoginView()
-                    MainView()
+                    LoginView()
+//                    TabBarView()
                 }
                
             }

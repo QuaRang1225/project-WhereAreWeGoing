@@ -8,14 +8,20 @@
 import SwiftUI
 
 struct RegisterView: View {
+    
     @State var email = ""
     @State var password = ""
     @State var passwordConfirm = ""
+    @State var authCheck:ErrorAuthFilter? = nil
     @State var mailStatus:EmailAddress = .gmail
+    @Binding var isLogin:Bool
+    
     @FocusState private var focus:FormField?
-    @Environment(\.dismiss) var dismiss
+    
+    @StateObject var vm = AuthViewModel()
+    
     var body: some View {
-        VStack(spacing: 25){
+        VStack(spacing: 5){
             Text("회원가입하기")
                 .font(.title)
                 .bold()
@@ -27,6 +33,7 @@ struct RegisterView: View {
                     Text("이메일")
                         .bold()
                         .padding(.leading)
+                        .padding(.bottom,5)
                     HStack{
                         CustomTextField(placeholder: "입력..", isSecure: false, text: $email)
                             .textContentType(.emailAddress)
@@ -40,28 +47,43 @@ struct RegisterView: View {
                             }
                         }
                         .accentColor(.black)
-                    }
+                    }.padding(.bottom)
                     Text("비밀번호")
                         .bold()
                         .padding(.leading)
+                        .padding(.bottom,5)
                     CustomTextField(placeholder: "입력..", isSecure: true, text: $password)
                         .textContentType(.password)
                         .submitLabel(.next)
                         .focused($focus, equals:FormField.password)
+                        .padding(.bottom)
                     Text("비밀번호 확인")
                         .bold()
                         .padding(.leading)
+                        .padding(.bottom,5)
                     CustomTextField(placeholder: "입력..", isSecure: true, text: $passwordConfirm)
                         .textContentType(.password)
                         .submitLabel(.done)
                         .focused($focus, equals:FormField.passwordConfirm)
+                    Text("비밀번호는 8~20자 사이 대,소문자와 숫자, !_@$%^&+= 기호를 사용할수 있습니다.")
+                        .font(.caption2)
+                        .foregroundColor(.gray)
+                        .padding(.leading)
+                        .padding(.bottom)
+                    if let check = authCheck{
+                        Text(check.phraseText)
+                            .font(.caption)
+                            .foregroundColor(.red)
+                            .padding(.leading)
+                    }
                     SelectButton(color: .customYellow, textColor: .white, text: "회원가입") {
+                        self.authCheck = invaildAuth()
                         
                     }
                     .padding(.vertical)
                     HStack{
                         Button(action: {
-                            dismiss()
+                            isLogin = false
                         }, label: {
                             HStack(spacing: 3){
                                 Text("계정이 있으신가요?")
@@ -90,11 +112,75 @@ struct RegisterView: View {
                 focus = nil
             }
         }
+        .onChange(of: authCheck) { newValue in
+            if newValue == .SUCCESS{
+                Task{
+                    do{
+                        try await vm.signUp(email: "\(email)@\(mailStatus.name)", password: password)
+                    }catch{
+                        print(error)
+                    }
+                    
+                }
+            }
+        }
+    }
+    func invaildAuth() -> ErrorAuthFilter{
+        let emailRegex = "[A-Z0-9a-z._%+-]+@[A-Za-z0-9.-]+\\.[A-Za-z]{2,64}"
+        let pwdRegex = "[A-Za-z0-9!_@$%^&+=]{8,20}"
+        let emailRegexPredicate = NSPredicate(format: "SELF MATCHES %@", emailRegex)
+        let passwordRegexPredicate = NSPredicate(format: "SELF MATCHES %@", pwdRegex)
+
+
+        if !email.isEmpty && !password.isEmpty && !passwordConfirm.isEmpty{
+            if password == passwordConfirm{
+                if !emailRegexPredicate.evaluate(with: "\(email)@\(mailStatus.name)"){
+                    return .INVAILD_EMAIL
+                }else if !passwordRegexPredicate.evaluate(with: password) && passwordRegexPredicate.evaluate(with: passwordConfirm){
+                    return .INVAILD_PWD
+                }
+                else{
+                    return .SUCCESS
+                }
+            }
+            else{
+                return .MISMATCH_PWD
+            }
+        }
+        else{
+            return .EMPTY_DATA
+        }
+        
     }
 }
 
 struct RegisterView_Previews: PreviewProvider {
     static var previews: some View {
-        RegisterView()
+        RegisterView(isLogin: .constant(true))
+    }
+}
+
+
+enum ErrorAuthFilter{
+    case EMPTY_DATA
+    case INVAILD_EMAIL
+    case INVAILD_PWD
+    case MISMATCH_PWD
+    case SUCCESS
+    
+    var phraseText:String{
+        switch self{
+        case .EMPTY_DATA:
+            return "입력하지 않은정보가 있습니다!"
+        case .INVAILD_EMAIL:
+            return "이메일 형식이 유효하지 않습니다!"
+        case .INVAILD_PWD:
+            return "비밀번호 형식이 유효하지 않습니다!"
+        case .MISMATCH_PWD:
+            return "비밀번호가 일치하지 않습니다!"
+        case .SUCCESS:
+            return ""
+        }
+    
     }
 }

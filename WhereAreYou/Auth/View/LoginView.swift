@@ -10,7 +10,7 @@ import SwiftUI
 
 struct LoginView: View {
     
-    
+    @State var isRegister = false
     @State var email = ""
     @State var password = ""
     @State var mailStatus:EmailAddress = .gmail
@@ -60,7 +60,9 @@ struct LoginView: View {
                             Text("|")
                             Text("아이디 찾기")
                             Text("|")
-                            NavigationLink(destination: RegisterView().navigationBarBackButtonHidden()) {
+                            Button {
+                                isRegister = true
+                            } label: {
                                 Text("회원가입")
                             }
                         }
@@ -83,7 +85,11 @@ struct LoginView: View {
                 focus = nil
             }
         }
+        .navigationDestination(isPresented: $isRegister) {
+            RegisterView(isLogin: $isRegister).navigationBarBackButtonHidden()
+        }
     }
+    
 }
 
 struct LoginView_Previews: PreviewProvider {
