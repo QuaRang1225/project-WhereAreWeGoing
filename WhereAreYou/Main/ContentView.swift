@@ -9,7 +9,7 @@ import SwiftUI
 
 struct ContentView: View {
     
-
+    @StateObject var vm = AuthViewModel()
     @State var isStart = false
     
     var body: some View {
@@ -18,11 +18,12 @@ struct ContentView: View {
             if !isStart{
                 StartView()
             }else{
-                NavigationStack{
+                if vm.user != nil{
+                    TabBarView()
+                }else{
                     LoginView()
-//                    TabBarView()
+                        .environmentObject(vm)
                 }
-               
             }
         }
         .onAppear{
@@ -31,11 +32,13 @@ struct ContentView: View {
                     isStart = true
                 }
             }
+            if let auth = try? AuthManager.shared.getUser(){    //자동로그인
+                vm.user = UserData(auth: auth)
+            }
         }
-        .onTapGesture {
+        .onTapGesture { //이거 넣으면 탭뷰가 이상해여~
             UIApplication.shared.endEditing()
         }
-        
     }
 }
 

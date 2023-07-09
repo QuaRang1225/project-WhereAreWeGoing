@@ -9,6 +9,10 @@ import SwiftUI
 import PhotosUI
 
 struct ProfileSelectView: View {
+    
+    @Binding var isNickname:Bool
+    @EnvironmentObject var vm:AuthViewModel
+    
     var body: some View {
         VStack{
             Text("프로필선택")
@@ -23,6 +27,15 @@ struct ProfileSelectView: View {
                 SelectButton(color: .customYellow, textColor: .white, text: "확인") {
                      
                 }
+                Button {
+                    
+                } label: {
+                    Text("건너뛰기")
+                        .font(.caption)
+                        .foregroundColor(.gray)
+                }
+                .padding()
+
             }
         }
         .background {
@@ -33,6 +46,7 @@ struct ProfileSelectView: View {
 
 struct ProfileSelectView_Previews: PreviewProvider {
     static var previews: some View {
-        ProfileSelectView()
+        ProfileSelectView(isNickname: .constant(true))
+            .environmentObject(AuthViewModel())
     }
 }

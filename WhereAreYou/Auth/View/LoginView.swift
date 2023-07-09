@@ -6,7 +6,7 @@
 //
 
 import SwiftUI
-
+import Firebase
 
 struct LoginView: View {
     
@@ -14,6 +14,7 @@ struct LoginView: View {
     @State var email = ""
     @State var password = ""
     @State var mailStatus:EmailAddress = .gmail
+    @EnvironmentObject var vm:AuthViewModel
     @FocusState private var focus:FormField?
     
     var body: some View {
@@ -54,22 +55,24 @@ struct LoginView: View {
                         
                     }
                     .padding(.vertical)
-                    HStack{
-                        Group{
-                            Text("비밀번호 찾기")
-                            Text("|")
-                            Text("아이디 찾기")
-                            Text("|")
-                            Button {
-                                isRegister = true
-                            } label: {
-                                Text("회원가입")
+                    Group{
+                        HStack{
+                            Group{
+                                Text("비밀번호 찾기")
+                                Text("|")
+                                Text("아이디 찾기")
+                                Text("|")
+                                Button {
+                                    isRegister = true
+                                } label: {
+                                    Text("회원가입")
+                                }
                             }
+                            .frame(maxWidth: .infinity)
+                            .font(.caption)
                         }
-                        .frame(maxWidth: .infinity)
-                        .font(.caption)
+                        .padding(.horizontal,30)
                     }
-                    .padding(.horizontal,30)
                 }
             }
         }
@@ -85,8 +88,9 @@ struct LoginView: View {
                 focus = nil
             }
         }
-        .navigationDestination(isPresented: $isRegister) {
-            RegisterView(isLogin: $isRegister).navigationBarBackButtonHidden()
+        .fullScreenCover(isPresented: $isRegister) {
+            RegisterView().navigationBarBackButtonHidden()
+                .environmentObject(vm)
         }
     }
     
@@ -96,6 +100,7 @@ struct LoginView_Previews: PreviewProvider {
     static var previews: some View {
         NavigationStack{
             LoginView()
+                .environmentObject(AuthViewModel())
         }
     }
 }

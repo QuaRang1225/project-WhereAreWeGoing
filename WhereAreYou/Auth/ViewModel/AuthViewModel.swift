@@ -10,17 +10,18 @@ import Foundation
 @MainActor
 final class AuthViewModel:ObservableObject{
     
-    @Published var user:UserDataBase? = nil
+    @Published var user:UserData? = nil
+    @Published var aa = false
     
     func signUp(email:String,password:String) async throws{
         let authUser = try await AuthManager.shared.createUser(email: email, password: password) //값을 굳이 안쓰고 컴파일러에 값이 있을
-        user = UserDataBase(auth: authUser)
-        print(user)
+        user = UserData(auth: authUser)
+        try UserManager.shared.createNewUser(user: user!)
         print("가입 성공")
     }
     func signIn(email:String,password:String) async throws{
         let authUser = try await AuthManager.shared.signInUser(email: email, password: password) //값을 굳이 안쓰고 컴파일러에 값이 있을
-        user = UserDataBase(auth: authUser)
+        user = UserData(auth: authUser)
         print("인증 성공")
     }
 }

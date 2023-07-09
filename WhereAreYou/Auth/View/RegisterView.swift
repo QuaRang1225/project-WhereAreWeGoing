@@ -14,11 +14,10 @@ struct RegisterView: View {
     @State var passwordConfirm = ""
     @State var authCheck:ErrorAuthFilter? = nil
     @State var mailStatus:EmailAddress = .gmail
-    @Binding var isLogin:Bool
     
     @FocusState private var focus:FormField?
-    
-    @StateObject var vm = AuthViewModel()
+    @Environment(\.dismiss)var dismiss
+    @EnvironmentObject var vm:AuthViewModel
     
     var body: some View {
         VStack(spacing: 5){
@@ -65,7 +64,7 @@ struct RegisterView: View {
                         .textContentType(.password)
                         .submitLabel(.done)
                         .focused($focus, equals:FormField.passwordConfirm)
-                    Text("비밀번호는 8~20자 사이 대,소문자와 숫자, !_@$%^&+= 기호를 사용할수 있습니다.")
+                    Text("비밀번호는 8~20자 사이 대,소문자와 숫자, !_@$%^&+= 등의 기호를 사용할수 있습니다.")
                         .font(.caption2)
                         .foregroundColor(.gray)
                         .padding(.leading)
@@ -78,12 +77,20 @@ struct RegisterView: View {
                     }
                     SelectButton(color: .customYellow, textColor: .white, text: "회원가입") {
                         self.authCheck = invaildAuth()
-                        
+                        if authCheck == .SUCCESS{
+                            Task{
+                                do{
+                                    try await vm.signUp(email: "\(email)@\(mailStatus.name)", password: password)
+                                }catch{
+                                    print("에러명 " + error.localizedDescription)
+                                }
+                            }
+                        }
                     }
                     .padding(.vertical)
                     HStack{
                         Button(action: {
-                            isLogin = false
+                            dismiss()
                         }, label: {
                             HStack(spacing: 3){
                                 Text("계정이 있으신가요?")
@@ -110,18 +117,6 @@ struct RegisterView: View {
                 focus = .passwordConfirm
             default:
                 focus = nil
-            }
-        }
-        .onChange(of: authCheck) { newValue in
-            if newValue == .SUCCESS{
-                Task{
-                    do{
-                        try await vm.signUp(email: "\(email)@\(mailStatus.name)", password: password)
-                    }catch{
-                        print(error)
-                    }
-                    
-                }
             }
         }
     }
@@ -156,7 +151,8 @@ struct RegisterView: View {
 
 struct RegisterView_Previews: PreviewProvider {
     static var previews: some View {
-        RegisterView(isLogin: .constant(true))
+        RegisterView()
+            .environmentObject(AuthViewModel())
     }
 }
 

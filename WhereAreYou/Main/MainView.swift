@@ -10,10 +10,8 @@ import CoreLocationUI
 import MapKit
 
 
-
-
 struct MainView: View {
-    @ObservedObject var location = LocationMagager()
+    @StateObject var location = LocationMagager()
     var body: some View {
         VStack(alignment: .leading){
             

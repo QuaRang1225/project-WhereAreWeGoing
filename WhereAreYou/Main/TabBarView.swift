@@ -8,8 +8,6 @@
 import SwiftUI
 
 
-
-
 struct TabBarView: View {
     
     init(){
@@ -20,20 +18,23 @@ struct TabBarView: View {
     var body: some View {
         TabView(selection: $selection) {
             MainView()
-                .tag(Menu.home)
                 .tabItem {
                     Image(systemName: "house")
+                    Text("홈")
                 }
-            MainView()
-                .tag(Menu.chat)
+                .tag(Menu.home)
+            Text("ads")
                 .tabItem {
                     Image(systemName: "message")
+                    Text("채팅")
                 }
-            MainView()
-                .tag(Menu.setting)
+                .tag(Menu.home)
+            Text("ads")
                 .tabItem {
                     Image(systemName: "gearshape")
+                    Text("설정")
                 }
+                .tag(Menu.home)
         }
         .accentColor(.black)
     }
