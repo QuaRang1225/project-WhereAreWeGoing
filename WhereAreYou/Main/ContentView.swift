@@ -18,8 +18,14 @@ struct ContentView: View {
             if !isStart{
                 StartView()
             }else{
-                if vm.user != nil{
-                    TabBarView()
+                if let user = vm.user{
+                    if user.guestMode{
+                        InfoSettingTabView()
+                            .environmentObject(vm)
+                    }else{
+                        TabBarView()
+                            .environmentObject(vm)
+                    }
                 }else{
                     LoginView()
                         .environmentObject(vm)
@@ -33,12 +39,14 @@ struct ContentView: View {
                 }
             }
             if let auth = try? AuthManager.shared.getUser(){    //자동로그인
-                vm.user = UserData(auth: auth)
+                Task{
+                    vm.user = try await UserManager.shared.getUser(userId: auth.uid)
+                }
             }
         }
-        .onTapGesture { //이거 넣으면 탭뷰가 이상해여~
-            UIApplication.shared.endEditing()
-        }
+//        .onTapGesture { //이거 넣으면 탭뷰 터치 안됨
+//            UIApplication.shared.endEditing()
+//        }
     }
 }
 

@@ -15,6 +15,7 @@ struct TabBarView: View {
     }
  
     @State var selection:Menu = .home
+    @EnvironmentObject var vm:AuthViewModel
     var body: some View {
         TabView(selection: $selection) {
             MainView()
@@ -23,6 +24,7 @@ struct TabBarView: View {
                     Text("홈")
                 }
                 .tag(Menu.home)
+                .environmentObject(vm)
             Text("ads")
                 .tabItem {
                     Image(systemName: "message")
@@ -43,5 +45,6 @@ struct TabBarView: View {
 struct TabBarView_Previews: PreviewProvider {
     static var previews: some View {
         TabBarView()
+            .environmentObject(AuthViewModel())
     }
 }

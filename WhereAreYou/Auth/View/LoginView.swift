@@ -92,6 +92,9 @@ struct LoginView: View {
             RegisterView().navigationBarBackButtonHidden()
                 .environmentObject(vm)
         }
+        .onTapGesture { //이거 넣으면 탭뷰 터치 안됨
+            UIApplication.shared.endEditing()
+        }
     }
     
 }

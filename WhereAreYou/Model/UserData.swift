@@ -11,11 +11,11 @@ import Firebase
 struct UserData:Codable{
     
     let userId:String
-    let nickName:String?
+    var nickName:String?
     let email:String?
     let dateCreated:Date?
-    let profileImageUrl:String?
-    let guestMode:Bool
+    var profileImageUrl:String?
+    var guestMode:Bool
     
     init(auth:AuthData){  //처음 값을 저장할때 - 인증
         self.userId = auth.uid

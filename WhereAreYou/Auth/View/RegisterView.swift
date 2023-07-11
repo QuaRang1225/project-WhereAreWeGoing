@@ -119,6 +119,9 @@ struct RegisterView: View {
                 focus = nil
             }
         }
+        .onTapGesture { //이거 넣으면 탭뷰 터치 안됨
+            UIApplication.shared.endEditing()
+        }
     }
     func invaildAuth() -> ErrorAuthFilter{
         let emailRegex = "[A-Z0-9a-z._%+-]+@[A-Za-z0-9.-]+\\.[A-Za-z]{2,64}"

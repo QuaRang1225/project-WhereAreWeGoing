@@ -8,10 +8,11 @@
 import SwiftUI
 import CoreLocationUI
 import MapKit
-
+import Kingfisher
 
 struct MainView: View {
     @StateObject var location = LocationMagager()
+    @EnvironmentObject var vm:AuthViewModel
     var body: some View {
         VStack(alignment: .leading){
             
@@ -32,7 +33,6 @@ struct MainView: View {
                     .cornerRadius(20)
                     .listRowSeparator(.hidden)  //리스트 줄 없앰
                     .listRowBackground(Color.clear)
-
                 ForEach(0...50,id:\.self){ _ in
                     Text("asddasd")
                 }
@@ -52,6 +52,7 @@ struct MainView: View {
 struct MainView_Previews: PreviewProvider {
     static var previews: some View {
         MainView()
+            .environmentObject(AuthViewModel())
     }
 }
 

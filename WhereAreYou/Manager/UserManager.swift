@@ -35,5 +35,13 @@ final class UserManager{
     func createNewUser(user:UserData) throws{   //DB에 저장
         try userDocument(userId: user.userId).setData(from: user,merge: false,encoder: encoder)
     }
+    func updateUserProfileImagePath(userId:String,path:String?,url:String?)async throws{
+        let data:[String:Any] = ["profile_image_url":url]
+        print(data)
+        try await userDocument(userId:userId).updateData(data)
+    }
+    func getUser(userId:String) async throws -> UserData{
+        try await userDocument(userId: userId).getDocument(as: UserData.self,decoder: decoder)
+    }
     
 }

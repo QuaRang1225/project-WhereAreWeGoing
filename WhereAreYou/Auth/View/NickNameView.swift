@@ -10,7 +10,6 @@ import SwiftUI
 struct NickNameView: View {
     @State var text = ""
     @State var isProfile = false
-    @Binding var isLogin:Bool
     @EnvironmentObject var vm:AuthViewModel
     var body: some View {
         VStack{
@@ -20,6 +19,7 @@ struct NickNameView: View {
                 .frame(maxWidth: .infinity,alignment: .leading)
                 .padding(.leading)
                 .padding(.bottom,30)
+                .foregroundColor(.black)
             ScrollView {
                 CustomTextField(placeholder: "입력..", isSecure: false, text: $text)
                     .padding(.top,50)
@@ -28,10 +28,16 @@ struct NickNameView: View {
                     .font(.caption)
                     .padding(.bottom)
                 SelectButton(color: .customYellow, textColor: .white, text: "확인") {
-                     
+                    withAnimation(.linear){
+                        vm.user?.nickName = text
+                        vm.infoSetting = InfoSettingFilter.profile
+                    }
                 }
                 Button {
-                    
+                    withAnimation(.linear){
+                        vm.user?.nickName = vm.user?.email
+                        vm.infoSetting = InfoSettingFilter.profile
+                    }
                 } label: {
                     Text("건너뛰기")
                         .font(.caption)
@@ -40,19 +46,23 @@ struct NickNameView: View {
                 .padding()
             }
         }
-        .background{
-            AuthBackground()
-        }
+       
         .navigationDestination(isPresented: $isProfile) {
-            ProfileSelectView(isNickname: $isLogin)
+            ProfileSelectView()
                 .environmentObject(vm)
+        }
+        .onTapGesture { //이거 넣으면 탭뷰 터치 안됨
+            UIApplication.shared.endEditing()
+        }
+        .onDisappear{
+            UIApplication.shared.endEditing()
         }
     }
 }
 
 struct NickNameView_Previews: PreviewProvider {
     static var previews: some View {
-        NickNameView(isLogin: .constant(true))
+        NickNameView()
             .environmentObject(AuthViewModel())
     }
 }

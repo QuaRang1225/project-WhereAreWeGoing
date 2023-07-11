@@ -9,14 +9,16 @@ import SwiftUI
 import PhotosUI
 
 struct CustomPhotoPicker: View {
-    @State private var selectedItem: PhotosPickerItem? = nil
-    @State private var selectedImageData: Data? = nil
+    
+    
+    
+    @EnvironmentObject var vm:AuthViewModel
     var body: some View {
         PhotosPicker(
-               selection: $selectedItem,
+            selection: $vm.selectedItem,
                matching: .images,
                photoLibrary: .shared()) {
-                   if let selectedImageData,
+                   if let selectedImageData = vm.selectedImageData,
                       let uiImage = UIImage(data: selectedImageData) {
                        Image(uiImage: uiImage)
                            .resizable()
@@ -35,11 +37,10 @@ struct CustomPhotoPicker: View {
                            }
                            .foregroundColor(.customYellow)
                    }
-               }.onChange(of: selectedItem) { newItem in
+               }.onChange(of: vm.selectedItem) { newItem in
                    Task {
-                       // Retrive selected asset in the form of Data
                        if let data = try? await newItem?.loadTransferable(type: Data.self) {
-                           selectedImageData = data
+                           vm.selectedImageData = data
                        }
                    }
                }
@@ -49,5 +50,6 @@ struct CustomPhotoPicker: View {
 struct CustomPhotoPicker_Previews: PreviewProvider {
     static var previews: some View {
         CustomPhotoPicker()
+            .environmentObject(AuthViewModel())
     }
 }

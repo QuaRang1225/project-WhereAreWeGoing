@@ -10,7 +10,6 @@ import PhotosUI
 
 struct ProfileSelectView: View {
     
-    @Binding var isNickname:Bool
     @EnvironmentObject var vm:AuthViewModel
     
     var body: some View {
@@ -21,13 +20,25 @@ struct ProfileSelectView: View {
                 .frame(maxWidth: .infinity,alignment: .leading)
                 .padding(.leading)
                 .padding(.bottom,30)
+                .foregroundColor(.black)
             ScrollView {
                 CustomPhotoPicker()
                     .padding(.vertical,50)
                 SelectButton(color: .customYellow, textColor: .white, text: "확인") {
-                     
+                    if let item = vm.selectedItem{
+                        vm.user?.guestMode = false
+                        vm.saveProfileImage(item: item)
+                        Task{
+                            try UserManager.shared.createNewUser(user: vm.user!)
+                        }
+                    }
                 }
                 Button {
+                    vm.user?.profileImageUrl = "https://firebasestorage.googleapis.com/v0/b/whereareyou-66f3a.appspot.com/o/%E1%84%8B%E1%85%B3%E1%84%83%E1%85%B5%E1%84%89%E1%85%B5%E1%86%B7.png?alt=media&token=a1460508-cdb3-4ff7-935e-8b3eea55530b"
+                    vm.user?.guestMode = false
+                    Task{
+                        try UserManager.shared.createNewUser(user: vm.user!)
+                    }
                     
                 } label: {
                     Text("건너뛰기")
@@ -38,15 +49,12 @@ struct ProfileSelectView: View {
 
             }
         }
-        .background {
-            AuthBackground()
-        }
     }
 }
 
 struct ProfileSelectView_Previews: PreviewProvider {
     static var previews: some View {
-        ProfileSelectView(isNickname: .constant(true))
+        ProfileSelectView()
             .environmentObject(AuthViewModel())
     }
 }
