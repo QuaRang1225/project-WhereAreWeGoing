@@ -35,7 +35,7 @@ struct NickNameView: View {
                 }
                 Button {
                     withAnimation(.linear){
-                        vm.user?.nickName = vm.user?.email
+                        vm.user?.nickName = "으딩이\(Range(1...10).randomElement() ?? 1)"
                         vm.infoSetting = InfoSettingFilter.profile
                     }
                 } label: {

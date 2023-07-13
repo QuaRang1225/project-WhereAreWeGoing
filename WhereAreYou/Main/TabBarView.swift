@@ -18,13 +18,15 @@ struct TabBarView: View {
     @EnvironmentObject var vm:AuthViewModel
     var body: some View {
         TabView(selection: $selection) {
-            MainView()
-                .tabItem {
-                    Image(systemName: "house")
-                    Text("홈")
-                }
-                .tag(Menu.home)
-                .environmentObject(vm)
+            NavigationStack{
+                MainView()
+            }
+            .tabItem {
+                Image(systemName: "house")
+                Text("홈")
+            }
+            .tag(Menu.home)
+            .environmentObject(vm)
             Text("ads")
                 .tabItem {
                     Image(systemName: "message")

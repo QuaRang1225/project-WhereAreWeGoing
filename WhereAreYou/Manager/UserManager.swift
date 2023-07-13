@@ -6,8 +6,10 @@
 //
 
 import Foundation
+import Firebase
 import FirebaseFirestore
 import FirebaseFirestoreSwift
+import FirebaseAuth
 
 final class UserManager{
     
@@ -37,11 +39,35 @@ final class UserManager{
     }
     func updateUserProfileImagePath(userId:String,path:String?,url:String?)async throws{
         let data:[String:Any] = ["profile_image_url":url]
-        print(data)
         try await userDocument(userId:userId).updateData(data)
     }
+    
     func getUser(userId:String) async throws -> UserData{
         try await userDocument(userId: userId).getDocument(as: UserData.self,decoder: decoder)
     }
     
+    func getSearchUser(email:String) async throws{
+        let querySnapshot = try await userCollection.whereField("email", isEqualTo: email).getDocuments()
+
+        for document in querySnapshot.documents {
+            print("\(document.documentID) => \(document.data())")
+            
+            let data = document.data()
+            var convertedData = data
+            
+            if let timestamp = data["date_created"] as? Timestamp {
+                convertedData["date_created"] = "\(timestamp.dateValue())"
+            }
+
+            if let user = try? JSONDecoder().decode(UserData.self,fromJSONObject: convertedData){
+                print(user)
+            }
+        }
+    }
+    
+}
+extension JSONDecoder {
+    func decode<T>(_ type: T.Type, fromJSONObject object: Any) throws -> T where T: Decodable {
+        return try decode(T.self, from: try JSONSerialization.data(withJSONObject: object, options: []))
+    }
 }

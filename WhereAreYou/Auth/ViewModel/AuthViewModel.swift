@@ -25,7 +25,8 @@ final class AuthViewModel:ObservableObject{
     }
     func signIn(email:String,password:String) async throws{
         let authUser = try await AuthManager.shared.signInUser(email: email, password: password) //값을 굳이 안쓰고 컴파일러에 값이 있을
-        user = UserData(auth: authUser)
+        print(authUser)
+        user = try await UserManager.shared.getUser(userId: authUser.uid)
         print("인증 성공")
     }
     func saveProfileImage(item:PhotosPickerItem){

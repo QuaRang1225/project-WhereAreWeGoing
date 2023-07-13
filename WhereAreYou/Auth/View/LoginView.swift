@@ -52,7 +52,9 @@ struct LoginView: View {
                         .submitLabel(.done)
                         .focused($focus, equals:FormField.password)
                     SelectButton(color: .customYellow, textColor: .white, text: "로그인") {
-                        
+                        Task{
+                            try await vm.signIn(email: "\(email)@\(mailStatus.name)", password: password)
+                        }
                     }
                     .padding(.vertical)
                     Group{

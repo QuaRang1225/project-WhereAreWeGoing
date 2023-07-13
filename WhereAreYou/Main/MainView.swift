@@ -20,7 +20,11 @@ struct MainView: View {
                 Text("메인화면")
                     .font(.title)
                 Spacer()
-                Image(systemName: "magnifyingglass")
+                NavigationLink{
+                    SearchView()
+                }label: {
+                    Image(systemName: "magnifyingglass")
+                }
                 Image(systemName: "person.badge.plus")
             }
             .font(.title3)
@@ -28,23 +32,43 @@ struct MainView: View {
             .bold()
             
             List{
-                Map(coordinateRegion: $location.mapRegion ,showsUserLocation: true)
+                Map(coordinateRegion: $location.mapRegion ,interactionModes: [], showsUserLocation: true)
                     .frame(height:100)
                     .cornerRadius(20)
                     .listRowSeparator(.hidden)  //리스트 줄 없앰
                     .listRowBackground(Color.clear)
-                ForEach(0...50,id:\.self){ _ in
-                    Text("asddasd")
+                Section("내 프로필") {
+                    ProfileRowView(image: vm.user?.profileImageUrl ?? "", name: vm.user?.nickName ?? "")
+                        .listRowSeparator(.hidden)  //리스트 줄 없앰
+                        .listRowBackground(Color.clear)
                 }
-                .listRowBackground(Color.clear)
+                .foregroundColor(.gray)
+                .font(.caption)
                 
+                Section("즐겨찾기"){
+                    ForEach(0...5,id:\.self){ _ in
+                        ProfileRowView(image: CustomDataSet.shared.basicImage, name: "으딩이\(Range(1...10).randomElement() ?? 1)")
+                            .listRowSeparator(.hidden)  //리스트 줄 없앰
+                    }
+                    .listRowBackground(Color.clear)
+                }
+                .foregroundColor(.gray)
+                .font(.caption)
                 
+                Section("친구"){
+                    ForEach(0...50,id:\.self){ _ in
+                        ProfileRowView(image: CustomDataSet.shared.basicImage, name: "으딩이\(Range(1...10).randomElement() ?? 1)")
+                            .listRowSeparator(.hidden)  //리스트 줄 없앰
+                    }
+                    .listRowBackground(Color.clear)
+                }
+                .foregroundColor(.gray)
+                .font(.caption)
             }
             .listStyle(.plain)
         }
         .foregroundColor(.black)
         .background(Color.white)
-
         
     }
 }

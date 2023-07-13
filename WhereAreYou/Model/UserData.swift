@@ -13,7 +13,7 @@ struct UserData:Codable{
     let userId:String
     var nickName:String?
     let email:String?
-    let dateCreated:Date?
+    let dateCreated:String?
     var profileImageUrl:String?
     var guestMode:Bool
     
@@ -21,7 +21,7 @@ struct UserData:Codable{
         self.userId = auth.uid
         self.email = auth.email
         self.nickName = nil
-        self.dateCreated = Timestamp().dateValue()
+        self.dateCreated = "\(Timestamp().dateValue())"
         self.profileImageUrl = nil
         self.guestMode = true
     }
