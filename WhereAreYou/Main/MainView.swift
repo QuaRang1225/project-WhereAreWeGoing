@@ -25,7 +25,13 @@ struct MainView: View {
                 }label: {
                     Image(systemName: "magnifyingglass")
                 }
-                Image(systemName: "person.badge.plus")
+                Button {
+                    
+                } label: {
+                    Image(systemName: "person.badge.plus")
+                }
+
+                
             }
             .font(.title3)
             .padding(.horizontal)

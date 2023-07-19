@@ -23,12 +23,18 @@ final class AuthViewModel:ObservableObject{
         try UserManager.shared.createNewUser(user: user!)
         print("가입 성공")
     }
-    func signIn(email:String,password:String) async throws{
-        let authUser = try await AuthManager.shared.signInUser(email: email, password: password) //값을 굳이 안쓰고 컴파일러에 값이 있을
-        print(authUser)
-        user = try await UserManager.shared.getUser(userId: authUser.uid)
-        print("인증 성공")
+    func signIn(email: String, password: String) async throws {
+        do {
+            let authUser = try await AuthManager.shared.signInUser(email: email, password: password)
+            user = try await UserManager.shared.getUser(userId: authUser.uid)
+            print(user)
+            print("인증 성공")
+        } catch {
+            // Handle any errors that might occur during authentication or user retrieval.
+            print("에러 발생: \(error)")
+        }
     }
+
     func saveProfileImage(item:PhotosPickerItem){
         guard let user else {return}
         
