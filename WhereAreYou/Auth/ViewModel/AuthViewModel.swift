@@ -56,4 +56,10 @@ final class AuthViewModel:ObservableObject{
             try await UserManager.shared.updateUserProfileImagePath(userId: user.userId, path: nil, url: nil)
         }
     }
+    
+    
+    func logOut(){
+        try? AuthManager.shared.signOut()
+        user = nil
+    }
 }

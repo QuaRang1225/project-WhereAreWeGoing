@@ -26,7 +26,7 @@ struct MainView: View {
                     Image(systemName: "magnifyingglass")
                 }
                 Button {
-                    
+                    vm.logOut()
                 } label: {
                     Image(systemName: "person.badge.plus")
                 }
