@@ -9,6 +9,6 @@ import Foundation
 import SwiftUI
 
 extension Color{
-    static let customYellow = Color("customYellow")
+    static let customCyan = Color("customCyan")
     static let antiPrimary = Color("antiPrimary")
 }

@@ -24,7 +24,7 @@ struct ProfileSelectView: View {
             ScrollView {
                 CustomPhotoPicker()
                     .padding(.vertical,50)
-                SelectButton(color: .customYellow, textColor: .white, text: "확인") {
+                SelectButton(color: .customCyan, textColor: .white, text: "확인") {
                     if let item = vm.selectedItem{
                         vm.user?.guestMode = false
                         vm.saveProfileImage(item: item)
@@ -34,7 +34,7 @@ struct ProfileSelectView: View {
                     }
                 }
                 Button {
-                    vm.user?.profileImageUrl = CustomDataSet.shared.basicImage
+                    vm.user?.profileImageUrl = CustomDataSet.shared.images.randomElement()
                     vm.user?.guestMode = false
                     Task{
                         try UserManager.shared.createNewUser(user: vm.user!)

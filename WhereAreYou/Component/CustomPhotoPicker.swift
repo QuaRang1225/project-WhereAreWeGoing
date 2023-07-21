@@ -35,7 +35,7 @@ struct CustomPhotoPicker: View {
                                    .scaledToFill()
                                    .frame(width: 50,height: 50)
                            }
-                           .foregroundColor(.customYellow)
+                           .foregroundColor(.customCyan)
                    }
                }.onChange(of: vm.selectedItem) { newItem in
                    Task {

@@ -10,6 +10,7 @@ import SwiftUI
 struct CustomTextField: View {
     let placeholder:String
     let isSecure:Bool
+    let color:Color
     @Binding var text:String
     var body: some View {
         VStack{
@@ -42,7 +43,7 @@ struct CustomTextField: View {
             }
             Divider()
                 .frame(height: 3)
-                .overlay(Color.customYellow)
+                .overlay(color)
         }
         .padding(.horizontal)
         .foregroundColor(.black)
@@ -52,6 +53,6 @@ struct CustomTextField: View {
 
 struct CustomTextField_Previews: PreviewProvider {
     static var previews: some View {
-        CustomTextField(placeholder: "입력..", isSecure: false, text: .constant(""))
+        CustomTextField(placeholder: "입력..", isSecure: false, color: .customCyan, text: .constant(""))
     }
 }

@@ -21,13 +21,13 @@ struct NickNameView: View {
                 .padding(.bottom,30)
                 .foregroundColor(.black)
             ScrollView {
-                CustomTextField(placeholder: "입력..", isSecure: false, text: $text)
+                CustomTextField(placeholder: "입력..", isSecure: false, color: .customCyan, text: $text)
                     .padding(.top,50)
                 Text("닉네임을 설정하지 않을 시 이메일로 자동설정 되며. 이후에 변경할 수 있습니다.")
                     .foregroundColor(.gray)
                     .font(.caption)
                     .padding(.bottom)
-                SelectButton(color: .customYellow, textColor: .white, text: "확인") {
+                SelectButton(color: .customCyan, textColor: .white, text: "확인") {
                     withAnimation(.linear){
                         vm.user?.nickName = text
                         vm.infoSetting = InfoSettingFilter.profile

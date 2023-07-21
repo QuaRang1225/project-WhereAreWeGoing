@@ -12,7 +12,7 @@ struct AuthBackground: View {
         ZStack{
             Color.white.ignoresSafeArea()
             VStack{
-                Color.customYellow
+                Color.customCyan
                     .ignoresSafeArea()
                     .frame(height: 200)
                     .overlay {
@@ -20,7 +20,7 @@ struct AuthBackground: View {
                             .offset(x:-60)
                     }
                     .overlay(alignment: .topTrailing, content: {
-                        Image("yellowkids")
+                        Image("kidsblue")
                             .offset(y:-90)
                     })
                     .frame(maxHeight: .infinity,alignment: .bottom)

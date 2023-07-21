@@ -11,9 +11,17 @@ struct StartView: View {
     @State var isStart = false
     var body: some View {
         ZStack{
-            Color.customYellow.ignoresSafeArea()
+            Color.white.ignoresSafeArea()
             if isStart{
-                Image("title")
+                VStack{
+                    Image("where")
+                        .resizable()
+                        .frame(width: 150,height: 150)
+                    Text("우리 어디가?")
+                        .foregroundColor(.customCyan)
+                        .fontWeight(.black)
+                }
+                
             }
             Image("kids")
                 .frame(maxWidth: .infinity,alignment: .trailing)

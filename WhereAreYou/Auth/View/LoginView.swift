@@ -31,7 +31,7 @@ struct LoginView: View {
                         .bold()
                         .padding(.leading)
                     HStack{
-                        CustomTextField(placeholder: "입력..", isSecure: false, text: $email)
+                        CustomTextField(placeholder: "입력..", isSecure: false, color: .customCyan, text: $email)
                             .textContentType(.emailAddress)
                             .disableAutocorrection(true)
                             .submitLabel(.next)
@@ -47,11 +47,11 @@ struct LoginView: View {
                     Text("비밀번호")
                         .bold()
                         .padding(.leading)
-                    CustomTextField(placeholder: "입력..", isSecure: true, text: $password)
+                    CustomTextField(placeholder: "입력..", isSecure: true,color: .customCyan, text: $password)
                         .textContentType(.password)
                         .submitLabel(.done)
                         .focused($focus, equals:FormField.password)
-                    SelectButton(color: .customYellow, textColor: .white, text: "로그인") {
+                    SelectButton(color: .customCyan, textColor: .white, text: "로그인") {
                         Task{
                             try await vm.signIn(email: "\(email)@\(mailStatus.name)", password: password)
                         }

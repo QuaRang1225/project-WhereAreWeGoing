@@ -17,9 +17,9 @@ struct SearchView: View {
                         .foregroundColor(.black)
                         .padding(.bottom)
                         .bold()
-                    CustomTextField(placeholder: "친구의 가입 이메일을 입력해주세요..", isSecure: false, text: $text)
+                    CustomTextField(placeholder: "친구의 가입 이메일을 입력해주세요..", isSecure: false,color: .customCyan, text: $text)
                     Spacer()
-                    SelectButton(color: !text.isEmpty ? .customYellow:.gray.opacity(0.5), textColor:.white, text: "검색") {
+                    SelectButton(color: !text.isEmpty ? .customCyan:.gray.opacity(0.5), textColor:.white, text: "검색") {
                         text = "yuyw99@gmail.com"
                         Task{
                             try? await UserManager.shared.getSearchUser(email: text)

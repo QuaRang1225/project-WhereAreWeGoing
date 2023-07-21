@@ -11,13 +11,15 @@ import MapKit
 import Kingfisher
 
 struct MainView: View {
+    let columns = [GridItem(),GridItem()]
+    @State var area:TravelFilter = .all
     @StateObject var location = LocationMagager()
     @EnvironmentObject var vm:AuthViewModel
     var body: some View {
         VStack(alignment: .leading){
             
             HStack(spacing: 20){
-                Text("메인화면")
+                Text("내 여행")
                     .font(.title)
                 Spacer()
                 NavigationLink{
@@ -25,51 +27,72 @@ struct MainView: View {
                 }label: {
                     Image(systemName: "magnifyingglass")
                 }
-                Button {
-                    vm.logOut()
+                NavigationLink {
+                    SelectTypeView()
+                        .navigationBarBackButtonHidden()
                 } label: {
-                    Image(systemName: "person.badge.plus")
+                    Image(systemName: "plus.viewfinder")
                 }
-
-                
             }
             .font(.title3)
             .padding(.horizontal)
             .bold()
             
             List{
-                Map(coordinateRegion: $location.mapRegion ,interactionModes: [], showsUserLocation: true)
-                    .frame(height:100)
-                    .cornerRadius(20)
-                    .listRowSeparator(.hidden)  //리스트 줄 없앰
-                    .listRowBackground(Color.clear)
                 Section("내 프로필") {
                     ProfileRowView(image: vm.user?.profileImageUrl ?? "", name: vm.user?.nickName ?? "")
                         .listRowSeparator(.hidden)  //리스트 줄 없앰
                         .listRowBackground(Color.clear)
                 }
                 .foregroundColor(.gray)
-                .font(.caption)
+                .font(.body)
                 
-                Section("즐겨찾기"){
-                    ForEach(0...5,id:\.self){ _ in
-                        ProfileRowView(image: CustomDataSet.shared.basicImage, name: "으딩이\(Range(1...10).randomElement() ?? 1)")
-                            .listRowSeparator(.hidden)  //리스트 줄 없앰
-                    }
-                    .listRowBackground(Color.clear)
+                ScrollView(.horizontal,showsIndicators: false){
+                    HStack{
+                        ForEach(TravelFilter.allCases,id:\.self){ item in
+                            Button {
+                                area = item
+                            } label: {
+                                Text(item.name)
+                                    .bold()
+                                    .padding(.horizontal)
+                                    .foregroundColor(area == item ? .white:.blue)
+                                    .padding(10)
+                                    .background{
+                                        if area == item{
+                                            Capsule()
+                                                .foregroundColor(.blue)
+                                        }else{
+                                            Capsule()
+                                                .stroke(lineWidth: 3)
+                                                .foregroundColor(.blue)
+                                        }
+                                    }
+                            }
+                        }
+                        
+                    }.padding(5)
+                    
                 }
-                .foregroundColor(.gray)
-                .font(.caption)
+                LazyVGrid(columns: columns) {
+                    ForEach(0...10,id:\.self){ _ in
+                        VStack{
+                            RoundedRectangle(cornerRadius: 20)
+                                .frame(height:200)
+                            Text("제주도")
+                        }
+                    }
+                }
                 
-                Section("친구"){
-                    ForEach(0...50,id:\.self){ _ in
-                        ProfileRowView(image: CustomDataSet.shared.basicImage, name: "으딩이\(Range(1...10).randomElement() ?? 1)")
-                            .listRowSeparator(.hidden)  //리스트 줄 없앰
-                    }
-                    .listRowBackground(Color.clear)
-                }
-                .foregroundColor(.gray)
-                .font(.caption)
+//                Section("친구"){
+//                    ForEach(0...50,id:\.self){ _ in
+//                        ProfileRowView(image: CustomDataSet.shared.images.randomElement()!, name: "으딩이\(Range(1...10).randomElement() ?? 1)")
+//                            .listRowSeparator(.hidden)  //리스트 줄 없앰
+//                    }
+//                    .listRowBackground(Color.clear)
+//                }
+//                .foregroundColor(.gray)
+//                .font(.body)
             }
             .listStyle(.plain)
         }
@@ -81,8 +104,10 @@ struct MainView: View {
 
 struct MainView_Previews: PreviewProvider {
     static var previews: some View {
-        MainView()
-            .environmentObject(AuthViewModel())
+        NavigationStack{
+            MainView()
+                .environmentObject(AuthViewModel())
+        }
     }
 }
 

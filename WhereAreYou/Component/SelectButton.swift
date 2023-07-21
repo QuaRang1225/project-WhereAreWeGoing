@@ -34,6 +34,6 @@ struct SelectButton: View {
 
 struct SelectButton_Previews: PreviewProvider {
     static var previews: some View {
-        SelectButton(color: .customYellow, textColor: .white, text: "확인", action: {})
+        SelectButton(color: .customCyan, textColor: .white, text: "확인", action: {})
     }
 }
