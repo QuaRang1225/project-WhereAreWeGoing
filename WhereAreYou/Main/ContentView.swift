@@ -23,8 +23,10 @@ struct ContentView: View {
                         InfoSettingTabView()
                             .environmentObject(vm)
                     }else{
-                        TabBarView()
-                            .environmentObject(vm)
+                        NavigationStack{
+                            MainView()
+                                .environmentObject(vm)
+                        }
                     }
                 }else{
                     LoginView()

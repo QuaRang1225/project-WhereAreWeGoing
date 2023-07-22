@@ -56,24 +56,25 @@ struct MainView: View {
                                 Text(item.name)
                                     .bold()
                                     .padding(.horizontal)
-                                    .foregroundColor(area == item ? .white:.blue)
+                                    .foregroundColor(area == item ? .white:.customCyan2)
                                     .padding(10)
                                     .background{
                                         if area == item{
                                             Capsule()
-                                                .foregroundColor(.blue)
+                                                .foregroundColor(.customCyan2)
                                         }else{
                                             Capsule()
                                                 .stroke(lineWidth: 3)
-                                                .foregroundColor(.blue)
+                                                .foregroundColor(.customCyan2)
                                         }
                                     }
                             }
                         }
                         
-                    }.padding(5)
+                    }
+                    .padding(5)
                     
-                }
+                }.listRowBackground(Color.clear)
                 LazyVGrid(columns: columns) {
                     ForEach(0...10,id:\.self){ _ in
                         VStack{
@@ -82,7 +83,7 @@ struct MainView: View {
                             Text("제주도")
                         }
                     }
-                }
+                }.listRowBackground(Color.clear)
                 
 //                Section("친구"){
 //                    ForEach(0...50,id:\.self){ _ in
