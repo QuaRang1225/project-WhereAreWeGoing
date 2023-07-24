@@ -56,10 +56,10 @@ struct SelectTypeView: View {
                         .foregroundColor(.gray)
                         .padding(.bottom)
                     PhotosPicker(
-                        selection: $selection,
+                        selection: $vm.selection,
                         matching: .images,
                         photoLibrary: .shared()) {
-                            if let selectedImageData = data,
+                            if let selectedImageData = vm.data,
                                let uiImage = UIImage(data: selectedImageData) {
                                 Image(uiImage: uiImage)
                                     .resizable()
@@ -79,10 +79,10 @@ struct SelectTypeView: View {
                                     }
                                     .foregroundColor(.black)
                             }
-                        }.onChange(of: selection) { newItem in
+                        }.onChange(of: vm.selection) { newItem in
                             Task {
                                 if let data = try? await newItem?.loadTransferable(type: Data.self) {
-                                    self.data = data
+                                    vm.data = data
                                 }
                             }
                         }

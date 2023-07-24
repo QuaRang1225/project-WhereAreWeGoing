@@ -41,6 +41,10 @@ final class UserManager{
         let data:[String:Any] = ["profile_image_url":url]
         try await userDocument(userId:userId).updateData(data)
     }
+    func updateUserPageImagePath(userId:String,path:String?,url:String?)async throws{
+        let data:[String:Any] = ["page_image":url]
+        try await userDocument(userId:userId).updateData(data)
+    }
     
     func getUser(userId:String) async throws -> UserData{
         try await userDocument(userId: userId).getDocument(as: UserData.self,decoder: decoder)
