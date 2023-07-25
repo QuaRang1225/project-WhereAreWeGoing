@@ -11,6 +11,7 @@ import FirebaseFirestore
 import FirebaseFirestoreSwift
 import FirebaseAuth
 
+
 final class UserManager{
     
     static let shared = UserManager()
@@ -20,6 +21,9 @@ final class UserManager{
     
     private func userDocument(userId:String) -> DocumentReference{
         userCollection.document(userId)
+    }
+    private func userPageDocumentCollection(userId:String) -> CollectionReference{
+        userDocument(userId:userId).collection("page")
     }
     
     //snakeCase적용 위함
@@ -41,15 +45,28 @@ final class UserManager{
         let data:[String:Any] = ["profile_image_url":url]
         try await userDocument(userId:userId).updateData(data)
     }
-    func updateUserPageImagePath(userId:String,path:String?,url:String?)async throws{
-        let data:[String:Any] = ["page_image":url]
-        try await userDocument(userId:userId).updateData(data)
+    func createUserPage(userId:String,url:String,pageInfo:PageInfo)async throws{
+        let document = userPageDocumentCollection(userId: userId).document()
+        let documentId = document.documentID
+                
+        let data:[String:Any] = [
+            "page_id":documentId,
+            "page_admin":userId,
+            "page_image_url":url,
+            "page_name":pageInfo.pageName,
+            "page_subscript":pageInfo.pageSubscript,
+            "page_overseas":pageInfo.overseas
+        ]
+        try await document.setData(data,merge: false)
+        
     }
     
     func getUser(userId:String) async throws -> UserData{
         try await userDocument(userId: userId).getDocument(as: UserData.self,decoder: decoder)
     }
-    
+    func getAllUserFavoriteProduct(userId:String)async throws -> [Page]{    //전체페이지 불러오기
+        try await userPageDocumentCollection(userId: userId).getDocuments2(as: Page.self)
+    }
     func getSearchUser(email:String) async throws{
         let querySnapshot = try await userCollection.whereField("email", isEqualTo: email).getDocuments()
 
@@ -69,9 +86,4 @@ final class UserManager{
         }
     }
     
-}
-extension JSONDecoder {
-    func decode<T>(_ type: T.Type, fromJSONObject object: Any) throws -> T where T: Decodable {
-        return try decode(T.self, from: try JSONSerialization.data(withJSONObject: object, options: []))
-    }
 }

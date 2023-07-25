@@ -39,7 +39,6 @@ struct ProfileSelectView: View {
                     Task{
                         try UserManager.shared.createNewUser(user: vm.user!)
                     }
-                    
                 } label: {
                     Text("건너뛰기")
                         .font(.caption)

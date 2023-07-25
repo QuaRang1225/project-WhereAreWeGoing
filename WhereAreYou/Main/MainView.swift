@@ -14,12 +14,13 @@ struct MainView: View {
     let columns = [GridItem(),GridItem()]
     @State var area:TravelFilter = .all
     @StateObject var location = LocationMagager()
-    @EnvironmentObject var vm:AuthViewModel
+    @StateObject var vm = EditViewModel()
+    @EnvironmentObject var vmAuth:AuthViewModel
     var body: some View {
         VStack(alignment: .leading){
             
             HStack(spacing: 20){
-                Text("내 여행")
+                Text("메인화면")
                     .font(.title)
                 Spacer()
                 NavigationLink{
@@ -29,6 +30,7 @@ struct MainView: View {
                 }
                 NavigationLink {
                     SelectTypeView()
+                        .environmentObject(vmAuth)
                         .navigationBarBackButtonHidden()
                 } label: {
                     Image(systemName: "plus.viewfinder")
@@ -38,68 +40,71 @@ struct MainView: View {
             .padding(.horizontal)
             .bold()
             
-            List{
-                Section("내 프로필") {
-                    ProfileRowView(image: vm.user?.profileImageUrl ?? "", name: vm.user?.nickName ?? "")
-                        .listRowSeparator(.hidden)  //리스트 줄 없앰
-                        .listRowBackground(Color.clear)
+            ScrollView{
+                Section("내 프로필"){
+                    NavigationStack{
+                        ProfileRowView(image: vmAuth.user?.profileImageUrl ?? "", name:vmAuth.user?.nickName ?? "", email: vmAuth.user?.email ?? "")
+                            .listRowSeparator(.hidden)  //리스트 줄 없앰
+                            .listRowBackground(Color.clear)
+                    }
                 }
-                .foregroundColor(.gray)
                 .font(.body)
-                
-                ScrollView(.horizontal,showsIndicators: false){
-                    HStack{
-                        ForEach(TravelFilter.allCases,id:\.self){ item in
-                            Button {
-                                area = item
-                            } label: {
-                                Text(item.name)
-                                    .bold()
-                                    .padding(.horizontal)
-                                    .foregroundColor(area == item ? .white:.customCyan2)
-                                    .padding(10)
-                                    .background{
-                                        if area == item{
-                                            Capsule()
-                                                .foregroundColor(.customCyan2)
-                                        }else{
-                                            Capsule()
-                                                .stroke(lineWidth: 3)
-                                                .foregroundColor(.customCyan2)
+                .frame(maxWidth: .infinity,alignment: .leading)
+                .padding()
+                .bold()
+                Section("내 일정"){
+                    ScrollView(.horizontal,showsIndicators: false){
+                        HStack{
+                            ForEach(TravelFilter.allCases,id:\.self){ item in
+                                Button {
+                                    area = item
+                                } label: {
+                                    Text(item.name)
+                                        .bold()
+                                        .padding(.horizontal)
+                                        .foregroundColor(area == item ? .white:.customCyan2)
+                                        .padding(10)
+                                        .background{
+                                            if area == item{
+                                                Capsule()
+                                                    .foregroundColor(.customCyan2)
+                                            }else{
+                                                Capsule()
+                                                    .stroke(lineWidth: 3)
+                                                    .foregroundColor(.customCyan2)
+                                            }
                                         }
-                                    }
+                                }
                             }
                         }
-                        
-                    }
-                    .padding(5)
-                    
-                }.listRowBackground(Color.clear)
-                LazyVGrid(columns: columns) {
-                    ForEach(0...10,id:\.self){ _ in
-                        VStack{
-                            RoundedRectangle(cornerRadius: 20)
-                                .frame(height:200)
-                            Text("제주도")
+                        .padding(.vertical,2)
+                        .padding(.horizontal,2)
+                    }.listRowBackground(Color.clear)
+                    LazyVGrid(columns: columns) {
+                        ForEach(vm.pages,id:\.self){ page in
+                            NavigationLink {
+                                PageMainView(page: page)
+                                    .navigationBarBackButtonHidden()
+                            } label: {
+                                PageRowView(image:  page.pageImageUrl, title: page.pageName)
+                            }
                         }
                     }
-                }.listRowBackground(Color.clear)
-                
-//                Section("친구"){
-//                    ForEach(0...50,id:\.self){ _ in
-//                        ProfileRowView(image: CustomDataSet.shared.images.randomElement()!, name: "으딩이\(Range(1...10).randomElement() ?? 1)")
-//                            .listRowSeparator(.hidden)  //리스트 줄 없앰
-//                    }
-//                    .listRowBackground(Color.clear)
-//                }
-//                .foregroundColor(.gray)
-//                .font(.body)
+                    .listRowBackground(Color.clear)
+                    .onAppear{
+                        if let user = vmAuth.user{
+                            vm.getPages(user: user)
+                        }
+                    }
+                }
+                .bold()
+                .font(.body)
+                .frame(maxWidth: .infinity,alignment: .leading)
+                .padding()
             }
-            .listStyle(.plain)
         }
         .foregroundColor(.black)
         .background(Color.white)
-        
     }
 }
 

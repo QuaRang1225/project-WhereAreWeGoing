@@ -27,7 +27,6 @@ final class AuthViewModel:ObservableObject{
         do {
             let authUser = try await AuthManager.shared.signInUser(email: email, password: password)
             user = try await UserManager.shared.getUser(userId: authUser.uid)
-            print(user)
             print("인증 성공")
         } catch {
             // Handle any errors that might occur during authentication or user retrieval.
@@ -41,9 +40,7 @@ final class AuthViewModel:ObservableObject{
         Task{
             guard let data = try await item.loadTransferable(type: Data.self) else {return}
            
-            let (path,name) = try await StorageManager.shared.saveImage(data:data,userId: user.userId)
-            print(path)
-            print(name)
+            let path = try await StorageManager.shared.saveImage(data:data,userId: user.userId, mode: .profile)
             let url = try await StorageManager.shared.getUrlForImage(path: path)
             try await UserManager.shared.updateUserProfileImagePath(userId: user.userId, path: path,url: url.absoluteString)
         }

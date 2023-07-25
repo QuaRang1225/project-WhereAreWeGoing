@@ -12,9 +12,11 @@ struct SelectTypeView: View {
     
     @State var title = ""
     @State var text = ""
-    
     @State var overseas:Bool? = nil
+    
+    @State var isPage = false
     @StateObject var vm = EditViewModel()
+    @EnvironmentObject var vmAuth:AuthViewModel
     @Environment(\.dismiss) var dismiss
     
     var body: some View {
@@ -34,7 +36,10 @@ struct SelectTypeView: View {
                     Spacer()
                     if overseas != nil && !text.isEmpty && !title.isEmpty{
                         Button {
-                            
+                            if let user = vmAuth.user,let overseas{
+                                vm.creagtePage(user:user, pageInfo: PageInfo(pageName: title, pageSubscript: text, overseas: !overseas))
+                                isPage = true
+                            }
                         } label: {
                             Text("완료")
                                 .padding()
@@ -108,7 +113,6 @@ struct SelectTypeView: View {
                                         }
                                     
                                 }
-                                
                                 Text("국내")
                                 
                             }
@@ -127,8 +131,6 @@ struct SelectTypeView: View {
                                 }
                                 Text("해외")
                             }
-                            
-                            
                         }
                         .padding()
                         .bold()
@@ -141,16 +143,35 @@ struct SelectTypeView: View {
                 
             }
             
-            
-        }.foregroundColor(.black)
-            .onTapGesture {
-                UIApplication.shared.endEditing()
+            if isPage{
+                Color.black.opacity(0.3).ignoresSafeArea()
+                VStack{
+                    ProgressView()
+                        .padding(.bottom,5)
+                    Text("페이지 생성중..")
+                        .font(.caption)
+                }
+                .background{
+                    RoundedRectangle(cornerRadius: 30)
+                        .frame(width: 150,height: 100)
+                        .foregroundColor(.white)
+                        .shadow(radius: 10)
+                }
             }
+        }
+        .foregroundColor(.black)
+        .onTapGesture {
+            UIApplication.shared.endEditing()
+        }
+        .onReceive(vm.createPageSuccess) { _ in
+            dismiss()
+        }
     }
 }
 
 struct SelectTypeView_Previews: PreviewProvider {
     static var previews: some View {
         SelectTypeView()
+            .environmentObject(AuthViewModel())
     }
 }

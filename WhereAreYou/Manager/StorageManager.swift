@@ -19,8 +19,13 @@ final class StorageManager{
     private var imageRef:StorageReference{  //이미지 폴터경로
         storage.child("iamges")
     }
-    private func userReferance(userId:String) -> StorageReference{  //메타데이터
-        storage.child("users").child(userId)
+    private func userReferance(userId:String,mode:ImageSaveFilter) -> StorageReference{  //메타데이터
+        switch mode{
+        case .page:
+            return storage.child("page_image").child(userId)
+        case .profile:
+            return storage.child("users").child(userId)
+        }
     }
     private func getProfileImageURL(path:String) -> StorageReference{   //이미지 Url 가져오다
         Storage.storage().reference(withPath: path)
@@ -29,26 +34,26 @@ final class StorageManager{
     func getUrlForImage(path:String) async throws -> URL{   //메타데이터 경로 다운로드
         try await getProfileImageURL(path: path).downloadURL()
     }
-    func saveImage(data:Data,userId:String)async throws -> (String,String){
+    func saveImage(data:Data,userId:String,mode:ImageSaveFilter)async throws -> String{
         
         let meta = StorageMetadata()
         meta.contentType = "image/jpeg"
         
         let path = "\(UUID().uuidString).jpeg"
-        let returnedMetaData = try await userReferance(userId: userId).child(path).putDataAsync(data,metadata: meta)
+        let returnedMetaData = try await userReferance(userId: userId,mode: mode).child(path).putDataAsync(data,metadata: meta)
         
-        guard let returnedpPath = returnedMetaData.path, let returnedName = returnedMetaData.name else{
+        guard let returnedpPath = returnedMetaData.path else{
             throw URLError(.badServerResponse)
         }
         
-        return (returnedpPath,returnedName)
+        return returnedpPath
         
     }
-    func saveImage(image:UIImage,userId:String) async throws -> (String,String){
+    func saveImage(image:UIImage,userId:String,mode:ImageSaveFilter) async throws -> String{
         guard let data = image.jpegData(compressionQuality: 1)else{ //퀄리티성정
             throw URLError(.badServerResponse)
         }
-        return try await saveImage(data: data, userId: userId)
+        return try await saveImage(data: data, userId: userId,mode: mode)
     }
     func deleteImage(path:String) async throws{
         try await getProfileImageURL(path: path).delete()
@@ -58,3 +63,6 @@ final class StorageManager{
     
     
 }
+
+
+
