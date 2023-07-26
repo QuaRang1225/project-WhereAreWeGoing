@@ -24,4 +24,11 @@ class CustomDataSet{
     "https://firebasestorage.googleapis.com/v0/b/whereareyou-66f3a.appspot.com/o/basic%2FGroup%2023.png?alt=media&token=a1003133-8e84-435e-be01-d3633c5fa0a3"
     
     ]
+    
+    func page() -> Page{
+        Page(pageId: "asdasdadsad", pageAdmin: "4KYzTqO9HthK3nnOUAyIMKcaxa03", pageImageUrl: CustomDataSet.shared.images.first!, pageName: "으딩이", pageOverseas: false, pageSubscript: "으딩이와 함께 하는 우리어디가", dateRange: ["2023년 07월 26일","2023년 07월 27일","2023년 07월 28일","2023년 07월 29일"])
+    }
+    
+    
+
 }

@@ -16,7 +16,6 @@
 		813F52452A595C6B00833427 /* UserData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 813F52442A595C6B00833427 /* UserData.swift */; };
 		817268082A6A4ED70038BE70 /* SelectTypeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 817268072A6A4ED70038BE70 /* SelectTypeView.swift */; };
 		8172680A2A6A4F010038BE70 /* Travel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 817268092A6A4F010038BE70 /* Travel.swift */; };
-		81740BA52A5166B200AAD0FE /* TabBarView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 81740BA42A5166B200AAD0FE /* TabBarView.swift */; };
 		81740BA82A5166DC00AAD0FE /* Menu.swift in Sources */ = {isa = PBXBuildFile; fileRef = 81740BA72A5166DC00AAD0FE /* Menu.swift */; };
 		81740BAA2A516B4900AAD0FE /* LocationManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 81740BA92A516B4900AAD0FE /* LocationManager.swift */; };
 		81740BAD2A516B7100AAD0FE /* exView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 81740BAC2A516B7100AAD0FE /* exView.swift */; };
@@ -61,6 +60,11 @@
 		81D7B1DE2A5D450700D5AACD /* ProfileRowView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 81D7B1DD2A5D450700D5AACD /* ProfileRowView.swift */; };
 		81D7B1E02A5D4ADA00D5AACD /* CustomDataSet.swift in Sources */ = {isa = PBXBuildFile; fileRef = 81D7B1DF2A5D4ADA00D5AACD /* CustomDataSet.swift */; };
 		81D7B1E32A5D8FD100D5AACD /* SearchView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 81D7B1E22A5D8FD100D5AACD /* SearchView.swift */; };
+		81FEF6002A70C9390000B76B /* MemberTabView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 81FEF5FF2A70C9390000B76B /* MemberTabView.swift */; };
+		81FEF6042A70CEB60000B76B /* SchduleListView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 81FEF6032A70CEB60000B76B /* SchduleListView.swift */; };
+		81FEF6062A70F59B0000B76B /* exString.swift in Sources */ = {isa = PBXBuildFile; fileRef = 81FEF6052A70F59B0000B76B /* exString.swift */; };
+		81FEF6082A70F5A10000B76B /* exDate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 81FEF6072A70F5A10000B76B /* exDate.swift */; };
+		81FEF60A2A7107330000B76B /* AddScheduleView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 81FEF6092A7107330000B76B /* AddScheduleView.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -89,7 +93,6 @@
 		813F52442A595C6B00833427 /* UserData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserData.swift; sourceTree = "<group>"; };
 		817268072A6A4ED70038BE70 /* SelectTypeView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SelectTypeView.swift; sourceTree = "<group>"; };
 		817268092A6A4F010038BE70 /* Travel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Travel.swift; sourceTree = "<group>"; };
-		81740BA42A5166B200AAD0FE /* TabBarView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TabBarView.swift; sourceTree = "<group>"; };
 		81740BA72A5166DC00AAD0FE /* Menu.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Menu.swift; sourceTree = "<group>"; };
 		81740BA92A516B4900AAD0FE /* LocationManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocationManager.swift; sourceTree = "<group>"; };
 		81740BAC2A516B7100AAD0FE /* exView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = exView.swift; sourceTree = "<group>"; };
@@ -131,6 +134,11 @@
 		81D7B1DD2A5D450700D5AACD /* ProfileRowView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileRowView.swift; sourceTree = "<group>"; };
 		81D7B1DF2A5D4ADA00D5AACD /* CustomDataSet.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomDataSet.swift; sourceTree = "<group>"; };
 		81D7B1E22A5D8FD100D5AACD /* SearchView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchView.swift; sourceTree = "<group>"; };
+		81FEF5FF2A70C9390000B76B /* MemberTabView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MemberTabView.swift; sourceTree = "<group>"; };
+		81FEF6032A70CEB60000B76B /* SchduleListView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SchduleListView.swift; sourceTree = "<group>"; };
+		81FEF6052A70F59B0000B76B /* exString.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = exString.swift; sourceTree = "<group>"; };
+		81FEF6072A70F5A10000B76B /* exDate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = exDate.swift; sourceTree = "<group>"; };
+		81FEF6092A7107330000B76B /* AddScheduleView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddScheduleView.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -202,6 +210,8 @@
 				81740BAC2A516B7100AAD0FE /* exView.swift */,
 				81BA3E102A6FA76C00D38E93 /* exJsonDecoder.swift */,
 				81BA3E122A6FA7A900D38E93 /* exQuery.swift */,
+				81FEF6052A70F59B0000B76B /* exString.swift */,
+				81FEF6072A70F5A10000B76B /* exDate.swift */,
 			);
 			path = Extension;
 			sourceTree = "<group>";
@@ -227,6 +237,8 @@
 			children = (
 				817268072A6A4ED70038BE70 /* SelectTypeView.swift */,
 				81BA3E1A2A6FAC7700D38E93 /* PageMainView.swift */,
+				81FEF6092A7107330000B76B /* AddScheduleView.swift */,
+				81FEF5FD2A70C8F80000B76B /* TabPage */,
 			);
 			path = View;
 			sourceTree = "<group>";
@@ -321,7 +333,6 @@
 				81D5BCA72A4FE9F5001842FD /* ContentView.swift */,
 				81D5BCDE2A4FF2A3001842FD /* StartView.swift */,
 				81D5BCF72A5012FC001842FD /* MainView.swift */,
-				81740BA42A5166B200AAD0FE /* TabBarView.swift */,
 			);
 			path = Main;
 			sourceTree = "<group>";
@@ -395,6 +406,15 @@
 				81D7B1E22A5D8FD100D5AACD /* SearchView.swift */,
 			);
 			path = Search;
+			sourceTree = "<group>";
+		};
+		81FEF5FD2A70C8F80000B76B /* TabPage */ = {
+			isa = PBXGroup;
+			children = (
+				81FEF5FF2A70C9390000B76B /* MemberTabView.swift */,
+				81FEF6032A70CEB60000B76B /* SchduleListView.swift */,
+			);
+			path = TabPage;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -542,19 +562,22 @@
 			buildActionMask = 2147483647;
 			files = (
 				8172680A2A6A4F010038BE70 /* Travel.swift in Sources */,
-				81740BA52A5166B200AAD0FE /* TabBarView.swift in Sources */,
 				813F523E2A594B5C00833427 /* AuthManager.swift in Sources */,
+				81FEF6082A70F5A10000B76B /* exDate.swift in Sources */,
 				81D5BCEA2A4FF923001842FD /* CustomTextField.swift in Sources */,
 				81BA3E192A6FA8A700D38E93 /* PageRowView.swift in Sources */,
+				81FEF6062A70F59B0000B76B /* exString.swift in Sources */,
 				81BA3E0D2A6BC80A00D38E93 /* EditViewModel.swift in Sources */,
 				81BA3E172A6FA7E900D38E93 /* PageInfo.swift in Sources */,
 				81234CD92A5BE84E007D9BB6 /* StorageManager.swift in Sources */,
 				81BA3E0F2A6FA74F00D38E93 /* ImageSaveFilter.swift in Sources */,
 				81234CD72A5BC898007D9BB6 /* InfoSettingTabView.swift in Sources */,
+				81FEF6042A70CEB60000B76B /* SchduleListView.swift in Sources */,
 				81D5BCF82A5012FC001842FD /* MainView.swift in Sources */,
 				81D5BCEC2A4FFC44001842FD /* KeyBoardSet.swift in Sources */,
 				81D5BCF32A5005B0001842FD /* FormField.swift in Sources */,
 				81D5BCE12A4FF2E3001842FD /* ColorSet.swift in Sources */,
+				81FEF6002A70C9390000B76B /* MemberTabView.swift in Sources */,
 				81BA3E152A6FA7D100D38E93 /* Page.swift in Sources */,
 				81740BA82A5166DC00AAD0FE /* Menu.swift in Sources */,
 				81740BAD2A516B7100AAD0FE /* exView.swift in Sources */,
@@ -566,6 +589,7 @@
 				81D7B1E32A5D8FD100D5AACD /* SearchView.swift in Sources */,
 				81BA3E132A6FA7A900D38E93 /* exQuery.swift in Sources */,
 				81D5BCFA2A501472001842FD /* ProfileSelectView.swift in Sources */,
+				81FEF60A2A7107330000B76B /* AddScheduleView.swift in Sources */,
 				81D5BCE52A4FF51E001842FD /* LoginView.swift in Sources */,
 				81D5BCF12A500586001842FD /* EmailAddress.swift in Sources */,
 				81D5BCF52A501049001842FD /* RegisterView.swift in Sources */,

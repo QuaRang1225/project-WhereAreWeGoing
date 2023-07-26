@@ -14,7 +14,7 @@ struct MainView: View {
     let columns = [GridItem(),GridItem()]
     @State var area:TravelFilter = .all
     @StateObject var location = LocationMagager()
-    @StateObject var vm = EditViewModel()
+    @StateObject var vm = PageViewModel()
     @EnvironmentObject var vmAuth:AuthViewModel
     var body: some View {
         VStack(alignment: .leading){

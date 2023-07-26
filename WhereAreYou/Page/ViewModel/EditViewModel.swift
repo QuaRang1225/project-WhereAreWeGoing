@@ -12,8 +12,10 @@ import Firebase
 import Combine
 
 @MainActor
-class EditViewModel:ObservableObject{
+class PageViewModel:ObservableObject{
     
+    @Published var page:Page? = nil
+    @Published var admin:UserData? = nil
     @Published var pages:[Page] = []
     @Published var data:Data? = nil
     @Published var selection:PhotosPickerItem? = nil
@@ -37,6 +39,24 @@ class EditViewModel:ObservableObject{
         Task{
             pages = try await UserManager.shared.getAllUserFavoriteProduct(userId: user.userId)
         }
+    }
+    func generateDatesArray(from startDate: Date, to endDate: Date) -> [String] {
+        var datesArray: [String] = []
+        let calendar = Calendar.current
+
+        var currentDate = startDate
+        while currentDate <= endDate {
+            let dateString = currentDate.toString()
+            datesArray.append(dateString)
+
+            if let nextDate = calendar.date(byAdding: .day, value: 1, to: currentDate) {
+                currentDate = nextDate
+            } else {
+                break
+            }
+        }
+
+        return datesArray
     }
 }
 

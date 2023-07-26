@@ -55,7 +55,9 @@ final class UserManager{
             "page_image_url":url,
             "page_name":pageInfo.pageName,
             "page_subscript":pageInfo.pageSubscript,
-            "page_overseas":pageInfo.overseas
+            "page_overseas":pageInfo.overseas,
+            "date_range":pageInfo.dateRange,
+            
         ]
         try await document.setData(data,merge: false)
         

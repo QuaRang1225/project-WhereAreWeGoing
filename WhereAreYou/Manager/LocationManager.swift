@@ -10,11 +10,12 @@ import CoreLocation
 import MapKit
 import SwiftUI
 
-final class LocationMagager:NSObject,ObservableObject,CLLocationManagerDelegate{
+final class LocationMagager:NSObject,ObservableObject,CLLocationManagerDelegate,MKMapViewDelegate{
     
     private var manager = CLLocationManager()
     var mySpan = MKCoordinateSpan(latitudeDelta: 0.005, longitudeDelta: 0.005)
-    @Published var mapRegion = MKCoordinateRegion()
+    @Published var mapRegion = MKCoordinateRegion(center: CLLocationCoordinate2D(latitude: 36.3504119, longitude: 127.3845475), span: MKCoordinateSpan(latitudeDelta: 0.005, longitudeDelta: 0.005))
+    @Published var isChanged = false
 
     override init() {
             super.init()
@@ -60,4 +61,5 @@ final class LocationMagager:NSObject,ObservableObject,CLLocationManagerDelegate{
                 )
             }
         }
+ 
 }

@@ -15,6 +15,7 @@ struct Page:Codable,Hashable{
     let pageName:String
     let pageOverseas:Bool
     let pageSubscript:String
+    let dateRange:[String]
     
     enum CodingKeys:String,CodingKey{
         case pageId = "page_id"
@@ -23,5 +24,6 @@ struct Page:Codable,Hashable{
         case pageName = "page_name"
         case pageOverseas = "page_overseas"
         case pageSubscript = "page_subscript"
+        case dateRange = "date_range"
     }
 }
