@@ -9,13 +9,21 @@ import Foundation
 import CoreLocation
 import MapKit
 import SwiftUI
+import Combine
 
 final class LocationMagager:NSObject,ObservableObject,CLLocationManagerDelegate,MKMapViewDelegate{
     
     private var manager = CLLocationManager()
+    var cancellable:AnyCancellable?
+    
     var mySpan = MKCoordinateSpan(latitudeDelta: 0.005, longitudeDelta: 0.005)
     @Published var mapRegion = MKCoordinateRegion(center: CLLocationCoordinate2D(latitude: 36.3504119, longitude: 127.3845475), span: MKCoordinateSpan(latitudeDelta: 0.005, longitudeDelta: 0.005))
+    
     @Published var isChanged = false
+    @Published var searchText = ""
+    @Published var fetchPlace:[CLPlacemark]?
+    @Published var pickedPlaceMark:CLPlacemark?
+    @Published var pickedLocation:CLLocation?
 
     override init() {
             super.init()
@@ -23,8 +31,30 @@ final class LocationMagager:NSObject,ObservableObject,CLLocationManagerDelegate,
             manager.desiredAccuracy = kCLLocationAccuracyBest
             manager.requestWhenInUseAuthorization()
             manager.startUpdatingLocation()
+        cancellable = $searchText
+            .debounce(for: .seconds(0.5), scheduler: RunLoop.main)
+            .removeDuplicates()
+            .sink(receiveValue: { value in
+                if value != ""{
+                    self.fetchPlaces(value: value)
+                }else{
+                    self.fetchPlace = nil
+                }
+            })
         }
 
+    func fetchPlaces(value:String){
+        Task{
+            let request = MKLocalSearch.Request()
+            request.naturalLanguageQuery = value.lowercased()
+            let response = try? await MKLocalSearch(request: request).start()
+            await MainActor.run(body: {
+                self.fetchPlace = response?.mapItems.compactMap({ item -> CLPlacemark? in
+                    return item.placemark
+                })
+            })
+        }
+    }
     func cheackLocation(){
         DispatchQueue.global().async {
             if CLLocationManager.locationServicesEnabled(){
@@ -34,7 +64,18 @@ final class LocationMagager:NSObject,ObservableObject,CLLocationManagerDelegate,
             }
         }
     }
-    
+    func updatePlacemark(location:CLLocation){
+        Task{
+            guard let place = try? await reverseLocationCoordinate(location: location) else {return}
+            await MainActor.run(body: {
+                self.pickedPlaceMark = place
+            })
+        }
+    }
+    func reverseLocationCoordinate(location:CLLocation)async throws -> CLPlacemark?{
+        let place = try await CLGeocoder().reverseGeocodeLocation(location).first
+        return place
+    }
 
     func cheackLocationAuthrization(){
         switch manager.authorizationStatus{
