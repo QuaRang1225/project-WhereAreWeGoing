@@ -16,10 +16,11 @@ struct StartView: View {
                 VStack{
                     Image("where")
                         .resizable()
-                        .frame(width: 150,height: 150)
-                    Text("우리 어디가?")
-                        .foregroundColor(.customCyan)
-                        .fontWeight(.black)
+                        .frame(width: 70,height: 90)
+                        .padding(.bottom)
+                    Image("logo")
+                        .resizable()
+                        .frame(width: 150,height: 50)
                 }
                 
             }

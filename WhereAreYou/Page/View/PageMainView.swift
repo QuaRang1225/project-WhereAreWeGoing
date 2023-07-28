@@ -11,11 +11,11 @@ import Kingfisher
 
 struct PageMainView: View {
     
-    @StateObject var vm = PageViewModel()
+    @EnvironmentObject var vm:PageViewModel
     @State var pageMode:PageTabFilter = .schedule
-    
+    @State var isSearch = false
     @State var page:Page
-    @State var time = Timer.publish(every: 0.1, on: .current, in: .tracking)
+
     @Environment(\.dismiss) var dismiss
 
     var body: some View {
@@ -43,6 +43,10 @@ struct PageMainView: View {
             tabBar
             
         }
+        .navigationDestination(isPresented: $isSearch){
+            SearchAddressView(isSearch: $isSearch)
+                .navigationBarBackButtonHidden()
+        }
         .onAppear{
             Task{
                 vm.admin = try await UserManager.shared.getUser(userId: page.pageAdmin)
@@ -55,10 +59,12 @@ struct PageMainView_Previews: PreviewProvider {
     static var previews: some View {
         NavigationStack{
             PageMainView(page: CustomDataSet.shared.page())
+                .environmentObject(PageViewModel())
         }
     }
 }
 extension PageMainView{
+    
     var header:some View{
         HStack{
             Button {
@@ -83,9 +89,8 @@ extension PageMainView{
     var tabBar:some View{
         VStack(alignment: .trailing){
             if pageMode == .schedule{
-                NavigationLink {
-                    AddScheduleView()
-                        .navigationBarBackButtonHidden()
+                Button {
+                    isSearch = true
                 } label: {
                     Circle()
                         .foregroundColor(.white)
@@ -164,29 +169,4 @@ extension PageMainView{
     }
 }
 
-enum PageTabFilter:CaseIterable{
-    case schedule
-    case member
-    case setting
-    
-    var image:String{
-        switch self{
-        case .schedule:
-            return "list.bullet"
-        case .member:
-            return "person.2"
-        case .setting:
-            return "gearshape"
-        }
-    }
-    var name:String{
-        switch self{
-        case .schedule:
-            return "일정"
-        case .member:
-            return "맴버"
-        case .setting:
-            return "설정"
-        }
-    }
-}
+

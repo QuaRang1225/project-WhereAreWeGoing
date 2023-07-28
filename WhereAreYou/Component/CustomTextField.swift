@@ -21,6 +21,7 @@ struct CustomTextField: View {
                             if text.isEmpty{
                                 Text(placeholder)
                                     .foregroundColor(.gray)
+                                    .allowsHitTesting(false)
                             }
                         }
                 }else{
@@ -29,6 +30,7 @@ struct CustomTextField: View {
                             if text.isEmpty{
                                 Text(placeholder)
                                     .foregroundColor(.gray)
+                                    .allowsHitTesting(false)
                             }
                         }
                 }

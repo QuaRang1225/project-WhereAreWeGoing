@@ -8,34 +8,37 @@
 import SwiftUI
 import MapKit
 
-struct AddScheduleView: View {
+struct SearchAddressView: View {
     
     
-    @State var city:[String] = []
-    @State var country:[String] = []
-    @State var fetchPlace:[CLPlacemark]?
+    @State var isAddress = false
+    @Binding var isSearch:Bool
     @StateObject var location = LocationMagager()
-    @Environment(\.dismiss) var dismiss
     
     var body: some View {
         ZStack{
             Color.white.ignoresSafeArea()
             header
-            searchList
+            
+        }
+        .navigationDestination(isPresented: $isAddress) {
+            SelectAddressView(isPage: $isSearch)
+                .environmentObject(location)
+                .navigationBarBackButtonHidden()
         }
         
     }
 }
 
-struct AddScheduleView_Previews: PreviewProvider {
+struct SearchAddressView_Previews: PreviewProvider {
     static var previews: some View {
         NavigationStack{
-            AddScheduleView()
+            SearchAddressView(isSearch: .constant(false))
         }
     }
 }
 
-extension AddScheduleView{
+extension SearchAddressView{
     var header:some View{
         ZStack(alignment: .top){
             Text("주소 검색")
@@ -44,20 +47,20 @@ extension AddScheduleView{
             VStack{
                 HStack{
                     Button {
-                        dismiss()
+                        isSearch = false
                     } label: {
                         Image(systemName: "chevron.left")
                             .font(.title3)
                             .bold()
-                        
                             .padding(.leading)
                         
                     }.shadow(color:.black,radius: 20)
                     Spacer()
                     
                 }
-                search
-                    .padding(.top,30)
+                search.padding(.top,30)
+                searchList
+                    
                 
             }
             
@@ -77,8 +80,9 @@ extension AddScheduleView{
                 }
                 .padding(.trailing)
             }
-            NavigationLink {
-                
+            Button {
+                location.updatePlacemark(location: .init(latitude: location.mapRegion.center.latitude, longitude: location.mapRegion.center.longitude))
+                isAddress = true
             } label: {
                 HStack{
                     Image(systemName: "location.fill")
@@ -102,7 +106,9 @@ extension AddScheduleView{
                             if let coordinate = place.location?.coordinate{
                                 location.pickedLocation = .init(latitude: coordinate.latitude, longitude: coordinate.longitude)
                                 location.updatePlacemark(location: .init(latitude: coordinate.latitude, longitude: coordinate.longitude))
+                                location.mapRegion = MKCoordinateRegion(center: coordinate, span: location.mySpan)
                             }
+                            isAddress = true
                         } label: {
                             HStack(spacing:15){
                                 Image(systemName: "mappin.circle.fill")
@@ -110,9 +116,18 @@ extension AddScheduleView{
                                     .foregroundColor(.gray)
                                 VStack(alignment: .leading){
                                     Text(place.name ?? "")
-                                        .font(.title3.bold())
-                                    Text(place.locality ?? "")
-                                        .font(.caption)
+                                        .bold()
+                                    HStack(spacing: 5){
+                                        Text(place.country ?? "")
+                                            .foregroundColor(.black)
+                                        Text(place.administrativeArea ?? "")
+                                        if place.administrativeArea != place.locality{
+                                            Text(place.locality ?? "")
+                                        }   //서울특별시
+                                        Text(place.thoroughfare ?? "")
+                                        Text(place.subThoroughfare ?? "")
+                                    }
+                                    .font(.caption)
                                         .foregroundColor(.gray)
                                 }
                             }
@@ -120,22 +135,9 @@ extension AddScheduleView{
                     }.listRowBackground(Color.clear)
                 }.listStyle(.plain)
                     .scrollContentBackground(.hidden)
-            }else{
-                HStack{
-                    Button {
-                        location.updatePlacemark(location: .init(latitude: location.mapRegion.center.latitude, longitude: location.mapRegion.center.longitude))
-                    } label: {
-                        Label {
-                            Text("현재 위치")
-                                .font(.callout)
-                        } icon: {
-                            Image(systemName: "mappin.circle.fill")
-                        }.foregroundColor(.white)
-                            .frame(maxWidth: .infinity,alignment: .trailing).padding(.trailing)
-                    }
-                }
             }
         }
+        .foregroundColor(.black)
     }
 }
 

@@ -16,6 +16,7 @@ struct MainView: View {
     @StateObject var location = LocationMagager()
     @StateObject var vm = PageViewModel()
     @EnvironmentObject var vmAuth:AuthViewModel
+    
     var body: some View {
         VStack(alignment: .leading){
             
@@ -84,6 +85,7 @@ struct MainView: View {
                         ForEach(vm.pages,id:\.self){ page in
                             NavigationLink {
                                 PageMainView(page: page)
+                                    .environmentObject(vm)
                                     .navigationBarBackButtonHidden()
                             } label: {
                                 PageRowView(image:  page.pageImageUrl, title: page.pageName)
