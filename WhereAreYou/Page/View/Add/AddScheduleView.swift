@@ -10,11 +10,21 @@ import PhotosUI
 
 struct AddScheduleView: View {
     
+    
+    let minute = ["30","00"]
+    
+    @State var stHour = 0
+    @State var endHour = ""
+    @State var stMinut = 0
+    @State var endMinut = ""
+    
     @State var title = ""
     @State var text = ""
     @State var locationSelect:LocationCategoryFilter = .cafe
+    @State var dateSelection = 0
     @EnvironmentObject var vm:PageViewModel
     @Binding var isPage:Bool
+    
     var body: some View {
         VStack{
             header
@@ -23,6 +33,7 @@ struct AddScheduleView: View {
                     photoPicker
                     Text("사진첨부")
                         .bold()
+                        .padding(.bottom,5)
                     Text("사진추가는 선태사항입니다.")
                         .foregroundColor(.gray.opacity(0.6))
                         .font(.caption)
@@ -48,7 +59,8 @@ struct AddScheduleView: View {
                     CustomTextField(placeholder: "일정의 제목을 입력해주세요", isSecure: false, color: .black, text: $title)
                 }
                 .padding(.leading)
-                
+                datePicker
+                timePicker
                 TextEditor(text: $text)
                     .frame(height: 500)
                     .border(Color.gray, width: 3)
@@ -56,6 +68,7 @@ struct AddScheduleView: View {
                         if text.isEmpty{
                             Text("일정을 자세히 적어주세요")
                                 .padding(7)
+                                .foregroundColor(.gray)
                                 .allowsHitTesting(false)
                         }
                     }
@@ -64,6 +77,7 @@ struct AddScheduleView: View {
                 
             }
         }
+        .foregroundColor(.black)
         .background{
             Color.white.ignoresSafeArea()
         }
@@ -122,7 +136,7 @@ extension AddScheduleView{
                         .resizable()
                         .scaledToFill()
                         .frame(width: 100, height: 100)
-                        .clipShape(RoundedRectangle(cornerRadius: 50))
+                        .clipShape(RoundedRectangle(cornerRadius: 20))
                     
                 }else{
                     RoundedRectangle(cornerRadius: 20)
@@ -144,5 +158,45 @@ extension AddScheduleView{
                 }
             }
             .padding(.top)
+    }
+    var datePicker:some View{
+        Picker("", selection: $dateSelection) {
+            if let range = vm.page?.dateRange{
+                ForEach(Array(range.enumerated()),id: \.0){ (index,page) in
+                    Text("\(index + 1)일차")
+                }
+            }
+        }
+        .pickerStyle(.segmented)
+        .padding()
+        .frame(maxHeight: .infinity,alignment:.top)
+        .environment(\.colorScheme, .light)
+    }
+    var timePicker:some View{
+        HStack{
+            Picker("", selection: $stHour) {
+                ForEach(1...24,id:\.self){
+                    Text("\($0)")
+                }
+            }
+            Picker("", selection: $stMinut) {
+                ForEach(minute,id:\.self){
+                    Text("\($0)")
+                }
+            }
+            Picker("", selection: $endHour) {
+                ForEach(1...24,id:\.self){
+                    Text("\($0)")
+                }
+            }
+            Picker("", selection: $endMinut) {
+                ForEach(minute,id:\.self){
+                    Text("\($0)")
+                }
+            }
+        }
+        .frame(height: 100)
+        .pickerStyle(.wheel)
+        .environment(\.colorScheme, .light)
     }
 }
