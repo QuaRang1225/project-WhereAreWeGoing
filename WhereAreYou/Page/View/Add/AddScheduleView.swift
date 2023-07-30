@@ -184,6 +184,7 @@ extension AddScheduleView{
                     Text("\($0)")
                 }
             }
+            Text("부터")
             Picker("", selection: $endHour) {
                 ForEach(1...24,id:\.self){
                     Text("\($0)")
