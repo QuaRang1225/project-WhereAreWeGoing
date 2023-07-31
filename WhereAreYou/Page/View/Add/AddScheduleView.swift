@@ -60,6 +60,7 @@ struct AddScheduleView: View {
                 }
                 .padding(.leading)
                 datePicker
+                Text("시간설정")
                 timePicker
                 TextEditor(text: $text)
                     .frame(height: 500)
