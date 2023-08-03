@@ -112,6 +112,7 @@ struct SelectAddressView: View {
         .background(Color.white.ignoresSafeArea())
         .navigationDestination(isPresented: $isShcedule) {
             AddScheduleView(isPage: $isPage)
+                .navigationBarBackButtonHidden()
                 .environmentObject(vm)
         }
     }
