@@ -11,19 +11,22 @@ import PhotosUI
 struct AddScheduleView: View {
     
     
-    let minute = ["30","00"]
     
-    @State var stHour = 0
-    @State var endHour = ""
-    @State var stMinut = 0
-    @State var endMinut = ""
+    
+    
     
     @State var title = ""
     @State var text = ""
     @State var locationSelect:LocationCategoryFilter = .cafe
     @State var dateSelection = 0
+    
+    @State var startDate = Date()
+    @State var endDate = Date()
+    
     @EnvironmentObject var vm:PageViewModel
     @Binding var isPage:Bool
+    
+    
     
     var body: some View {
         VStack{
@@ -38,6 +41,8 @@ struct AddScheduleView: View {
                         .foregroundColor(.gray.opacity(0.6))
                         .font(.caption)
                 }
+                datePicker
+                    .padding(.vertical,10)
                 HStack{
                     Text("종류")
                         .bold()
@@ -55,12 +60,11 @@ struct AddScheduleView: View {
                     Text("제목")
                         .bold()
                         .padding(.trailing)
-                    Spacer()
                     CustomTextField(placeholder: "일정의 제목을 입력해주세요", isSecure: false, color: .black, text: $title)
                 }
                 .padding(.leading)
-                datePicker
-                Text("시간설정")
+                .padding(.bottom,10)
+                
                 timePicker
                 TextEditor(text: $text)
                     .frame(height: 500)
@@ -174,31 +178,18 @@ extension AddScheduleView{
         .environment(\.colorScheme, .light)
     }
     var timePicker:some View{
-        HStack{
-            Picker("", selection: $stHour) {
-                ForEach(1...24,id:\.self){
-                    Text("\($0)")
-                }
+        VStack{
+            HStack{
+                DatePicker("", selection: $startDate,displayedComponents: .hourAndMinute)
+                Text("부터")
             }
-            Picker("", selection: $stMinut) {
-                ForEach(minute,id:\.self){
-                    Text("\($0)")
-                }
-            }
-            Text("부터")
-            Picker("", selection: $endHour) {
-                ForEach(1...24,id:\.self){
-                    Text("\($0)")
-                }
-            }
-            Picker("", selection: $endMinut) {
-                ForEach(minute,id:\.self){
-                    Text("\($0)")
-                }
+            HStack{
+                DatePicker("", selection: $endDate,displayedComponents: .hourAndMinute)
+                Text("까지")
             }
         }
-        .frame(height: 100)
-        .pickerStyle(.wheel)
+        .bold()
+        .padding(.trailing)
         .environment(\.colorScheme, .light)
     }
 }

@@ -44,9 +44,12 @@ struct MainView: View {
             ScrollView{
                 Section("내 프로필"){
                     NavigationStack{
-                        ProfileRowView(image: vmAuth.user?.profileImageUrl ?? "", name:vmAuth.user?.nickName ?? "", email: vmAuth.user?.email ?? "")
-                            .listRowSeparator(.hidden)  //리스트 줄 없앰
-                            .listRowBackground(Color.clear)
+                        if let user = vmAuth.user{
+                            ProfileRowView(image: user.profileImageUrl ?? "", name:user.nickName ?? "", email: user.email ?? "")
+                                .listRowSeparator(.hidden)  //리스트 줄 없앰
+                                .listRowBackground(Color.clear)
+                        }
+                       
                     }
                 }
                 .font(.body)

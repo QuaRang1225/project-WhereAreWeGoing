@@ -9,7 +9,7 @@ import SwiftUI
 
 struct SelectAddressView: View {
     
-    @StateObject var vm = PageViewModel()
+    @EnvironmentObject var vm:PageViewModel
     @State var copy = false
     @EnvironmentObject var location:LocationMagager
     @State var isShcedule = false
@@ -122,6 +122,7 @@ struct SelectAddressView_Previews: PreviewProvider {
     static var previews: some View {
         SelectAddressView(isPage: .constant(true))
             .environmentObject(LocationMagager())
+            .environmentObject(PageViewModel())
     }
 }
 

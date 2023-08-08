@@ -45,11 +45,13 @@ struct PageMainView: View {
         }
         .navigationDestination(isPresented: $isSearch){
             SearchAddressView(isSearch: $isSearch)
+                .environmentObject(vm)
                 .navigationBarBackButtonHidden()
         }
         .onAppear{
             Task{
                 vm.admin = try await UserManager.shared.getUser(userId: page.pageAdmin)
+                vm.page = page
             }
         }
     }

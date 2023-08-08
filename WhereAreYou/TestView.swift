@@ -57,70 +57,172 @@ import Combine
 
 struct TestView:View{
 
-    @State var title = ""
-    @State var subtitle = ""
-    @State var city = ""
-    @State var contry = ""
-    @State var isChanged = false
-
-
-    @State var fetchPlace:[CLPlacemark]?
-    @State var searchText = ""
-    
-    @State private var region = MKCoordinateRegion(center: CLLocationCoordinate2D(latitude: 36.298971, longitude: 127.354717), span: MKCoordinateSpan(latitudeDelta: 0.001, longitudeDelta: 0.001))
-
-    var body: some View{
-        ZStack(alignment: .bottom) {
-
-            MapView(contry:$contry,city: $city, title: $title, subtitle: $subtitle,isChanged: $isChanged, region: $region)
-                .overlay {
-                    Image("where")
-                        .resizable()
-                        .frame(width: 60,height: 80)
-                        .offset(y:isChanged ? -50 : -40)
-                        .background{
-                            Capsule()
-                                .frame(width: 20,height: 15)
-                                .foregroundColor(.gray.opacity(0.5))
-                        }
-                }
-            VStack{
-                HStack{
-                    CustomTextField(placeholder: "", isSecure: false, color: .red, text: $searchText)
-                    Button {
-//                        fetchPlaces(value: "대전광역시 서구 가수원동 807-5")
-                        region = MKCoordinateRegion(center: CLLocationCoordinate2D(latitude: 37.5665, longitude: 126.9780), span: MKCoordinateSpan(latitudeDelta: 0.01, longitudeDelta: 0.01))
-                    } label: {
-                        Text("버튼")
+//    @State var title = ""
+//    @State var subtitle = ""
+//    @State var city = ""
+//    @State var contry = ""
+//    @State var isChanged = false
+//
+//
+//    @State var fetchPlace:[CLPlacemark]?
+//    @State var searchText = ""
+//
+//    @State private var region = MKCoordinateRegion(center: CLLocationCoordinate2D(latitude: 36.298971, longitude: 127.354717), span: MKCoordinateSpan(latitudeDelta: 0.001, longitudeDelta: 0.001))
+//
+//    var body: some View{
+//        ZStack(alignment: .bottom) {
+//
+//            MapView(contry:$contry,city: $city, title: $title, subtitle: $subtitle,isChanged: $isChanged, region: $region)
+//                .overlay {
+//                    Image("where")
+//                        .resizable()
+//                        .frame(width: 60,height: 80)
+//                        .offset(y:isChanged ? -50 : -40)
+//                        .background{
+//                            Capsule()
+//                                .frame(width: 20,height: 15)
+//                                .foregroundColor(.gray.opacity(0.5))
+//                        }
+//                }
+//            VStack{
+//                HStack{
+//                    CustomTextField(placeholder: "", isSecure: false, color: .red, text: $searchText)
+//                    Button {
+////                        fetchPlaces(value: "대전광역시 서구 가수원동 807-5")
+//                        region = MKCoordinateRegion(center: CLLocationCoordinate2D(latitude: 37.5665, longitude: 126.9780), span: MKCoordinateSpan(latitudeDelta: 0.01, longitudeDelta: 0.01))
+//                    } label: {
+//                        Text("버튼")
+//                    }
+//
+//                }
+//
+//                Text(contry)
+//                    .bold()
+//                    .font(.title3)
+//                Text(city)
+//            }
+//        }
+////        .onChange(of: fetchPlace) { newValue in
+////            region.center = (newValue?.first?.location!.coordinate)!
+////        }
+//
+//    }
+//    func fetchPlaces(value:String){
+//        Task{
+//            let request = MKLocalSearch.Request()
+//            request.naturalLanguageQuery = value.lowercased()
+//            let response = try? await MKLocalSearch(request: request).start()
+//            await MainActor.run(body: {
+//                self.fetchPlace = response?.mapItems.compactMap({ item -> CLPlacemark? in
+//                    return item.placemark
+//                })
+//            })
+//        }
+//    }
+    @State private var selectedStartTime = Date()
+        @State private var selectedEndTime = Date()
+        
+        var body: some View {
+            VStack {
+                Text("24-hour Analog Clock")
+                    .font(.title)
+                
+                Spacer()
+                
+                ZStack {
+                    Circle()
+                        .stroke(Color.black, lineWidth: 2)
+                        .frame(width: 250, height: 250)
+                    
+                    ForEach(1...24, id: \.self) { hour in
+                        let angle = Double(hour) * 360 / 24
+                        HourMarker(angle: .degrees(angle),hour: hour)
                     }
-
+                    
+                    ClockHand(angle: angleForTime(selectedStartTime), color: .black)
+                    ClockHand(angle: angleForTime(selectedEndTime), color: .black)
+                    ClockArc(startAngle: angleForTime(selectedStartTime), endAngle: angleForTime(selectedEndTime))
+                    Circle()
+                        .foregroundColor(.black)
+                        .frame(width: 10,height: 10)
                 }
-
-                Text(contry)
-                    .bold()
-                    .font(.title3)
-                Text(city)
+                .frame(width: 250, height: 250)
+                
+                Spacer()
+                
+                Text("Selected Start Time: \(formatTime(selectedStartTime))")
+                Text("Selected End Time: \(formatTime(selectedEndTime))")
+                
+                Spacer()
+                
+                VStack {
+                    DatePicker("Start Time", selection: $selectedStartTime, displayedComponents: .hourAndMinute)
+                    DatePicker("End Time", selection: $selectedEndTime, displayedComponents: .hourAndMinute)
+                }
+                .padding()
             }
         }
-//        .onChange(of: fetchPlace) { newValue in
-//            region.center = (newValue?.first?.location!.coordinate)!
-//        }
-
-    }
-    func fetchPlaces(value:String){
-        Task{
-            let request = MKLocalSearch.Request()
-            request.naturalLanguageQuery = value.lowercased()
-            let response = try? await MKLocalSearch(request: request).start()
-            await MainActor.run(body: {
-                self.fetchPlace = response?.mapItems.compactMap({ item -> CLPlacemark? in
-                    return item.placemark
-                })
-            })
+        
+        func angleForTime(_ date: Date) -> Angle {
+            let calendar = Calendar.current
+            let components = calendar.dateComponents([.hour, .minute], from: date)
+            let totalMinutes = Double(components.hour!) * 60 + Double(components.minute!)
+            let angle = (totalMinutes / (24 * 60)) * 360
+            return .degrees(Double(angle))
+        }
+        
+        func formatTime(_ time: Date) -> String {
+            let formatter = DateFormatter()
+            formatter.timeStyle = .short
+            return formatter.string(from: time)
         }
     }
 
-}
+    struct HourMarker: View {
+        var angle: Angle
+        var hour:Int
+        
+        var body: some View {
+            ZStack{
+                Rectangle()
+                    .fill(Color.gray)
+                    .frame(width: 2, height: 10)
+                    .offset(y: -120)
+                    .rotationEffect(angle, anchor: .center)
+                Text("\(hour)")
+                    .offset(y: -150)
+                    .rotationEffect(angle, anchor: .center)
+            }
+            
+        }
+    }
+
+    struct ClockHand: View {
+        
+        var angle: Angle
+        var color: Color
+        
+        var body: some View {
+            Rectangle()
+                .fill(color)
+                .frame(width: 3, height: 100)
+                .offset(y: -45)
+                .rotationEffect(angle, anchor: .center)
+        }
+    }
+
+    struct ClockArc: View {
+        var startAngle: Angle
+        var endAngle: Angle
+        
+        var body: some View {
+            Circle()
+                .trim(from: CGFloat(startAngle.degrees / 360), to: CGFloat(endAngle.degrees / 360))
+                .stroke(Color.customCyan2, lineWidth: 10)
+                .rotationEffect(.degrees(-90))
+        }
+    }
+
 struct TestView_Previews: PreviewProvider {
     static var previews: some View {
         TestView()
