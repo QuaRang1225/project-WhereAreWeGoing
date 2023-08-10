@@ -12,6 +12,7 @@ import Kingfisher
 struct PageMainView: View {
     
     @EnvironmentObject var vm:PageViewModel
+    @EnvironmentObject var vmAuth:AuthViewModel
     @State var pageMode:PageTabFilter = .schedule
     @State var isSearch = false
     @State var page:Page
@@ -27,6 +28,7 @@ struct PageMainView: View {
                         switch pageMode {
                         case .schedule:
                             SchduleListView(page: $page)
+                                .environmentObject(vmAuth)
                         case .member:
                             MemberTabView()
                         case .setting:
@@ -46,6 +48,7 @@ struct PageMainView: View {
         .navigationDestination(isPresented: $isSearch){
             SearchAddressView(isSearch: $isSearch)
                 .environmentObject(vm)
+                .environmentObject(vmAuth)
                 .navigationBarBackButtonHidden()
         }
         .onAppear{
@@ -62,6 +65,7 @@ struct PageMainView_Previews: PreviewProvider {
         NavigationStack{
             PageMainView(page: CustomDataSet.shared.page())
                 .environmentObject(PageViewModel())
+                .environmentObject(AuthViewModel())
         }
     }
 }
@@ -111,29 +115,34 @@ extension PageMainView{
                 .padding()
             }
             
-            Divider()
-                .background(Color.black)
-                .padding(.bottom)
-            HStack(spacing: 0){
-                Group{
-                    ForEach(PageTabFilter.allCases,id:\.self){ tabItem in
-                        Button {
-                            pageMode = tabItem
-                        } label: {
-                            Text(tabItem.name)
-                                .font(.caption)
-                                .overlay {
-                                    Image(systemName: tabItem.image)
-                                        .padding(.bottom,40)
-                                }
-                                .foregroundColor(pageMode == tabItem ?  .customCyan2 : .gray.opacity(0.7))
-                                .padding(.top)
-                                .bold()
+            VStack{
+                Divider()
+                    .background(Color.black)
+                    .padding(.bottom)
+                HStack(spacing: 0){
+                    Group{
+                        ForEach(PageTabFilter.allCases,id:\.self){ tabItem in
+                            Button {
+                                pageMode = tabItem
+                            } label: {
+                                Text(tabItem.name)
+                                    .font(.caption)
+                                    .overlay {
+                                        Image(systemName: tabItem.image)
+                                            .padding(.bottom,40)
+                                    }
+                                    .foregroundColor(pageMode == tabItem ?  .customCyan2 : .gray.opacity(0.7))
+                                    .padding(.top)
+                                    .bold()
+                            }
                         }
-                    }
-                }.frame(maxWidth: .infinity)
-            }
-        }.frame(maxHeight: .infinity,alignment: .bottom)
+                    }.frame(maxWidth: .infinity)
+                }
+            }.background(Color.white)
+                
+        }
+        
+        .frame(maxHeight: .infinity,alignment: .bottom)
     }
     var background:some View{
         ZStack(alignment: .bottomTrailing){

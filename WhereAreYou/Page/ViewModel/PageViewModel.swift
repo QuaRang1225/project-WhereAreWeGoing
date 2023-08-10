@@ -17,11 +17,14 @@ class PageViewModel:ObservableObject{
     @Published var page:Page? = nil
     @Published var admin:UserData? = nil
     @Published var pages:[Page] = []
+    @Published var schedules:[Schedule] = []
+    
     @Published var data:Data? = nil
     @Published var selection:PhotosPickerItem? = nil
     
     
     var createPageSuccess = PassthroughSubject<(),Never>()
+    var createScheduleSuccess = PassthroughSubject<(),Never>()
     
     func creagtePage(user:UserData,pageInfo:PageInfo){
         
@@ -30,16 +33,35 @@ class PageViewModel:ObservableObject{
            
             let path = try await StorageManager.shared.saveImage(data:data,userId: user.userId, mode: .page)
             let url = try await StorageManager.shared.getUrlForImage(path: path)
-            try await UserManager.shared.createUserPage(userId: user.userId,url: url.absoluteString, pageInfo: pageInfo)
+            try await PageManager.shared.createUserPage(userId: user.userId,url: url.absoluteString, pageInfo: pageInfo)
             createPageSuccess.send()
         }
     }
     
-    func getPages(user:UserData){
+    func creagteShcedule(user:UserData,pageId:String,schedule:Schedule){
+        
         Task{
-            pages = try await UserManager.shared.getAllUserFavoriteProduct(userId: user.userId)
+            var url = URL(string: "")
+            if let data = try await selection?.loadTransferable(type: Data.self){
+                let path = try await StorageManager.shared.saveImage(data:data,userId: user.userId, mode: .schedule)
+                url = try await StorageManager.shared.getUrlForImage(path: path)
+            }
+            
+            try await PageManager.shared.createUserSchedule(userId: user.userId, pageId: pageId, url: url?.absoluteString, schedule: schedule)
+            createScheduleSuccess.send()
         }
     }
+    func getPages(user:UserData){
+        Task{
+            pages = try await PageManager.shared.getAllPage(userId: user.userId)
+        }
+    }
+    func getSchedule(user:UserData,pageId:String){
+        Task{
+            schedules = try await PageManager.shared.getAllSchedule(userId: user.userId, pageId: pageId)
+        }
+    }
+    
     func generateDatesArray(from startDate: Date, to endDate: Date) -> [String] {
         var datesArray: [String] = []
         let calendar = Calendar.current

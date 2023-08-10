@@ -7,6 +7,12 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		8115A6372A83463300B7C3FE /* Schedule.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8115A6362A83463300B7C3FE /* Schedule.swift */; };
+		8115A6392A835B1900B7C3FE /* CustomProgressView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8115A6382A835B1900B7C3FE /* CustomProgressView.swift */; };
+		8115A63C2A8367B300B7C3FE /* PageManger.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8115A63B2A8367B300B7C3FE /* PageManger.swift */; };
+		8115A63E2A83699100B7C3FE /* HourMarker.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8115A63D2A83699100B7C3FE /* HourMarker.swift */; };
+		8115A6412A8369EE00B7C3FE /* ClockArc.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8115A6402A8369EE00B7C3FE /* ClockArc.swift */; };
+		8115A6522A83CFDA00B7C3FE /* ScheduleRowView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8115A6512A83CFDA00B7C3FE /* ScheduleRowView.swift */; };
 		81234CD72A5BC898007D9BB6 /* InfoSettingTabView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 81234CD62A5BC898007D9BB6 /* InfoSettingTabView.swift */; };
 		81234CD92A5BE84E007D9BB6 /* StorageManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 81234CD82A5BE84E007D9BB6 /* StorageManager.swift */; };
 		81234CDC2A5C43E7007D9BB6 /* Kingfisher in Frameworks */ = {isa = PBXBuildFile; productRef = 81234CDB2A5C43E7007D9BB6 /* Kingfisher */; };
@@ -19,7 +25,7 @@
 		81740BA82A5166DC00AAD0FE /* Menu.swift in Sources */ = {isa = PBXBuildFile; fileRef = 81740BA72A5166DC00AAD0FE /* Menu.swift */; };
 		81740BAA2A516B4900AAD0FE /* LocationManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 81740BA92A516B4900AAD0FE /* LocationManager.swift */; };
 		81740BAD2A516B7100AAD0FE /* exView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 81740BAC2A516B7100AAD0FE /* exView.swift */; };
-		81BA3E0D2A6BC80A00D38E93 /* EditViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 81BA3E0C2A6BC80A00D38E93 /* EditViewModel.swift */; };
+		81BA3E0D2A6BC80A00D38E93 /* PageViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 81BA3E0C2A6BC80A00D38E93 /* PageViewModel.swift */; };
 		81BA3E0F2A6FA74F00D38E93 /* ImageSaveFilter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 81BA3E0E2A6FA74F00D38E93 /* ImageSaveFilter.swift */; };
 		81BA3E112A6FA76C00D38E93 /* exJsonDecoder.swift in Sources */ = {isa = PBXBuildFile; fileRef = 81BA3E102A6FA76C00D38E93 /* exJsonDecoder.swift */; };
 		81BA3E132A6FA7A900D38E93 /* exQuery.swift in Sources */ = {isa = PBXBuildFile; fileRef = 81BA3E122A6FA7A900D38E93 /* exQuery.swift */; };
@@ -91,6 +97,12 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		8115A6362A83463300B7C3FE /* Schedule.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Schedule.swift; sourceTree = "<group>"; };
+		8115A6382A835B1900B7C3FE /* CustomProgressView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomProgressView.swift; sourceTree = "<group>"; };
+		8115A63B2A8367B300B7C3FE /* PageManger.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PageManger.swift; sourceTree = "<group>"; };
+		8115A63D2A83699100B7C3FE /* HourMarker.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HourMarker.swift; sourceTree = "<group>"; };
+		8115A6402A8369EE00B7C3FE /* ClockArc.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ClockArc.swift; sourceTree = "<group>"; };
+		8115A6512A83CFDA00B7C3FE /* ScheduleRowView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ScheduleRowView.swift; sourceTree = "<group>"; };
 		81234CD62A5BC898007D9BB6 /* InfoSettingTabView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InfoSettingTabView.swift; sourceTree = "<group>"; };
 		81234CD82A5BE84E007D9BB6 /* StorageManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StorageManager.swift; sourceTree = "<group>"; };
 		813F523D2A594B5C00833427 /* AuthManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuthManager.swift; sourceTree = "<group>"; };
@@ -102,7 +114,7 @@
 		81740BA72A5166DC00AAD0FE /* Menu.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Menu.swift; sourceTree = "<group>"; };
 		81740BA92A516B4900AAD0FE /* LocationManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocationManager.swift; sourceTree = "<group>"; };
 		81740BAC2A516B7100AAD0FE /* exView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = exView.swift; sourceTree = "<group>"; };
-		81BA3E0C2A6BC80A00D38E93 /* EditViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditViewModel.swift; sourceTree = "<group>"; };
+		81BA3E0C2A6BC80A00D38E93 /* PageViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PageViewModel.swift; sourceTree = "<group>"; };
 		81BA3E0E2A6FA74F00D38E93 /* ImageSaveFilter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImageSaveFilter.swift; sourceTree = "<group>"; };
 		81BA3E102A6FA76C00D38E93 /* exJsonDecoder.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = exJsonDecoder.swift; sourceTree = "<group>"; };
 		81BA3E122A6FA7A900D38E93 /* exQuery.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = exQuery.swift; sourceTree = "<group>"; };
@@ -185,6 +197,24 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		8115A63A2A83677000B7C3FE /* AddPage */ = {
+			isa = PBXGroup;
+			children = (
+				81BA3E1A2A6FAC7700D38E93 /* PageMainView.swift */,
+				817268072A6A4ED70038BE70 /* SelectTypeView.swift */,
+			);
+			path = AddPage;
+			sourceTree = "<group>";
+		};
+		8115A63F2A8369CB00B7C3FE /* Clock */ = {
+			isa = PBXGroup;
+			children = (
+				8115A63D2A83699100B7C3FE /* HourMarker.swift */,
+				8115A6402A8369EE00B7C3FE /* ClockArc.swift */,
+			);
+			path = Clock;
+			sourceTree = "<group>";
+		};
 		813F523F2A594CF200833427 /* Model */ = {
 			isa = PBXGroup;
 			children = (
@@ -192,6 +222,7 @@
 				813F52442A595C6B00833427 /* UserData.swift */,
 				81BA3E142A6FA7D100D38E93 /* Page.swift */,
 				81BA3E162A6FA7E900D38E93 /* PageInfo.swift */,
+				8115A6362A83463300B7C3FE /* Schedule.swift */,
 			);
 			path = Model;
 			sourceTree = "<group>";
@@ -212,6 +243,7 @@
 				813F523D2A594B5C00833427 /* AuthManager.swift */,
 				81CE1AF22A5A536100ED87FF /* UserManager.swift */,
 				81234CD82A5BE84E007D9BB6 /* StorageManager.swift */,
+				8115A63B2A8367B300B7C3FE /* PageManger.swift */,
 			);
 			path = Manager;
 			sourceTree = "<group>";
@@ -239,7 +271,7 @@
 		81BA3E0A2A6BC7EA00D38E93 /* ViewModel */ = {
 			isa = PBXGroup;
 			children = (
-				81BA3E0C2A6BC80A00D38E93 /* EditViewModel.swift */,
+				81BA3E0C2A6BC80A00D38E93 /* PageViewModel.swift */,
 			);
 			path = ViewModel;
 			sourceTree = "<group>";
@@ -247,9 +279,8 @@
 		81BA3E0B2A6BC7F100D38E93 /* View */ = {
 			isa = PBXGroup;
 			children = (
-				81FEF6142A7391D50000B76B /* Add */,
-				817268072A6A4ED70038BE70 /* SelectTypeView.swift */,
-				81BA3E1A2A6FAC7700D38E93 /* PageMainView.swift */,
+				8115A63A2A83677000B7C3FE /* AddPage */,
+				81FEF6142A7391D50000B76B /* AddSchedule */,
 				81FEF5FD2A70C8F80000B76B /* TabPage */,
 			);
 			path = View;
@@ -371,6 +402,7 @@
 		81D5BCE62A4FF564001842FD /* Component */ = {
 			isa = PBXGroup;
 			children = (
+				8115A63F2A8369CB00B7C3FE /* Clock */,
 				81D5BCE72A4FF5C3001842FD /* SelectButton.swift */,
 				81D5BCE92A4FF923001842FD /* CustomTextField.swift */,
 				81D5BCED2A4FFDDD001842FD /* AuthBackground.swift */,
@@ -378,6 +410,8 @@
 				81BA3E182A6FA8A700D38E93 /* PageRowView.swift */,
 				81FEF6102A7368700000B76B /* MapViewHelper.swift */,
 				81FEF61B2A739EC70000B76B /* ShceduleCategoryRowView.swift */,
+				8115A6382A835B1900B7C3FE /* CustomProgressView.swift */,
+				8115A6512A83CFDA00B7C3FE /* ScheduleRowView.swift */,
 			);
 			path = Component;
 			sourceTree = "<group>";
@@ -433,14 +467,14 @@
 			path = TabPage;
 			sourceTree = "<group>";
 		};
-		81FEF6142A7391D50000B76B /* Add */ = {
+		81FEF6142A7391D50000B76B /* AddSchedule */ = {
 			isa = PBXGroup;
 			children = (
 				81FEF6092A7107330000B76B /* SearchAddressView.swift */,
 				81FEF6122A7368C60000B76B /* SelectAddressView.swift */,
 				81FEF6152A7391F80000B76B /* AddScheduleView.swift */,
 			);
-			path = Add;
+			path = AddSchedule;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -588,22 +622,26 @@
 			buildActionMask = 2147483647;
 			files = (
 				8172680A2A6A4F010038BE70 /* Travel.swift in Sources */,
+				8115A6392A835B1900B7C3FE /* CustomProgressView.swift in Sources */,
 				813F523E2A594B5C00833427 /* AuthManager.swift in Sources */,
 				81FEF6082A70F5A10000B76B /* exDate.swift in Sources */,
 				81D5BCEA2A4FF923001842FD /* CustomTextField.swift in Sources */,
 				81BA3E192A6FA8A700D38E93 /* PageRowView.swift in Sources */,
 				81FEF6062A70F59B0000B76B /* exString.swift in Sources */,
-				81BA3E0D2A6BC80A00D38E93 /* EditViewModel.swift in Sources */,
+				81BA3E0D2A6BC80A00D38E93 /* PageViewModel.swift in Sources */,
 				81BA3E172A6FA7E900D38E93 /* PageInfo.swift in Sources */,
 				81FEF61C2A739EC70000B76B /* ShceduleCategoryRowView.swift in Sources */,
 				81234CD92A5BE84E007D9BB6 /* StorageManager.swift in Sources */,
 				81BA3E0F2A6FA74F00D38E93 /* ImageSaveFilter.swift in Sources */,
+				8115A63E2A83699100B7C3FE /* HourMarker.swift in Sources */,
 				81234CD72A5BC898007D9BB6 /* InfoSettingTabView.swift in Sources */,
 				81FEF6042A70CEB60000B76B /* SchduleListView.swift in Sources */,
+				8115A6522A83CFDA00B7C3FE /* ScheduleRowView.swift in Sources */,
 				81D5BCF82A5012FC001842FD /* MainView.swift in Sources */,
 				81D5BCEC2A4FFC44001842FD /* KeyBoardSet.swift in Sources */,
 				81D5BCF32A5005B0001842FD /* FormField.swift in Sources */,
 				81D5BCE12A4FF2E3001842FD /* ColorSet.swift in Sources */,
+				8115A6412A8369EE00B7C3FE /* ClockArc.swift in Sources */,
 				81FEF6002A70C9390000B76B /* MemberTabView.swift in Sources */,
 				81FEF6162A7391F80000B76B /* AddScheduleView.swift in Sources */,
 				81BA3E152A6FA7D100D38E93 /* Page.swift in Sources */,
@@ -616,6 +654,7 @@
 				81D5BCE82A4FF5C3001842FD /* SelectButton.swift in Sources */,
 				81D7B1E32A5D8FD100D5AACD /* SearchView.swift in Sources */,
 				81BA3E132A6FA7A900D38E93 /* exQuery.swift in Sources */,
+				8115A6372A83463300B7C3FE /* Schedule.swift in Sources */,
 				81FEF6112A7368700000B76B /* MapViewHelper.swift in Sources */,
 				81D5BCFA2A501472001842FD /* ProfileSelectView.swift in Sources */,
 				81FEF60A2A7107330000B76B /* SearchAddressView.swift in Sources */,
@@ -629,6 +668,7 @@
 				81CE1AF32A5A536100ED87FF /* UserManager.swift in Sources */,
 				813F52452A595C6B00833427 /* UserData.swift in Sources */,
 				81FEF6182A7398530000B76B /* PageTab.swift in Sources */,
+				8115A63C2A8367B300B7C3FE /* PageManger.swift in Sources */,
 				813F52412A594CF800833427 /* AuthData.swift in Sources */,
 				81D5BCA62A4FE9F5001842FD /* WhereAreYouApp.swift in Sources */,
 				81D7B1E02A5D4ADA00D5AACD /* CustomDataSet.swift in Sources */,

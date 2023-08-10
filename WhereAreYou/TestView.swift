@@ -119,109 +119,25 @@ struct TestView:View{
 //            })
 //        }
 //    }
-    @State private var selectedStartTime = Date()
-        @State private var selectedEndTime = Date()
+    
         
         var body: some View {
-            VStack {
-                Text("24-hour Analog Clock")
-                    .font(.title)
+            VStack{
                 
-                Spacer()
-                
-                ZStack {
-                    Circle()
-                        .stroke(Color.black, lineWidth: 2)
-                        .frame(width: 250, height: 250)
-                    
-                    ForEach(1...24, id: \.self) { hour in
-                        let angle = Double(hour) * 360 / 24
-                        HourMarker(angle: .degrees(angle),hour: hour)
-                    }
-                    
-                    ClockHand(angle: angleForTime(selectedStartTime), color: .black)
-                    ClockHand(angle: angleForTime(selectedEndTime), color: .black)
-                    ClockArc(startAngle: angleForTime(selectedStartTime), endAngle: angleForTime(selectedEndTime))
-                    Circle()
-                        .foregroundColor(.black)
-                        .frame(width: 10,height: 10)
-                }
-                .frame(width: 250, height: 250)
-                
-                Spacer()
-                
-                Text("Selected Start Time: \(formatTime(selectedStartTime))")
-                Text("Selected End Time: \(formatTime(selectedEndTime))")
-                
-                Spacer()
-                
-                VStack {
-                    DatePicker("Start Time", selection: $selectedStartTime, displayedComponents: .hourAndMinute)
-                    DatePicker("End Time", selection: $selectedEndTime, displayedComponents: .hourAndMinute)
-                }
-                .padding()
             }
         }
         
-        func angleForTime(_ date: Date) -> Angle {
-            let calendar = Calendar.current
-            let components = calendar.dateComponents([.hour, .minute], from: date)
-            let totalMinutes = Double(components.hour!) * 60 + Double(components.minute!)
-            let angle = (totalMinutes / (24 * 60)) * 360
-            return .degrees(Double(angle))
-        }
         
-        func formatTime(_ time: Date) -> String {
-            let formatter = DateFormatter()
-            formatter.timeStyle = .short
-            return formatter.string(from: time)
-        }
+//        func dateClosedRange(start:Date,end:Date) -> ClosedRange<Date>{
+//
+//            let min = Calendar.current.date(byAdding: .hour, value: 0, to: start)!
+//            let max = Calendar.current.date(byAdding: .hour, value: 0, to: end)!
+//            let range = !(min...max).contains(Date())
+//            return min...max
+//        }
     }
 
-    struct HourMarker: View {
-        var angle: Angle
-        var hour:Int
-        
-        var body: some View {
-            ZStack{
-                Rectangle()
-                    .fill(Color.gray)
-                    .frame(width: 2, height: 10)
-                    .offset(y: -120)
-                    .rotationEffect(angle, anchor: .center)
-                Text("\(hour)")
-                    .offset(y: -150)
-                    .rotationEffect(angle, anchor: .center)
-            }
-            
-        }
-    }
-
-    struct ClockHand: View {
-        
-        var angle: Angle
-        var color: Color
-        
-        var body: some View {
-            Rectangle()
-                .fill(color)
-                .frame(width: 3, height: 100)
-                .offset(y: -45)
-                .rotationEffect(angle, anchor: .center)
-        }
-    }
-
-    struct ClockArc: View {
-        var startAngle: Angle
-        var endAngle: Angle
-        
-        var body: some View {
-            Circle()
-                .trim(from: CGFloat(startAngle.degrees / 360), to: CGFloat(endAngle.degrees / 360))
-                .stroke(Color.customCyan2, lineWidth: 10)
-                .rotationEffect(.degrees(-90))
-        }
-    }
+    
 
 struct TestView_Previews: PreviewProvider {
     static var previews: some View {
@@ -292,6 +208,8 @@ struct MapView:UIViewRepresentable{
             }
     }
 }
+
+
 
 //import SwiftUI
 //import MapKit

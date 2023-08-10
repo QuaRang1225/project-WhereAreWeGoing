@@ -37,21 +37,9 @@ struct SelectTypeView: View {
             }
             
             if isPage{
-                Color.black.opacity(0.3).ignoresSafeArea()
-                VStack{
-                    ProgressView()
-                        .padding(.bottom,5)
-                        .environment(\.colorScheme, .light)
-                    Text("페이지 생성중..")
-                        .font(.caption)
-                }
-                .background{
-                    RoundedRectangle(cornerRadius: 30)
-                        .frame(width: 150,height: 100)
-                        .foregroundColor(.white)
-                        .shadow(radius: 10)
-                }
+                CustomProgressView(title: "페이지 생성중..")
             }
+            
         }
         .foregroundColor(.black)
         .onTapGesture {

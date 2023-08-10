@@ -10,6 +10,7 @@ import SwiftUI
 struct SelectAddressView: View {
     
     @EnvironmentObject var vm:PageViewModel
+    @EnvironmentObject var vmAuth:AuthViewModel
     @State var copy = false
     @EnvironmentObject var location:LocationMagager
     @State var isShcedule = false
@@ -112,8 +113,10 @@ struct SelectAddressView: View {
         .background(Color.white.ignoresSafeArea())
         .navigationDestination(isPresented: $isShcedule) {
             AddScheduleView(isPage: $isPage)
-                .navigationBarBackButtonHidden()
                 .environmentObject(vm)
+                .environmentObject(vmAuth)
+                .environmentObject(location)
+                .navigationBarBackButtonHidden()
         }
     }
 }
@@ -122,6 +125,7 @@ struct SelectAddressView_Previews: PreviewProvider {
     static var previews: some View {
         SelectAddressView(isPage: .constant(true))
             .environmentObject(LocationMagager())
+            .environmentObject(AuthViewModel())
             .environmentObject(PageViewModel())
     }
 }

@@ -10,4 +10,5 @@ import Foundation
 enum ImageSaveFilter{
     case profile
     case page
+    case schedule
 }

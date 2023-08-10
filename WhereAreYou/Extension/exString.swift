@@ -17,4 +17,13 @@ extension String {
             return nil
         }
     }
+    func toDateTime() -> Date? { //"yyyy-MM-dd HH:mm:ss"
+        let dateFormatter = DateFormatter()
+        dateFormatter.timeStyle = .short
+        if let date = dateFormatter.date(from: self) {
+            return date
+        } else {
+            return nil
+        }
+    }
 }

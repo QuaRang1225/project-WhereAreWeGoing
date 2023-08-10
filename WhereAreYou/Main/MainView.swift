@@ -89,6 +89,7 @@ struct MainView: View {
                             NavigationLink {
                                 PageMainView(page: page)
                                     .environmentObject(vm)
+                                    .environmentObject(vmAuth)
                                     .navigationBarBackButtonHidden()
                             } label: {
                                 PageRowView(image:  page.pageImageUrl, title: page.pageName)

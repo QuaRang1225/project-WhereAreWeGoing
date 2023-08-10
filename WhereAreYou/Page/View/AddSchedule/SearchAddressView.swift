@@ -15,6 +15,7 @@ struct SearchAddressView: View {
     @Binding var isSearch:Bool
     @StateObject var location = LocationMagager()
     @EnvironmentObject var vm:PageViewModel
+    @EnvironmentObject var vmAuth:AuthViewModel
     
     var body: some View {
         ZStack{
@@ -26,6 +27,7 @@ struct SearchAddressView: View {
             SelectAddressView(isPage: $isSearch)
                 .environmentObject(vm)
                 .environmentObject(location)
+                .environmentObject(vmAuth)
                 .navigationBarBackButtonHidden()
         }
         
@@ -37,6 +39,7 @@ struct SearchAddressView_Previews: PreviewProvider {
         NavigationStack{
             SearchAddressView(isSearch: .constant(false))
                 .environmentObject(PageViewModel())
+                .environmentObject(AuthViewModel())
         }
     }
 }

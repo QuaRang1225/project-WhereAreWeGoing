@@ -6,6 +6,7 @@
 //
 
 import Foundation
+import Firebase
 
 class CustomDataSet{
     static let shared  = CustomDataSet()
@@ -29,6 +30,9 @@ class CustomDataSet{
         Page(pageId: "asdasdadsad", pageAdmin: "4KYzTqO9HthK3nnOUAyIMKcaxa03", pageImageUrl: CustomDataSet.shared.images.first!, pageName: "으딩이", pageOverseas: false, pageSubscript: "으딩이와 함께 하는 우리어디가", dateRange: ["2023년 07월 26일","2023년 07월 27일","2023년 07월 28일","2023년 07월 29일"])
     }
     
+    func schedule() -> Schedule{
+        Schedule(imageUrl:"https://firebasestorage.googleapis.com/v0/b/whereareyou-66f3a.appspot.com/o/page_image%2F4KYzTqO9HthK3nnOUAyIMKcaxa03%2F125AFB52-3B93-4F16-B101-09AC390A6715.jpeg?alt=media&token=f98a6c58-c46f-474c-bf81-ff3fe7c09e00",day: 2, category: "카페/휴식", title: "아무", startTime: "1:00PM", endTime: "3:00PM", content: "아무게아무게", location: GeoPoint(latitude: 36.298959, longitude: 127.354729))
+    }
     
 
 }
