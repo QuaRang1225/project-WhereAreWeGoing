@@ -152,8 +152,16 @@ extension PageMainView{
                     .overlay{
                         Color.black.opacity(0.3)
                     }
-                    .offset(y:pro.frame(in: .global).minY > 0 ? -pro.frame(in: .global).minY:0)
-                    .frame(height:pro.frame(in: .global).minY > 0 ?  UIScreen.main.bounds.height/3 + pro.frame(in: .global).minY : UIScreen.main.bounds.height/3)
+                    .offset(x: pro.frame(in: .global).minY > 0 ? -pro.frame(in: .global).minY : 0,
+                                y: pro.frame(in: .global).minY > 0 ? -pro.frame(in: .global).minY : 0)
+                            .frame(
+                                width: pro.frame(in: .global).minY > 0 ?
+                                    UIScreen.main.bounds.width + pro.frame(in: .global).minY * 2 :
+                                    UIScreen.main.bounds.width,
+                                height: pro.frame(in: .global).minY > 0 ?
+                                    UIScreen.main.bounds.height/3 + pro.frame(in: .global).minY :
+                                    UIScreen.main.bounds.height/3
+                            )
             }
             VStack(alignment: .trailing,spacing: 5){
                 HStack{
