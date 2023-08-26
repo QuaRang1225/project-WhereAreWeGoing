@@ -52,6 +52,12 @@ class PageViewModel:ObservableObject{
             createScheduleSuccess.send()
         }
     }
+    
+//    func getUser(userId:String){
+//        Task{
+//            admin = try await UserManager.shared.getUser(userId:userId)
+//        }
+//    }
     func getPages(user:UserData){
         Task{
             pages = try await PageManager.shared.getAllPage(userId: user.userId)

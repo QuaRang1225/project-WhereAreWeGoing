@@ -87,29 +87,6 @@ extension SchduleListView{
     }
     var scheduleList:some View{
         VStack {
-//            Text("일정표")
-//                .font(.title)
-//                .bold()
-
-//            ZStack {
-//
-//                Circle()
-//                    .stroke(Color.black, lineWidth: 2)
-//                    .frame(width: 250, height: 250)
-//
-//                ForEach(1...24, id: \.self) { hour in
-//                    let angle = Double(hour) * 360 / 24
-//                    HourMarker(angle: .degrees(angle),hour: hour)
-//                }
-//
-//                ClockArc(startAngle: angleForTime(startTime ?? Date()) , endAngle: angleForTime(endTime ?? Date()))
-//                Circle()
-//                    .foregroundColor(.black)
-//                    .frame(width: 10,height: 10)
-//            }
-//            .frame(width: 250, height: 250)
-//            .padding(.vertical,50)
-
             ForEach(vm.schedules,id: \.self){ schedule in
                 Button {
                     startTime = schedule.startTime.toDateTime()
@@ -123,23 +100,4 @@ extension SchduleListView{
         }
     }
 }
-
-
-
-
-
-//struct ClockHand: View {
-//
-//    var angle: Angle
-//    var color: Color
-//
-//    var body: some View {
-//        Rectangle()
-//            .fill(color)
-//            .frame(width: 3, height: 100)
-//            .offset(y: -45)
-//            .rotationEffect(angle, anchor: .center)
-//    }
-//}
-
 

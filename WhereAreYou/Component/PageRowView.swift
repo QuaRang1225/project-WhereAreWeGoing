@@ -10,7 +10,7 @@ import Kingfisher
 
 struct PageRowView: View {
     let page:Page
-    @State var user:UserData?
+//    @StateObject var vm = PageViewModel()
     var body: some View {
         HStack{
             KFImage(URL(string:page.pageImageUrl)!)
@@ -27,15 +27,16 @@ struct PageRowView: View {
             }
             Spacer()
         }
+        // -----------------추가 업데이트 예정 -------------------------
 //        .overlay(alignment:.topTrailing) {
 //            HStack(alignment: .bottom){
 //                HStack(spacing: 0) {
 //                    Text("방장")
-//                    Text(user?.nickName ?? "").bold()
+//                    Text(vm.admin?.nickName ?? "").bold()
 //                    Text("님")
 //                }.foregroundColor(.gray).font(.caption2)
 //
-//                KFImage(URL(string: user?.profileImageUrl ?? ""))
+//                KFImage(URL(string: vm.admin?.profileImageUrl ?? ""))
 //                    .resizable()
 //                    .scaledToFill()
 //                    .frame(width: 30,height: 30)
@@ -43,15 +44,8 @@ struct PageRowView: View {
 //            }
 //
 //        }
-//        .task {
-//            do{
-//                user = try? await UserManager.shared.getUser(userId: page.pageAdmin)
-//            }
-//            catch{
-//                print("에러;\(error)")
-//            }
-//
-//
+//        .onAppear {
+//            vm.getUser(userId: page.pageAdmin)
 //        }
         
     }

@@ -18,6 +18,9 @@ struct AddScheduleView: View {
     @State var progress = false
     @State var locationSelect:LocationCategoryFilter = .cafe
     @State var dateSelection = 0
+    @State var linkArr:[Int] = [0]
+    @State var links:[String] = []
+    @State var linktitles:[String] = []
     
     @State var startDate = Date()
     @State var endDate = Date()
@@ -66,6 +69,7 @@ struct AddScheduleView: View {
                     .padding(.bottom,10)
                     
                     timePicker
+                    addlink
                     TextEditor(text: $text)
                         .frame(height: 500)
                         .border(Color.black, width: 3)
@@ -196,4 +200,35 @@ extension AddScheduleView{
         .padding(.horizontal)
         .environment(\.colorScheme, .light)
     }
+    var addlink:some View{
+        VStack{
+            HStack(spacing: 0){
+                Button {
+                    links.append("")
+                    linktitles.append("")
+                } label: {
+                    HStack{
+                        Text("링크추가")
+                            .bold()
+                        Image(systemName: "plus.circle.fill")
+                            .foregroundColor(.gray)
+                    }
+                }
+                Spacer()
+            }
+            ForEach(0..<links.count, id: \.self) { index in
+                VStack(alignment: .leading){
+                    TextField("링크명",text: $linktitles[index])
+                    HStack(spacing: 0) {
+                        Image(systemName: "link")
+                        CustomTextField(placeholder: "링크\(index + 1)", isSecure: false, color: .gray, text: $links[index])
+                    }
+                }
+           }
+        }
+        .font(.subheadline)
+        .padding(.horizontal)
+       
+    }
 }
+

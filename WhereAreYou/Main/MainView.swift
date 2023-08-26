@@ -115,7 +115,6 @@ struct MainView: View {
                                     }
                                 }
                             }
-    //                        .padding(5)
                         }
                     .bold()
                     .font(.body)
