@@ -8,13 +8,13 @@
 import Foundation
 
 extension String {
-    func toDate() -> Date? { //"yyyy-MM-dd HH:mm:ss"
+    func toDate() -> Date { //"yyyy-MM-dd HH:mm:ss"
         let dateFormatter = DateFormatter()
         dateFormatter.dateFormat = "yyyy년 MM월 dd일"
         if let date = dateFormatter.date(from: self) {
             return date
-        } else {
-            return nil
+        }else{
+            return Date()
         }
     }
     func toDateTime() -> Date? { //"yyyy-MM-dd HH:mm:ss"

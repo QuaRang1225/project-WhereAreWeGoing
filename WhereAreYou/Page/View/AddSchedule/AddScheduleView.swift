@@ -8,6 +8,7 @@
 import SwiftUI
 import PhotosUI
 import Firebase
+import FirebaseFirestore
 
 struct AddScheduleView: View {
     
@@ -42,8 +43,6 @@ struct AddScheduleView: View {
                             .foregroundColor(.gray.opacity(0.6))
                             .font(.caption)
                     }
-                    datePicker
-                        .padding(.vertical,10)
                     HStack{
                         Text("종류")
                             .bold()
@@ -175,32 +174,21 @@ extension AddScheduleView{
                 Task {
                     if let data = try? await newItem?.loadTransferable(type: Data.self) {
                         vm.data = data
+                    
                     }
                 }
             }
             .padding(.top)
     }
-    var datePicker:some View{
-        Picker("", selection: $dateSelection) {
-            if let range = vm.page?.dateRange{
-                ForEach(Array(range.enumerated()),id: \.0){ (index,page) in
-                    Text("\(index + 1)일차")
-                }
-            }
-        }
-        .pickerStyle(.segmented)
-        .padding()
-        .frame(maxHeight: .infinity,alignment:.top)
-        .environment(\.colorScheme, .light)
-    }
     var timePicker:some View{
         VStack{
+            
             HStack{
-                DatePicker("일정 시작", selection: $startDate,displayedComponents: .hourAndMinute)
+                DatePicker("일정 시작", selection: $startDate,in:((vm.page?.dateRange.first?.dateValue() ?? Date())...(vm.page?.dateRange.last?.dateValue() ?? Date())))
                 Text("부터")
             }
             HStack{
-                DatePicker("일정 끝", selection: $endDate,displayedComponents: .hourAndMinute)
+                DatePicker("일정 끝", selection: $endDate,in:(startDate...(vm.page?.dateRange.last?.dateValue() ?? Date())))
                 Text("까지")
             }
         }

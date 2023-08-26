@@ -6,7 +6,7 @@
 //
 
 import Foundation
-import Firebase
+import FirebaseFirestore
 
 class CustomDataSet{
     static let shared  = CustomDataSet()
@@ -27,7 +27,7 @@ class CustomDataSet{
     ]
     
     func page() -> Page{
-        Page(pageId: "asdasdadsad", pageAdmin: "4KYzTqO9HthK3nnOUAyIMKcaxa03", pageImageUrl: CustomDataSet.shared.images.first!, pageName: "으딩이", pageOverseas: false, pageSubscript: "으딩이와 함께 하는 우리어디가", dateRange: ["2023년 07월 26일","2023년 07월 27일","2023년 07월 28일","2023년 07월 29일"])
+        Page(pageId: "asdasdadsad", pageAdmin: "4KYzTqO9HthK3nnOUAyIMKcaxa03", pageImageUrl: CustomDataSet.shared.images.first!, pageName: "으딩이", pageOverseas: false, pageSubscript: "으딩이와 함께 하는 우리어디가", dateRange: [Timestamp(date: "2023년 07월 26일".toDate()),Timestamp(date: "2023년 07월 27일".toDate()),Timestamp(date: "2023년 07월 28일".toDate()),Timestamp(date: "2023년 07월 29일".toDate())])
     }
     
     func schedule() -> Schedule{

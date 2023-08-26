@@ -64,9 +64,9 @@ final class PageManager{
         
     }
     func getAllPage(userId:String)async throws -> [Page]{    //전체페이지 불러오기
-        try await userPageDocumentCollection(userId: userId).getDocuments2(as: Page.self)
+        try await userPageDocumentCollection(userId: userId).getDocuments(as: Page.self)
     }
     func getAllSchedule(userId:String,pageId:String)async throws -> [Schedule]{    //전체스케쥴 불러오기
-        try await userScheduleDocumentCollection(userId: userId, pageId: pageId).getDocuments2(as: Schedule.self)
+        try await userScheduleDocumentCollection(userId: userId, pageId: pageId).getDocuments(as: Schedule.self)
     }
 }

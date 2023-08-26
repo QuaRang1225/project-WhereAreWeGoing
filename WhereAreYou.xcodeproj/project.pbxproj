@@ -124,14 +124,14 @@
 		81BA3E1A2A6FAC7700D38E93 /* PageMainView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PageMainView.swift; sourceTree = "<group>"; };
 		81CE1AF22A5A536100ED87FF /* UserManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserManager.swift; sourceTree = "<group>"; };
 		81CE1AF92A5A686400ED87FF /* TestView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TestView.swift; sourceTree = "<group>"; };
-		81D5BCA22A4FE9F5001842FD /* WhereAreYou.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = WhereAreYou.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		81D5BCA22A4FE9F5001842FD /* WhereAreYou.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; name = WhereAreYou.app; path = "/Users/quarang/Documents/QUARANG'S/Project/WhereAreYou/build/Debug-iphoneos/WhereAreYou.app"; sourceTree = "<absolute>"; };
 		81D5BCA52A4FE9F5001842FD /* WhereAreYouApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WhereAreYouApp.swift; sourceTree = "<group>"; };
 		81D5BCA72A4FE9F5001842FD /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
 		81D5BCA92A4FE9F6001842FD /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		81D5BCAC2A4FE9F6001842FD /* Preview Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = "Preview Assets.xcassets"; sourceTree = "<group>"; };
-		81D5BCB22A4FE9F6001842FD /* WhereAreYouTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = WhereAreYouTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		81D5BCB22A4FE9F6001842FD /* WhereAreYouTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; name = WhereAreYouTests.xctest; path = "/Users/quarang/Documents/QUARANG'S/Project/WhereAreYou/build/Debug-iphoneos/WhereAreYouTests.xctest"; sourceTree = "<absolute>"; };
 		81D5BCB62A4FE9F6001842FD /* WhereAreYouTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WhereAreYouTests.swift; sourceTree = "<group>"; };
-		81D5BCBC2A4FE9F6001842FD /* WhereAreYouUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = WhereAreYouUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		81D5BCBC2A4FE9F6001842FD /* WhereAreYouUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; name = WhereAreYouUITests.xctest; path = "/Users/quarang/Documents/QUARANG'S/Project/WhereAreYou/build/Debug-iphoneos/WhereAreYouUITests.xctest"; sourceTree = "<absolute>"; };
 		81D5BCC02A4FE9F6001842FD /* WhereAreYouUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WhereAreYouUITests.swift; sourceTree = "<group>"; };
 		81D5BCC22A4FE9F6001842FD /* WhereAreYouUITestsLaunchTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WhereAreYouUITestsLaunchTests.swift; sourceTree = "<group>"; };
 		81D5BCCF2A4FEF4F001842FD /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
@@ -286,32 +286,13 @@
 			path = View;
 			sourceTree = "<group>";
 		};
-		81CE1AF42A5A570B00ED87FF /* Frameworks */ = {
-			isa = PBXGroup;
-			children = (
-			);
-			name = Frameworks;
-			sourceTree = "<group>";
-		};
 		81D5BC992A4FE9F5001842FD = {
 			isa = PBXGroup;
 			children = (
 				81D5BCA42A4FE9F5001842FD /* WhereAreYou */,
 				81D5BCB52A4FE9F6001842FD /* WhereAreYouTests */,
 				81D5BCBF2A4FE9F6001842FD /* WhereAreYouUITests */,
-				81D5BCA32A4FE9F5001842FD /* Products */,
-				81CE1AF42A5A570B00ED87FF /* Frameworks */,
 			);
-			sourceTree = "<group>";
-		};
-		81D5BCA32A4FE9F5001842FD /* Products */ = {
-			isa = PBXGroup;
-			children = (
-				81D5BCA22A4FE9F5001842FD /* WhereAreYou.app */,
-				81D5BCB22A4FE9F6001842FD /* WhereAreYouTests.xctest */,
-				81D5BCBC2A4FE9F6001842FD /* WhereAreYouUITests.xctest */,
-			);
-			name = Products;
 			sourceTree = "<group>";
 		};
 		81D5BCA42A4FE9F5001842FD /* WhereAreYou */ = {
@@ -578,7 +559,7 @@
 				81D5BCD12A4FF0B6001842FD /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */,
 				81234CDA2A5C43E7007D9BB6 /* XCRemoteSwiftPackageReference "Kingfisher" */,
 			);
-			productRefGroup = 81D5BCA32A4FE9F5001842FD /* Products */;
+			productRefGroup = 81D5BC992A4FE9F5001842FD;
 			projectDirPath = "";
 			projectRoot = "";
 			targets = (

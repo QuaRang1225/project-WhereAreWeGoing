@@ -10,6 +10,6 @@ import Foundation
 struct PageInfo:Codable{
     let pageName:String
     let pageSubscript:String
-    let dateRange:[String]
+    let dateRange:[Date]
     let overseas:Bool
 }

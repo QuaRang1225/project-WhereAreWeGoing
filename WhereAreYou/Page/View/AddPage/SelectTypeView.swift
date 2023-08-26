@@ -73,7 +73,7 @@ extension SelectTypeView{
             if overseas != nil && !text.isEmpty && !title.isEmpty{
                 Button {
                     if let user = vmAuth.user,let overseas{
-                        vm.creagtePage(user:user, pageInfo: PageInfo(pageName: title, pageSubscript: text,dateRange: vm.generateDatesArray(from: startDate, to: endDate), overseas: !overseas))
+                        vm.creagtePage(user:user, pageInfo: PageInfo(pageName: title, pageSubscript: text,dateRange: vm.generateTimestamp(from: startDate, to: endDate), overseas: !overseas))
                         isPage = true
                     }
                 } label: {

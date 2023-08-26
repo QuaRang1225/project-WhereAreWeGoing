@@ -8,7 +8,7 @@
 import Foundation
 import PhotosUI
 import SwiftUI
-import Firebase
+import FirebaseFirestore
 import Combine
 
 @MainActor
@@ -34,6 +34,7 @@ class PageViewModel:ObservableObject{
             let path = try await StorageManager.shared.saveImage(data:data,userId: user.userId, mode: .page)
             let url = try await StorageManager.shared.getUrlForImage(path: path)
             try await PageManager.shared.createUserPage(userId: user.userId,url: url.absoluteString, pageInfo: pageInfo)
+            
             createPageSuccess.send()
         }
     }
@@ -61,16 +62,14 @@ class PageViewModel:ObservableObject{
             schedules = try await PageManager.shared.getAllSchedule(userId: user.userId, pageId: pageId)
         }
     }
-    
-    func generateDatesArray(from startDate: Date, to endDate: Date) -> [String] {
-        var datesArray: [String] = []
+    func generateTimestamp(from startDate: Date, to endDate: Date) -> [Date] {
+        var datesArray: [Date] = []
         let calendar = Calendar.current
 
         var currentDate = startDate
         while currentDate <= endDate {
-            let dateString = currentDate.toString()
+            let dateString = currentDate
             datesArray.append(dateString)
-
             if let nextDate = calendar.date(byAdding: .day, value: 1, to: currentDate) {
                 currentDate = nextDate
             } else {

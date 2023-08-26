@@ -6,6 +6,7 @@
 //
 
 import Foundation
+import FirebaseFirestore
 
 struct Page:Codable,Hashable{
     
@@ -15,7 +16,7 @@ struct Page:Codable,Hashable{
     let pageName:String
     let pageOverseas:Bool
     let pageSubscript:String
-    let dateRange:[String]
+    let dateRange:[Timestamp]
     
     enum CodingKeys:String,CodingKey{
         case pageId = "page_id"
