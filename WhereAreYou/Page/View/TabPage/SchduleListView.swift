@@ -20,6 +20,13 @@ struct SchduleListView: View {
        ZStack{
            VStack {
                datePicker
+              
+               
+               
+               
+               
+               
+               Spacer()
 //               if vm.schedules.isEmpty{
 //                   emptyView
 //               }else{
@@ -27,7 +34,6 @@ struct SchduleListView: View {
 //               }
            scheduleList
            }
-           
        }
        .padding()
        .onAppear{
@@ -37,12 +43,12 @@ struct SchduleListView: View {
        }
        
    }
-    func angleForTime(_ date: Date) -> Angle {
+    func angleForTime(_ date: Date) -> Double {
         let calendar = Calendar.current
         let components = calendar.dateComponents([.hour, .minute], from: date)
         let totalMinutes = Double(components.hour!) * 60 + Double(components.minute!)
         let angle = (totalMinutes / (24 * 60)) * 360
-        return .degrees(Double(angle))
+        return angle
     }
        
 }
@@ -61,12 +67,10 @@ extension SchduleListView{
         Picker("", selection: $date) {
             ForEach(Array(page.dateRange.enumerated()),id: \.0){ (index,page) in
                 Text("\(index + 1)일차")
-                
             }
         }
         .pickerStyle(.segmented)
         .padding()
-        .frame(maxHeight: .infinity,alignment:.top)
         .environment(\.colorScheme, .light)
     }
     var emptyView:some View{
@@ -74,7 +78,6 @@ extension SchduleListView{
             Image(systemName: "text.badge.xmark")
             Text("아직 일정이 없습니다.")
                 .font(.title3)
-               
         }
         .bold()
         .foregroundColor(.gray)
@@ -84,28 +87,28 @@ extension SchduleListView{
     }
     var scheduleList:some View{
         VStack {
-            Text("일정표")
-                .font(.title)
-                .bold()
-                
-            ZStack {
-                
-                Circle()
-                    .stroke(Color.black, lineWidth: 2)
-                    .frame(width: 250, height: 250)
-                
-                ForEach(1...24, id: \.self) { hour in
-                    let angle = Double(hour) * 360 / 24
-                    HourMarker(angle: .degrees(angle),hour: hour)
-                }
-                
-                ClockArc(startAngle: angleForTime(startTime ?? Date()) , endAngle: angleForTime(endTime ?? Date()))
-                Circle()
-                    .foregroundColor(.black)
-                    .frame(width: 10,height: 10)
-            }
-            .frame(width: 250, height: 250)
-            .padding(.vertical,50)
+//            Text("일정표")
+//                .font(.title)
+//                .bold()
+
+//            ZStack {
+//
+//                Circle()
+//                    .stroke(Color.black, lineWidth: 2)
+//                    .frame(width: 250, height: 250)
+//
+//                ForEach(1...24, id: \.self) { hour in
+//                    let angle = Double(hour) * 360 / 24
+//                    HourMarker(angle: .degrees(angle),hour: hour)
+//                }
+//
+//                ClockArc(startAngle: angleForTime(startTime ?? Date()) , endAngle: angleForTime(endTime ?? Date()))
+//                Circle()
+//                    .foregroundColor(.black)
+//                    .frame(width: 10,height: 10)
+//            }
+//            .frame(width: 250, height: 250)
+//            .padding(.vertical,50)
 
             ForEach(vm.schedules,id: \.self){ schedule in
                 Button {

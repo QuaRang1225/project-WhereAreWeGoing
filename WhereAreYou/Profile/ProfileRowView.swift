@@ -32,17 +32,14 @@ struct ProfileRowView: View {
             NavigationLink {
                 
             } label: {
-                Text("프로필 수정하기")
-                    .font(.caption)
-                    .padding(10)
-                    .padding(.horizontal)
-                    .background(Color.gray.opacity(0.3))
-                    .cornerRadius(20)
+                Image(systemName: "chevron.right")
+                    .foregroundColor(.gray.opacity(0.5))
+                    
             }
 
             
             
-        }.foregroundColor(.black)
+        }.foregroundColor(.black).padding(.horizontal)
     }
 }
 

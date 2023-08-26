@@ -122,9 +122,12 @@
 		81BA3E162A6FA7E900D38E93 /* PageInfo.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PageInfo.swift; sourceTree = "<group>"; };
 		81BA3E182A6FA8A700D38E93 /* PageRowView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PageRowView.swift; sourceTree = "<group>"; };
 		81BA3E1A2A6FAC7700D38E93 /* PageMainView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PageMainView.swift; sourceTree = "<group>"; };
+		81C2A53D2A9A12A900F33076 /* WhereAreYou.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = WhereAreYou.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		81C2A53E2A9A12A900F33076 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = Info.plist; sourceTree = "<group>"; };
+		81C2A5472A9A176700F33076 /* GANGWONSTATE-SemiBold.otf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "GANGWONSTATE-SemiBold.otf"; sourceTree = "<group>"; };
+		81C2A5482A9A176B00F33076 /* GANGWONSTATE-SemiBold.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "GANGWONSTATE-SemiBold.ttf"; sourceTree = "<group>"; };
 		81CE1AF22A5A536100ED87FF /* UserManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserManager.swift; sourceTree = "<group>"; };
 		81CE1AF92A5A686400ED87FF /* TestView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TestView.swift; sourceTree = "<group>"; };
-		81D5BCA22A4FE9F5001842FD /* WhereAreYou.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; name = WhereAreYou.app; path = "/Users/quarang/Documents/QUARANG'S/Project/WhereAreYou/build/Debug-iphoneos/WhereAreYou.app"; sourceTree = "<absolute>"; };
 		81D5BCA52A4FE9F5001842FD /* WhereAreYouApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WhereAreYouApp.swift; sourceTree = "<group>"; };
 		81D5BCA72A4FE9F5001842FD /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
 		81D5BCA92A4FE9F6001842FD /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
@@ -286,18 +289,30 @@
 			path = View;
 			sourceTree = "<group>";
 		};
+		81C2A5492A9A19ED00F33076 /* Font */ = {
+			isa = PBXGroup;
+			children = (
+				81C2A5482A9A176B00F33076 /* GANGWONSTATE-SemiBold.ttf */,
+				81C2A5472A9A176700F33076 /* GANGWONSTATE-SemiBold.otf */,
+			);
+			path = Font;
+			sourceTree = "<group>";
+		};
 		81D5BC992A4FE9F5001842FD = {
 			isa = PBXGroup;
 			children = (
 				81D5BCA42A4FE9F5001842FD /* WhereAreYou */,
 				81D5BCB52A4FE9F6001842FD /* WhereAreYouTests */,
 				81D5BCBF2A4FE9F6001842FD /* WhereAreYouUITests */,
+				81C2A53D2A9A12A900F33076 /* WhereAreYou.app */,
 			);
 			sourceTree = "<group>";
 		};
 		81D5BCA42A4FE9F5001842FD /* WhereAreYou */ = {
 			isa = PBXGroup;
 			children = (
+				81C2A5492A9A19ED00F33076 /* Font */,
+				81C2A53E2A9A12A900F33076 /* Info.plist */,
 				817268062A6A4EBC0038BE70 /* Page */,
 				81D7B1E12A5D8FC100D5AACD /* Search */,
 				81D7B1DC2A5D44F400D5AACD /* Profile */,
@@ -484,7 +499,7 @@
 				81234CDB2A5C43E7007D9BB6 /* Kingfisher */,
 			);
 			productName = WhereAreYou;
-			productReference = 81D5BCA22A4FE9F5001842FD /* WhereAreYou.app */;
+			productReference = 81C2A53D2A9A12A900F33076 /* WhereAreYou.app */;
 			productType = "com.apple.product-type.application";
 		};
 		81D5BCB12A4FE9F6001842FD /* WhereAreYouTests */ = {
@@ -820,6 +835,7 @@
 				DEVELOPMENT_TEAM = N676ZFA7W8;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = WhereAreYou/Info.plist;
 				INFOPLIST_KEY_CFBundleDisplayName = "우리어디가?";
 				INFOPLIST_KEY_LSApplicationCategoryType = "";
 				INFOPLIST_KEY_NSLocationAlwaysAndWhenInUseUsageDescription = "";
@@ -856,6 +872,7 @@
 				DEVELOPMENT_TEAM = N676ZFA7W8;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = WhereAreYou/Info.plist;
 				INFOPLIST_KEY_CFBundleDisplayName = "우리어디가?";
 				INFOPLIST_KEY_LSApplicationCategoryType = "";
 				INFOPLIST_KEY_NSLocationAlwaysAndWhenInUseUsageDescription = "";

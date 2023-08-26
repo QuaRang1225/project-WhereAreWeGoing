@@ -16,11 +16,11 @@ struct StartView: View {
                 VStack{
                     Image("where")
                         .resizable()
-                        .frame(width: 70,height: 90)
+                        .frame(width: 50,height: 70)
                         .padding(.bottom)
-                    Image("logo")
+                    Image("lofo")
                         .resizable()
-                        .frame(width: 150,height: 50)
+                        .frame(width: 100,height: 25)
                 }
                 
             }

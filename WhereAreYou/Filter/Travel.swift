@@ -22,4 +22,14 @@ enum TravelFilter:CaseIterable{
             return "해외"
         }
     }
+    var image:String{
+        switch self{
+        case .all:
+            return "🧭"
+        case .domestic:
+            return "🇰🇷"
+        case .overseas:
+            return "🌍"
+        }
+    }
 }
