@@ -7,19 +7,24 @@
 
 import Foundation
 import Firebase
+import FirebaseFirestore
 
 struct Schedule:Codable,Hashable{
     
+//    var id:String
     var imageUrl:String?
     var day:Int
     var category:String
     var title:String
-    var startTime:String
-    var endTime:String
+    var startTime:Timestamp
+    var endTime:Timestamp
     var content:String
     var location:GeoPoint
+    var link:[String:String]?
     
+
     enum CodingKeys:String,CodingKey{
+//        case id
         case imageUrl = "image_url"
         case day
         case category
@@ -27,6 +32,10 @@ struct Schedule:Codable,Hashable{
         case startTime = "start_time"
         case endTime = "end_time"
         case content
-        case location
+        case location,link
     }
 }
+
+
+
+

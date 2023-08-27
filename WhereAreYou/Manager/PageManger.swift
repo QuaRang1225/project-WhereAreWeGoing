@@ -48,9 +48,18 @@ final class PageManager{
     func createUserSchedule(userId:String,pageId:String,url:String?,schedule:Schedule)async throws{
         let field = userPageDocumentCollection(userId: userId).document(pageId).collection("schedule").document()
         let schduleId = field.documentID
-                
+          
+        //--------------
+//        var linkData: [String: String] = [:]
+//
+//        if let linkArray = schedule.link {
+//            for link in linkArray {
+//                linkData[link.title] = link.link
+//            }
+//        }
+        //-----------
         let data:[String:Any] = [
-            "schedule_id" : schduleId,
+            "id" : schduleId,
             "image_url" : url,
             "day" : schedule.day,
             "category" : schedule.category,
@@ -58,7 +67,8 @@ final class PageManager{
             "start_time" : schedule.startTime,
             "end_time" : schedule.endTime,
             "content" : schedule.content,
-            "location" : schedule.location
+            "location" : schedule.location,
+            "link":schedule.link
         ]
         try await field.setData(data,merge: false)
         
@@ -68,5 +78,9 @@ final class PageManager{
     }
     func getAllSchedule(userId:String,pageId:String)async throws -> [Schedule]{    //전체스케쥴 불러오기
         try await userScheduleDocumentCollection(userId: userId, pageId: pageId).getDocuments(as: Schedule.self)
+
     }
+//    func getaa(userId:String,pageId:String) async throws-> [Schedules]{
+//        try await userScheduleDocumentCollection(userId: userId, pageId: pageId).getDocuments(as: Schedules.self)
+//    }
 }

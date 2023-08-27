@@ -6,6 +6,7 @@
 //
 
 import Foundation
+import FirebaseFirestore
 
 extension Date {
     func toString() -> String {
@@ -16,6 +17,11 @@ extension Date {
     func toTimeString() -> String{
         let dateFormatter = DateFormatter()
         dateFormatter.timeStyle = .short
+        dateFormatter.locale = .init(identifier: "ko_KR")
         return dateFormatter.string(from: self)
     }
+    func toTimestamp()->Timestamp{
+        Timestamp(date: self)
+    }
+    
 }

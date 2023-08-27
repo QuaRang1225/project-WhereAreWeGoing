@@ -10,8 +10,6 @@
 		8115A6372A83463300B7C3FE /* Schedule.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8115A6362A83463300B7C3FE /* Schedule.swift */; };
 		8115A6392A835B1900B7C3FE /* CustomProgressView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8115A6382A835B1900B7C3FE /* CustomProgressView.swift */; };
 		8115A63C2A8367B300B7C3FE /* PageManger.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8115A63B2A8367B300B7C3FE /* PageManger.swift */; };
-		8115A63E2A83699100B7C3FE /* HourMarker.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8115A63D2A83699100B7C3FE /* HourMarker.swift */; };
-		8115A6412A8369EE00B7C3FE /* ClockArc.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8115A6402A8369EE00B7C3FE /* ClockArc.swift */; };
 		8115A6522A83CFDA00B7C3FE /* ScheduleRowView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8115A6512A83CFDA00B7C3FE /* ScheduleRowView.swift */; };
 		81234CD72A5BC898007D9BB6 /* InfoSettingTabView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 81234CD62A5BC898007D9BB6 /* InfoSettingTabView.swift */; };
 		81234CD92A5BE84E007D9BB6 /* StorageManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 81234CD82A5BE84E007D9BB6 /* StorageManager.swift */; };
@@ -25,6 +23,7 @@
 		81740BA82A5166DC00AAD0FE /* Menu.swift in Sources */ = {isa = PBXBuildFile; fileRef = 81740BA72A5166DC00AAD0FE /* Menu.swift */; };
 		81740BAA2A516B4900AAD0FE /* LocationManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 81740BA92A516B4900AAD0FE /* LocationManager.swift */; };
 		81740BAD2A516B7100AAD0FE /* exView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 81740BAC2A516B7100AAD0FE /* exView.swift */; };
+		81B1DC602A9B39CD005C0A72 /* Link.swift in Sources */ = {isa = PBXBuildFile; fileRef = 81B1DC5F2A9B39CD005C0A72 /* Link.swift */; };
 		81BA3E0D2A6BC80A00D38E93 /* PageViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 81BA3E0C2A6BC80A00D38E93 /* PageViewModel.swift */; };
 		81BA3E0F2A6FA74F00D38E93 /* ImageSaveFilter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 81BA3E0E2A6FA74F00D38E93 /* ImageSaveFilter.swift */; };
 		81BA3E112A6FA76C00D38E93 /* exJsonDecoder.swift in Sources */ = {isa = PBXBuildFile; fileRef = 81BA3E102A6FA76C00D38E93 /* exJsonDecoder.swift */; };
@@ -100,8 +99,6 @@
 		8115A6362A83463300B7C3FE /* Schedule.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Schedule.swift; sourceTree = "<group>"; };
 		8115A6382A835B1900B7C3FE /* CustomProgressView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomProgressView.swift; sourceTree = "<group>"; };
 		8115A63B2A8367B300B7C3FE /* PageManger.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PageManger.swift; sourceTree = "<group>"; };
-		8115A63D2A83699100B7C3FE /* HourMarker.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HourMarker.swift; sourceTree = "<group>"; };
-		8115A6402A8369EE00B7C3FE /* ClockArc.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ClockArc.swift; sourceTree = "<group>"; };
 		8115A6512A83CFDA00B7C3FE /* ScheduleRowView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ScheduleRowView.swift; sourceTree = "<group>"; };
 		81234CD62A5BC898007D9BB6 /* InfoSettingTabView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InfoSettingTabView.swift; sourceTree = "<group>"; };
 		81234CD82A5BE84E007D9BB6 /* StorageManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StorageManager.swift; sourceTree = "<group>"; };
@@ -114,6 +111,9 @@
 		81740BA72A5166DC00AAD0FE /* Menu.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Menu.swift; sourceTree = "<group>"; };
 		81740BA92A516B4900AAD0FE /* LocationManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocationManager.swift; sourceTree = "<group>"; };
 		81740BAC2A516B7100AAD0FE /* exView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = exView.swift; sourceTree = "<group>"; };
+		81B1DC5D2A9B36EB005C0A72 /* WhereAreYouTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = WhereAreYouTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		81B1DC5E2A9B36EB005C0A72 /* WhereAreYouUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = WhereAreYouUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		81B1DC5F2A9B39CD005C0A72 /* Link.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Link.swift; sourceTree = "<group>"; };
 		81BA3E0C2A6BC80A00D38E93 /* PageViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PageViewModel.swift; sourceTree = "<group>"; };
 		81BA3E0E2A6FA74F00D38E93 /* ImageSaveFilter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImageSaveFilter.swift; sourceTree = "<group>"; };
 		81BA3E102A6FA76C00D38E93 /* exJsonDecoder.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = exJsonDecoder.swift; sourceTree = "<group>"; };
@@ -132,9 +132,7 @@
 		81D5BCA72A4FE9F5001842FD /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
 		81D5BCA92A4FE9F6001842FD /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		81D5BCAC2A4FE9F6001842FD /* Preview Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = "Preview Assets.xcassets"; sourceTree = "<group>"; };
-		81D5BCB22A4FE9F6001842FD /* WhereAreYouTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; name = WhereAreYouTests.xctest; path = "/Users/quarang/Documents/QUARANG'S/Project/WhereAreYou/build/Debug-iphoneos/WhereAreYouTests.xctest"; sourceTree = "<absolute>"; };
 		81D5BCB62A4FE9F6001842FD /* WhereAreYouTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WhereAreYouTests.swift; sourceTree = "<group>"; };
-		81D5BCBC2A4FE9F6001842FD /* WhereAreYouUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; name = WhereAreYouUITests.xctest; path = "/Users/quarang/Documents/QUARANG'S/Project/WhereAreYou/build/Debug-iphoneos/WhereAreYouUITests.xctest"; sourceTree = "<absolute>"; };
 		81D5BCC02A4FE9F6001842FD /* WhereAreYouUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WhereAreYouUITests.swift; sourceTree = "<group>"; };
 		81D5BCC22A4FE9F6001842FD /* WhereAreYouUITestsLaunchTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WhereAreYouUITestsLaunchTests.swift; sourceTree = "<group>"; };
 		81D5BCCF2A4FEF4F001842FD /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
@@ -209,15 +207,6 @@
 			path = AddPage;
 			sourceTree = "<group>";
 		};
-		8115A63F2A8369CB00B7C3FE /* Clock */ = {
-			isa = PBXGroup;
-			children = (
-				8115A63D2A83699100B7C3FE /* HourMarker.swift */,
-				8115A6402A8369EE00B7C3FE /* ClockArc.swift */,
-			);
-			path = Clock;
-			sourceTree = "<group>";
-		};
 		813F523F2A594CF200833427 /* Model */ = {
 			isa = PBXGroup;
 			children = (
@@ -226,6 +215,7 @@
 				81BA3E142A6FA7D100D38E93 /* Page.swift */,
 				81BA3E162A6FA7E900D38E93 /* PageInfo.swift */,
 				8115A6362A83463300B7C3FE /* Schedule.swift */,
+				81B1DC5F2A9B39CD005C0A72 /* Link.swift */,
 			);
 			path = Model;
 			sourceTree = "<group>";
@@ -305,6 +295,8 @@
 				81D5BCB52A4FE9F6001842FD /* WhereAreYouTests */,
 				81D5BCBF2A4FE9F6001842FD /* WhereAreYouUITests */,
 				81C2A53D2A9A12A900F33076 /* WhereAreYou.app */,
+				81B1DC5D2A9B36EB005C0A72 /* WhereAreYouTests.xctest */,
+				81B1DC5E2A9B36EB005C0A72 /* WhereAreYouUITests.xctest */,
 			);
 			sourceTree = "<group>";
 		};
@@ -398,7 +390,6 @@
 		81D5BCE62A4FF564001842FD /* Component */ = {
 			isa = PBXGroup;
 			children = (
-				8115A63F2A8369CB00B7C3FE /* Clock */,
 				81D5BCE72A4FF5C3001842FD /* SelectButton.swift */,
 				81D5BCE92A4FF923001842FD /* CustomTextField.swift */,
 				81D5BCED2A4FFDDD001842FD /* AuthBackground.swift */,
@@ -517,7 +508,7 @@
 			);
 			name = WhereAreYouTests;
 			productName = WhereAreYouTests;
-			productReference = 81D5BCB22A4FE9F6001842FD /* WhereAreYouTests.xctest */;
+			productReference = 81B1DC5D2A9B36EB005C0A72 /* WhereAreYouTests.xctest */;
 			productType = "com.apple.product-type.bundle.unit-test";
 		};
 		81D5BCBB2A4FE9F6001842FD /* WhereAreYouUITests */ = {
@@ -535,7 +526,7 @@
 			);
 			name = WhereAreYouUITests;
 			productName = WhereAreYouUITests;
-			productReference = 81D5BCBC2A4FE9F6001842FD /* WhereAreYouUITests.xctest */;
+			productReference = 81B1DC5E2A9B36EB005C0A72 /* WhereAreYouUITests.xctest */;
 			productType = "com.apple.product-type.bundle.ui-testing";
 		};
 /* End PBXNativeTarget section */
@@ -620,6 +611,7 @@
 				8172680A2A6A4F010038BE70 /* Travel.swift in Sources */,
 				8115A6392A835B1900B7C3FE /* CustomProgressView.swift in Sources */,
 				813F523E2A594B5C00833427 /* AuthManager.swift in Sources */,
+				81B1DC602A9B39CD005C0A72 /* Link.swift in Sources */,
 				81FEF6082A70F5A10000B76B /* exDate.swift in Sources */,
 				81D5BCEA2A4FF923001842FD /* CustomTextField.swift in Sources */,
 				81BA3E192A6FA8A700D38E93 /* PageRowView.swift in Sources */,
@@ -629,7 +621,6 @@
 				81FEF61C2A739EC70000B76B /* ShceduleCategoryRowView.swift in Sources */,
 				81234CD92A5BE84E007D9BB6 /* StorageManager.swift in Sources */,
 				81BA3E0F2A6FA74F00D38E93 /* ImageSaveFilter.swift in Sources */,
-				8115A63E2A83699100B7C3FE /* HourMarker.swift in Sources */,
 				81234CD72A5BC898007D9BB6 /* InfoSettingTabView.swift in Sources */,
 				81FEF6042A70CEB60000B76B /* SchduleListView.swift in Sources */,
 				8115A6522A83CFDA00B7C3FE /* ScheduleRowView.swift in Sources */,
@@ -637,7 +628,6 @@
 				81D5BCEC2A4FFC44001842FD /* KeyBoardSet.swift in Sources */,
 				81D5BCF32A5005B0001842FD /* FormField.swift in Sources */,
 				81D5BCE12A4FF2E3001842FD /* ColorSet.swift in Sources */,
-				8115A6412A8369EE00B7C3FE /* ClockArc.swift in Sources */,
 				81FEF6002A70C9390000B76B /* MemberTabView.swift in Sources */,
 				81FEF6162A7391F80000B76B /* AddScheduleView.swift in Sources */,
 				81BA3E152A6FA7D100D38E93 /* Page.swift in Sources */,

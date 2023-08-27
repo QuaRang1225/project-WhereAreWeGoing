@@ -12,27 +12,14 @@ struct SchduleListView: View {
     @EnvironmentObject var vmAuth:AuthViewModel
     @EnvironmentObject var vm:PageViewModel
     @State var date = 0
-    
-    @State var startTime:Date? = nil
-    @State var endTime:Date? = nil
+    @State var binding:Schedule?
 
    var body: some View {
        ZStack{
            VStack {
                datePicker
-              
-               
-               
-               
-               
-               
                Spacer()
-//               if vm.schedules.isEmpty{
-//                   emptyView
-//               }else{
-//                   scheduleList
-//               }
-           scheduleList
+               scheduleList
            }
        }
        .padding()
@@ -86,17 +73,38 @@ extension SchduleListView{
         .frame(maxHeight: .infinity,alignment: .center)
     }
     var scheduleList:some View{
-        VStack {
+        VStack(spacing: 0){
             ForEach(vm.schedules,id: \.self){ schedule in
-                Button {
-                    startTime = schedule.startTime.toDateTime()
-                    endTime = schedule.endTime.toDateTime()
-                } label: {
-                    ScheduleRowView(schedule: schedule)
+                HStack{
+                    Circle()
+                        .frame(width: 20,height: 20)
+                        .overlay{
+                            Circle()
+                                .frame(width: 10,height: 10)
+                                .foregroundColor(.white)
+                        }
+                        .foregroundColor(.customCyan2)
+                        
+                    Button {
+                        withAnimation {
+                            self.binding = schedule
+                        }
+                    } label: {
+                        VStack{
+                            ScheduleRowView(schedule: schedule,binding: schedule == binding ?  .constant(true) : .constant(false))
+                            Divider()
+                        }
+                        
+                    }
                 }
-
+                
             }
-            .padding(.bottom,100)
+            .background(alignment: .leading){
+                Rectangle()
+                    .frame(width: 4)
+                    .foregroundColor(.customCyan2)
+                    .padding(.leading,7.5)
+            }
         }
     }
 }

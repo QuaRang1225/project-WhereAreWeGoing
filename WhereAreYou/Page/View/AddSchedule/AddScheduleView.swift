@@ -12,18 +12,18 @@ import FirebaseFirestore
 
 struct AddScheduleView: View {
     
-
+    
     @State var title = ""
     @State var text = ""
     @State var progress = false
     @State var locationSelect:LocationCategoryFilter = .cafe
     @State var dateSelection = 0
-    @State var linkArr:[Int] = [0]
+    @State var linksArr:[String:String] = [:]
     @State var links:[String] = []
     @State var linktitles:[String] = []
     
     @State var startDate = Date()
-    @State var endDate = Date()
+    @State var endDate = Date() + 86400
     
     @EnvironmentObject var vmAuth:AuthViewModel
     @EnvironmentObject var vm:PageViewModel
@@ -81,6 +81,11 @@ struct AddScheduleView: View {
                                     .allowsHitTesting(false)
                             }
                         }
+                        .onSubmit(of: .text) {
+                            if text.contains("\n") {
+                                text = text.replacingOccurrences(of: "\n", with: "\\n")
+                            }
+                        }
                         .environment(\.colorScheme, .light)
                         .padding()
                     
@@ -129,8 +134,26 @@ extension AddScheduleView{
                     if !text.isEmpty,!title.isEmpty,startDate != endDate{
                         Button {
                             progress = true
+                            
+//                            for index in 0..<min(links.count, linktitles.count) {
+//                                let link = Link(title: linktitles[index], link: links[index])
+//                                if !link.title.isEmpty,!link.title.isEmpty{
+//                                    linksArr.append(link)
+//                                }
+//
+//                            }
+                            for index in 0..<min(links.count, linktitles.count) {
+                                
+//                                if !link.title.isEmpty,!link.title.isEmpty{
+//                                    
+//                                }
+                                linksArr[linktitles[index]] = links[index]
+                                
+                            }
+                            
                             if let user  = vmAuth.user,let page = vm.page{
-                                let schedule = Schedule(day: dateSelection + 1, category: locationSelect.name, title: title, startTime: startDate.toTimeString(), endTime: endDate.toTimeString(), content: text, location: GeoPoint(latitude: (location.pickedPlaceMark?.location?.coordinate.latitude)!, longitude: (location.pickedPlaceMark?.location?.coordinate.longitude)!))
+                                let schedule = Schedule(day: dateSelection + 1, category: locationSelect.name, title: title, startTime: startDate.toTimestamp(), endTime: endDate.toTimestamp(), content: text, location: GeoPoint(latitude: (location.pickedPlaceMark?.location?.coordinate.latitude)!, longitude: (location.pickedPlaceMark?.location?.coordinate.longitude)!),link: linksArr)
+                                
                                 vm.creagteShcedule(user: user, pageId: page.pageId, schedule: schedule)
                             }
                         } label: {
@@ -148,6 +171,7 @@ extension AddScheduleView{
         .onReceive(vm.createScheduleSuccess){
             isPage = false
         }
+        
     }
     var photoPicker:some View{
         PhotosPicker(
@@ -178,7 +202,7 @@ extension AddScheduleView{
                 Task {
                     if let data = try? await newItem?.loadTransferable(type: Data.self) {
                         vm.data = data
-                    
+                        
                     }
                 }
             }
@@ -219,16 +243,17 @@ extension AddScheduleView{
             ForEach(0..<links.count, id: \.self) { index in
                 VStack(alignment: .leading){
                     TextField("링크명",text: $linktitles[index])
+                        .padding(.vertical,3).environment(\.colorScheme, .light)
                     HStack(spacing: 0) {
                         Image(systemName: "link")
                         CustomTextField(placeholder: "링크\(index + 1)", isSecure: false, color: .gray, text: $links[index])
                     }
                 }
-           }
+            }
         }
         .font(.subheadline)
         .padding(.horizontal)
-       
+        
     }
 }
 
