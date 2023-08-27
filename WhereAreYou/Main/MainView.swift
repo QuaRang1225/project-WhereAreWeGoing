@@ -65,14 +65,10 @@ struct MainView: View {
             .bold().padding(.bottom,10)
             Divider()
             ScrollView{
+                Text("내 프로필").font(.subheadline).padding(.leading)
+                    .bold()
+                    .frame(maxWidth: .infinity,alignment: .leading).padding(.top,30)
                 VStack(spacing: 0){
-                    Text("내 프로필").font(.subheadline).padding(.leading)
-                        .bold()
-                        .frame(maxWidth: .infinity,alignment: .leading)
-                    
-                   
-                    Divider()
-                        .padding(5)
                     NavigationStack{
                         if let user = vmAuth.user{
                             ProfileRowView(image: user.profileImageUrl ?? "", name:user.nickName ?? "", email: user.email ?? "")
@@ -85,10 +81,10 @@ struct MainView: View {
                         }
                        
                     }
-                }.background(Color.white.frame(height: 130)
+                }.background(Color.white.frame(height: 100)
                     .cornerRadius(10).shadow(radius: 1, y: 2))
                 .padding(5)
-                .padding(.top,40)
+                .padding(.top,15)
                 VStack(alignment: .leading){
                     Text("내 일정").font(.subheadline).bold()
                         .padding(.top,30)
