@@ -49,15 +49,7 @@ final class PageManager{
         let field = userPageDocumentCollection(userId: userId).document(pageId).collection("schedule").document()
         let schduleId = field.documentID
           
-        //--------------
-//        var linkData: [String: String] = [:]
-//
-//        if let linkArray = schedule.link {
-//            for link in linkArray {
-//                linkData[link.title] = link.link
-//            }
-//        }
-        //-----------
+
         let data:[String:Any] = [
             "id" : schduleId,
             "image_url" : url,

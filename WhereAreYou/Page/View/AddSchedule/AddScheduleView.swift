@@ -7,7 +7,7 @@
 
 import SwiftUI
 import PhotosUI
-import Firebase
+//import Firebase
 import FirebaseFirestore
 
 struct AddScheduleView: View {
@@ -134,25 +134,12 @@ extension AddScheduleView{
                     if !text.isEmpty,!title.isEmpty,startDate != endDate{
                         Button {
                             progress = true
-                            
-//                            for index in 0..<min(links.count, linktitles.count) {
-//                                let link = Link(title: linktitles[index], link: links[index])
-//                                if !link.title.isEmpty,!link.title.isEmpty{
-//                                    linksArr.append(link)
-//                                }
-//
-//                            }
                             for index in 0..<min(links.count, linktitles.count) {
-                                
-//                                if !link.title.isEmpty,!link.title.isEmpty{
-//                                    
-//                                }
                                 linksArr[linktitles[index]] = links[index]
                                 
                             }
-                            
                             if let user  = vmAuth.user,let page = vm.page{
-                                let schedule = Schedule(day: dateSelection + 1, category: locationSelect.name, title: title, startTime: startDate.toTimestamp(), endTime: endDate.toTimestamp(), content: text, location: GeoPoint(latitude: (location.pickedPlaceMark?.location?.coordinate.latitude)!, longitude: (location.pickedPlaceMark?.location?.coordinate.longitude)!),link: linksArr)
+                                let schedule = Schedule(id:"",day: dateSelection + 1, category: locationSelect.name, title: title, startTime: startDate.toTimestamp(), endTime: endDate.toTimestamp(), content: text, location: GeoPoint(latitude: (location.pickedPlaceMark?.location?.coordinate.latitude)!, longitude: (location.pickedPlaceMark?.location?.coordinate.longitude)!),link: linksArr)
                                 
                                 vm.creagteShcedule(user: user, pageId: page.pageId, schedule: schedule)
                             }

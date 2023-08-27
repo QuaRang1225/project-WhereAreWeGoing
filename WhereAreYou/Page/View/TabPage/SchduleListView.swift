@@ -91,7 +91,7 @@ extension SchduleListView{
                         }
                     } label: {
                         VStack{
-                            ScheduleRowView(schedule: schedule,binding: schedule == binding ?  .constant(true) : .constant(false))
+                            ScheduleRowView(schedule: schedule,binding: schedule == binding ?  .constant(true) : .constant(false)).padding(.top,5)
                             Divider()
                         }
                         
