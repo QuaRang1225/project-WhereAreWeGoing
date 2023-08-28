@@ -24,9 +24,10 @@ struct SchduleListView: View {
    var body: some View {
        ZStack{
            VStack {
+               Text("\(time.dateValue().toString())")
                datePicker
                Spacer()
-               if vm.schedules.isEmpty{
+               if days.isEmpty{
                    emptyView
                }else{
                    scheduleList
@@ -40,8 +41,8 @@ struct SchduleListView: View {
                vm.getSchedule(user: user, pageId: page.pageId)
            }
        }
-       .onChange(of: date){ newValue in
-           print(newValue + 1)
+       .onChange(of: date) { newValue in
+           time = page.dateRange[date]
        }
    }
        
@@ -83,7 +84,6 @@ extension SchduleListView{
     var scheduleList:some View{
         VStack(spacing: 0){
             ForEach(days,id: \.self){ schedule in
-               
                 HStack{
                     Circle()
                         .frame(width: 20,height: 20)
