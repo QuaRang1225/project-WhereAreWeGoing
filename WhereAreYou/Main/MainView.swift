@@ -35,30 +35,8 @@ struct MainView: View {
                     .resizable()
                     .frame(width: 120,height: 30)
                 Spacer()
-                NavigationLink{
-                    SearchView()
-                }label: {
-                    Circle()
-                        .frame(width: 40,height: 40)
-                        .shadow(radius: 3)
-                        .foregroundColor(.white)
-                        .overlay{
-                            Image(systemName: "magnifyingglass")
-                        }
-                }
-                NavigationLink {
-                    SelectTypeView()
-                        .environmentObject(vmAuth)
-                        .navigationBarBackButtonHidden()
-                } label: {
-                    Circle()
-                        .frame(width: 40,height: 40)
-                        .foregroundColor(.white)
-                        .shadow(radius: 3)
-                        .overlay{
-                            Image(systemName: "plus.viewfinder")
-                        }
-                }
+               
+                
             }
             .font(.title3)
             .padding(.horizontal)
@@ -82,12 +60,87 @@ struct MainView: View {
                        
                     }
                 }.background(Color.white.frame(height: 100)
-                    .cornerRadius(10).shadow(radius: 1, y: 2))
-                .padding(5)
+                    .cornerRadius(10).shadow(radius: 0.5, y: 1))
+                .padding(10)
                 .padding(.top,15)
+                
+                NavigationLink{
+                    SearchView()
+                }label: {
+                    Capsule()
+                        .frame(height: 50)
+                        .shadow(radius: 1)
+                        .foregroundColor(.white)
+                        .overlay(alignment:.leading){
+                            HStack{
+                                Image(systemName: "magnifyingglass")
+                                    .padding(.leading)
+                                Text("찾으시는 페이지가 있으세요?").font(.subheadline).foregroundColor(.gray.opacity(0.5))
+                            }
+                        }
+                }.padding(.top,30).padding(.horizontal,10)
+                HStack{
+                    NavigationLink {
+                        SelectTypeView()
+                            .environmentObject(vmAuth)
+                            .navigationBarBackButtonHidden()
+                    } label: {
+                        RoundedRectangle(cornerRadius: 10)
+                            .frame(height: 100)
+                            .foregroundColor(.cyan.opacity(0.1))
+                            .shadow(radius: 1)
+                            .overlay{
+                                Circle()
+                                    .overlay{
+                                        Circle()
+                                            .offset(x:40)
+                                            .padding()
+                                    }
+                                    .overlay{
+                                        Circle()
+                                            .offset(x:-40)
+                                            .padding(25)
+                                    }
+                                    .foregroundColor(.white)
+                                    .padding(10)
+                                HStack{
+                                    Image("travel")
+                                        .resizable()
+                                        .frame(width: 30, height: 30)
+                                        .background(alignment:.bottom){
+                                            Ellipse()
+                                                .frame(height:3)
+                                                .foregroundColor(.black.opacity(0.5))
+                                                .offset(y:1)
+                                        }
+                                    Text("여행추가")
+                                       .bold()
+                                }
+                                
+                            }
+                    }
+                    Button {
+                        
+                    } label: {
+                        RoundedRectangle(cornerRadius: 10)
+                            .frame(height: 100)
+                            .foregroundColor(.white)
+                            .shadow(radius: 0.3)
+                            .overlay{
+                                HStack{
+                                    Image("calender")
+                                        .resizable()
+                                        .frame(width: 30, height: 30)
+                                    Text("일정확인")
+                                        .bold()
+                                }
+                            }
+                    }
+
+                }.padding(.horizontal,10).padding(.top,10)
                 VStack(alignment: .leading){
                     Text("내 일정").font(.subheadline).bold()
-                        .padding(.top,30)
+          
                         ScrollView(.horizontal,showsIndicators: false){
                             HStack{
                                 ForEach(TravelFilter.allCases,id:\.self){ item in
@@ -116,6 +169,7 @@ struct MainView: View {
                     .font(.body)
                     .frame(maxWidth: .infinity,alignment: .leading)
                 }.padding(.horizontal,7.5)
+                    .padding(.top,10)
                 
                 VStack(spacing:0){
                     ForEach(selectFilter,id:\.self){ page in
@@ -132,7 +186,7 @@ struct MainView: View {
                         }
                     
                     }
-                    .padding(5)
+                    .padding(10)
                     
                     
                 }

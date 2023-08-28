@@ -93,27 +93,8 @@ extension PageMainView{
         .frame(maxHeight: .infinity,alignment: .top)
     }
     var tabBar:some View{
-        VStack(alignment: .trailing){
-            if pageMode == .schedule{
-                Button {
-                    isSearch = true
-                } label: {
-                    Circle()
-                        .foregroundColor(.white)
-                        .frame(width: 80,height: 80)
-                        .shadow(radius: 10)
-                        .overlay {
-                            VStack{
-                                Image(systemName: "plus.app.fill")
-                                    .font(.largeTitle)
-                                Text("일정 추가")
-                                    .font(.caption)
-                            }.foregroundColor(.customCyan2)
-                            
-                        }
-                }
-                .padding()
-            }
+        VStack(alignment: .leading){
+            
             
             VStack{
                 Divider()
@@ -163,24 +144,47 @@ extension PageMainView{
                                     UIScreen.main.bounds.height/3
                             )
             }
-            VStack(alignment: .trailing,spacing: 5){
-                HStack{
-                    if page.pageOverseas{
-                        Text("🌏")
-                    }else{
-                        Text("🇰🇷")
-                    }
-                    Text(page.pageName)
-                        .font(.title)
-                        .bold()
+            HStack(alignment: .bottom){
+                Button {
+                    isSearch = true
+                } label: {
+                    RoundedRectangle(cornerRadius: 10)
+                        .foregroundColor(.white)
+                        .frame(width: 100,height: 40)
+                        .shadow(radius: 10)
+                        .overlay {
+                            HStack{
+                                Image(systemName: "plus.app.fill")
+                                    .font(.body)
+                                Text("일정 추가")
+                                    .font(.caption)
+                                    .bold()
+                            }.foregroundColor(.customCyan2)
+                            
+                        }
                 }
-                
-                Text(page.pageSubscript)
-                    .font(.callout)
+                .padding()
+                Spacer()
+                VStack(alignment: .trailing,spacing: 5){
+                    HStack{
+                        if page.pageOverseas{
+                            Text("🌏")
+                        }else{
+                            Text("🇰🇷")
+                        }
+                        Text(page.pageName)
+                            .font(.title)
+                            .bold()
+                    }
+                    
+                    Text(page.pageSubscript)
+                        .font(.callout)
+                }
+                .foregroundColor(.white)
+                .padding(.trailing)
+                .offset(y:-10)
             }
-            .foregroundColor(.white)
-            .padding(.trailing)
-            .offset(y:-10)
+            
             
            
         }
