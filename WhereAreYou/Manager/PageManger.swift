@@ -40,7 +40,6 @@ final class PageManager{
             "date_range":pageInfo.dateRange,
             
         ]
-        print(document.documentID)
         try await document.setData(data,merge: false)
         
     }
@@ -53,7 +52,6 @@ final class PageManager{
         let data:[String:Any] = [
             "id" : schduleId,
             "image_url" : url,
-            "day" : schedule.day,
             "category" : schedule.category,
             "title" : schedule.title,
             "start_time" : schedule.startTime,

@@ -6,13 +6,11 @@
 //
 
 import Foundation
-import Firebase
 import FirebaseFirestore
 
 struct Schedule:Codable,Hashable{
     var id:String
     var imageUrl:String?
-    var day:Int
     var category:String
     var title:String
     var startTime:Timestamp
@@ -25,7 +23,6 @@ struct Schedule:Codable,Hashable{
     enum CodingKeys:String,CodingKey{
         case id
         case imageUrl = "image_url"
-        case day
         case category
         case title
         case startTime = "start_time"

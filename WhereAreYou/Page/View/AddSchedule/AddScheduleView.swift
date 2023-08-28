@@ -139,7 +139,7 @@ extension AddScheduleView{
                                 
                             }
                             if let user  = vmAuth.user,let page = vm.page{
-                                let schedule = Schedule(id:"",day: dateSelection + 1, category: locationSelect.name, title: title, startTime: startDate.toTimestamp(), endTime: endDate.toTimestamp(), content: text, location: GeoPoint(latitude: (location.pickedPlaceMark?.location?.coordinate.latitude)!, longitude: (location.pickedPlaceMark?.location?.coordinate.longitude)!),link: linksArr)
+                                let schedule = Schedule(id:"", category: locationSelect.name, title: title, startTime: startDate.toTimestamp(), endTime: endDate.toTimestamp(), content: text, location: GeoPoint(latitude: (location.pickedPlaceMark?.location?.coordinate.latitude)!, longitude: (location.pickedPlaceMark?.location?.coordinate.longitude)!),link: linksArr)
                                 
                                 vm.creagteShcedule(user: user, pageId: page.pageId, schedule: schedule)
                             }
@@ -242,5 +242,6 @@ extension AddScheduleView{
         .padding(.horizontal)
         
     }
+    
 }
 

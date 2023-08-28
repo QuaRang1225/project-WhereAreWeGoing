@@ -68,23 +68,21 @@ class PageViewModel:ObservableObject{
             schedules = try await PageManager.shared.getAllSchedule(userId: user.userId, pageId: pageId)
         }
     }
-    func generateTimestamp(from startDate: Date, to endDate: Date) -> [Date] {
-        var datesArray: [Date] = []
+    
+    func generateTimestamp(from: Date, to: Date) -> [Date] {
+        var currentDate = from
+        var dateArray: [Date] = []
         let calendar = Calendar.current
-
-        var currentDate = startDate
-        while currentDate <= endDate {
-            let dateString = currentDate
-            datesArray.append(dateString)
-            if let nextDate = calendar.date(byAdding: .day, value: 1, to: currentDate) {
-                currentDate = nextDate
-            } else {
-                break
-            }
+        
+        while currentDate <= to {
+            let midnightDate = calendar.date(bySettingHour: 0, minute: 0, second: 0, of: currentDate)!
+            dateArray.append(midnightDate)
+            currentDate = calendar.date(byAdding: .day, value: 1, to: currentDate)!
         }
-
-        return datesArray
+        
+        return dateArray
     }
+
 }
 
 
