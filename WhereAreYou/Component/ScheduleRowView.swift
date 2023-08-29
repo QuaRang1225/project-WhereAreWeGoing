@@ -12,6 +12,7 @@ import CoreLocation
 struct ScheduleRowView: View {
     let schedule:Schedule
     @Binding var binding:Bool
+    @EnvironmentObject var vm:PageViewModel
     @StateObject var location = LocationMagager()
     var body: some View {
         VStack(alignment: .leading){
@@ -60,7 +61,9 @@ struct ScheduleRowView: View {
                     
                 }
                 NavigationLink {
-                    
+                    ScheduleMapView(schedule: schedule)
+                        .environmentObject(vm)
+                        .navigationBarBackButtonHidden()
                 } label: {
                     HStack(spacing:2){
                         Image("where")
@@ -71,9 +74,6 @@ struct ScheduleRowView: View {
                     }.font(.caption)
                         .foregroundColor(.black)
                 }
-
-                
-                
                 .padding(.bottom,5)
                 Text("내용 : \(schedule.content)")
             }
@@ -91,7 +91,7 @@ struct ScheduleRowView: View {
 
 struct ScheduleRowView_Previews: PreviewProvider {
     static var previews: some View {
-        ScheduleRowView(schedule: CustomDataSet.shared.schedule(),binding: .constant(true))
+        ScheduleRowView(schedule: CustomDataSet.shared.schedule(),binding: .constant(true)).environmentObject(PageViewModel())
     }
 }
 

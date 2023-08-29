@@ -8,7 +8,7 @@
 import Foundation
 import FirebaseFirestore
 
-struct Schedule:Codable,Hashable{
+struct Schedule:Codable,Hashable,Identifiable{
     var id:String
     var imageUrl:String?
     var category:String
