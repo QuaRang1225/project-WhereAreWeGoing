@@ -14,6 +14,11 @@ extension Date {
         dateFormatter.dateFormat = "yyyy년 MM월 dd일"
         return dateFormatter.string(from: self)
     }
+    func toStringCalender() -> String {
+        let dateFormatter = DateFormatter()
+        dateFormatter.dateFormat = "yyyy-MM-dd"
+        return dateFormatter.string(from: self)
+    }
     func toTimeString() -> String{
         let dateFormatter = DateFormatter()
         dateFormatter.timeStyle = .short

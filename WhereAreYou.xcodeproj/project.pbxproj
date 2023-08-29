@@ -14,6 +14,7 @@
 		81234CD72A5BC898007D9BB6 /* InfoSettingTabView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 81234CD62A5BC898007D9BB6 /* InfoSettingTabView.swift */; };
 		81234CD92A5BE84E007D9BB6 /* StorageManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 81234CD82A5BE84E007D9BB6 /* StorageManager.swift */; };
 		81234CDC2A5C43E7007D9BB6 /* Kingfisher in Frameworks */ = {isa = PBXBuildFile; productRef = 81234CDB2A5C43E7007D9BB6 /* Kingfisher */; };
+		8124AAC32A9DE1ED006DE03A /* exUIImage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8124AAC22A9DE1ED006DE03A /* exUIImage.swift */; };
 		813F523E2A594B5C00833427 /* AuthManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 813F523D2A594B5C00833427 /* AuthManager.swift */; };
 		813F52412A594CF800833427 /* AuthData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 813F52402A594CF800833427 /* AuthData.swift */; };
 		813F52432A595AC500833427 /* AuthViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 813F52422A595AC500833427 /* AuthViewModel.swift */; };
@@ -64,6 +65,8 @@
 		81D7B1DE2A5D450700D5AACD /* ProfileRowView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 81D7B1DD2A5D450700D5AACD /* ProfileRowView.swift */; };
 		81D7B1E02A5D4ADA00D5AACD /* CustomDataSet.swift in Sources */ = {isa = PBXBuildFile; fileRef = 81D7B1DF2A5D4ADA00D5AACD /* CustomDataSet.swift */; };
 		81D7B1E32A5D8FD100D5AACD /* SearchView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 81D7B1E22A5D8FD100D5AACD /* SearchView.swift */; };
+		81F0B4952A9DB49200E58629 /* CalenderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 81F0B4942A9DB49200E58629 /* CalenderView.swift */; };
+		81F0B4982A9DB62700E58629 /* FSCalendar in Frameworks */ = {isa = PBXBuildFile; productRef = 81F0B4972A9DB62700E58629 /* FSCalendar */; };
 		81FEF6002A70C9390000B76B /* MemberTabView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 81FEF5FF2A70C9390000B76B /* MemberTabView.swift */; };
 		81FEF6042A70CEB60000B76B /* SchduleListView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 81FEF6032A70CEB60000B76B /* SchduleListView.swift */; };
 		81FEF6062A70F59B0000B76B /* exString.swift in Sources */ = {isa = PBXBuildFile; fileRef = 81FEF6052A70F59B0000B76B /* exString.swift */; };
@@ -101,6 +104,7 @@
 		8115A6512A83CFDA00B7C3FE /* ScheduleRowView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ScheduleRowView.swift; sourceTree = "<group>"; };
 		81234CD62A5BC898007D9BB6 /* InfoSettingTabView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InfoSettingTabView.swift; sourceTree = "<group>"; };
 		81234CD82A5BE84E007D9BB6 /* StorageManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StorageManager.swift; sourceTree = "<group>"; };
+		8124AAC22A9DE1ED006DE03A /* exUIImage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = exUIImage.swift; sourceTree = "<group>"; };
 		813F523D2A594B5C00833427 /* AuthManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuthManager.swift; sourceTree = "<group>"; };
 		813F52402A594CF800833427 /* AuthData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuthData.swift; sourceTree = "<group>"; };
 		813F52422A595AC500833427 /* AuthViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuthViewModel.swift; sourceTree = "<group>"; };
@@ -151,6 +155,7 @@
 		81D7B1DD2A5D450700D5AACD /* ProfileRowView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileRowView.swift; sourceTree = "<group>"; };
 		81D7B1DF2A5D4ADA00D5AACD /* CustomDataSet.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomDataSet.swift; sourceTree = "<group>"; };
 		81D7B1E22A5D8FD100D5AACD /* SearchView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchView.swift; sourceTree = "<group>"; };
+		81F0B4942A9DB49200E58629 /* CalenderView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CalenderView.swift; sourceTree = "<group>"; };
 		81FEF5FF2A70C9390000B76B /* MemberTabView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MemberTabView.swift; sourceTree = "<group>"; };
 		81FEF6032A70CEB60000B76B /* SchduleListView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SchduleListView.swift; sourceTree = "<group>"; };
 		81FEF6052A70F59B0000B76B /* exString.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = exString.swift; sourceTree = "<group>"; };
@@ -174,6 +179,7 @@
 				81234CDC2A5C43E7007D9BB6 /* Kingfisher in Frameworks */,
 				81D5BCD52A4FF0B7001842FD /* FirebaseAuth in Frameworks */,
 				81D5BCDB2A4FF0B7001842FD /* FirebaseStorage in Frameworks */,
+				81F0B4982A9DB62700E58629 /* FSCalendar in Frameworks */,
 				81D5BCD92A4FF0B7001842FD /* FirebaseFirestoreSwift in Frameworks */,
 				81CE1AF82A5A588000ED87FF /* FirebaseFirestore in Frameworks */,
 			);
@@ -246,6 +252,7 @@
 				81BA3E122A6FA7A900D38E93 /* exQuery.swift */,
 				81FEF6052A70F59B0000B76B /* exString.swift */,
 				81FEF6072A70F5A10000B76B /* exDate.swift */,
+				8124AAC22A9DE1ED006DE03A /* exUIImage.swift */,
 			);
 			path = Extension;
 			sourceTree = "<group>";
@@ -396,6 +403,7 @@
 				81FEF61B2A739EC70000B76B /* ShceduleCategoryRowView.swift */,
 				8115A6382A835B1900B7C3FE /* CustomProgressView.swift */,
 				8115A6512A83CFDA00B7C3FE /* ScheduleRowView.swift */,
+				81F0B4942A9DB49200E58629 /* CalenderView.swift */,
 			);
 			path = Component;
 			sourceTree = "<group>";
@@ -485,6 +493,7 @@
 				81CE1AF52A5A57D900ED87FF /* FirebaseAnalyticsSwift */,
 				81CE1AF72A5A588000ED87FF /* FirebaseFirestore */,
 				81234CDB2A5C43E7007D9BB6 /* Kingfisher */,
+				81F0B4972A9DB62700E58629 /* FSCalendar */,
 			);
 			productName = WhereAreYou;
 			productReference = 81C2A53D2A9A12A900F33076 /* WhereAreYou.app */;
@@ -561,6 +570,7 @@
 			packageReferences = (
 				81D5BCD12A4FF0B6001842FD /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */,
 				81234CDA2A5C43E7007D9BB6 /* XCRemoteSwiftPackageReference "Kingfisher" */,
+				81F0B4962A9DB62700E58629 /* XCRemoteSwiftPackageReference "FSCalendar" */,
 			);
 			productRefGroup = 81D5BC992A4FE9F5001842FD;
 			projectDirPath = "";
@@ -632,6 +642,7 @@
 				81D5BCDF2A4FF2A3001842FD /* StartView.swift in Sources */,
 				817268082A6A4ED70038BE70 /* SelectTypeView.swift in Sources */,
 				81D5BCA82A4FE9F5001842FD /* ContentView.swift in Sources */,
+				8124AAC32A9DE1ED006DE03A /* exUIImage.swift in Sources */,
 				81D5BCFC2A501C65001842FD /* CustomPhotoPicker.swift in Sources */,
 				81D5BCE82A4FF5C3001842FD /* SelectButton.swift in Sources */,
 				81D7B1E32A5D8FD100D5AACD /* SearchView.swift in Sources */,
@@ -643,6 +654,7 @@
 				81D5BCE52A4FF51E001842FD /* LoginView.swift in Sources */,
 				81FEF61A2A73986C0000B76B /* LocationCategory.swift in Sources */,
 				81D5BCF12A500586001842FD /* EmailAddress.swift in Sources */,
+				81F0B4952A9DB49200E58629 /* CalenderView.swift in Sources */,
 				81D5BCF52A501049001842FD /* RegisterView.swift in Sources */,
 				813F52432A595AC500833427 /* AuthViewModel.swift in Sources */,
 				81D7B1DE2A5D450700D5AACD /* ProfileRowView.swift in Sources */,
@@ -1018,6 +1030,14 @@
 				minimumVersion = 10.0.0;
 			};
 		};
+		81F0B4962A9DB62700E58629 /* XCRemoteSwiftPackageReference "FSCalendar" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/WenchaoD/FSCalendar.git";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 2.0.0;
+			};
+		};
 /* End XCRemoteSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
@@ -1055,6 +1075,11 @@
 			isa = XCSwiftPackageProductDependency;
 			package = 81D5BCD12A4FF0B6001842FD /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */;
 			productName = FirebaseStorage;
+		};
+		81F0B4972A9DB62700E58629 /* FSCalendar */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 81F0B4962A9DB62700E58629 /* XCRemoteSwiftPackageReference "FSCalendar" */;
+			productName = FSCalendar;
 		};
 /* End XCSwiftPackageProductDependency section */
 	};
