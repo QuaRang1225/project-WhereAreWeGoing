@@ -81,11 +81,6 @@ struct AddScheduleView: View {
                                     .allowsHitTesting(false)
                             }
                         }
-                        .onSubmit(of: .text) {
-                            if text.contains("\n") {
-                                text = text.replacingOccurrences(of: "\n", with: "\\n")
-                            }
-                        }
                         .environment(\.colorScheme, .light)
                         .padding()
                     
@@ -136,13 +131,14 @@ extension AddScheduleView{
                             progress = true
                             for index in 0..<min(links.count, linktitles.count) {
                                 linksArr[linktitles[index]] = links[index]
-                                
+
                             }
                             if let user  = vmAuth.user,let page = vm.page{
-                                let schedule = Schedule(id:"", category: locationSelect.name, title: title, startTime: startDate.toTimestamp(), endTime: endDate.toTimestamp(), content: text, location: GeoPoint(latitude: (location.pickedPlaceMark?.location?.coordinate.latitude)!, longitude: (location.pickedPlaceMark?.location?.coordinate.longitude)!),link: linksArr)
-                                
+                                let schedule = Schedule(id:"", category: locationSelect.name, title: title, startTime: startDate.toTimestamp(), endTime: endDate.toTimestamp(), content: text.replacingOccurrences(of: "\n", with: "\\n"), location: GeoPoint(latitude: (location.pickedPlaceMark?.location?.coordinate.latitude)!, longitude: (location.pickedPlaceMark?.location?.coordinate.longitude)!),link: linksArr)
+
                                 vm.creagteShcedule(user: user, pageId: page.pageId, schedule: schedule)
                             }
+                            print(text)
                         } label: {
                             Text("작성")
                         }

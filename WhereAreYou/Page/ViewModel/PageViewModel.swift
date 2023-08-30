@@ -22,7 +22,7 @@ class PageViewModel:ObservableObject{
     @Published var data:Data? = nil
     @Published var selection:PhotosPickerItem? = nil
     
-    
+    @Published var copy = false
     var createPageSuccess = PassthroughSubject<(),Never>()
     var createScheduleSuccess = PassthroughSubject<(),Never>()
     
@@ -81,6 +81,16 @@ class PageViewModel:ObservableObject{
         }
         
         return dateArray
+    }
+    func copyToPasteboard(text:String) {
+        UIPasteboard.general.string = text
+            
+        copy = true
+        DispatchQueue.main.asyncAfter(deadline: .now() + 2) {
+            withAnimation {
+                self.copy = false
+            }
+        }
     }
 
 }

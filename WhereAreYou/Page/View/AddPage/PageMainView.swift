@@ -41,9 +41,23 @@ struct PageMainView: View {
             .foregroundColor(.black)
             .background(Color.white)
             .edgesIgnoringSafeArea(.top)
+            .padding(.bottom,30)
             header
             tabBar
-            
+            if vm.copy{
+                Text("클립보드에 복사되었습니다.")
+                    .font(.caption)
+                    .foregroundColor(.white)
+                    .padding(.horizontal)
+                    .padding(5)
+                    .background{
+                        Capsule()
+                            .foregroundColor(.black)
+                            .opacity(0.5)
+                    }
+                    .padding(.bottom)
+                    
+            }
         }
         .navigationDestination(isPresented: $isSearch){
             SearchAddressView(isSearch: $isSearch)

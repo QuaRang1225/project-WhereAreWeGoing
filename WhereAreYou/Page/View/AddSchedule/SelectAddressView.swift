@@ -11,7 +11,7 @@ struct SelectAddressView: View {
     
     @EnvironmentObject var vm:PageViewModel
     @EnvironmentObject var vmAuth:AuthViewModel
-    @State var copy = false
+   
     @EnvironmentObject var location:LocationMagager
     @State var isShcedule = false
     @Binding var isPage:Bool
@@ -36,7 +36,7 @@ struct SelectAddressView: View {
                     
                 if !location.isChanged{
                     VStack{
-                        if copy{
+                        if vm.copy{
                             Text("클립보드에 복사되었습니다.")
                                 .font(.caption)
                                 .foregroundColor(.white)
@@ -56,7 +56,7 @@ struct SelectAddressView: View {
                             .overlay {
                                 VStack(alignment: .trailing){
                                     Button {
-                                        copyToPasteboard(text: "\(location.pickedPlaceMark?.thoroughfare ?? "") \(location.pickedPlaceMark?.subThoroughfare ?? "")")
+                                        vm.copyToPasteboard(text: "\(location.pickedPlaceMark?.thoroughfare ?? "") \(location.pickedPlaceMark?.subThoroughfare ?? "")")
                                     } label: {
                                         HStack{
                                             Text("주소 복사")
@@ -157,14 +157,5 @@ extension SelectAddressView{
         .foregroundColor(.black)
         
     }
-    func copyToPasteboard(text:String) {
-        UIPasteboard.general.string = text
-            
-        copy = true
-        DispatchQueue.main.asyncAfter(deadline: .now() + 2) {
-            withAnimation {
-                copy = false
-            }
-        }
-    }
+    
 }

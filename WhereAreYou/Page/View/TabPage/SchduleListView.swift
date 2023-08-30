@@ -83,6 +83,7 @@ extension SchduleListView{
     }
     var scheduleList:some View{
         VStack(spacing: 0){
+            
             ForEach(days,id: \.self){ schedule in
                 HStack{
                     Circle()

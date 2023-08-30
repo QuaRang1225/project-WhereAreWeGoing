@@ -22,13 +22,13 @@ struct ScheduleRowView: View {
                         placeholder
                     }
                     .resizable()
-                    .frame(width: binding ? 200:100,height: binding ? 200:100)
+                    .frame(width:100,height: 100)
                     .cornerRadius(20)
                 Spacer()
                 VStack(alignment: .trailing){
                     Text(schedule.title)
                         .bold()
-                        .font(binding ? .title2:.body)
+                        .font(.body)
                         .padding(.bottom,2)
                     HStack{
                         ForEach(LocationCategoryFilter.allCases,id: \.self){ filter in
@@ -38,7 +38,7 @@ struct ScheduleRowView: View {
                         }
                         Text(schedule.category)
                     }
-                    .font(binding ? .body:.caption)
+                    .font(.caption)
                     .foregroundColor(.gray)
                     .padding(.bottom,5)
                     
@@ -49,17 +49,23 @@ struct ScheduleRowView: View {
             }
             if binding{
                 
-                HStack(spacing: 2){
-                    Text("상세주소 : ").bold()
-                    HStack{
-                        if location.pickedPlaceMark?.administrativeArea != location.pickedPlaceMark?.locality{
-                            Text(location.pickedPlaceMark?.locality ?? "")
-                        }   //서울특별시
-                        Text(location.pickedPlaceMark?.thoroughfare ?? "")
-                        Text(location.pickedPlaceMark?.subThoroughfare ?? "")
-                    }.foregroundColor(.gray)
-                    
+                
+                Button {
+                    vm.copyToPasteboard(text: "\(location.pickedPlaceMark?.administrativeArea != location.pickedPlaceMark?.locality ? location.pickedPlaceMark?.locality ?? "": "") \(location.pickedPlaceMark?.thoroughfare ?? "") \(location.pickedPlaceMark?.subThoroughfare ?? "")")
+                } label: {
+                    HStack(spacing: 2){
+                        Text("주소: ").bold()
+                        HStack{
+                            if location.pickedPlaceMark?.administrativeArea != location.pickedPlaceMark?.locality{
+                                Text(location.pickedPlaceMark?.locality ?? "")
+                            }   //서울특별시
+                            Text(location.pickedPlaceMark?.thoroughfare ?? "")
+                            Text(location.pickedPlaceMark?.subThoroughfare ?? "")
+                        }
+                        Image(systemName: "link")
+                    }.foregroundColor(.gray).font(.caption)
                 }
+
                 NavigationLink {
                     ScheduleMapView(schedule: schedule)
                         .environmentObject(vm)
@@ -68,14 +74,27 @@ struct ScheduleRowView: View {
                     HStack(spacing:2){
                         Image("where")
                             .resizable()
-                            .frame(width: 10,height: 15)
+                            .frame(width: 15,height: 20)
                         Text("지도로 보기")
                         Image(systemName: "chevron.right")
-                    }.font(.caption)
+                    }.font(.subheadline)
                         .foregroundColor(.black)
                 }
                 .padding(.bottom,5)
-                Text("내용 : \(schedule.content)")
+                VStack(alignment: .leading){
+                    Text("내용")
+                        .font(.body)
+                        .bold()
+                        .padding(.bottom,5)
+                    Text("\(schedule.content)".replacingOccurrences(of: "\\n", with: "\n"))
+                }
+               
+                    .frame(maxWidth: .infinity,alignment:.leading)
+                    .padding(10)
+                    .padding(.vertical)
+                    .multilineTextAlignment(.leading).font(.subheadline)
+                    .background(Color.gray.opacity(0.1))
+                
             }
             
         }
@@ -111,7 +130,7 @@ extension ScheduleRowView{
                     .foregroundColor(.gray)
                     RoundedRectangle(cornerRadius: 15)
                         .stroke(lineWidth: 5)
-                        .frame(width: binding ? 200:100,height: binding ? 200:100)
+                        .frame(width: 100,height:100)
                         .foregroundColor(.white)
                     
                 }
