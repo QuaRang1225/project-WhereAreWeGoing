@@ -13,6 +13,8 @@ import FirebaseFirestore
 
 struct ScheduleMapView: View {
     
+   
+    @State var currentIndex = 0
     @State var schedule:Schedule
     @State var region = MKCoordinateRegion()
     @Environment(\.dismiss) var dismiss
@@ -86,7 +88,7 @@ struct ScheduleMapView: View {
                                     .clipShape(Circle())
                                 
                                 VStack(alignment: .leading,spacing: 5){
-                                    Text("랜디스도넛")
+                                    Text(schedule.title)
                                         .bold()
                                         .font(.title3)
                                     Text(LocationCategoryFilter.allCases.first(where: {$0.name == schedule.category})?.name ?? "")
@@ -101,12 +103,34 @@ struct ScheduleMapView: View {
                             }
                             .foregroundColor(.black)
                             .font(.subheadline)
+                            HStack{
+                                VStack(alignment: .leading){
+                                    Text("일정 시작 : \(schedule.startTime.dateValue().toTimeString())")
+                                    Text("일정 끝 : \(schedule.endTime.dateValue().toTimeString())")
+                                }.font(.title3)
+                                Spacer()
+                                Button {
+                                    withAnimation(.linear){
+                                        currentIndex = (currentIndex - 1 + vm.schedules.count) % vm.schedules.count
+                                        schedule = vm.schedules[currentIndex]
+                                        region = MKCoordinateRegion(center:CLLocationCoordinate2D(latitude: schedule.location.latitude, longitude: schedule.location.longitude), span: location.mySpan)
+                                    }
+                                } label: {
+                                    Image(systemName: "chevron.left")
+                                }.font(.title2)
+                                    .padding(.trailing)
+                                Button {
+                                    withAnimation(.linear){
+                                        currentIndex = (currentIndex + 1) % vm.schedules.count
+                                        schedule = vm.schedules[currentIndex]
+                                        region = MKCoordinateRegion(center:CLLocationCoordinate2D(latitude: schedule.location.latitude, longitude: schedule.location.longitude), span: location.mySpan)
+                                    }
+                                } label: {
+                                    Image(systemName: "chevron.right")
+                                }.font(.title2)
+                            }
+                            .padding(.top,3)
                             .padding(.bottom)
-                            Group{
-                                Text("일정 시작 : \(schedule.startTime.dateValue().toTimeString())")
-                                Text("일정 끝 : \(schedule.endTime.dateValue().toTimeString())")
-                            }.font(.title3)
-                            
                         }
                         .padding()
                         .foregroundColor(.black)
