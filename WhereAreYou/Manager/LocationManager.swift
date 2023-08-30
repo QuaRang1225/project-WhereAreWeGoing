@@ -14,25 +14,28 @@ import Combine
 final class LocationMagager:NSObject,ObservableObject,CLLocationManagerDelegate,MKMapViewDelegate{
     
     private var manager = CLLocationManager()
-    var cancellable:AnyCancellable?
     
+    var regionSuccess = PassthroughSubject<(),Never>()
     var mySpan = MKCoordinateSpan(latitudeDelta: 0.001, longitudeDelta: 0.001)
+    var cancellable:AnyCancellable?
     @Published var mapRegion = MKCoordinateRegion()
-//    MKCoordinateRegion(center: CLLocationCoordinate2D(latitude: 36.3504119, longitude: 127.3845475), span: MKCoordinateSpan(latitudeDelta: 0.005, longitudeDelta: 0.005))
     
-    @Published var isChanged = false
-    @Published var searchText = ""
+    @Published var isChanged = false    //맵 움직임 감지 프로퍼티
+    @Published var searchText = ""  //검색 텍스트
     @Published var mapView = MKMapView()
-    @Published var fetchPlace:[CLPlacemark]?
-    @Published var pickedPlaceMark:CLPlacemark?
-    @Published var pickedLocation:CLLocation?
+    @Published var fetchPlace:[CLPlacemark]?        //사용자에게 보여줄 실질적인 위치 검색 리스트
+    @Published var pickedPlaceMark:CLPlacemark?     //주소
+    @Published var pickedLocation:CLLocation?       //좌표
+    @Published var mapCoordinate = CLLocationCoordinate2D()     //좌표(위도,경도)
     
     override init() {
         super.init()
-        manager.delegate = self
-        manager.desiredAccuracy = kCLLocationAccuracyBest
-        manager.requestWhenInUseAuthorization()
-        manager.startUpdatingLocation()
+        DispatchQueue.global(qos: .background).async {
+            self.manager.delegate = self
+            self.manager.desiredAccuracy = kCLLocationAccuracyBest   //정확도 최고로 설정
+            self.manager.requestWhenInUseAuthorization() //앱 사용중과 관계 없이 위치서비스 사용자권한 요청
+            self.manager.startUpdatingLocation()
+        }
         cancellable = $searchText
             .debounce(for: .seconds(0.5), scheduler: RunLoop.main)
             .removeDuplicates()
@@ -45,7 +48,8 @@ final class LocationMagager:NSObject,ObservableObject,CLLocationManagerDelegate,
             })
     }
     
-    func fetchPlaces(value:String){
+    //------------- 좌펴ㅛ -> 주소 변환 -------------------------
+    func fetchPlaces(value:String){ //들어온 값이 포함되어있는 주소들을 찾아서 비동기로 변수에 저장
         Task{
             let request = MKLocalSearch.Request()
             request.naturalLanguageQuery = value.lowercased()
@@ -57,74 +61,76 @@ final class LocationMagager:NSObject,ObservableObject,CLLocationManagerDelegate,
             })
         }
     }
-    func cheackLocation(){
-        DispatchQueue.global().async {
-            if CLLocationManager.locationServicesEnabled(){
-                self.cheackLocationAuthrization()
-            }else{
-                print("지도가 꺼져있음")
-            }
-        }
+    private func reverseLocationCoordinate(location:CLLocation)async throws -> CLPlacemark?{    //주소로 변한
+        let place = try await CLGeocoder().reverseGeocodeLocation(location).first
+        return place
     }
-    func updatePlacemark(location:CLLocation){
+    func updatePlacemark(location:CLLocation){  //주소 변경 메서드
         Task{
-            guard let place = try? await reverseLocationCoordinate(location: location) else {return}
+            guard let place = try? await reverseLocationCoordinate(location: location) else {return}    //변환한 주소 비동기로 변수에 저장
             await MainActor.run(body: {
                 self.pickedPlaceMark = place
             })
         }
     }
-    func reverseLocationCoordinate(location:CLLocation)async throws -> CLPlacemark?{
-        let place = try await CLGeocoder().reverseGeocodeLocation(location).first
-        return place
+    
+    
+    //--------------- 맵뷰 메서드 -----------------------
+    func mapViewDidChangeVisibleRegion(_ mapView: MKMapView) {  //맵 움직임 감지
+        DispatchQueue.main.async {
+            self.isChanged = true
+        }
+    }
+    func mapView(_ mapView: MKMapView, regionDidChangeAnimated: Bool) { //맵 움직임 멈춤 감지
+        let location: CLLocation = CLLocation(latitude: mapView.centerCoordinate.latitude, longitude: mapView.centerCoordinate.longitude)
+        
+        self.convertLocationToAddress(location: location)
+        DispatchQueue.main.async {
+            self.isChanged = false
+        }
     }
     
-    func cheackLocationAuthrization(){
-        switch manager.authorizationStatus{
+    
+    //--------------------- 변환 메서드 -----------------------
+    func convertLocationToAddress(location: CLLocation) {   //좌표를 주소로 변경
+        let geocoder = CLGeocoder()
+        let locale = Locale(identifier: "ko")
+        
+        geocoder.reverseGeocodeLocation(location,preferredLocale: locale) { placemarks, error in
+            guard error == nil else{ return }
+            
+            guard let placemark = placemarks?.first else { return }
+            self.pickedPlaceMark = placemark
+        }
+    }
+    
+    
+    //------------------- 네비게이션 버튼 및 본인 위치 호출 메서드 --------------------------------
+    private func cheackLocationAuthrization(){
+        switch self.manager.authorizationStatus{
         case .notDetermined:
-            manager.requestAlwaysAuthorization()
+            self.manager.requestAlwaysAuthorization()
         case .restricted:
             print("위치정보 제한")
         case .denied:
             print("위치정보 거부")
         case .authorizedAlways, .authorizedWhenInUse:
-            self.mapRegion = MKCoordinateRegion(center:self.manager.location!.coordinate, span: self.mySpan)
+            DispatchQueue.main.async {
+                self.mapCoordinate = self.manager.location!.coordinate
+            }
         @unknown default:
             break
         }
     }
-    
-    func locationManager(_ manager: CLLocationManager, didUpdateLocations locations: [CLLocation]) {
+    internal func locationManagerDidChangeAuthorization(_ manager: CLLocationManager){   //위치 서비스에 대한 권한 상태가 변경될 때 호출되는 델리게이트 메서드 (위치를 사용할때 호출 -- 로케이션 버튼)
+        self.cheackLocationAuthrization()
+        regionSuccess.send()
+    }
+    internal func locationManager(_ manager: CLLocationManager, didUpdateLocations locations: [CLLocation]) {    //현제 위치 불러오는 메서드
         locations.last.map {
             self.mapRegion = MKCoordinateRegion(
                 center: CLLocationCoordinate2D(latitude: $0.coordinate.latitude, longitude: $0.coordinate.longitude),
                 span: mySpan)
         }
     }
-    func mapViewDidChangeVisibleRegion(_ mapView: MKMapView) {
-        DispatchQueue.main.async {
-            self.isChanged = true
-        }
-    }
-
-    func mapView(_ mapView: MKMapView, regionDidChangeAnimated: Bool) {
-        let location: CLLocation = CLLocation(latitude: mapView.centerCoordinate.latitude, longitude: mapView.centerCoordinate.longitude)
-
-        self.convertLocationToAddress(location: location)
-            DispatchQueue.main.async {
-                self.isChanged = false
-            }
-        }
-    func convertLocationToAddress(location: CLLocation) {
-            let geocoder = CLGeocoder()
-            let locale = Locale(identifier: "ko")
-
-            geocoder.reverseGeocodeLocation(location,preferredLocale: locale) { placemarks, error in
-                guard error == nil else{ return }
-
-                guard let placemark = placemarks?.first else { return }
-                self.pickedPlaceMark = placemark
-            }
-        }
-    
 }
