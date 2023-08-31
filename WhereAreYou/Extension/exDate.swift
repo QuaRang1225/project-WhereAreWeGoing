@@ -25,6 +25,12 @@ extension Date {
         dateFormatter.locale = .init(identifier: "ko_KR")
         return dateFormatter.string(from: self)
     }
+    func toTimeHourMinuteSecond() -> String{
+        let dateFormatter = DateFormatter()
+        dateFormatter.dateFormat = "a hh:mm"
+        dateFormatter.locale = .init(identifier: "ko_KR")
+        return dateFormatter.string(from: self)
+    }
     func toTimestamp()->Timestamp{
         Timestamp(date: self)
     }

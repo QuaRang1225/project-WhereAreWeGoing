@@ -14,7 +14,6 @@ struct PageMainView: View {
     @EnvironmentObject var vm:PageViewModel
     @EnvironmentObject var vmAuth:AuthViewModel
     @State var pageMode:PageTabFilter = .schedule
-    @State var isSearch = false
     @State var page:Page
     
     @State var photo = false
@@ -22,6 +21,10 @@ struct PageMainView: View {
 
     @State var currentAmount:CGFloat = 0
     @State var currentDrageAmount:CGFloat = 0
+    
+    
+    @State private var currentTime = Date()
+    let timer = Timer.publish(every: 1, on: .main, in: .common).autoconnect()
     
     @Environment(\.dismiss) var dismiss
 
@@ -86,12 +89,6 @@ struct PageMainView: View {
                     )
 
             }
-        }
-        .navigationDestination(isPresented: $isSearch){
-            SearchAddressView(isSearch: $isSearch)
-                .environmentObject(vm)
-                .environmentObject(vmAuth)
-                .navigationBarBackButtonHidden()
         }
         .onAppear{
             Task{
@@ -186,26 +183,39 @@ extension PageMainView{
                                     UIScreen.main.bounds.height/3
                             )
             }
+            
             HStack(alignment: .bottom){
-                Button {
-                    isSearch = true
-                } label: {
-                    RoundedRectangle(cornerRadius: 10)
-                        .foregroundColor(.white)
-                        .frame(width: 100,height: 40)
-                        .shadow(radius: 10)
-                        .overlay {
-                            HStack{
-                                Image(systemName: "plus.app.fill")
-                                    .font(.body)
-                                Text("일정 추가")
-                                    .font(.caption)
-                                    .bold()
-                            }.foregroundColor(.customCyan2)
-                            
-                        }
+                VStack{
+                    VStack{
+                        Text("⏱️현재 시간").font(.caption).bold()
+                        Text("\(currentTime.toStringCalender())")
+                            .font(.caption)
+                        Text("\(currentTime.toTimeHourMinuteSecond())")
+                    }
+                    
+                    .foregroundColor(.black)
+                    .bold()
+                    .padding()
+                    .background(Color.white)
+                    .cornerRadius(10)
+                    .shadow(radius: 1)
+                    .onReceive(timer) { _ in
+                        self.currentTime = Date()
+                    }
+                    .overlay(alignment:.top,content: {
+                        HStack(content: {
+                            ForEach(0..<5) { int in
+                                Rectangle()
+                                    .frame(width: 3,height: 7)
+                                    .padding(.horizontal,3)
+                            }
+                            .offset(y:-3)
+                        })
+                        
+                    })
+                    .padding()
+
                 }
-                .padding()
                 Spacer()
                 VStack(alignment: .trailing,spacing: 5){
                     HStack{

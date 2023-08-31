@@ -16,42 +16,84 @@ struct SchduleListView: View {
     @EnvironmentObject var vmAuth:AuthViewModel
     @EnvironmentObject var vm:PageViewModel
     
+    @State var isSearch = false
     @State var time = Timestamp()
     @State var date = 0
     
     @Binding var binding:Schedule?
     @Binding var photo:Bool
-
+    
+    
+    
     var days:[Schedule]{
         let calendar = Calendar.current
         return vm.schedules.filter({calendar.isDate($0.startTime.dateValue(), equalTo: page.dateRange[date].dateValue(), toGranularity: .day) || calendar.isDate($0.endTime.dateValue(), equalTo: page.dateRange[date].dateValue(), toGranularity: .day)}).sorted{$0.startTime < $1.startTime}
     }
-   var body: some View {
-       ZStack{
-           VStack {
-               Text("\(time.dateValue().toString())")
-               datePicker
-               Spacer()
-               if days.isEmpty{
-                   emptyView
-               }else{
-                   scheduleList
-               }
-               Spacer()
-           }
-           
-       }
-       .padding()
-       .onAppear{
-           if let user = vmAuth.user{
-               vm.getSchedule(user: user, pageId: page.pageId)
-           }
-       }
-       .onChange(of: date) { newValue in
-           time = page.dateRange[date]
-       }
-   }
-       
+    var body: some View {
+        ZStack{
+            VStack {
+                
+                
+                datePicker
+                HStack(spacing: 0){
+                    HStack{
+                        Text("\(date + 1)일차 : ").font(.caption).bold()
+                        Text("\(time.dateValue().toStringCalender())")
+                            .font(.caption)
+                        .foregroundColor(.black)
+                        .bold()
+                        .padding(10)
+                        .background(Color.white)
+                        .cornerRadius(20)
+                        .shadow(radius: 1)
+                        
+                        Spacer()
+                        Button {
+                            isSearch = true
+                        } label: {
+                            HStack(spacing: 2){
+                                Image(systemName: "plus.app.fill").font(.body)
+                                Text("일정 추가")
+                            }
+                            .font(.caption)
+                            .foregroundColor(.black)
+                            .bold()
+                            .padding(10)
+                            .background(Color.white)
+                            .cornerRadius(20)
+                            .shadow(radius: 1)
+                        }
+                        .padding()
+                    }.padding(.leading)
+                    
+                }
+                if days.isEmpty{
+                    emptyView
+                }else{
+                    scheduleList
+                }
+                Spacer()
+            }
+            
+        }
+        .padding()
+        .navigationDestination(isPresented: $isSearch){
+            SearchAddressView(isSearch: $isSearch)
+                .environmentObject(vm)
+                .environmentObject(vmAuth)
+                .navigationBarBackButtonHidden()
+        }
+        .onAppear{
+            if let user = vmAuth.user{
+                vm.getSchedule(user: user, pageId: page.pageId)
+            }
+            time = page.dateRange[date]
+        }
+        .onChange(of: date) { newValue in
+            time = page.dateRange[date]
+        }
+    }
+    
 }
 
 struct SchduleListView_Previews: PreviewProvider {
@@ -68,11 +110,11 @@ extension SchduleListView{
         Picker("", selection: $date) {
             ForEach(Array(page.dateRange.enumerated()),id: \.0){ (index,page) in
                 Text("\(index + 1)일차")
-                   
+                
             }
         }
         .pickerStyle(.segmented)
-        .padding()
+        .padding(.horizontal)
         .environment(\.colorScheme, .light)
     }
     var emptyView:some View{
@@ -100,7 +142,7 @@ extension SchduleListView{
                                 .foregroundColor(.white)
                         }
                         .foregroundColor(.customCyan2)
-                        
+                    
                     Button {
                         withAnimation {
                             if binding == schedule{
