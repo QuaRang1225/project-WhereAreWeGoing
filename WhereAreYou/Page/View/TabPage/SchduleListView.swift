@@ -6,16 +6,20 @@
 //
 
 import SwiftUI
+import Kingfisher
 import FirebaseFirestore
 
 struct SchduleListView: View {
     @Binding var page:Page
+    
     @EnvironmentObject var vmAuth:AuthViewModel
     @EnvironmentObject var vm:PageViewModel
     
     @State var time = Timestamp()
     @State var date = 0
-    @State var binding:Schedule?
+    
+    @Binding var binding:Schedule?
+    @Binding var photo:Bool
 
     var days:[Schedule]{
         let calendar = Calendar.current
@@ -34,6 +38,7 @@ struct SchduleListView: View {
                }
                Spacer()
            }
+           
        }
        .padding()
        .onAppear{
@@ -50,7 +55,7 @@ struct SchduleListView: View {
 
 struct SchduleListView_Previews: PreviewProvider {
     static var previews: some View {
-        SchduleListView(page: .constant(CustomDataSet.shared.page()))
+        SchduleListView(page: .constant(CustomDataSet.shared.page()),binding: .constant(CustomDataSet.shared.schedule()),photo: .constant(false))
             .environmentObject(PageViewModel())
             .environmentObject(AuthViewModel())
             .background(Color.white.ignoresSafeArea())
@@ -97,11 +102,16 @@ extension SchduleListView{
                         
                     Button {
                         withAnimation {
-                            self.binding = schedule
+                            if binding == schedule{
+                                self.binding = nil
+                            }else{
+                                self.binding = schedule
+                            }
+                            
                         }
                     } label: {
                         VStack{
-                            ScheduleRowView(schedule: schedule,binding: schedule == binding ?  .constant(true) : .constant(false)).padding(.top,5)
+                            ScheduleRowView(schedule: schedule,scheduleBinding: $binding,binding: schedule == binding ?  .constant(true) : .constant(false),photo: $photo).padding(.top,5)
                                 .environmentObject(vm)
                             Divider()
                         }

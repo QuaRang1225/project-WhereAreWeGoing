@@ -11,19 +11,26 @@ import CoreLocation
 
 struct ScheduleRowView: View {
     let schedule:Schedule
+    @Binding var scheduleBinding:Schedule?
     @Binding var binding:Bool
+    @Binding var photo:Bool
     @EnvironmentObject var vm:PageViewModel
     @StateObject var location = LocationMagager()
     var body: some View {
         VStack(alignment: .leading){
             HStack(alignment: .bottom){
-                KFImage(URL(string: schedule.imageUrl ?? ""))
-                    .placeholder { _ in
-                        placeholder
-                    }
-                    .resizable()
-                    .frame(width:100,height: 100)
-                    .cornerRadius(20)
+                Button {
+                    scheduleBinding = schedule
+                    photo = true
+                } label: {
+                    KFImage(URL(string: schedule.imageUrl ?? ""))
+                        .placeholder { _ in
+                            placeholder
+                        }
+                        .resizable()
+                        .frame(width:100,height: 100)
+                        .cornerRadius(20)
+                }
                 Spacer()
                 VStack(alignment: .trailing){
                     Text(schedule.title)
@@ -48,8 +55,6 @@ struct ScheduleRowView: View {
                 }
             }
             if binding{
-                
-                
                 Button {
                     vm.copyToPasteboard(text: "\(location.pickedPlaceMark?.administrativeArea != location.pickedPlaceMark?.locality ? location.pickedPlaceMark?.locality ?? "": "") \(location.pickedPlaceMark?.thoroughfare ?? "") \(location.pickedPlaceMark?.subThoroughfare ?? "")")
                 } label: {
@@ -110,7 +115,7 @@ struct ScheduleRowView: View {
 
 struct ScheduleRowView_Previews: PreviewProvider {
     static var previews: some View {
-        ScheduleRowView(schedule: CustomDataSet.shared.schedule(),binding: .constant(true)).environmentObject(PageViewModel())
+        ScheduleRowView(schedule: CustomDataSet.shared.schedule(),scheduleBinding: .constant(CustomDataSet.shared.schedule()),binding: .constant(true),photo: .constant(false)).environmentObject(PageViewModel())
     }
 }
 

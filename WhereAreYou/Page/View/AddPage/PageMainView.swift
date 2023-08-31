@@ -16,7 +16,13 @@ struct PageMainView: View {
     @State var pageMode:PageTabFilter = .schedule
     @State var isSearch = false
     @State var page:Page
+    
+    @State var photo = false
+    @State var binding:Schedule?
 
+    @State var currentAmount:CGFloat = 0
+    @State var currentDrageAmount:CGFloat = 0
+    
     @Environment(\.dismiss) var dismiss
 
     var body: some View {
@@ -27,7 +33,7 @@ struct PageMainView: View {
                     ZStack{
                         switch pageMode {
                         case .schedule:
-                            SchduleListView(page: $page)
+                            SchduleListView(page: $page,binding: $binding, photo: $photo)
                                 .environmentObject(vmAuth)
                         case .member:
                             MemberTabView()
@@ -57,6 +63,28 @@ struct PageMainView: View {
                     }
                     .padding(.bottom)
                     
+            }
+            if photo{
+                Color.black.ignoresSafeArea().opacity(0.6).onTapGesture {
+                    photo = false
+                }
+                KFImage(URL(string: binding?.imageUrl ?? ""))
+                    .resizable()
+                    .scaledToFit()
+                    .scaleEffect(1 + currentAmount)
+                    .offset(y: currentDrageAmount)
+                    .gesture(
+                        MagnificationGesture()
+                            .onChanged { value in
+                                currentAmount = value - 1
+                            }
+                            .onEnded { _ in
+                                withAnimation(.spring()) {
+                                    currentAmount = 0
+                                }
+                            }
+                    )
+
             }
         }
         .navigationDestination(isPresented: $isSearch){
