@@ -26,6 +26,7 @@
 		81740BA82A5166DC00AAD0FE /* Menu.swift in Sources */ = {isa = PBXBuildFile; fileRef = 81740BA72A5166DC00AAD0FE /* Menu.swift */; };
 		81740BAA2A516B4900AAD0FE /* LocationManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 81740BA92A516B4900AAD0FE /* LocationManager.swift */; };
 		81740BAD2A516B7100AAD0FE /* exView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 81740BAC2A516B7100AAD0FE /* exView.swift */; };
+		8180A0B62AA03EBD00B90655 /* exTimestamp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8180A0B52AA03EBD00B90655 /* exTimestamp.swift */; };
 		81BA3E0D2A6BC80A00D38E93 /* PageViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 81BA3E0C2A6BC80A00D38E93 /* PageViewModel.swift */; };
 		81BA3E0F2A6FA74F00D38E93 /* ImageSaveFilter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 81BA3E0E2A6FA74F00D38E93 /* ImageSaveFilter.swift */; };
 		81BA3E112A6FA76C00D38E93 /* exJsonDecoder.swift in Sources */ = {isa = PBXBuildFile; fileRef = 81BA3E102A6FA76C00D38E93 /* exJsonDecoder.swift */; };
@@ -118,6 +119,7 @@
 		81740BA72A5166DC00AAD0FE /* Menu.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Menu.swift; sourceTree = "<group>"; };
 		81740BA92A516B4900AAD0FE /* LocationManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocationManager.swift; sourceTree = "<group>"; };
 		81740BAC2A516B7100AAD0FE /* exView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = exView.swift; sourceTree = "<group>"; };
+		8180A0B52AA03EBD00B90655 /* exTimestamp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = exTimestamp.swift; sourceTree = "<group>"; };
 		81B1DC5D2A9B36EB005C0A72 /* WhereAreYouTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = WhereAreYouTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		81B1DC5E2A9B36EB005C0A72 /* WhereAreYouUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = WhereAreYouUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		81BA3E0C2A6BC80A00D38E93 /* PageViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PageViewModel.swift; sourceTree = "<group>"; };
@@ -276,6 +278,7 @@
 				81FEF6052A70F59B0000B76B /* exString.swift */,
 				81FEF6072A70F5A10000B76B /* exDate.swift */,
 				8124AAC22A9DE1ED006DE03A /* exUIImage.swift */,
+				8180A0B52AA03EBD00B90655 /* exTimestamp.swift */,
 			);
 			path = Extension;
 			sourceTree = "<group>";
@@ -649,6 +652,7 @@
 				81BA3E172A6FA7E900D38E93 /* PageInfo.swift in Sources */,
 				81FEF61C2A739EC70000B76B /* ShceduleCategoryRowView.swift in Sources */,
 				81234CD92A5BE84E007D9BB6 /* StorageManager.swift in Sources */,
+				8180A0B62AA03EBD00B90655 /* exTimestamp.swift in Sources */,
 				81BA3E0F2A6FA74F00D38E93 /* ImageSaveFilter.swift in Sources */,
 				81234CD72A5BC898007D9BB6 /* InfoSettingTabView.swift in Sources */,
 				81FEF6042A70CEB60000B76B /* SchduleListView.swift in Sources */,

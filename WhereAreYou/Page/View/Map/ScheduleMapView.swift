@@ -21,9 +21,13 @@ struct ScheduleMapView: View {
     @StateObject var location = LocationMagager()
     @EnvironmentObject var vm:PageViewModel
     
+    
+    var schedules:[Schedule]{
+        return vm.schedules.sorted{$0.startTime < $1.startTime}
+    }
     var body: some View {
         ZStack(alignment: .top){
-            Map(coordinateRegion: $region,showsUserLocation: true, annotationItems: vm.schedules) { anno in
+            Map(coordinateRegion: $region,showsUserLocation: true, annotationItems: schedules) { anno in
                 MapAnnotation(coordinate: CLLocationCoordinate2D(latitude: anno.location.latitude, longitude: anno.location.longitude)) {
                     Button {
                         self.schedule = anno
@@ -111,8 +115,8 @@ struct ScheduleMapView: View {
                                 Spacer()
                                 Button {
                                     withAnimation(.linear){
-                                        currentIndex = (currentIndex - 1 + vm.schedules.count) % vm.schedules.count
-                                        schedule = vm.schedules[currentIndex]
+                                        currentIndex = (currentIndex - 1 + schedules.count) % vm.schedules.count
+                                        schedule = schedules[currentIndex]
                                         region = MKCoordinateRegion(center:CLLocationCoordinate2D(latitude: schedule.location.latitude, longitude: schedule.location.longitude), span: location.mySpan)
                                     }
                                 } label: {
@@ -121,8 +125,8 @@ struct ScheduleMapView: View {
                                     .padding(.trailing)
                                 Button {
                                     withAnimation(.linear){
-                                        currentIndex = (currentIndex + 1) % vm.schedules.count
-                                        schedule = vm.schedules[currentIndex]
+                                        currentIndex = (currentIndex + 1) % schedules.count
+                                        schedule = schedules[currentIndex]
                                         region = MKCoordinateRegion(center:CLLocationCoordinate2D(latitude: schedule.location.latitude, longitude: schedule.location.longitude), span: location.mySpan)
                                     }
                                 } label: {

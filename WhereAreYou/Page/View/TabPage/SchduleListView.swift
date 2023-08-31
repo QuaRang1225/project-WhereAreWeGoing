@@ -9,6 +9,7 @@ import SwiftUI
 import Kingfisher
 import FirebaseFirestore
 
+
 struct SchduleListView: View {
     @Binding var page:Page
     
@@ -23,7 +24,7 @@ struct SchduleListView: View {
 
     var days:[Schedule]{
         let calendar = Calendar.current
-        return vm.schedules.filter({calendar.isDate($0.startTime.dateValue(), equalTo: page.dateRange[date].dateValue(), toGranularity: .day) || calendar.isDate($0.endTime.dateValue(), equalTo: page.dateRange[date].dateValue(), toGranularity: .day)})
+        return vm.schedules.filter({calendar.isDate($0.startTime.dateValue(), equalTo: page.dateRange[date].dateValue(), toGranularity: .day) || calendar.isDate($0.endTime.dateValue(), equalTo: page.dateRange[date].dateValue(), toGranularity: .day)}).sorted{$0.startTime < $1.startTime}
     }
    var body: some View {
        ZStack{
