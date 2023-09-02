@@ -16,6 +16,7 @@ class PageViewModel:ObservableObject{
     
     @Published var page:Page? = nil
     @Published var admin:UserData? = nil
+    @Published var modifingSchecdule:Schedule? = nil
     @Published var pages:[Page] = []
     @Published var schedules:[Schedule] = []
     
@@ -52,12 +53,18 @@ class PageViewModel:ObservableObject{
             createScheduleSuccess.send()
         }
     }
-    
-//    func getUser(userId:String){
-//        Task{
-//            admin = try await UserManager.shared.getUser(userId:userId)
-//        }
-//    }
+    func updateSchedule(user:UserData,pageId:String,schedule:Schedule){
+        Task{
+            var url:URL? = nil
+            if let data = try await selection?.loadTransferable(type: Data.self){
+                let path = try await StorageManager.shared.saveImage(data:data,userId: user.userId, mode: .schedule)
+                url = try await StorageManager.shared.getUrlForImage(path: path)
+            }
+            
+            try await PageManager.shared.updateUSerSchedule(userId: user.userId, pageId: pageId, url: url, schedule: schedule)
+            createScheduleSuccess.send()
+        }
+    }
     func getPages(user:UserData){
         Task{
             pages = try await PageManager.shared.getAllPage(userId: user.userId)

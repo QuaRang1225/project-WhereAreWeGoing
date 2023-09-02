@@ -13,6 +13,7 @@ import FirebaseFirestore
 struct SchduleListView: View {
     @Binding var page:Page
     
+    @StateObject var location = LocationMagager()
     @EnvironmentObject var vmAuth:AuthViewModel
     @EnvironmentObject var vm:PageViewModel
     
@@ -81,6 +82,7 @@ struct SchduleListView: View {
             SearchAddressView(isSearch: $isSearch)
                 .environmentObject(vm)
                 .environmentObject(vmAuth)
+                .environmentObject(location)
                 .navigationBarBackButtonHidden()
         }
         .onAppear{
@@ -154,8 +156,12 @@ extension SchduleListView{
                         }
                     } label: {
                         VStack{
-                            ScheduleRowView(schedule: schedule,scheduleBinding: $binding,binding: schedule == binding ?  .constant(true) : .constant(false),photo: $photo).padding(.top,5)
-                                .environmentObject(vm)
+//                            NavigationStack{
+                                ScheduleRowView(schedule: schedule,scheduleBinding: $binding,binding: schedule == binding ?  .constant(true) : .constant(false),photo: $photo).padding(.top,5)
+                                    .environmentObject(vm)
+                                    .environmentObject(vmAuth)
+//                            }
+                            
                             Divider()
                         }
                         

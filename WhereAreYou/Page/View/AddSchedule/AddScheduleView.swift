@@ -7,6 +7,7 @@
 
 import SwiftUI
 import PhotosUI
+import Kingfisher
 //import Firebase
 import FirebaseFirestore
 
@@ -29,7 +30,6 @@ struct AddScheduleView: View {
     @EnvironmentObject var vm:PageViewModel
     @EnvironmentObject var location:LocationMagager
     @Binding var isPage:Bool
-    
     
     
     var body: some View {
@@ -97,6 +97,28 @@ struct AddScheduleView: View {
         .onTapGesture {
             UIApplication.shared.endEditing()
         }
+        .onAppear{
+            if let schedule = vm.modifingSchecdule{
+                
+                title = schedule.title
+                text = schedule.content.replacingOccurrences(of: "\\n", with: "\n")
+                locationSelect = LocationCategoryFilter.allCases.first(where: {$0.name == schedule.category}) ?? .other
+                startDate = schedule.startTime.dateValue()
+                endDate = schedule.endTime.dateValue()
+                linksArr = schedule.link ?? [:]
+                
+                for (key,value) in linksArr{
+                    linktitles.append(key)
+                    links.append(value)
+                }
+            }
+//            print(location.pickedPlaceMark?.locality)
+//            print(vm.modifingSchecdule)
+        }
+        .onDisappear{
+            vm.modifingSchecdule = nil
+            vm.data = nil
+        }
     }
 }
 
@@ -111,7 +133,7 @@ struct AddScheduleView_Previews: PreviewProvider {
 extension AddScheduleView{
     var header:some View{
         ZStack(alignment: .top){
-            Text("일정 작성")
+            Text(vm.modifingSchecdule != nil ? "일정 변경" : "일정 작성")
                 .font(.title3)
                 .bold()
             VStack{
@@ -134,13 +156,16 @@ extension AddScheduleView{
 
                             }
                             if let user  = vmAuth.user,let page = vm.page{
-                                let schedule = Schedule(id:"", category: locationSelect.name, title: title, startTime: startDate.toTimestamp(), endTime: endDate.toTimestamp(), content: text.replacingOccurrences(of: "\n", with: "\\n"), location: GeoPoint(latitude: (location.pickedPlaceMark?.location?.coordinate.latitude)!, longitude: (location.pickedPlaceMark?.location?.coordinate.longitude)!),link: linksArr)
+                                let schedule = Schedule(id:vm.modifingSchecdule?.id ?? "", category: locationSelect.name, title: title, startTime: startDate.toTimestamp(), endTime: endDate.toTimestamp(), content: text.replacingOccurrences(of: "\n", with: "\\n"), location: GeoPoint(latitude: (location.pickedPlaceMark?.location?.coordinate.latitude)!, longitude: (location.pickedPlaceMark?.location?.coordinate.longitude)!),link: linksArr)
 
-                                vm.creagteShcedule(user: user, pageId: page.pageId, schedule: schedule)
+                                if vm.modifingSchecdule != nil{
+                                    vm.updateSchedule(user: user, pageId: page.pageId, schedule: schedule)
+                                }else{
+                                    vm.creagteShcedule(user: user, pageId: page.pageId, schedule: schedule)
+                                }
                             }
-                            print(text)
                         } label: {
-                            Text("작성")
+                            Text(vm.modifingSchecdule != nil ? "변경" : "작성" )
                         }
                         .padding(.trailing)
                         .bold()
@@ -170,16 +195,25 @@ extension AddScheduleView{
                         .clipShape(RoundedRectangle(cornerRadius: 20))
                     
                 }else{
-                    RoundedRectangle(cornerRadius: 20)
-                        .stroke(lineWidth: 3)
-                        .frame(width: 100, height: 100)
-                        .overlay {
-                            Image(systemName: "camera")
-                                .resizable()
-                                .scaledToFill()
-                                .frame(width: 30,height: 30)
-                        }
-                        .foregroundColor(.black)
+                    if let schedule = vm.modifingSchecdule{
+                        KFImage(URL(string: schedule.imageUrl ?? ""))
+                            .resizable()
+                            .scaledToFill()
+                            .frame(width: 100, height: 100)
+                            .clipShape(RoundedRectangle(cornerRadius: 20))
+                    }else{
+                        RoundedRectangle(cornerRadius: 20)
+                            .stroke(lineWidth: 3)
+                            .frame(width: 100, height: 100)
+                            .overlay {
+                                Image(systemName: "camera")
+                                    .resizable()
+                                    .scaledToFill()
+                                    .frame(width: 30,height: 30)
+                            }
+                            .foregroundColor(.black)
+                    }
+                   
                 }
             }.onChange(of: vm.selection) { newItem in
                 Task {

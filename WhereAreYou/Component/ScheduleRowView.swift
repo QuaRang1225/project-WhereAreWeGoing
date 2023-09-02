@@ -10,12 +10,18 @@ import Kingfisher
 import CoreLocation
 
 struct ScheduleRowView: View {
+    
     let schedule:Schedule
+    
     @Binding var scheduleBinding:Schedule?
     @Binding var binding:Bool
     @Binding var photo:Bool
     @EnvironmentObject var vm:PageViewModel
+    @EnvironmentObject var vmAuth:AuthViewModel
     @StateObject var location = LocationMagager()
+    
+    @State var modify = false
+    
     var body: some View {
         VStack(alignment: .leading){
             HStack(alignment: .bottom){
@@ -87,9 +93,24 @@ struct ScheduleRowView: View {
                     }
                     
                     Spacer()
-                    Text("수정")
-                    Text(" | ")
-                    Text("삭제")
+                    Group{
+                        Button {
+                            modify = true
+                            vm.modifingSchecdule = schedule
+                        } label: {
+                            Text("수정")
+                        }
+                        .navigationDestination(isPresented: $modify) {
+                            SearchAddressView(isSearch: $modify)
+                                .navigationBarBackButtonHidden()
+                                .environmentObject(vmAuth)
+                                .environmentObject(vm)
+                                .environmentObject(location)
+                        }
+                        Text(" | ")
+                        Text("삭제")
+                    }.foregroundColor(.gray)
+                    
                 }.font(.caption).padding(.bottom,5)
                 VStack(alignment: .leading){
                     Text("내용")
@@ -113,6 +134,7 @@ struct ScheduleRowView: View {
             location.updatePlacemark(location: CLLocation(latitude: schedule.location.latitude, longitude: schedule.location.longitude))
         }
         
+        
     }
     
     
@@ -120,7 +142,9 @@ struct ScheduleRowView: View {
 
 struct ScheduleRowView_Previews: PreviewProvider {
     static var previews: some View {
-        ScheduleRowView(schedule: CustomDataSet.shared.schedule(),scheduleBinding: .constant(CustomDataSet.shared.schedule()),binding: .constant(true),photo: .constant(false)).environmentObject(PageViewModel())
+        NavigationStack{
+            ScheduleRowView(schedule: CustomDataSet.shared.schedule(),scheduleBinding: .constant(CustomDataSet.shared.schedule()),binding: .constant(true),photo: .constant(false)).environmentObject(PageViewModel()).environmentObject(AuthViewModel())
+        }
     }
 }
 

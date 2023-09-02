@@ -63,6 +63,36 @@ final class PageManager{
         try await field.setData(data,merge: false)
         
     }
+    func updateUSerSchedule(userId:String,pageId:String,url:URL?,schedule:Schedule)async throws{
+        
+        let field = userPageDocumentCollection(userId: userId).document(pageId).collection("schedule").document(schedule.id)
+        var data:[String:Any] = [:]
+        
+        if let url{
+             data = [
+                "image_url" : url.absoluteString,
+                "category" : schedule.category,
+                "title" : schedule.title,
+                "start_time" : schedule.startTime,
+                "end_time" : schedule.endTime,
+                "content" : schedule.content,
+                "location" : schedule.location,
+                "link":schedule.link
+            ]
+        }else{
+            data = [
+               "category" : schedule.category,
+               "title" : schedule.title,
+               "start_time" : schedule.startTime,
+               "end_time" : schedule.endTime,
+               "content" : schedule.content,
+               "location" : schedule.location,
+               "link":schedule.link
+           ]
+        }
+        try await field.updateData(data)
+        
+    }
     func getAllPage(userId:String)async throws -> [Page]{    //전체페이지 불러오기
         try await userPageDocumentCollection(userId: userId).getDocuments(as: Page.self)
     }
@@ -70,7 +100,4 @@ final class PageManager{
         try await userScheduleDocumentCollection(userId: userId, pageId: pageId).getDocuments(as: Schedule.self)
 
     }
-//    func getaa(userId:String,pageId:String) async throws-> [Schedules]{
-//        try await userScheduleDocumentCollection(userId: userId, pageId: pageId).getDocuments(as: Schedules.self)
-//    }
 }

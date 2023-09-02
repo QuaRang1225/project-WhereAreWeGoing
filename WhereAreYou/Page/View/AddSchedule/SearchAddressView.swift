@@ -10,21 +10,44 @@ import MapKit
 
 struct SearchAddressView: View {
     
+
+    @State var modifyButton = false
+    @State var modifySchedlue = false
     
     @State var isAddress = false
     @Binding var isSearch:Bool
-    @StateObject var location = LocationMagager()
+    
     @EnvironmentObject var vm:PageViewModel
     @EnvironmentObject var vmAuth:AuthViewModel
-    
+    @EnvironmentObject var location:LocationMagager
     var body: some View {
         ZStack{
             Color.white.ignoresSafeArea()
             header
-            
         }
+        .onAppear{
+            if vm.modifingSchecdule != nil{
+                modifyButton = true
+            }
+        }
+        .confirmationDialog("일정 수정", isPresented: $modifyButton, actions: {
+            Button(role:.none){
+                modifySchedlue = true
+            } label: {
+                Text("건너뛰기")
+            }
+        },message: {
+            Text("위치정보 수정을 건너 뛰시겠습니까?")
+        })
         .navigationDestination(isPresented: $isAddress) {
             SelectAddressView(isPage: $isSearch)
+                .environmentObject(vm)
+                .environmentObject(location)
+                .environmentObject(vmAuth)
+                .navigationBarBackButtonHidden()
+        }
+        .navigationDestination(isPresented: $modifySchedlue) {
+            AddScheduleView(isPage: $isSearch)
                 .environmentObject(vm)
                 .environmentObject(location)
                 .environmentObject(vmAuth)
@@ -40,6 +63,7 @@ struct SearchAddressView_Previews: PreviewProvider {
             SearchAddressView(isSearch: .constant(false))
                 .environmentObject(PageViewModel())
                 .environmentObject(AuthViewModel())
+                .environmentObject(LocationMagager())
         }
     }
 }
