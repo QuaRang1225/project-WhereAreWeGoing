@@ -133,7 +133,6 @@ extension SchduleListView{
     }
     var scheduleList:some View{
         VStack(spacing: 0){
-            
             ForEach(Array(days.enumerated()),id: \.0){ (index,schedule) in
                 HStack{
                     Circle()

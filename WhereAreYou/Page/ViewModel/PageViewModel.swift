@@ -65,6 +65,11 @@ class PageViewModel:ObservableObject{
             createScheduleSuccess.send()
         }
     }
+    func deleteSchedule(user:UserData,pageId:String,schedule:Schedule){
+        Task{
+            try await PageManager.shared.deleteUserSchedule(userId:user.userId,pageId:pageId,scheduleId:schedule.id)
+        }
+    }
     func getPages(user:UserData){
         Task{
             pages = try await PageManager.shared.getAllPage(userId: user.userId)

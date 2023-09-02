@@ -93,6 +93,10 @@ final class PageManager{
         try await field.updateData(data)
         
     }
+    func deleteUserSchedule(userId:String,pageId:String,scheduleId:String) async throws{
+        let field = userPageDocumentCollection(userId: userId).document(pageId).collection("schedule").document(scheduleId)
+        try await field.delete()
+    }
     func getAllPage(userId:String)async throws -> [Page]{    //전체페이지 불러오기
         try await userPageDocumentCollection(userId: userId).getDocuments(as: Page.self)
     }

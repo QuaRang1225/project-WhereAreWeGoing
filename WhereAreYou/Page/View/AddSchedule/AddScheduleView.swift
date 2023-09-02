@@ -24,7 +24,7 @@ struct AddScheduleView: View {
     @State var linktitles:[String] = []
     
     @State var startDate = Date()
-    @State var endDate = Date() + 86400
+    @State var endDate = Date()
     
     @EnvironmentObject var vmAuth:AuthViewModel
     @EnvironmentObject var vm:PageViewModel
@@ -98,8 +98,11 @@ struct AddScheduleView: View {
             UIApplication.shared.endEditing()
         }
         .onAppear{
+            
+            startDate = (vm.page?.dateRange.first?.dateValue() ?? Date())
+            endDate = (vm.page?.dateRange.last?.dateValue() ?? Date())
+            
             if let schedule = vm.modifingSchecdule{
-                
                 title = schedule.title
                 text = schedule.content.replacingOccurrences(of: "\\n", with: "\n")
                 locationSelect = LocationCategoryFilter.allCases.first(where: {$0.name == schedule.category}) ?? .other
@@ -112,8 +115,6 @@ struct AddScheduleView: View {
                     links.append(value)
                 }
             }
-//            print(location.pickedPlaceMark?.locality)
-//            print(vm.modifingSchecdule)
         }
         .onDisappear{
             vm.modifingSchecdule = nil
@@ -229,11 +230,12 @@ extension AddScheduleView{
         VStack{
             
             HStack{
-                DatePicker("일정 시작", selection: $startDate,in:((vm.page?.dateRange.first?.dateValue() ?? Date())...(vm.page?.dateRange.last?.dateValue() ?? Date())))
+                DatePicker("일정 시작", selection: $startDate,in:((vm.page?.dateRange.first?.dateValue() ?? Date())...(vm.page?.dateRange.last?.dateValue() ?? Date()))).environment(\.locale, .init(identifier: "ko_KR"))
                 Text("부터")
             }
             HStack{
                 DatePicker("일정 끝", selection: $endDate,in:(startDate...(vm.page?.dateRange.last?.dateValue() ?? Date())))
+                    .environment(\.locale, .init(identifier: "ko_KR"))
                 Text("까지")
             }
         }

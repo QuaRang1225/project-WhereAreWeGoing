@@ -14,6 +14,7 @@ struct ScheduleRowView: View {
     let schedule:Schedule
     let num:Int
     
+    @State var delete = false
     @Binding var scheduleBinding:Schedule?
     @Binding var binding:Bool
     @Binding var photo:Bool
@@ -109,7 +110,13 @@ struct ScheduleRowView: View {
                                 .environmentObject(location)
                         }
                         Text(" | ")
-                        Text("삭제")
+                        Button {
+                            delete = true
+                        } label: {
+                            Text("삭제")
+                        }
+
+                        
                     }.foregroundColor(.gray)
                     
                 }.font(.caption).padding(.bottom,5)
@@ -130,7 +137,18 @@ struct ScheduleRowView: View {
             }
             
         }
-        
+        .confirmationDialog("일정 삭제", isPresented: $delete, actions: {
+            Button(role:.destructive){
+                if let user = vmAuth.user,let page = vm.page{
+                    vm.deleteSchedule(user: user, pageId: page.pageId, schedule: schedule)
+                }
+                
+            } label: {
+                Text("삭제")
+            }
+        },message: {
+            Text("\(schedule.title) 일정을 삭제하시겠습니까?").bold()
+        })
         .onAppear{
             location.updatePlacemark(location: CLLocation(latitude: schedule.location.latitude, longitude: schedule.location.longitude))
         }
