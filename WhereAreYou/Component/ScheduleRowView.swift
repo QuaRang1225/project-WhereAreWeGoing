@@ -14,6 +14,8 @@ struct ScheduleRowView: View {
     let schedule:Schedule
     let num:Int
     
+    @State var goWebView = false
+    @State var link = ""
     @State var delete = false
     @Binding var scheduleBinding:Schedule?
     @Binding var binding:Bool
@@ -63,44 +65,53 @@ struct ScheduleRowView: View {
                 }
             }
             if binding{
-                Button {
-                    vm.copyToPasteboard(text: "\(location.pickedPlaceMark?.administrativeArea != location.pickedPlaceMark?.locality ? location.pickedPlaceMark?.locality ?? "": "") \(location.pickedPlaceMark?.thoroughfare ?? "") \(location.pickedPlaceMark?.subThoroughfare ?? "")")
-                } label: {
-                    HStack(spacing: 2){
-                        Text("주소: ").bold()
-                        HStack{
-                            if location.pickedPlaceMark?.administrativeArea != location.pickedPlaceMark?.locality{
-                                Text(location.pickedPlaceMark?.locality ?? "")
-                            }   //서울특별시
-                            Text(location.pickedPlaceMark?.thoroughfare ?? "")
-                            Text(location.pickedPlaceMark?.subThoroughfare ?? "")
-                        }
-                        Image(systemName: "link")
-                    }.foregroundColor(.gray).font(.caption)
-                }
                 HStack{
-                    NavigationLink {
-                        ScheduleMapView(schedule: schedule)
-                            .environmentObject(vm)
-                            .navigationBarBackButtonHidden()
-                    } label: {
-                        HStack(spacing:3){
-                            Image("where")
-                                .resizable()
-                                .frame(width: 10,height: 15)
-                            Text("지도로 보기")
-                            Image(systemName: "chevron.right")
+                    VStack(alignment:.leading){
+                        Button {
+                            vm.copyToPasteboard(text: "\(location.pickedPlaceMark?.administrativeArea != location.pickedPlaceMark?.locality ? location.pickedPlaceMark?.locality ?? "": "") \(location.pickedPlaceMark?.thoroughfare ?? "") \(location.pickedPlaceMark?.subThoroughfare ?? "")")
+                        } label: {
+                            HStack(spacing: 2){
+                                Text("주소: ").bold()
+                                HStack{
+                                    if location.pickedPlaceMark?.administrativeArea != location.pickedPlaceMark?.locality{
+                                        Text(location.pickedPlaceMark?.locality ?? "")
+                                    }   //서울특별시
+                                    Text(location.pickedPlaceMark?.thoroughfare ?? "")
+                                    Text(location.pickedPlaceMark?.subThoroughfare ?? "")
+                                }
+                                Image(systemName: "link")
+                            }.foregroundColor(.gray).font(.caption)
                         }
-                            .foregroundColor(.black)
+                        HStack(alignment:.top){
+                            NavigationLink {
+                                ScheduleMapView(schedule: schedule)
+                                    .environmentObject(vm)
+                                    .navigationBarBackButtonHidden()
+                            } label: {
+                                HStack(spacing:3){
+                                    Image("where")
+                                        .resizable()
+                                        .frame(width: 10,height: 15)
+                                    Text("지도로 보기")
+                                    Image(systemName: "chevron.right")
+                                }
+                                    .foregroundColor(.black)
+                            }
+                            
+                            
+                        }.font(.caption)//.padding(.bottom,5)
                     }
-                    
                     Spacer()
                     Group{
                         Button {
                             modify = true
                             vm.modifingSchecdule = schedule
                         } label: {
-                            Text("수정")
+                            Image(systemName: "square.and.pencil")
+                                .padding()
+                                .background(Circle().foregroundColor(.white))
+                                .shadow(radius: 1)
+                                
                         }
                         .navigationDestination(isPresented: $modify) {
                             SearchAddressView(isSearch: $modify)
@@ -109,23 +120,52 @@ struct ScheduleRowView: View {
                                 .environmentObject(vm)
                                 .environmentObject(location)
                         }
-                        Text(" | ")
                         Button {
                             delete = true
                         } label: {
-                            Text("삭제")
+                            Image(systemName: "trash")
+                                .foregroundColor(.red)
+                                .padding()
+                                .background(Circle().foregroundColor(.white))
+                                .shadow(radius: 1)
                         }
 
                         
                     }.foregroundColor(.gray)
-                    
-                }.font(.caption).padding(.bottom,5)
+                }
+                
+                
                 VStack(alignment: .leading){
                     Text("내용")
                         .font(.body)
                         .bold()
                         .padding(.bottom,5)
                     Text("\(schedule.content)".replacingOccurrences(of: "\\n", with: "\n"))
+                    if let links = schedule.link,links != [:]{
+                        HStack(spacing: 1){
+                            Image(systemName: "link").font(.caption)
+                            Text("링크")
+                        }
+                        .font(.subheadline)
+                        .padding(.top).bold()
+                        
+                        ForEach(Array(links),id: \.0){ (key,value) in
+                            Button {
+                                goWebView = true
+                                link = value
+                            } label: {
+                                HStack(spacing:0){
+                                    Text("\(key) :")
+                                    Text(value)
+                                       .lineLimit(1).underline()
+                                } .foregroundColor(.gray).font(.caption)
+                                
+                            }
+
+                        }
+                        .padding(.top,2)
+                    }
+                    
                 }
                
                     .frame(maxWidth: .infinity,alignment:.leading)
@@ -151,8 +191,9 @@ struct ScheduleRowView: View {
         .onAppear{
             location.updatePlacemark(location: CLLocation(latitude: schedule.location.latitude, longitude: schedule.location.longitude))
         }
-        
-        
+        .sheet(isPresented: $goWebView) {
+            LinkWebView(urlString: link).ignoresSafeArea()
+        }
     }
     
     
