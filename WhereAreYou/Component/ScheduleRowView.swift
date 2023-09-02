@@ -142,7 +142,6 @@ struct ScheduleRowView: View {
                 if let user = vmAuth.user,let page = vm.page{
                     vm.deleteSchedule(user: user, pageId: page.pageId, schedule: schedule)
                 }
-                
             } label: {
                 Text("삭제")
             }

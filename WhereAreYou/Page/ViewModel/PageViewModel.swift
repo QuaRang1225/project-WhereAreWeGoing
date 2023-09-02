@@ -26,6 +26,7 @@ class PageViewModel:ObservableObject{
     @Published var copy = false
     var createPageSuccess = PassthroughSubject<(),Never>()
     var createScheduleSuccess = PassthroughSubject<(),Never>()
+    var deleteSuccess = PassthroughSubject<(),Never>()
     
     func creagtePage(user:UserData,pageInfo:PageInfo){
         
@@ -68,6 +69,7 @@ class PageViewModel:ObservableObject{
     func deleteSchedule(user:UserData,pageId:String,schedule:Schedule){
         Task{
             try await PageManager.shared.deleteUserSchedule(userId:user.userId,pageId:pageId,scheduleId:schedule.id)
+            deleteSuccess.send()
         }
     }
     func getPages(user:UserData){

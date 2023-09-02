@@ -94,6 +94,11 @@ struct SchduleListView: View {
         .onChange(of: date) { newValue in
             time = page.dateRange[date]
         }
+        .onReceive(vm.deleteSuccess) {  
+            if let user = vmAuth.user{
+                vm.getSchedule(user: user, pageId: page.pageId)
+            }
+        }
     }
     
 }
