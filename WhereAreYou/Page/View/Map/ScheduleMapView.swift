@@ -124,6 +124,12 @@ struct ScheduleMapView: View {
                                         .foregroundColor(.gray)
                                         .font(.subheadline)
                                 }
+                                Spacer()
+                                VStack{
+                                    Image(systemName: LocationCategoryFilter.allCases.first(where: {$0.name == schedule.category})?.image ?? "")
+                                        .foregroundColor(.gray)
+                                    Spacer()
+                                }
                             }
                             HStack{
                                 Text(location.pickedPlaceMark?.locality ?? "")
