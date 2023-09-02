@@ -12,6 +12,7 @@ import CoreLocation
 struct ScheduleRowView: View {
     
     let schedule:Schedule
+    let num:Int
     
     @Binding var scheduleBinding:Schedule?
     @Binding var binding:Bool
@@ -39,7 +40,7 @@ struct ScheduleRowView: View {
                 }
                 Spacer()
                 VStack(alignment: .trailing){
-                    Text(schedule.title)
+                    Text("\(num). \(schedule.title)")
                         .bold()
                         .font(.body)
                         .padding(.bottom,2)
@@ -143,7 +144,7 @@ struct ScheduleRowView: View {
 struct ScheduleRowView_Previews: PreviewProvider {
     static var previews: some View {
         NavigationStack{
-            ScheduleRowView(schedule: CustomDataSet.shared.schedule(),scheduleBinding: .constant(CustomDataSet.shared.schedule()),binding: .constant(true),photo: .constant(false)).environmentObject(PageViewModel()).environmentObject(AuthViewModel())
+            ScheduleRowView(schedule: CustomDataSet.shared.schedule(), num:1,scheduleBinding: .constant(CustomDataSet.shared.schedule()),binding: .constant(true),photo: .constant(false)).environmentObject(PageViewModel()).environmentObject(AuthViewModel())
         }
     }
 }

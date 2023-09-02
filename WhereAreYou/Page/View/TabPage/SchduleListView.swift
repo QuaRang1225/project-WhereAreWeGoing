@@ -134,7 +134,7 @@ extension SchduleListView{
     var scheduleList:some View{
         VStack(spacing: 0){
             
-            ForEach(days,id: \.self){ schedule in
+            ForEach(Array(days.enumerated()),id: \.0){ (index,schedule) in
                 HStack{
                     Circle()
                         .frame(width: 20,height: 20)
@@ -156,12 +156,9 @@ extension SchduleListView{
                         }
                     } label: {
                         VStack{
-//                            NavigationStack{
-                                ScheduleRowView(schedule: schedule,scheduleBinding: $binding,binding: schedule == binding ?  .constant(true) : .constant(false),photo: $photo).padding(.top,5)
-                                    .environmentObject(vm)
-                                    .environmentObject(vmAuth)
-//                            }
-                            
+                            ScheduleRowView(schedule: schedule, num:index + 1,scheduleBinding: $binding,binding: schedule == binding ?  .constant(true) : .constant(false),photo: $photo).padding(.top,5)
+                                .environmentObject(vm)
+                                .environmentObject(vmAuth)
                             Divider()
                         }
                         
