@@ -70,22 +70,27 @@ struct ScheduleRowView: View {
                         Image(systemName: "link")
                     }.foregroundColor(.gray).font(.caption)
                 }
-
-                NavigationLink {
-                    ScheduleMapView(schedule: schedule)
-                        .environmentObject(vm)
-                        .navigationBarBackButtonHidden()
-                } label: {
-                    HStack(spacing:2){
-                        Image("where")
-                            .resizable()
-                            .frame(width: 15,height: 20)
-                        Text("지도로 보기")
-                        Image(systemName: "chevron.right")
-                    }.font(.subheadline)
-                        .foregroundColor(.black)
-                }
-                .padding(.bottom,5)
+                HStack{
+                    NavigationLink {
+                        ScheduleMapView(schedule: schedule)
+                            .environmentObject(vm)
+                            .navigationBarBackButtonHidden()
+                    } label: {
+                        HStack(spacing:3){
+                            Image("where")
+                                .resizable()
+                                .frame(width: 10,height: 15)
+                            Text("지도로 보기")
+                            Image(systemName: "chevron.right")
+                        }
+                            .foregroundColor(.black)
+                    }
+                    
+                    Spacer()
+                    Text("수정")
+                    Text(" | ")
+                    Text("삭제")
+                }.font(.caption).padding(.bottom,5)
                 VStack(alignment: .leading){
                     Text("내용")
                         .font(.body)

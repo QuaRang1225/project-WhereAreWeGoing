@@ -13,7 +13,7 @@ import FirebaseFirestore
 
 struct ScheduleMapView: View {
     
-   
+    
     @State var currentIndex = 0
     @State var schedule:Schedule
     @State var region = MKCoordinateRegion()
@@ -25,6 +25,7 @@ struct ScheduleMapView: View {
     var schedules:[Schedule]{
         return vm.schedules.sorted{$0.startTime < $1.startTime}
     }
+    
     var body: some View {
         ZStack(alignment: .top){
             Map(coordinateRegion: $region,showsUserLocation: true, annotationItems: schedules) { anno in
@@ -33,15 +34,39 @@ struct ScheduleMapView: View {
                         self.schedule = anno
                         region = MKCoordinateRegion(center:CLLocationCoordinate2D(latitude: anno.location.latitude, longitude: anno.location.longitude), span: location.mySpan)
                     } label: {
-                        Image(systemName: LocationCategoryFilter.allCases.first(where: {$0.name == anno.category})?.image ?? "")
-                            .font(.title)
-                            .foregroundColor(.white)
-                            .shadow(color: .white, radius: 10)
-                            .background{
-                                Circle()
-                                    .frame(width: 50,height: 50)
-                                    .foregroundColor(.customCyan2)
+                        
+                        VStack{
+                            if let index = schedules.firstIndex(of: anno){
+                                HStack{
+                                    Text("\(index + 1). ")
+                                    Text("\(anno.title)")
+                                }
+                                .font(.caption)
+                                .foregroundColor(.black)
+                                .padding(5)
+                                .background(Color.white).cornerRadius(5)
+                                .shadow(radius: 10)
+                                .offset(y:-25)
                             }
+                                
+                            KFImage(URL(string:anno.imageUrl ?? ""))
+                                .resizable()
+                                .frame(width: 45,height: 45)
+                                .clipShape(Circle())
+                                .font(.title)
+                                .foregroundColor(.white)
+                                .background{
+                                    Circle()
+                                        .frame(width: 50,height: 50)
+                                }
+                                .offset(y:-30)
+                                .background {
+                                    Image(systemName: "triangle.fill")
+                                        .rotationEffect(Angle(degrees: 180))
+                                }
+                                .foregroundColor(.customCyan2)
+                                
+                        }
                     }
                 }
             }.ignoresSafeArea()
@@ -92,7 +117,7 @@ struct ScheduleMapView: View {
                                     .clipShape(Circle())
                                 
                                 VStack(alignment: .leading,spacing: 5){
-                                    Text(schedule.title)
+                                    Text("\(currentIndex + 1). \(schedule.title)")
                                         .bold()
                                         .font(.title3)
                                     Text(LocationCategoryFilter.allCases.first(where: {$0.name == schedule.category})?.name ?? "")
@@ -144,6 +169,8 @@ struct ScheduleMapView: View {
                     .shadow(radius: 10)
             }
             .frame(maxHeight: .infinity,alignment: .bottom)
+           
+            
         }
         .onChange(of: schedule) { newValue in
             location.updatePlacemark(location: CLLocation(latitude: newValue.location.latitude, longitude: newValue.location.longitude))

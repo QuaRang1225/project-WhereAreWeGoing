@@ -128,6 +128,15 @@ extension PageMainView{
                 .font(.title3)
                 .foregroundColor(.white)
                 .padding(.trailing)
+            Button {
+                //페이지 수정/삭제
+            } label: {
+                Image(systemName: "ellipsis")
+                    .font(.title3)
+                    .foregroundColor(.white)
+                    .padding(.trailing)
+            }
+
         }
         .frame(maxHeight: .infinity,alignment: .top)
     }
