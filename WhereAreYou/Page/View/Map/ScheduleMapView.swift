@@ -34,7 +34,6 @@ struct ScheduleMapView: View {
                         self.schedule = anno
                         region = MKCoordinateRegion(center:CLLocationCoordinate2D(latitude: anno.location.latitude, longitude: anno.location.longitude), span: location.mySpan)
                     } label: {
-                        
                         VStack{
                             if let index = schedules.firstIndex(of: anno){
                                 HStack{
@@ -47,6 +46,9 @@ struct ScheduleMapView: View {
                                 .background(Color.white).cornerRadius(5)
                                 .shadow(radius: 10)
                                 .offset(y:-25)
+                                .onAppear{
+                                    currentIndex = index
+                                }
                             }
                                 
                             KFImage(URL(string:anno.imageUrl ?? ""))
