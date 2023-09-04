@@ -31,6 +31,7 @@ struct AddScheduleView: View {
     @EnvironmentObject var location:LocationMagager
     @Binding var isPage:Bool
     
+    @State var isImage:String?
     
     var body: some View {
         ZStack{
@@ -87,7 +88,7 @@ struct AddScheduleView: View {
                 }
             }
             if progress{
-                CustomProgressView(title: "일정 추가 중..")
+                CustomProgressView(title: vm.modifingSchecdule != nil ?  "일정 변경 중.." : "일정 추가 중.." )
             }
         }
         .foregroundColor(.black)
@@ -98,7 +99,7 @@ struct AddScheduleView: View {
             UIApplication.shared.endEditing()
         }
         .onAppear{
-            
+            isImage = vm.modifingSchecdule?.imageUrl
             startDate = (vm.page?.dateRange.first?.dateValue() ?? Date())
             endDate = (vm.page?.dateRange.last?.dateValue() ?? Date())
             
@@ -154,7 +155,7 @@ extension AddScheduleView{
                             progress = true
                             for index in 0..<min(links.count, linktitles.count) {
                                 linksArr[linktitles[index]] = links[index]
-
+                                
                             }
                             if let user  = vmAuth.user,let page = vm.page{
                                 let schedule = Schedule(id:vm.modifingSchecdule?.id ?? "",imageUrl:vm.modifingSchecdule?.imageUrl,imageUrlPath: vm.modifingSchecdule?.imageUrlPath , category: locationSelect.name, title: title, startTime: startDate.toTimestamp(), endTime: endDate.toTimestamp(), content: text.replacingOccurrences(of: "\n", with: "\\n"), location: GeoPoint(latitude: (location.pickedPlaceMark?.location?.coordinate.latitude)!, longitude: (location.pickedPlaceMark?.location?.coordinate.longitude)!),link: linksArr)
@@ -195,27 +196,39 @@ extension AddScheduleView{
                         .clipShape(RoundedRectangle(cornerRadius: 20))
                     
                 }else{
-                    if let schedule = vm.modifingSchecdule{
-                        KFImage(URL(string: schedule.imageUrl ?? ""))
+                    if let image = isImage {
+                        KFImage(URL(string: image))
                             .resizable()
                             .scaledToFill()
                             .frame(width: 100, height: 100)
                             .clipShape(RoundedRectangle(cornerRadius: 20))
-                    }else{
-                        RoundedRectangle(cornerRadius: 20)
-                            .stroke(lineWidth: 3)
-                            .frame(width: 100, height: 100)
-                            .overlay {
-                                Image(systemName: "camera")
-                                    .resizable()
-                                    .scaledToFill()
-                                    .frame(width: 30,height: 30)
-                            }
-                            .foregroundColor(.black)
                     }
-                   
+                    else{
+                        emptyImage
+                    }
                 }
-            }.onChange(of: vm.selection) { newItem in
+            }
+            .overlay(alignment:.topTrailing,content: {
+                if vm.data != nil || isImage != nil{
+                    Button {
+                        vm.data = nil
+                        isImage = nil
+                    } label: {
+                        Image(systemName: "xmark")
+                            .font(.subheadline)
+                            .bold()
+                            .foregroundColor(.white)
+                            .padding(5)
+                            .background{
+                                Circle().foregroundColor(.gray)
+                            }
+                    }
+                    .offset(x:5,y:-5)
+                    
+                    
+                }
+                
+            }).onChange(of: vm.selection) { newItem in
                 Task {
                     if let data = try? await newItem?.loadTransferable(type: Data.self) {
                         vm.data = data
@@ -272,6 +285,18 @@ extension AddScheduleView{
         .font(.subheadline)
         .padding(.horizontal)
         
+    }
+    var emptyImage:some View{
+        RoundedRectangle(cornerRadius: 20)
+            .stroke(lineWidth: 3)
+            .frame(width: 100, height: 100)
+            .overlay {
+                Image(systemName: "camera")
+                    .resizable()
+                    .scaledToFill()
+                    .frame(width: 30,height: 30)
+            }
+            .foregroundColor(.black)
     }
     
 }

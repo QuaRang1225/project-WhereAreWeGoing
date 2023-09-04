@@ -13,7 +13,7 @@ struct PageRowView: View {
 //    @StateObject var vm = PageViewModel()
     var body: some View {
         HStack{
-            KFImage(URL(string:page.pageImageUrl)!)
+            KFImage(URL(string:page.pageImageUrl ?? "")!)
                 .resizable()
                 .clipShape(RoundedRectangle(cornerRadius: 20))
                 .frame(width: 70,height:70)

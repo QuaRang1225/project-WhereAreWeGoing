@@ -28,15 +28,33 @@ class PageViewModel:ObservableObject{
     var createScheduleSuccess = PassthroughSubject<(),Never>()
     var deleteSuccess = PassthroughSubject<(),Never>()
     
-    func creagtePage(user:UserData,pageInfo:PageInfo){
+    func creagtePage(user:UserData,pageInfo:Page){
         
         Task{
-            guard let data = try await selection?.loadTransferable(type: Data.self) else {return}
-           
-            let path = try await StorageManager.shared.saveImage(data:data,userId: user.userId, mode: .page)
-            let url = try await StorageManager.shared.getUrlForImage(path: path)
-            try await PageManager.shared.createUserPage(userId: user.userId,url: url.absoluteString, pageInfo: pageInfo)
+            var url:URL? = nil
+            var path:String? = nil
             
+            if let data = try await selection?.loadTransferable(type: Data.self){
+                path = try await StorageManager.shared.saveImage(data:data,userId: user.userId, mode: .page)
+                url = try await StorageManager.shared.getUrlForImage(path: path ?? "")
+            }
+            try await PageManager.shared.createUserPage(userId: user.userId,url: url ,path: path, pageInfo: pageInfo)
+            createPageSuccess.send()
+        }
+    }
+    func updatePage(user:UserData,pageInfo:Page){
+        
+        Task{
+            var url:URL? = nil
+            var path:String? = nil
+            
+            if let data = try await selection?.loadTransferable(type: Data.self){
+                try await StorageManager.shared.deleteImage(path: pageInfo.pageImagePath ?? "")
+                path = try await StorageManager.shared.saveImage(data:data,userId: user.userId, mode: .page)
+                url = try await StorageManager.shared.getUrlForImage(path: path ?? "")
+                
+            }
+            try await PageManager.shared.upadateUserPage(userId: user.userId,url: url, path: path, pageInfo: pageInfo)
             createPageSuccess.send()
         }
     }
@@ -69,6 +87,14 @@ class PageViewModel:ObservableObject{
             createScheduleSuccess.send()
         }
     }
+    func deletePage(user:UserData,page:Page){
+        Task{
+            try await StorageManager.shared.deleteImage(path: page.pageImagePath ?? "")
+            try await PageManager.shared.deleteUserPage(userId:user.userId,pageId:page.pageId)
+            deleteSuccess.send()
+        }
+    }
+    
     func deleteSchedule(user:UserData,pageId:String,schedule:Schedule){
         Task{
             try await StorageManager.shared.deleteImage(path: schedule.imageUrlPath ?? "")
@@ -76,6 +102,7 @@ class PageViewModel:ObservableObject{
             deleteSuccess.send()
         }
     }
+    
     func getPages(user:UserData){
         Task{
             pages = try await PageManager.shared.getAllPage(userId: user.userId)
@@ -87,14 +114,16 @@ class PageViewModel:ObservableObject{
         }
     }
     
-    func generateTimestamp(from: Date, to: Date) -> [Date] {
+    
+    
+    func generateTimestamp(from: Date, to: Date) -> [Timestamp] {
         var currentDate = from
-        var dateArray: [Date] = []
+        var dateArray: [Timestamp] = []
         let calendar = Calendar.current
         
         while currentDate <= to {
             let midnightDate = calendar.date(bySettingHour: 0, minute: 0, second: 0, of: currentDate)!
-            dateArray.append(midnightDate)
+            dateArray.append(Timestamp(date: midnightDate))
             currentDate = calendar.date(byAdding: .day, value: 1, to: currentDate)!
         }
         

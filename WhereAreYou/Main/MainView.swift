@@ -13,6 +13,8 @@ import Kingfisher
 struct MainView: View {
     let columns = [GridItem(),GridItem()]
     @State var area:TravelFilter = .all
+
+    
     @StateObject var location = LocationMagager()
     @StateObject var vm = PageViewModel()
     @EnvironmentObject var vmAuth:AuthViewModel
@@ -35,8 +37,6 @@ struct MainView: View {
                     .resizable()
                     .frame(width: 120,height: 30)
                 Spacer()
-               
-                
             }
             .font(.title3)
             .padding(.horizontal)
@@ -48,9 +48,6 @@ struct MainView: View {
                 collection
                 filter
                 page
-                
-                
-                
             }
             .background(Color.gray.opacity(0.1))
         }
@@ -60,6 +57,8 @@ struct MainView: View {
             if let user = vmAuth.user{
                 vm.getPages(user: user)
             }
+            vm.page = nil
+            vm.data = nil
         }
     }
 }
@@ -122,6 +121,7 @@ extension MainView{
         HStack{
             NavigationLink {
                 SelectTypeView()
+                    .environmentObject(vm)
                     .environmentObject(vmAuth)
                     .navigationBarBackButtonHidden()
             } label: {

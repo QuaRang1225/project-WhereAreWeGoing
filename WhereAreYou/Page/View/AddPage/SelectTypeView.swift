@@ -7,6 +7,7 @@
 
 import SwiftUI
 import PhotosUI
+import Kingfisher
 
 struct SelectTypeView: View {
     
@@ -17,7 +18,8 @@ struct SelectTypeView: View {
     @State var endDate = Date() + 86400
     
     @State var isPage = false
-    @StateObject var vm = PageViewModel()
+    @State var isImage:String?
+    @EnvironmentObject var vm:PageViewModel
     @EnvironmentObject var vmAuth:AuthViewModel
     @Environment(\.dismiss) var dismiss
     
@@ -35,11 +37,13 @@ struct SelectTypeView: View {
                 }
                 
             }
-            
             if isPage{
                 CustomProgressView(title: "페이지 생성중..")
             }
             
+        }
+        .onAppear{
+            isImage = vm.page?.pageImageUrl
         }
         .foregroundColor(.black)
         .onTapGesture {
@@ -55,6 +59,7 @@ struct SelectTypeView_Previews: PreviewProvider {
     static var previews: some View {
         SelectTypeView()
             .environmentObject(AuthViewModel())
+            .environmentObject(PageViewModel())
     }
 }
 
@@ -73,11 +78,16 @@ extension SelectTypeView{
             if overseas != nil && !text.isEmpty && !title.isEmpty{
                 Button {
                     if let user = vmAuth.user,let overseas{
-                        vm.creagtePage(user:user, pageInfo: PageInfo(pageName: title, pageSubscript: text,dateRange: vm.generateTimestamp(from: startDate, to: endDate), overseas: !overseas))
+                        if let page = vm.page{
+                            vm.updatePage(user:user, pageInfo: page)
+                        }else{
+                            vm.creagtePage(user:user, pageInfo: Page(pageId: "", pageAdmin: "",pageImageUrl: "",pageImagePath: "", pageName: title, pageOverseas: overseas, pageSubscript: text, dateRange: vm.generateTimestamp(from: startDate, to: endDate)))
+                            
+                        }
                         isPage = true
                     }
                 } label: {
-                    Text("완료")
+                    Text(vm.page != nil ? "변경" : "완료")
                         .padding()
                         .foregroundColor(.black)
                 }
@@ -112,18 +122,39 @@ extension SelectTypeView{
                             .clipShape(RoundedRectangle(cornerRadius: 50))
                         
                     }else{
-                        RoundedRectangle(cornerRadius: 50)
-                            .stroke(lineWidth: 3)
-                            .frame(width: 120, height: 120)
-                            .overlay {
-                                Image(systemName: "camera")
-                                    .resizable()
-                                    .scaledToFill()
-                                    .frame(width: 30,height: 30)
-                            }
-                            .foregroundColor(.black)
+                        if let isImage{
+                            KFImage(URL(string: isImage))
+                                .resizable()
+                                .scaledToFill()
+                                .frame(width: 120, height: 120)
+                                .clipShape(RoundedRectangle(cornerRadius: 50))
+                        }else{
+                            emptyImage
+                        }
+                        
                     }
-                }.onChange(of: vm.selection) { newItem in
+                }
+                .overlay(alignment:.topTrailing,content: {
+                    if vm.data != nil || isImage != nil{
+                        Button {
+                            vm.data = nil
+                            isImage = nil
+                        } label: {
+                            Image(systemName: "xmark")
+                                .font(.subheadline)
+                                .bold()
+                                .foregroundColor(.white)
+                                .padding(5)
+                                .background{
+                                    Circle().foregroundColor(.gray)
+                                }
+                        }
+
+                        
+                    }
+                   
+                })
+                .onChange(of: vm.selection) { newItem in
                     Task {
                         if let data = try? await newItem?.loadTransferable(type: Data.self) {
                             vm.data = data
@@ -153,7 +184,7 @@ extension SelectTypeView{
             Group{
                 VStack{
                     Button {
-                        overseas = true
+                        overseas = false
                     } label: {
                         Image("korean")
                             .resizable()
@@ -161,7 +192,7 @@ extension SelectTypeView{
                             .overlay {
                                 Circle()
                                     .frame(width: 120,height: 120)
-                                    .foregroundColor(overseas ?? false ? .black.opacity(0.3) : .clear)
+                                    .foregroundColor(overseas ?? true ? .clear : .black.opacity(0.3))
                             }
                         
                     }
@@ -170,7 +201,7 @@ extension SelectTypeView{
                 }
                 VStack{
                     Button {
-                        overseas = false
+                        overseas = true
                     } label: {
                         Image("over")
                             .resizable()
@@ -178,7 +209,8 @@ extension SelectTypeView{
                             .overlay {
                                 Circle()
                                     .frame(width: 120,height: 120)
-                                    .foregroundColor(overseas ?? true ? .clear : .black.opacity(0.3))
+                                    .foregroundColor(overseas ?? false ? .black.opacity(0.3) : .clear)
+                                    
                             }
                     }
                     Text("해외")
@@ -190,5 +222,17 @@ extension SelectTypeView{
             .shadow(radius: 5)
         }
         .padding()
+    }
+    var emptyImage:some View{
+        RoundedRectangle(cornerRadius: 50)
+            .stroke(lineWidth: 3)
+            .frame(width: 120, height: 120)
+            .overlay {
+                Image(systemName: "camera")
+                    .resizable()
+                    .scaledToFill()
+                    .frame(width: 30,height: 30)
+            }
+            .foregroundColor(.black)
     }
 }

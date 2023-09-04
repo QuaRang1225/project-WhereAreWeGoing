@@ -11,6 +11,7 @@ import Kingfisher
 
 struct PageMainView: View {
     
+    @Environment(\.dismiss) var dismiss
     @EnvironmentObject var vm:PageViewModel
     @EnvironmentObject var vmAuth:AuthViewModel
     @State var pageMode:PageTabFilter = .schedule
@@ -21,12 +22,14 @@ struct PageMainView: View {
 
     @State var currentAmount:CGFloat = 0
     @State var currentDrageAmount:CGFloat = 0
-    
-    
     @State private var currentTime = Date()
+    
+    @State var delete = false
+    @State var sett = false
+    
     let timer = Timer.publish(every: 1, on: .main, in: .common).autoconnect()
     
-    @Environment(\.dismiss) var dismiss
+
 
     var body: some View {
         ZStack{
@@ -47,11 +50,13 @@ struct PageMainView: View {
                     
                 }
             }
+           
             .foregroundColor(.black)
             .background(Color.white)
             .edgesIgnoringSafeArea(.top)
             .padding(.bottom,30)
             header
+                
             tabBar
             if vm.copy{
                 Text("클립보드에 복사되었습니다.")
@@ -87,14 +92,37 @@ struct PageMainView: View {
                                 }
                             }
                     )
+                    
 
             }
         }
+        .onReceive(vm.createPageSuccess){
+            if let page = vm.page{
+                print(page)
+                self.page = page
+            }
+        }
+        .confirmationDialog("일정 수정", isPresented: $delete, actions: {
+            Button(role:.destructive){
+                if let user = vmAuth.user,let page = vm.page{
+                    vm.deletePage(user: user, page:page)
+                    dismiss()
+                }
+            } label: {
+                Text("삭제하기")
+            }
+        },message: {
+            Text("정말 이 페이지를 삭제하시겠습니까?")
+        })
         .onAppear{
             Task{
                 vm.admin = try await UserManager.shared.getUser(userId: page.pageAdmin)
                 vm.page = page
             }
+        }
+        .onDisappear{
+            sett = false
+            
         }
     }
 }
@@ -111,39 +139,72 @@ struct PageMainView_Previews: PreviewProvider {
 extension PageMainView{
     
     var header:some View{
-        HStack{
-            Button {
-                dismiss()
-            } label: {
-                Image(systemName: "chevron.left")
-                    .foregroundColor(.white)
-                    .font(.title3)
-                    .bold()
-                    
-                    .padding(.leading)
-                    
-            }.shadow(color:.black,radius: 20)
-            Spacer()
-            Image(systemName: "person.badge.plus")
-                .font(.title3)
-                .foregroundColor(.white)
-                .padding(.trailing)
-            Button {
-                //페이지 수정/삭제
-            } label: {
-                Image(systemName: "ellipsis")
-                    .font(.title3)
-                    .foregroundColor(.white)
-                    .padding(.trailing)
+        VStack{
+            HStack{
+                    Button {
+                        dismiss()
+                    } label: {
+                        Image(systemName: "chevron.left")
+                            .foregroundColor(.white)
+                            .font(.title3)
+                            .bold()
+                            
+                            .padding(.leading)
+                            
+                    }.shadow(color:.black,radius: 20)
+                    Spacer()
+                    Image(systemName: "person.badge.plus")
+                        .font(.title3)
+                        .foregroundColor(.white)
+                        .padding(.trailing)
+                    VStack{
+                        Button {
+                            withAnimation{
+                                sett.toggle()
+                            }
+                        } label: {
+                            Image(systemName: "ellipsis")
+                                .font(.title3)
+                                .foregroundColor(.white)
+                                .padding(.trailing)
+                        }
+                            
+                    }
             }
-
+            if sett{
+                HStack{
+                    Spacer()
+                    VStack{
+                        NavigationLink {
+                            SelectTypeView(title: vm.page?.pageName ?? "",text: vm.page?.pageSubscript ?? "",overseas: vm.page?.pageOverseas, startDate: vm.page?.dateRange.first?.dateValue() ?? Date(),endDate: vm.page?.dateRange.last?.dateValue() ?? Date())
+                                .environmentObject(vm)
+                                .environmentObject(vmAuth)
+                                .navigationBarBackButtonHidden()
+                        } label: {
+                            Text("수정하기")
+                               
+                        }.padding(.top,7.5)
+                        Divider().frame(width: 100)
+                        Button {
+                            delete = true
+                        } label: {
+                            Text("삭제하기").foregroundColor(.red)
+                        }
+                        Divider().frame(width: 100)
+                    }
+                    .padding(.horizontal)
+                    .font(.subheadline).foregroundColor(.black)
+                    .background(Color.white)
+                    .cornerRadius(10)
+                    .padding(.trailing)
+                }
+            }
         }
+       
         .frame(maxHeight: .infinity,alignment: .top)
     }
     var tabBar:some View{
         VStack(alignment: .leading){
-            
-            
             VStack{
                 Divider()
                     .background(Color.black)
@@ -176,7 +237,7 @@ extension PageMainView{
     var background:some View{
         ZStack(alignment: .bottomTrailing){
             GeometryReader { pro in
-                KFImage(URL(string: page.pageImageUrl)!)
+                KFImage(URL(string: page.pageImageUrl ?? "")!)
                     .resizable()
                     .overlay{
                         Color.black.opacity(0.3)
@@ -191,6 +252,9 @@ extension PageMainView{
                                     UIScreen.main.bounds.height/3 + pro.frame(in: .global).minY :
                                     UIScreen.main.bounds.height/3
                             )
+                            .onTapGesture {
+                            sett = false
+                        }
             }
             
             HStack(alignment: .bottom){

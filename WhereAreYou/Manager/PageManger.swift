@@ -26,21 +26,55 @@ final class PageManager{
         userPageDocumentCollection(userId: userId).document(pageId).collection("schedule")
     }
     
-    func createUserPage(userId:String,url:String,pageInfo:PageInfo)async throws{
+    func createUserPage(userId:String,url:URL?,path:String?,pageInfo:Page)async throws{
         let document = userPageDocumentCollection(userId: userId).document()
         let documentId = document.documentID
                 
         let data:[String:Any] = [
             "page_id":documentId,
             "page_admin":userId,
-            "page_image_url":url,
+            "page_image_url":url?.absoluteString,
+            "page_image_path":path,
             "page_name":pageInfo.pageName,
             "page_subscript":pageInfo.pageSubscript,
-            "page_overseas":pageInfo.overseas,
+            "page_overseas":pageInfo.pageOverseas,
             "date_range":pageInfo.dateRange,
             
         ]
         try await document.setData(data,merge: false)
+        
+    }
+    func upadateUserPage(userId:String,url:URL?,path:String?,pageInfo:Page)async throws{
+        let document = userPageDocumentCollection(userId: userId).document(pageInfo.pageId)
+        let documentId = document.documentID
+                
+        var data:[String:Any] = [:]
+        
+        if let url,let path{
+            data = [
+                "page_id":documentId,
+                "page_admin":userId,
+                "page_image_url":url.absoluteString,
+                "page_image_path":path,
+                "page_name":pageInfo.pageName,
+                "page_subscript":pageInfo.pageSubscript,
+                "page_overseas":pageInfo.pageOverseas,
+                "date_range":pageInfo.dateRange,
+                
+            ]
+        }else{
+            data = [
+                "page_id":documentId,
+                "page_admin":userId,
+                "page_name":pageInfo.pageName,
+                "page_subscript":pageInfo.pageSubscript,
+                "page_overseas":pageInfo.pageOverseas,
+                "date_range":pageInfo.dateRange,
+                
+            ]
+        }
+        print(data)
+        try await document.updateData(data)
         
     }
     
@@ -99,11 +133,15 @@ final class PageManager{
         let field = userPageDocumentCollection(userId: userId).document(pageId).collection("schedule").document(scheduleId)
         try await field.delete()
     }
+    func deleteUserPage(userId:String,pageId:String) async throws{
+        let field = userPageDocumentCollection(userId: userId).document(pageId)
+        try await field.delete()
+    }
     func getAllPage(userId:String)async throws -> [Page]{    //전체페이지 불러오기
         try await userPageDocumentCollection(userId: userId).getDocuments(as: Page.self)
     }
     func getAllSchedule(userId:String,pageId:String)async throws -> [Schedule]{    //전체스케쥴 불러오기
-        try await userScheduleDocumentCollection(userId: userId, pageId: pageId).getDocuments(as: Schedule.self)
+       try await userScheduleDocumentCollection(userId: userId, pageId: pageId).getDocuments(as: Schedule.self)
 
     }
 }

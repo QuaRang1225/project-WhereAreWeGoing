@@ -50,7 +50,7 @@ struct CalenderView: View {
                 .overlay {
                     HStack{
                         if let page = vm.page{
-                            KFImage(URL(string: page.pageImageUrl))
+                            KFImage(URL(string: page.pageImageUrl ?? ""))
                                 .resizable()
                                 .frame(width: 80, height: 80)
                                 .cornerRadius(20)

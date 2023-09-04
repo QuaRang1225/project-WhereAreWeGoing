@@ -33,7 +33,6 @@
 		81BA3E112A6FA76C00D38E93 /* exJsonDecoder.swift in Sources */ = {isa = PBXBuildFile; fileRef = 81BA3E102A6FA76C00D38E93 /* exJsonDecoder.swift */; };
 		81BA3E132A6FA7A900D38E93 /* exQuery.swift in Sources */ = {isa = PBXBuildFile; fileRef = 81BA3E122A6FA7A900D38E93 /* exQuery.swift */; };
 		81BA3E152A6FA7D100D38E93 /* Page.swift in Sources */ = {isa = PBXBuildFile; fileRef = 81BA3E142A6FA7D100D38E93 /* Page.swift */; };
-		81BA3E172A6FA7E900D38E93 /* PageInfo.swift in Sources */ = {isa = PBXBuildFile; fileRef = 81BA3E162A6FA7E900D38E93 /* PageInfo.swift */; };
 		81BA3E192A6FA8A700D38E93 /* PageRowView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 81BA3E182A6FA8A700D38E93 /* PageRowView.swift */; };
 		81BA3E1B2A6FAC7700D38E93 /* PageMainView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 81BA3E1A2A6FAC7700D38E93 /* PageMainView.swift */; };
 		81CE1AF32A5A536100ED87FF /* UserManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 81CE1AF22A5A536100ED87FF /* UserManager.swift */; };
@@ -129,7 +128,6 @@
 		81BA3E102A6FA76C00D38E93 /* exJsonDecoder.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = exJsonDecoder.swift; sourceTree = "<group>"; };
 		81BA3E122A6FA7A900D38E93 /* exQuery.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = exQuery.swift; sourceTree = "<group>"; };
 		81BA3E142A6FA7D100D38E93 /* Page.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Page.swift; sourceTree = "<group>"; };
-		81BA3E162A6FA7E900D38E93 /* PageInfo.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PageInfo.swift; sourceTree = "<group>"; };
 		81BA3E182A6FA8A700D38E93 /* PageRowView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PageRowView.swift; sourceTree = "<group>"; };
 		81BA3E1A2A6FAC7700D38E93 /* PageMainView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PageMainView.swift; sourceTree = "<group>"; };
 		81C2A53D2A9A12A900F33076 /* WhereAreYou.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = WhereAreYou.app; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -244,7 +242,6 @@
 				813F52402A594CF800833427 /* AuthData.swift */,
 				813F52442A595C6B00833427 /* UserData.swift */,
 				81BA3E142A6FA7D100D38E93 /* Page.swift */,
-				81BA3E162A6FA7E900D38E93 /* PageInfo.swift */,
 				8115A6362A83463300B7C3FE /* Schedule.swift */,
 			);
 			path = Model;
@@ -652,7 +649,6 @@
 				81BA3E192A6FA8A700D38E93 /* PageRowView.swift in Sources */,
 				81FEF6062A70F59B0000B76B /* exString.swift in Sources */,
 				81BA3E0D2A6BC80A00D38E93 /* PageViewModel.swift in Sources */,
-				81BA3E172A6FA7E900D38E93 /* PageInfo.swift in Sources */,
 				81FEF61C2A739EC70000B76B /* ShceduleCategoryRowView.swift in Sources */,
 				81234CD92A5BE84E007D9BB6 /* StorageManager.swift in Sources */,
 				8180A0B62AA03EBD00B90655 /* exTimestamp.swift in Sources */,
