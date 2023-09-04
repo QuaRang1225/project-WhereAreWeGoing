@@ -143,12 +143,18 @@ extension SchduleListView{
                     Circle()
                         .frame(width: 20,height: 20)
                         .overlay{
-                            Circle()
-                                .frame(width: 10,height: 10)
-                                .foregroundColor(.white)
+                            ZStack{
+                                Circle()
+                                    .frame(width: 10,height: 10)
+                                    .foregroundColor(.white)
+                                if isCurrentDateInRange(startDate: schedule.startTime.dateValue(), endDate: schedule.endTime.dateValue()){
+                                    Text("⏰")
+                                        .font(.title)
+                                        .frame(width: 50,height: 50)
+                                }
+                            }
                         }
                         .foregroundColor(.customCyan2)
-                    
                     Button {
                         withAnimation {
                             if binding == schedule{
@@ -176,6 +182,14 @@ extension SchduleListView{
                     .foregroundColor(.customCyan2)
                     .padding(.leading,7.5)
             }
+        }
+    }
+    func isCurrentDateInRange(startDate: Date, endDate: Date) -> Bool {
+        let currentDate = Date()
+        if currentDate >= startDate && currentDate <= endDate {
+            return true
+        } else {
+            return false
         }
     }
 }
