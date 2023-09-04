@@ -73,7 +73,6 @@ struct ScheduleMapView: View {
                     }
                 }
             }.ignoresSafeArea()
-            VStack{
                 Capsule()
                     .foregroundColor(.white)
                     .frame(width: 250,height: 30)
@@ -86,23 +85,8 @@ struct ScheduleMapView: View {
                             Text(location.pickedPlaceMark?.subThoroughfare ?? "")
                         }.font(.subheadline).foregroundColor(.black)
                     }.shadow(radius: 10)
-                Button {
-                    copy = true
-                    DispatchQueue.main.asyncAfter(deadline: .now() + 2){
-                        withAnimation{
-                            copy = false
-                        }
-                    }
-                    vm.copyToPasteboard(text: "\(location.pickedPlaceMark?.administrativeArea != location.pickedPlaceMark?.locality ? location.pickedPlaceMark?.locality ?? "": "") \(location.pickedPlaceMark?.thoroughfare ?? "") \(location.pickedPlaceMark?.subThoroughfare ?? "")")
-                } label: {
-                    HStack(spacing:0){
-                        Image(systemName: "square.on.square")
-                        Text("주소복사")
-                    }.padding(5).padding(.horizontal)
-                    .font(.caption2)
-                    .foregroundColor(.gray)
-                }.background(Color.white).cornerRadius(20).shadow(radius: 10)
-            }
+                
+            
             
             HStack{
                 Button {
@@ -121,22 +105,42 @@ struct ScheduleMapView: View {
                 Spacer()
             }
             VStack(alignment: .trailing) {
-                Button {
-                    DispatchQueue.main.async {
-                        withAnimation(.easeIn(duration: 0.5)){
-                            region = MKCoordinateRegion(center:location.mapCoordinate, span: location.mySpan)
+                HStack(alignment:.bottom){
+                    Button {
+                        copy = true
+                        DispatchQueue.main.asyncAfter(deadline: .now() + 2){
+                            withAnimation{
+                                copy = false
+                            }
                         }
+                        vm.copyToPasteboard(text: "\(location.pickedPlaceMark?.administrativeArea != location.pickedPlaceMark?.locality ? location.pickedPlaceMark?.locality ?? "": "") \(location.pickedPlaceMark?.thoroughfare ?? "") \(location.pickedPlaceMark?.subThoroughfare ?? "")")
+                    } label: {
+                        HStack(spacing:0){
+                            Image(systemName: "square.on.square")
+                            Text("주소복사")
+                        }.padding(5).padding(.horizontal)
+                        .font(.caption2)
+                        .foregroundColor(.white).bold()
+                    }.background(Color.gray.opacity(0.4)).cornerRadius(20).shadow(radius: 10)
+                    Spacer()
+                    Button {
+                        DispatchQueue.main.async {
+                            withAnimation(.easeIn(duration: 0.5)){
+                                region = MKCoordinateRegion(center:location.mapCoordinate, span: location.mySpan)
+                            }
+                        }
+                    } label: {
+                        Circle()
+                            .frame(width: 40,height: 40)
+                            .foregroundColor(.white)
+                            .shadow(color: .gray, radius: 10)
+                            .overlay {
+                                Image(systemName: "dot.viewfinder")
+                                    .foregroundColor(.black)
+                            }
                     }
-                } label: {
-                    Circle()
-                        .frame(width: 40,height: 40)
-                        .foregroundColor(.white)
-                        .shadow(color: .gray, radius: 10)
-                        .overlay {
-                            Image(systemName: "dot.viewfinder")
-                                .foregroundColor(.black)
-                        }
                 }
+                
                 .padding()
                 RoundedRectangle(cornerRadius: 20)
                     .frame(height: 200)
