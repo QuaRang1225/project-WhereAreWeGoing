@@ -11,8 +11,8 @@ struct SelectAddressView: View {
     
     @EnvironmentObject var vm:PageViewModel
     @EnvironmentObject var vmAuth:AuthViewModel
-   
     @EnvironmentObject var location:LocationMagager
+    
     @State var isShcedule = false
     @Binding var isPage:Bool
     

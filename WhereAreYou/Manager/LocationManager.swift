@@ -28,7 +28,7 @@ final class LocationMagager:NSObject,ObservableObject,CLLocationManagerDelegate,
     @Published var pickedLocation:CLLocation?       //좌표
     @Published var mapCoordinate = CLLocationCoordinate2D()     //좌표(위도,경도)
     
-    override init() {
+    override init(){
         super.init()
         DispatchQueue.global(qos: .background).async {
             self.manager.delegate = self
@@ -48,7 +48,7 @@ final class LocationMagager:NSObject,ObservableObject,CLLocationManagerDelegate,
             })
     }
     
-    //------------- 좌펴ㅛ -> 주소 변환 -------------------------
+    //------------- 좌표 -> 주소 변환 -------------------------
     func fetchPlaces(value:String){ //들어온 값이 포함되어있는 주소들을 찾아서 비동기로 변수에 저장
         Task{
             let request = MKLocalSearch.Request()
@@ -61,10 +61,12 @@ final class LocationMagager:NSObject,ObservableObject,CLLocationManagerDelegate,
             })
         }
     }
+    
     private func reverseLocationCoordinate(location:CLLocation)async throws -> CLPlacemark?{    //주소로 변한
         let place = try await CLGeocoder().reverseGeocodeLocation(location).first
         return place
     }
+    
     func updatePlacemark(location:CLLocation){  //주소 변경 메서드
         Task{
             guard let place = try? await reverseLocationCoordinate(location: location) else {return}    //변환한 주소 비동기로 변수에 저장
@@ -127,7 +129,9 @@ final class LocationMagager:NSObject,ObservableObject,CLLocationManagerDelegate,
         regionSuccess.send()
     }
     internal func locationManager(_ manager: CLLocationManager, didUpdateLocations locations: [CLLocation]) {    //현제 위치 불러오는 메서드
+        
         locations.last.map {
+            
             self.mapRegion = MKCoordinateRegion(
                 center: CLLocationCoordinate2D(latitude: $0.coordinate.latitude, longitude: $0.coordinate.longitude),
                 span: mySpan)

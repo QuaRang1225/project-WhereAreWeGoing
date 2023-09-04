@@ -15,6 +15,7 @@ struct ScheduleMapView: View {
     
     
     @State var currentIndex = 0
+    @State var copy = false
     @State var schedule:Schedule
     @State var region = MKCoordinateRegion()
     @Environment(\.dismiss) var dismiss
@@ -72,6 +73,37 @@ struct ScheduleMapView: View {
                     }
                 }
             }.ignoresSafeArea()
+            VStack{
+                Capsule()
+                    .foregroundColor(.white)
+                    .frame(width: 250,height: 30)
+                    .overlay {
+                        HStack{
+                            if location.pickedPlaceMark?.administrativeArea != location.pickedPlaceMark?.locality{
+                                Text(location.pickedPlaceMark?.locality ?? "")
+                            }   //서울특별시
+                            Text(location.pickedPlaceMark?.thoroughfare ?? "")
+                            Text(location.pickedPlaceMark?.subThoroughfare ?? "")
+                        }.font(.subheadline).foregroundColor(.black)
+                    }.shadow(radius: 10)
+                Button {
+                    copy = true
+                    DispatchQueue.main.asyncAfter(deadline: .now() + 2){
+                        withAnimation{
+                            copy = false
+                        }
+                    }
+                    vm.copyToPasteboard(text: "\(location.pickedPlaceMark?.administrativeArea != location.pickedPlaceMark?.locality ? location.pickedPlaceMark?.locality ?? "": "") \(location.pickedPlaceMark?.thoroughfare ?? "") \(location.pickedPlaceMark?.subThoroughfare ?? "")")
+                } label: {
+                    HStack(spacing:0){
+                        Image(systemName: "square.on.square")
+                        Text("주소복사")
+                    }.padding(5).padding(.horizontal)
+                    .font(.caption2)
+                    .foregroundColor(.gray)
+                }.background(Color.white).cornerRadius(20).shadow(radius: 10)
+            }
+            
             HStack{
                 Button {
                     dismiss()
@@ -134,13 +166,6 @@ struct ScheduleMapView: View {
                                 }
                             }
                             HStack{
-                                Text(location.pickedPlaceMark?.locality ?? "")
-                                Text(location.pickedPlaceMark?.thoroughfare ?? "")
-                                Text(location.pickedPlaceMark?.subThoroughfare ?? "")
-                            }
-                            .foregroundColor(.black)
-                            .font(.subheadline)
-                            HStack{
                                 VStack(alignment: .leading){
                                     Text("일정 시작 : \(schedule.startTime.dateValue().toTimeString())")
                                     Text("일정 끝 : \(schedule.endTime.dateValue().toTimeString())")
@@ -177,7 +202,15 @@ struct ScheduleMapView: View {
                     .shadow(radius: 10)
             }
             .frame(maxHeight: .infinity,alignment: .bottom)
-           
+            if copy{
+                Text("클립보드에 복사 되었습니다")
+                    .foregroundColor(.white)
+                    .padding(5)
+                    .font(.caption)
+                    .padding(.horizontal,30)
+                    .background(Color.gray).cornerRadius(20)
+                    .frame(maxHeight: .infinity)
+            }
             
         }
         .onChange(of: schedule) { newValue in

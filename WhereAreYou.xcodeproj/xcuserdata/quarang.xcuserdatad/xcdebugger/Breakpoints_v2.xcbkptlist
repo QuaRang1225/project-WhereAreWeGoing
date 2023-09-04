@@ -228,8 +228,8 @@
             filePath = "WhereAreYou/Manager/StorageManager.swift"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "39"
-            endingLineNumber = "39"
+            startingLineNumber = "41"
+            endingLineNumber = "41"
             landmarkName = "saveImage(data:userId:mode:)"
             landmarkType = "7">
             <Locations>
@@ -292,8 +292,8 @@
             filePath = "WhereAreYou/Manager/PageManger.swift"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "103"
-            endingLineNumber = "103"
+            startingLineNumber = "105"
+            endingLineNumber = "105"
             landmarkName = "getAllSchedule(userId:pageId:)"
             landmarkType = "7">
             <Locations>
@@ -340,8 +340,8 @@
             filePath = "WhereAreYou/Page/ViewModel/PageViewModel.swift"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "80"
-            endingLineNumber = "80"
+            startingLineNumber = "84"
+            endingLineNumber = "84"
             landmarkName = "getSchedule(user:pageId:)"
             landmarkType = "7">
          </BreakpointContent>
@@ -356,8 +356,8 @@
             filePath = "WhereAreYou/Page/ViewModel/PageViewModel.swift"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "82"
-            endingLineNumber = "82"
+            startingLineNumber = "86"
+            endingLineNumber = "86"
             landmarkName = "getSchedule(user:pageId:)"
             landmarkType = "7">
             <Locations>
@@ -449,8 +449,8 @@
             filePath = "WhereAreYou/Manager/PageManger.swift"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "104"
-            endingLineNumber = "104"
+            startingLineNumber = "106"
+            endingLineNumber = "106"
             landmarkName = "getAllSchedule(userId:pageId:)"
             landmarkType = "7">
             <Locations>

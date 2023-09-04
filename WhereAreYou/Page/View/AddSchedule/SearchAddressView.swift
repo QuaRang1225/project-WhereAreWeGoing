@@ -7,10 +7,11 @@
 
 import SwiftUI
 import MapKit
+import FirebaseFirestore
 
 struct SearchAddressView: View {
     
-
+    let geo:GeoPoint?
     @State var modifyButton = false
     @State var modifySchedlue = false
     
@@ -19,13 +20,17 @@ struct SearchAddressView: View {
     
     @EnvironmentObject var vm:PageViewModel
     @EnvironmentObject var vmAuth:AuthViewModel
-    @EnvironmentObject var location:LocationMagager
+    @StateObject var location = LocationMagager()
+    
     var body: some View {
         ZStack{
             Color.white.ignoresSafeArea()
             header
         }
         .onAppear{
+            if let geo{
+                location.updatePlacemark(location: CLLocation(latitude: geo.latitude, longitude: geo.longitude))
+            }
             if vm.modifingSchecdule != nil{
                 modifyButton = true
             }
@@ -60,7 +65,7 @@ struct SearchAddressView: View {
 struct SearchAddressView_Previews: PreviewProvider {
     static var previews: some View {
         NavigationStack{
-            SearchAddressView(isSearch: .constant(false))
+            SearchAddressView(geo: GeoPoint(latitude: 34, longitude: 127), isSearch: .constant(false))
                 .environmentObject(PageViewModel())
                 .environmentObject(AuthViewModel())
                 .environmentObject(LocationMagager())

@@ -44,7 +44,7 @@ final class PageManager{
         
     }
     
-    func createUserSchedule(userId:String,pageId:String,url:String?,schedule:Schedule)async throws{
+    func createUserSchedule(userId:String,pageId:String,url:String?,schedule:Schedule,path:String?)async throws{
         let field = userPageDocumentCollection(userId: userId).document(pageId).collection("schedule").document()
         let schduleId = field.documentID
           
@@ -52,6 +52,7 @@ final class PageManager{
         let data:[String:Any] = [
             "id" : schduleId,
             "image_url" : url,
+            "image_url_path":path,
             "category" : schedule.category,
             "title" : schedule.title,
             "start_time" : schedule.startTime,
@@ -63,13 +64,14 @@ final class PageManager{
         try await field.setData(data,merge: false)
         
     }
-    func updateUSerSchedule(userId:String,pageId:String,url:URL?,schedule:Schedule)async throws{
+    func updateUSerSchedule(userId:String,pageId:String,url:URL?,schedule:Schedule,path:String?)async throws{
         
         let field = userPageDocumentCollection(userId: userId).document(pageId).collection("schedule").document(schedule.id)
         var data:[String:Any] = [:]
         
-        if let url{
+        if let url,let path{
              data = [
+                "image_url_path" : path,
                 "image_url" : url.absoluteString,
                 "category" : schedule.category,
                 "title" : schedule.title,

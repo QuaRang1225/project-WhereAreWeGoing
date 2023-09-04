@@ -22,7 +22,6 @@ struct ScheduleRowView: View {
     @Binding var photo:Bool
     @EnvironmentObject var vm:PageViewModel
     @EnvironmentObject var vmAuth:AuthViewModel
-    @StateObject var location = LocationMagager()
     
     @State var modify = false
     
@@ -65,23 +64,9 @@ struct ScheduleRowView: View {
                 }
             }
             if binding{
-                HStack{
+                HStack(alignment:.top){
                     VStack(alignment:.leading){
-                        Button {
-                            vm.copyToPasteboard(text: "\(location.pickedPlaceMark?.administrativeArea != location.pickedPlaceMark?.locality ? location.pickedPlaceMark?.locality ?? "": "") \(location.pickedPlaceMark?.thoroughfare ?? "") \(location.pickedPlaceMark?.subThoroughfare ?? "")")
-                        } label: {
-                            HStack(spacing: 2){
-                                Text("주소: ").bold()
-                                HStack{
-                                    if location.pickedPlaceMark?.administrativeArea != location.pickedPlaceMark?.locality{
-                                        Text(location.pickedPlaceMark?.locality ?? "")
-                                    }   //서울특별시
-                                    Text(location.pickedPlaceMark?.thoroughfare ?? "")
-                                    Text(location.pickedPlaceMark?.subThoroughfare ?? "")
-                                }
-                                Image(systemName: "link")
-                            }.foregroundColor(.gray).font(.caption)
-                        }
+
                         HStack(alignment:.top){
                             NavigationLink {
                                 ScheduleMapView(schedule: schedule)
@@ -108,26 +93,27 @@ struct ScheduleRowView: View {
                             vm.modifingSchecdule = schedule
                         } label: {
                             Image(systemName: "square.and.pencil")
-                                .padding()
+                                .padding(7.5)
                                 .background(Circle().foregroundColor(.white))
                                 .shadow(radius: 1)
+                                .font(.subheadline)
                                 
                         }
                         .navigationDestination(isPresented: $modify) {
-                            SearchAddressView(isSearch: $modify)
+                            SearchAddressView(geo: schedule.location, isSearch: $modify)
                                 .navigationBarBackButtonHidden()
                                 .environmentObject(vmAuth)
                                 .environmentObject(vm)
-                                .environmentObject(location)
                         }
                         Button {
                             delete = true
                         } label: {
                             Image(systemName: "trash")
-                                .foregroundColor(.red)
-                                .padding()
+                                .padding(7.5)
                                 .background(Circle().foregroundColor(.white))
                                 .shadow(radius: 1)
+                                .font(.subheadline)
+                                .foregroundColor(.red)
                         }
 
                         
@@ -188,9 +174,7 @@ struct ScheduleRowView: View {
         },message: {
             Text("\(schedule.title) 일정을 삭제하시겠습니까?").bold()
         })
-        .onAppear{
-            location.updatePlacemark(location: CLLocation(latitude: schedule.location.latitude, longitude: schedule.location.longitude))
-        }
+
         .sheet(isPresented: $goWebView) {
             LinkWebView(urlString: link).ignoresSafeArea()
         }

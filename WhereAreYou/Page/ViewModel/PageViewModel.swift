@@ -45,29 +45,33 @@ class PageViewModel:ObservableObject{
         
         Task{
             var url = URL(string: "")
+            var path:String? = nil
             if let data = try await selection?.loadTransferable(type: Data.self){
-                let path = try await StorageManager.shared.saveImage(data:data,userId: user.userId, mode: .schedule)
-                url = try await StorageManager.shared.getUrlForImage(path: path)
+                path = try await StorageManager.shared.saveImage(data:data,userId: user.userId, mode: .schedule)
+                url = try await StorageManager.shared.getUrlForImage(path: path ?? "")
             }
             
-            try await PageManager.shared.createUserSchedule(userId: user.userId, pageId: pageId, url: url?.absoluteString, schedule: schedule)
+            try await PageManager.shared.createUserSchedule(userId: user.userId, pageId: pageId, url: url?.absoluteString, schedule: schedule,path:path)
             createScheduleSuccess.send()
         }
     }
     func updateSchedule(user:UserData,pageId:String,schedule:Schedule){
         Task{
             var url:URL? = nil
-            if let data = try await selection?.loadTransferable(type: Data.self){
-                let path = try await StorageManager.shared.saveImage(data:data,userId: user.userId, mode: .schedule)
-                url = try await StorageManager.shared.getUrlForImage(path: path)
-            }
+            var path:String? = nil
             
-            try await PageManager.shared.updateUSerSchedule(userId: user.userId, pageId: pageId, url: url, schedule: schedule)
+            if let data = try await selection?.loadTransferable(type: Data.self){
+                try await StorageManager.shared.deleteImage(path: schedule.imageUrlPath ?? "")
+                path = try await StorageManager.shared.saveImage(data:data,userId: user.userId, mode: .schedule)
+                url = try await StorageManager.shared.getUrlForImage(path: path ?? "")
+            }
+            try await PageManager.shared.updateUSerSchedule(userId: user.userId, pageId: pageId, url: url, schedule: schedule,path: path)
             createScheduleSuccess.send()
         }
     }
     func deleteSchedule(user:UserData,pageId:String,schedule:Schedule){
         Task{
+            try await StorageManager.shared.deleteImage(path: schedule.imageUrlPath ?? "")
             try await PageManager.shared.deleteUserSchedule(userId:user.userId,pageId:pageId,scheduleId:schedule.id)
             deleteSuccess.send()
         }

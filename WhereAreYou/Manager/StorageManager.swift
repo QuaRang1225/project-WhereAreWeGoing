@@ -19,6 +19,7 @@ final class StorageManager{
     private var imageRef:StorageReference{  //이미지 폴터경로
         storage.child("iamges")
     }
+    
     private func userReferance(userId:String,mode:ImageSaveFilter) -> StorageReference{  //메타데이터
         switch mode{
         case .page:
@@ -29,6 +30,7 @@ final class StorageManager{
             return storage.child("schedule").child(userId)
         }
     }
+    
     private func getProfileImageURL(path:String) -> StorageReference{   //이미지 Url 가져오다
         Storage.storage().reference(withPath: path)
     }
@@ -51,12 +53,6 @@ final class StorageManager{
         return returnedpPath
         
     }
-//    func saveImage(image:UIImage,userId:String,mode:ImageSaveFilter) async throws -> String{
-//        guard let data = image.jpegData(compressionQuality: 1)else{ //퀄리티성정
-//            throw URLError(.badServerResponse)
-//        }
-//        return try await saveImage(data: data, userId: userId,mode: mode)
-//    }
     func deleteImage(path:String) async throws{
         try await getProfileImageURL(path: path).delete()
     }
