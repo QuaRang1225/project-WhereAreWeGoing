@@ -10,7 +10,7 @@ import FirebaseFirestoreSwift
 import FirebaseFirestore
 
 extension Query{
-    func getDocuments<T>(as types : T.Type)async throws -> [T] where T:Decodable{
+    func getAllDocuments<T>(as types : T.Type)async throws -> [T] where T:Decodable{
        try await getDocumentSnapshot(as:types).product
     }
     func getDocumentSnapshot<T>(as types : T.Type)async throws -> (product : [T],lastDocument:DocumentSnapshot?) where T:Decodable{

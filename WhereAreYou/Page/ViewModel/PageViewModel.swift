@@ -113,6 +113,11 @@ class PageViewModel:ObservableObject{
             schedules = try await PageManager.shared.getAllSchedule(userId: user.userId, pageId: pageId)
         }
     }
+//    func getPage(user:UserData,pageId:String){
+//        Task{
+//            page = try await PageManager.shared.getPage(userId: user.userId, pageId: pageId)
+//        }
+//    }
     
     
     

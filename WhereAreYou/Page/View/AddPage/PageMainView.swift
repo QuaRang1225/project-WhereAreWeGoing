@@ -96,12 +96,11 @@ struct PageMainView: View {
 
             }
         }
-        .onReceive(vm.createPageSuccess){
-            if let page = vm.page{
-                print(page)
-                self.page = page
-            }
-        }
+//        .onReceive(vm.createPageSuccess){
+//            if let user = vmAuth.user{
+//                vm.getPages(user: user)
+//            }
+//        }
         .confirmationDialog("일정 수정", isPresented: $delete, actions: {
             Button(role:.destructive){
                 if let user = vmAuth.user,let page = vm.page{
@@ -122,7 +121,6 @@ struct PageMainView: View {
         }
         .onDisappear{
             sett = false
-            
         }
     }
 }
@@ -176,7 +174,7 @@ extension PageMainView{
                     Spacer()
                     VStack{
                         NavigationLink {
-                            SelectTypeView(title: vm.page?.pageName ?? "",text: vm.page?.pageSubscript ?? "",overseas: vm.page?.pageOverseas, startDate: vm.page?.dateRange.first?.dateValue() ?? Date(),endDate: vm.page?.dateRange.last?.dateValue() ?? Date())
+                            SelectTypeView(title: page.pageName ,text: page.pageSubscript,overseas: page.pageOverseas, startDate: page.dateRange.first?.dateValue() ?? Date(),endDate: page.dateRange.last?.dateValue() ?? Date())
                                 .environmentObject(vm)
                                 .environmentObject(vmAuth)
                                 .navigationBarBackButtonHidden()

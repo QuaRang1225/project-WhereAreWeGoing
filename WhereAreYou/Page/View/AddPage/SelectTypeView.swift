@@ -38,7 +38,7 @@ struct SelectTypeView: View {
                 
             }
             if isPage{
-                CustomProgressView(title: "페이지 생성중..")
+                CustomProgressView(title: vm.page != nil ? "페이지 수정중.." : "페이지 생성중..")
             }
             
         }
@@ -79,7 +79,8 @@ extension SelectTypeView{
                 Button {
                     if let user = vmAuth.user,let overseas{
                         if let page = vm.page{
-                            vm.updatePage(user:user, pageInfo: page)
+                            let modifiedPage = Page(pageId: page.pageId, pageAdmin: page.pageId, pageImagePath: nil, pageName: title, pageOverseas: overseas, pageSubscript: text, dateRange: vm.generateTimestamp(from: startDate, to: endDate))
+                            vm.updatePage(user:user, pageInfo: modifiedPage)
                         }else{
                             vm.creagtePage(user:user, pageInfo: Page(pageId: "", pageAdmin: "",pageImageUrl: "",pageImagePath: "", pageName: title, pageOverseas: overseas, pageSubscript: text, dateRange: vm.generateTimestamp(from: startDate, to: endDate)))
                             

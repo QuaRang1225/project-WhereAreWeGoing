@@ -12,7 +12,7 @@ struct Page:Codable,Hashable{
     
     let pageId:String
     let pageAdmin:String
-    let pageImageUrl:String?
+    var pageImageUrl:String?
     let pageImagePath:String?
     let pageName:String
     let pageOverseas:Bool

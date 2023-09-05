@@ -6,8 +6,9 @@
 //
 
 import Foundation
-import FirebaseAuth
+
 import FirebaseFirestore
+import FirebaseFirestoreSwift
 
 final class PageManager{
     
@@ -25,7 +26,6 @@ final class PageManager{
     private func userScheduleDocumentCollection(userId:String,pageId:String) -> CollectionReference{
         userPageDocumentCollection(userId: userId).document(pageId).collection("schedule")
     }
-    
     func createUserPage(userId:String,url:URL?,path:String?,pageInfo:Page)async throws{
         let document = userPageDocumentCollection(userId: userId).document()
         let documentId = document.documentID
@@ -33,14 +33,15 @@ final class PageManager{
         let data:[String:Any] = [
             "page_id":documentId,
             "page_admin":userId,
-            "page_image_url":url?.absoluteString,
-            "page_image_path":path,
+            "page_image_url":url?.absoluteString as Any,
+            "page_image_path":path as Any,
             "page_name":pageInfo.pageName,
             "page_subscript":pageInfo.pageSubscript,
             "page_overseas":pageInfo.pageOverseas,
             "date_range":pageInfo.dateRange,
             
         ]
+        print("페이지 생성중..")
         try await document.setData(data,merge: false)
         
     }
@@ -73,7 +74,7 @@ final class PageManager{
                 
             ]
         }
-        print(data)
+        print("페이지 수정중..")
         try await document.updateData(data)
         
     }
@@ -85,16 +86,17 @@ final class PageManager{
 
         let data:[String:Any] = [
             "id" : schduleId,
-            "image_url" : url,
-            "image_url_path":path,
+            "image_url" : url as Any,
+            "image_url_path":path as Any,
             "category" : schedule.category,
             "title" : schedule.title,
             "start_time" : schedule.startTime,
             "end_time" : schedule.endTime,
             "content" : schedule.content,
             "location" : schedule.location,
-            "link":schedule.link
+            "link":schedule.link as Any
         ]
+        print("스케쥴 생성중..")
         try await field.setData(data,merge: false)
         
     }
@@ -113,7 +115,7 @@ final class PageManager{
                 "end_time" : schedule.endTime,
                 "content" : schedule.content,
                 "location" : schedule.location,
-                "link":schedule.link
+                "link":schedule.link as Any
             ]
         }else{
             data = [
@@ -123,9 +125,10 @@ final class PageManager{
                "end_time" : schedule.endTime,
                "content" : schedule.content,
                "location" : schedule.location,
-               "link":schedule.link
+               "link":schedule.link as Any
            ]
         }
+        print("스케쥴 수정중..")
         try await field.updateData(data)
         
     }
@@ -138,10 +141,13 @@ final class PageManager{
         try await field.delete()
     }
     func getAllPage(userId:String)async throws -> [Page]{    //전체페이지 불러오기
-        try await userPageDocumentCollection(userId: userId).getDocuments(as: Page.self)
+        try await userPageDocumentCollection(userId: userId).getAllDocuments(as: Page.self)
     }
     func getAllSchedule(userId:String,pageId:String)async throws -> [Schedule]{    //전체스케쥴 불러오기
-       try await userScheduleDocumentCollection(userId: userId, pageId: pageId).getDocuments(as: Schedule.self)
+       try await userScheduleDocumentCollection(userId: userId, pageId: pageId).getAllDocuments(as: Schedule.self)
 
     }
+//    func getPage(userId:String,pageId:String)async throws -> Page{
+//        try await userPageDocumentCollection(userId: userId).document(pageId).getDocument(as:Page.self)
+//    }
 }

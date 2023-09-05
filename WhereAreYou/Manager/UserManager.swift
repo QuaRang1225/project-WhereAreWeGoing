@@ -40,7 +40,7 @@ final class UserManager{
         try userDocument(userId: user.userId).setData(from: user,merge: false,encoder: encoder)
     }
     func updateUserProfileImagePath(userId:String,path:String?,url:String?)async throws{
-        let data:[String:Any] = ["profile_image_url":url]
+        let data:[String:Any] = ["profile_image_url":url as Any]
         try await userDocument(userId:userId).updateData(data)
     }
     
