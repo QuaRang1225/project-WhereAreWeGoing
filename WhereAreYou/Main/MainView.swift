@@ -60,6 +60,12 @@ struct MainView: View {
             vm.page = nil
             vm.data = nil
         }
+        .onReceive(vm.deleteSuccess) {
+            if let user = vmAuth.user{
+                vm.getPages(user: user)
+            }
+            
+        }
     }
 }
 
