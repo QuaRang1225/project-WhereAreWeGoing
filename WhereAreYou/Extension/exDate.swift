@@ -12,6 +12,7 @@ extension Date {
     func toString() -> String {
         let dateFormatter = DateFormatter()
         dateFormatter.dateFormat = "yyyy년 MM월 dd일"
+        dateFormatter.locale = .init(identifier: "ko_KR")
         return dateFormatter.string(from: self)
     }
     func toStringCalender() -> String {

@@ -99,6 +99,13 @@ struct SchduleListView: View {
                 vm.getSchedule(user: user, pageId: page.pageId)
             }
         }
+        .onReceive(vm.createPageSuccess) {
+            Task{
+                if let user = vmAuth.user{
+                    time = try await vm.getPage(user: user, pageId: page.pageId).dateRange[0]
+                }
+            }
+        }
     }
     
 }

@@ -147,7 +147,7 @@ final class PageManager{
        try await userScheduleDocumentCollection(userId: userId, pageId: pageId).getAllDocuments(as: Schedule.self)
 
     }
-//    func getPage(userId:String,pageId:String)async throws -> Page{
-//        try await userPageDocumentCollection(userId: userId).document(pageId).getDocument(as:Page.self)
-//    }
+    func getPage(userId:String,pageId:String)async throws -> Page{
+        try await userPageDocumentCollection(userId: userId).document(pageId).getDocument(as:Page.self)
+    }
 }

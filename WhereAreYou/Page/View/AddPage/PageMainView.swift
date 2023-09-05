@@ -96,11 +96,13 @@ struct PageMainView: View {
 
             }
         }
-//        .onReceive(vm.createPageSuccess){
-//            if let user = vmAuth.user{
-//                vm.getPages(user: user)
-//            }
-//        }
+        .onReceive(vm.createPageSuccess){
+            Task{
+                if let user = vmAuth.user,let page = vm.page{
+                    self.page = try await vm.getPage(user: user,pageId: page.pageId)
+                }
+            }
+        }
         .confirmationDialog("일정 수정", isPresented: $delete, actions: {
             Button(role:.destructive){
                 if let user = vmAuth.user,let page = vm.page{

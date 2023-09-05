@@ -8,6 +8,7 @@
 import SwiftUI
 import PhotosUI
 import Kingfisher
+import FirebaseFirestore
 
 struct SelectTypeView: View {
     
@@ -18,6 +19,7 @@ struct SelectTypeView: View {
     @State var endDate = Date() + 86400
     
     @State var isPage = false
+    @State var changedDate = false
     @State var isImage:String?
     @EnvironmentObject var vm:PageViewModel
     @EnvironmentObject var vmAuth:AuthViewModel
@@ -52,6 +54,30 @@ struct SelectTypeView: View {
         .onReceive(vm.createPageSuccess) { _ in
             dismiss()
         }
+        .alert(isPresented: $changedDate) {
+            Alert(
+                title: Text("경고"),
+                message: Text("페이지의 날짜가 바뀌게 되면 해당 날짜의 일정은 모두 삭제 됩니다. 날짜를 수정하시겠습니까?"),
+                primaryButton: .destructive(Text("확인")) {
+                        
+                    Task{
+                        if let page = vm.page,let user = vmAuth.user,let overseas{
+                            let modifiedPage = Page(pageId: page.pageId, pageAdmin: page.pageId, pageImagePath: page.pageImagePath, pageName: title, pageOverseas: overseas, pageSubscript: text, dateRange: vm.generateTimestamp(from: startDate, to: endDate))
+                                let currentDate = page.dateRange
+                                let modifiyngDate = vm.generateTimestamp(from: startDate, to: endDate)
+                                
+                                let changed = currentDate.filter{!(modifiyngDate.contains($0))}
+                                for change in changed {
+                                    vm.deleteSchedule(user: user, pageId: page.pageId, schedule: vm.schedules.first(where: {$0.startTime.dateValue().toTimeString() == change.dateValue().toTimeString()})! )
+                                }
+                                vm.updatePage(user: user, pageInfo: modifiedPage)
+                            }
+                            
+                        
+                    }
+                    
+                }, secondaryButton: .cancel(Text("취소")))
+        }
     }
 }
 
@@ -78,14 +104,13 @@ extension SelectTypeView{
             if overseas != nil && !text.isEmpty && !title.isEmpty{
                 Button {
                     if let user = vmAuth.user,let overseas{
-                        if let page = vm.page{
-                            let modifiedPage = Page(pageId: page.pageId, pageAdmin: page.pageId, pageImagePath: nil, pageName: title, pageOverseas: overseas, pageSubscript: text, dateRange: vm.generateTimestamp(from: startDate, to: endDate))
-                            vm.updatePage(user:user, pageInfo: modifiedPage)
+                        if  vm.page != nil{
+                            changedDate = true
                         }else{
                             vm.creagtePage(user:user, pageInfo: Page(pageId: "", pageAdmin: "",pageImageUrl: "",pageImagePath: "", pageName: title, pageOverseas: overseas, pageSubscript: text, dateRange: vm.generateTimestamp(from: startDate, to: endDate)))
+                            isPage = true
                             
                         }
-                        isPage = true
                     }
                 } label: {
                     Text(vm.page != nil ? "변경" : "완료")
@@ -235,5 +260,17 @@ extension SelectTypeView{
                     .frame(width: 30,height: 30)
             }
             .foregroundColor(.black)
+    }
+    func isTimeContationDate(startDate: Timestamp, currentDate: Timestamp) -> Timestamp? {
+        
+        let calendar = Calendar.current
+        let startDay = calendar.startOfDay(for: startDate.dateValue())
+        let endDay = calendar.date(byAdding: .second,value: 86399, to: startDay)
+        
+        if !(currentDate.dateValue() >= startDate.dateValue() && currentDate.dateValue() <= endDay!) {
+            return currentDate
+        }else{
+            return nil
+        }
     }
 }

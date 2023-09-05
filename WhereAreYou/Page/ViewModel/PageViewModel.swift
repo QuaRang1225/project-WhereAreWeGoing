@@ -47,12 +47,12 @@ class PageViewModel:ObservableObject{
         Task{
             var url:URL? = nil
             var path:String? = nil
-            
             if let data = try await selection?.loadTransferable(type: Data.self){
-                try await StorageManager.shared.deleteImage(path: pageInfo.pageImagePath ?? "")
+                if pageInfo.pageImageUrl != nil{
+                    try await StorageManager.shared.deleteImage(path: pageInfo.pageImagePath ?? "")
+                }
                 path = try await StorageManager.shared.saveImage(data:data,userId: user.userId, mode: .page)
                 url = try await StorageManager.shared.getUrlForImage(path: path ?? "")
-                
             }
             try await PageManager.shared.upadateUserPage(userId: user.userId,url: url, path: path, pageInfo: pageInfo)
             createPageSuccess.send()
@@ -79,10 +79,13 @@ class PageViewModel:ObservableObject{
             var path:String? = nil
             
             if let data = try await selection?.loadTransferable(type: Data.self){
-                try await StorageManager.shared.deleteImage(path: schedule.imageUrlPath ?? "")
+                if schedule.imageUrl != nil{
+                    try await StorageManager.shared.deleteImage(path: schedule.imageUrlPath ?? "")
+                }
                 path = try await StorageManager.shared.saveImage(data:data,userId: user.userId, mode: .schedule)
                 url = try await StorageManager.shared.getUrlForImage(path: path ?? "")
             }
+        
             try await PageManager.shared.updateUSerSchedule(userId: user.userId, pageId: pageId, url: url, schedule: schedule,path: path)
             createScheduleSuccess.send()
         }
@@ -113,11 +116,9 @@ class PageViewModel:ObservableObject{
             schedules = try await PageManager.shared.getAllSchedule(userId: user.userId, pageId: pageId)
         }
     }
-//    func getPage(user:UserData,pageId:String){
-//        Task{
-//            page = try await PageManager.shared.getPage(userId: user.userId, pageId: pageId)
-//        }
-//    }
+    func getPage(user:UserData,pageId:String)async throws -> Page{
+        try await PageManager.shared.getPage(userId: user.userId, pageId: pageId)
+    }
     
     
     
