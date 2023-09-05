@@ -45,14 +45,22 @@ class PageViewModel:ObservableObject{
     func updatePage(user:UserData,pageInfo:Page){
         
         Task{
-            var url:URL? = nil
+            var url:String? = nil
             var path:String? = nil
+            
             if let data = try await selection?.loadTransferable(type: Data.self){
-                if pageInfo.pageImageUrl != nil{
-                    try await StorageManager.shared.deleteImage(path: pageInfo.pageImagePath ?? "")
+                if let image = pageInfo.pageImagePath{
+                    if image != ""{    //원래 사진이 있고(아예없거나 비어있을때) 다른 사진으로 바꾸는 경우
+                        try await StorageManager.shared.deleteImage(path: image)
+                    }
                 }
-                path = try await StorageManager.shared.saveImage(data:data,userId: user.userId, mode: .page)
-                url = try await StorageManager.shared.getUrlForImage(path: path ?? "")
+                path = try await StorageManager.shared.saveImage(data:data,userId: user.userId, mode: .page)    //사진이 없었지만 추가하는 경우
+                url = try await StorageManager.shared.getUrlForImage(path: path ?? "").absoluteString
+                
+            }
+            if self.data == nil{    //사진이 있다가 없애는경우
+                url = ""
+                path = ""
             }
             try await PageManager.shared.upadateUserPage(userId: user.userId,url: url, path: path, pageInfo: pageInfo)
             createPageSuccess.send()
@@ -75,17 +83,23 @@ class PageViewModel:ObservableObject{
     }
     func updateSchedule(user:UserData,pageId:String,schedule:Schedule){
         Task{
-            var url:URL? = nil
+            var url:String? = nil
             var path:String? = nil
             
             if let data = try await selection?.loadTransferable(type: Data.self){
-                if schedule.imageUrl != nil{
-                    try await StorageManager.shared.deleteImage(path: schedule.imageUrlPath ?? "")
+                if let image = schedule.imageUrlPath{
+                    if image != ""{    //원래 사진이 있고(아예없거나 비어있을때) 다른 사진으로 바꾸는 경우
+                        try await StorageManager.shared.deleteImage(path: image)
+                    }
                 }
-                path = try await StorageManager.shared.saveImage(data:data,userId: user.userId, mode: .schedule)
-                url = try await StorageManager.shared.getUrlForImage(path: path ?? "")
+                path = try await StorageManager.shared.saveImage(data:data,userId: user.userId, mode: .schedule)    //사진이 없었지만 추가하는 경우
+                url = try await StorageManager.shared.getUrlForImage(path: path ?? "").absoluteString
+                
             }
-        
+            if self.data == nil{    //사진이 있다가 없애는경우
+                url = ""
+                path = ""
+            }
             try await PageManager.shared.updateUSerSchedule(userId: user.userId, pageId: pageId, url: url, schedule: schedule,path: path)
             createScheduleSuccess.send()
         }

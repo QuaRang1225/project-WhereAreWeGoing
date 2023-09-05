@@ -148,7 +148,7 @@ extension SelectTypeView{
                             .clipShape(RoundedRectangle(cornerRadius: 50))
                         
                     }else{
-                        if let isImage{
+                        if let isImage,isImage != nil{
                             KFImage(URL(string: isImage))
                                 .resizable()
                                 .scaledToFill()
@@ -161,9 +161,10 @@ extension SelectTypeView{
                     }
                 }
                 .overlay(alignment:.topTrailing,content: {
-                    if vm.data != nil || isImage != nil{
+                    if vm.data != nil || isImage != nil,isImage != ""{
                         Button {
                             vm.data = nil
+                            vm.selection = nil
                             isImage = nil
                         } label: {
                             Image(systemName: "xmark")

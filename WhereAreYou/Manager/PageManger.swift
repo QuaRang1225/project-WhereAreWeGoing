@@ -45,7 +45,7 @@ final class PageManager{
         try await document.setData(data,merge: false)
         
     }
-    func upadateUserPage(userId:String,url:URL?,path:String?,pageInfo:Page)async throws{
+    func upadateUserPage(userId:String,url:String?,path:String?,pageInfo:Page)async throws{
         let document = userPageDocumentCollection(userId: userId).document(pageInfo.pageId)
         let documentId = document.documentID
                 
@@ -55,7 +55,7 @@ final class PageManager{
             data = [
                 "page_id":documentId,
                 "page_admin":userId,
-                "page_image_url":url.absoluteString,
+                "page_image_url":url,
                 "page_image_path":path,
                 "page_name":pageInfo.pageName,
                 "page_subscript":pageInfo.pageSubscript,
@@ -100,7 +100,7 @@ final class PageManager{
         try await field.setData(data,merge: false)
         
     }
-    func updateUSerSchedule(userId:String,pageId:String,url:URL?,schedule:Schedule,path:String?)async throws{
+    func updateUSerSchedule(userId:String,pageId:String,url:String?,schedule:Schedule,path:String?)async throws{
         
         let field = userPageDocumentCollection(userId: userId).document(pageId).collection("schedule").document(schedule.id)
         var data:[String:Any] = [:]
@@ -108,7 +108,7 @@ final class PageManager{
         if let url,let path{
              data = [
                 "image_url_path" : path,
-                "image_url" : url.absoluteString,
+                "image_url" : url,
                 "category" : schedule.category,
                 "title" : schedule.title,
                 "start_time" : schedule.startTime,

@@ -196,7 +196,7 @@ extension AddScheduleView{
                         .clipShape(RoundedRectangle(cornerRadius: 20))
                     
                 }else{
-                    if let image = isImage {
+                    if let image = isImage ,image != ""{
                         KFImage(URL(string: image))
                             .resizable()
                             .scaledToFill()
@@ -209,7 +209,7 @@ extension AddScheduleView{
                 }
             }
             .overlay(alignment:.topTrailing,content: {
-                if vm.data != nil || isImage != nil{
+                if vm.data != nil || isImage != nil,isImage != ""{
                     Button {
                         vm.data = nil
                         isImage = nil
