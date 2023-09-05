@@ -33,6 +33,8 @@ struct AddScheduleView: View {
     
     @State var isImage:String?
     
+
+    
     var body: some View {
         ZStack{
             VStack{
@@ -246,7 +248,7 @@ extension AddScheduleView{
                 Text("부터")
             }
             HStack{
-                DatePicker("일정 끝", selection: $endDate,in:(startDate...(vm.page?.dateRange.last?.dateValue() ?? Date())))
+                DatePicker("일정 끝", selection: $endDate,in:(startDate...(vm.page?.dateRange.last?.dateValue().toTomorrow() ?? Date())))
                     .environment(\.locale, .init(identifier: "ko_KR"))
                 Text("까지")
             }

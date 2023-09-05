@@ -148,7 +148,7 @@ extension SelectTypeView{
                             .clipShape(RoundedRectangle(cornerRadius: 50))
                         
                     }else{
-                        if let isImage,isImage != nil{
+                        if let isImage,isImage != ""{
                             KFImage(URL(string: isImage))
                                 .resizable()
                                 .scaledToFill()
