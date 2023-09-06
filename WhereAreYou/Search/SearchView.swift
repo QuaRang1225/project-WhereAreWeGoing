@@ -11,7 +11,11 @@ struct SearchView: View {
     @State var text = ""
     @State var noResult:Bool?
     @State var pages:[Page] = []
+    @State var page:Page?
     @Environment(\.dismiss)var dismiss
+    @EnvironmentObject var vm:PageViewModel
+    @EnvironmentObject var vmAuth:AuthViewModel
+    
     var body: some View {
         ZStack(alignment: .topLeading){
             VStack{
@@ -35,8 +39,14 @@ struct SearchView: View {
                             }else{
                                 ForEach(pages,id: \.self){ page in
                                     VStack{
-                                        PageRowView(page: page)
-                                            .padding()
+                                        Button {
+                                            self.page = page
+                                            UIApplication.shared.endEditing()
+                                        } label: {
+                                            PageRowView(page: page)
+                                                .padding()
+                                        }
+                                           
                                         Divider()
                                     }
                                 }
@@ -46,6 +56,7 @@ struct SearchView: View {
                
             
             }
+            
             Button {
                 dismiss()
             } label: {
@@ -53,7 +64,14 @@ struct SearchView: View {
                     .padding(.leading)
                     .bold()
             }
-           
+            if page != nil{
+                RequestPageView(page: $page)
+                    .padding()
+                    .frame(maxHeight: .infinity)
+                    .environmentObject(vm)
+                    .environmentObject(vmAuth)
+                
+            }
         }
         .onTapGesture {
             UIApplication.shared.endEditing()
@@ -68,5 +86,7 @@ struct SearchView: View {
 struct SearchView_Previews: PreviewProvider {
     static var previews: some View {
         SearchView()
+            .environmentObject(PageViewModel())
+            .environmentObject(AuthViewModel())
     }
 }

@@ -26,6 +26,7 @@ class CustomDataSet{
     
     ]
 //    func user() -> UserData{
+//        UserData(auth: Au)
 //        UserData(userId:"4KYzTqO9HthK3nnOUAyIMKcaxa03",nickName:"quarang",email:"adsadsada",dateCreated:"2023/08/12",profileImageUrl:"https://firebasestorage.googleapis.com/v0/b/whereareyou-66f3a.appspot.com/o/basic%2FGroup%2023.png?alt=media&token=a1003133-8e84-435e-be01-d3633c5fa0a3",guestMode:false)
 //    }
     func page() -> Page{

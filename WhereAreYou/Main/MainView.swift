@@ -108,6 +108,8 @@ extension MainView{
     var search:some View{
         NavigationLink{
             SearchView()
+                .environmentObject(vm)
+                .environmentObject(vmAuth)
                 .navigationBarBackButtonHidden()
         }label: {
             Capsule()
