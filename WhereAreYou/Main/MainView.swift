@@ -108,6 +108,7 @@ extension MainView{
     var search:some View{
         NavigationLink{
             SearchView()
+                .navigationBarBackButtonHidden()
         }label: {
             Capsule()
                 .frame(height: 50)

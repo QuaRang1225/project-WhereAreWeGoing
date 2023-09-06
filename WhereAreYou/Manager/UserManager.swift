@@ -22,7 +22,7 @@ final class UserManager{
     private func userDocument(userId:String) -> DocumentReference{
         userCollection.document(userId)
     }
-   
+    
     
     //snakeCase적용 위함
     private let encoder:Firestore.Encoder = {
@@ -48,11 +48,11 @@ final class UserManager{
     func getUser(userId:String) async throws -> UserData{
         try await userDocument(userId: userId).getDocument(as: UserData.self,decoder: decoder)
     }
-
+    
     
     func getSearchUser(email:String) async throws{
         let querySnapshot = try await userCollection.whereField("email", isEqualTo: email).getDocuments()
-
+        
         for document in querySnapshot.documents {
             print("\(document.documentID) => \(document.data())")
             
@@ -62,11 +62,31 @@ final class UserManager{
             if let timestamp = data["date_created"] as? Timestamp {
                 convertedData["date_created"] = "\(timestamp.dateValue())"
             }
-
+            
             if let user = try? JSONDecoder().decode(UserData.self,fromJSONObject: convertedData){
                 print(user)
             }
         }
     }
     
+    func getSearchPage(text:String)async throws -> [Page]{
+        
+        var pages:[Page] = []
+        let snapshot = try await userCollection.getDocuments()
+        for userDocument in snapshot.documents{
+            let pagesCollection = try await userDocument.reference.collection("page").getDocuments()
+            for pageDocument in pagesCollection.documents{
+                    if let name = pageDocument.get("page_name") as? String,name.contains(text){
+                        let page = try await pageDocument.reference.getDocument(as: Page.self)
+                        pages.append(page)
+                    }
+                    if let id = pageDocument.get("page_id") as? String,id.contains(text){
+                        let page = try await pageDocument.reference.getDocument(as: Page.self)
+                        pages.append(page)
+                    }
+            }
+        }
+        return pages
+        
+    }
 }

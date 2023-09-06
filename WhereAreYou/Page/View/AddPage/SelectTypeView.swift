@@ -199,12 +199,12 @@ extension SelectTypeView{
     var settingDate:some View{
         VStack{
             HStack{
-                DatePicker("가는 날", selection: $startDate,in:(Date())...)
+                DatePicker("가는 날", selection: $startDate,in:(Date())...,displayedComponents: .date)
                     .environment(\.locale, .init(identifier: "ko_KR"))
                 Text("부터")
             }
             HStack{
-                DatePicker("오는 날", selection: $endDate,in:(startDate...))
+                DatePicker("오는 날", selection: $endDate,in:(startDate...),displayedComponents: .date)
                     .environment(\.locale, .init(identifier: "ko_KR"))
                 Text("까지")
             }
