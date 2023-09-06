@@ -25,6 +25,7 @@ struct PageMainView: View {
     @State private var currentTime = Date()
     
     @State var delete = false
+    @State var deletePage = false
     @State var sett = false
     
     let timer = Timer.publish(every: 1, on: .main, in: .common).autoconnect()
@@ -95,6 +96,10 @@ struct PageMainView: View {
                     
 
             }
+            if deletePage{
+                CustomProgressView(title: "삭제 중..")
+            }
+            
         }
         .onReceive(vm.createPageSuccess){
             Task{
@@ -103,11 +108,14 @@ struct PageMainView: View {
                 }
             }
         }
+        .onReceive(vm.deleteSuccess){
+            dismiss()
+        }
         .confirmationDialog("일정 수정", isPresented: $delete, actions: {
             Button(role:.destructive){
                 if let user = vmAuth.user,let page = vm.page{
                     vm.deletePage(user: user, page:page)
-                    dismiss()
+                    delete = true
                 }
             } label: {
                 Text("삭제하기")

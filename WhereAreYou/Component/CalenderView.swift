@@ -73,6 +73,9 @@ struct CalenderView: View {
             Spacer()
             
         }
+        .onChange(of: vm.page, perform: { newValue in
+            print(newValue)
+        })
         .foregroundColor(.black)
         .background(Color.white)
     }

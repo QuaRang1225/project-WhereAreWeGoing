@@ -84,13 +84,10 @@ struct CustomCalendarView: UIViewRepresentable {
         @MainActor func calendar(_ calendar: FSCalendar, didSelect date: Date, at monthPosition: FSCalendarMonthPosition) {
             
             let dateRange = vm.pages.map({$0.dateRange.map({$0.dateValue().toStringCalender()})})
-            for dates in dateRange{
-                if dates.contains(dateFormatter.string(from: date)){
-                    vm.page = vm.pages.first(where:{$0.dateRange.map({$0.dateValue().toStringCalender()}).contains(Timestamp(date: date).dateValue().toStringCalender())})
-                }else{
-                    vm.page = nil
-                }
-            }
+            
+            let dateArr = dateRange.first(where: {$0.contains(dateFormatter.string(from: date))})
+            guard dateArr != nil else{ return vm.page = nil }
+            vm.page = vm.pages.first(where:{$0.dateRange.map({$0.dateValue().toStringCalender()}).contains(Timestamp(date: date).dateValue().toStringCalender())})
         }
        @MainActor func calendar(_ calendar: FSCalendar, imageFor date: Date) -> UIImage? {
             

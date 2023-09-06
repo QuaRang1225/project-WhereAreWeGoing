@@ -30,7 +30,9 @@ struct ScheduleRowView: View {
             HStack(alignment: .bottom){
                 Button {
                     scheduleBinding = schedule
-                    photo = true
+                    if schedule.imageUrl != nil || schedule.imageUrl != ""{
+                        photo = true
+                    }
                 } label: {
                     KFImage(URL(string: schedule.imageUrl ?? ""))
                         .placeholder { _ in
