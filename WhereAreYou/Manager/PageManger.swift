@@ -29,7 +29,7 @@ final class PageManager{
     func createUserPage(userId:String,url:URL?,path:String?,pageInfo:Page)async throws{
         let document = userPageDocumentCollection(userId: userId).document()
         let documentId = document.documentID
-                
+        
         let data:[String:Any] = [
             "page_id":documentId,
             "page_admin":userId,
@@ -48,31 +48,21 @@ final class PageManager{
     func upadateUserPage(userId:String,url:String?,path:String?,pageInfo:Page)async throws{
         let document = userPageDocumentCollection(userId: userId).document(pageInfo.pageId)
         let documentId = document.documentID
-                
+        
         var data:[String:Any] = [:]
         
+        data = [
+            "page_id":documentId,
+            "page_admin":userId,
+            "page_name":pageInfo.pageName,
+            "page_subscript":pageInfo.pageSubscript,
+            "page_overseas":pageInfo.pageOverseas,
+            "date_range":pageInfo.dateRange,
+            
+        ]
         if let url,let path{
-            data = [
-                "page_id":documentId,
-                "page_admin":userId,
-                "page_image_url":url,
-                "page_image_path":path,
-                "page_name":pageInfo.pageName,
-                "page_subscript":pageInfo.pageSubscript,
-                "page_overseas":pageInfo.pageOverseas,
-                "date_range":pageInfo.dateRange,
-                
-            ]
-        }else{
-            data = [
-                "page_id":documentId,
-                "page_admin":userId,
-                "page_name":pageInfo.pageName,
-                "page_subscript":pageInfo.pageSubscript,
-                "page_overseas":pageInfo.pageOverseas,
-                "date_range":pageInfo.dateRange,
-                
-            ]
+            data["page_image_url"] = url as Any
+            data["page_image_path"] = path as Any
         }
         print("페이지 수정중..")
         try await document.updateData(data)
@@ -82,8 +72,8 @@ final class PageManager{
     func createUserSchedule(userId:String,pageId:String,url:String?,schedule:Schedule,path:String?)async throws{
         let field = userPageDocumentCollection(userId: userId).document(pageId).collection("schedule").document()
         let schduleId = field.documentID
-          
-
+        
+        
         let data:[String:Any] = [
             "id" : schduleId,
             "image_url" : url as Any,
@@ -105,28 +95,18 @@ final class PageManager{
         let field = userPageDocumentCollection(userId: userId).document(pageId).collection("schedule").document(schedule.id)
         var data:[String:Any] = [:]
         
+        data = [
+            "category" : schedule.category,
+            "title" : schedule.title,
+            "start_time" : schedule.startTime,
+            "end_time" : schedule.endTime,
+            "content" : schedule.content,
+            "location" : schedule.location,
+            "link":schedule.link as Any
+        ]
         if let url,let path{
-             data = [
-                "image_url_path" : path,
-                "image_url" : url,
-                "category" : schedule.category,
-                "title" : schedule.title,
-                "start_time" : schedule.startTime,
-                "end_time" : schedule.endTime,
-                "content" : schedule.content,
-                "location" : schedule.location,
-                "link":schedule.link as Any
-            ]
-        }else{
-            data = [
-               "category" : schedule.category,
-               "title" : schedule.title,
-               "start_time" : schedule.startTime,
-               "end_time" : schedule.endTime,
-               "content" : schedule.content,
-               "location" : schedule.location,
-               "link":schedule.link as Any
-           ]
+            data["image_url_path"] =  path as Any
+            data["image_url"]  = url as Any
         }
         print("스케쥴 수정중..")
         try await field.updateData(data)
@@ -144,8 +124,8 @@ final class PageManager{
         try await userPageDocumentCollection(userId: userId).getAllDocuments(as: Page.self)
     }
     func getAllSchedule(userId:String,pageId:String)async throws -> [Schedule]{    //전체스케쥴 불러오기
-       try await userScheduleDocumentCollection(userId: userId, pageId: pageId).getAllDocuments(as: Schedule.self)
-
+        try await userScheduleDocumentCollection(userId: userId, pageId: pageId).getAllDocuments(as: Schedule.self)
+        
     }
     func getPage(userId:String,pageId:String)async throws -> Page{
         try await userPageDocumentCollection(userId: userId).document(pageId).getDocument(as:Page.self)

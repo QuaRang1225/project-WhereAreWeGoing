@@ -13,10 +13,12 @@ struct Page:Codable,Hashable{
     let pageId:String
     let pageAdmin:String
     var pageImageUrl:String?
-    let pageImagePath:String?
+    var pageImagePath:String?
     let pageName:String
     let pageOverseas:Bool
     let pageSubscript:String
+    var request:[String]?
+    var member:[String]?
     let dateRange:[Timestamp]
     
     enum CodingKeys:String,CodingKey{
@@ -27,6 +29,7 @@ struct Page:Codable,Hashable{
         case pageName = "page_name"
         case pageOverseas = "page_overseas"
         case pageSubscript = "page_subscript"
+        case request,member
         case dateRange = "date_range"
     }
 }

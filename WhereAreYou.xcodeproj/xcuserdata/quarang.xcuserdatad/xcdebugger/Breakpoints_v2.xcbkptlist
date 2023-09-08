@@ -292,8 +292,8 @@
             filePath = "WhereAreYou/Manager/PageManger.swift"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "146"
-            endingLineNumber = "146"
+            startingLineNumber = "126"
+            endingLineNumber = "126"
             landmarkName = "getAllSchedule(userId:pageId:)"
             landmarkType = "7">
             <Locations>
@@ -449,8 +449,8 @@
             filePath = "WhereAreYou/Manager/PageManger.swift"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "147"
-            endingLineNumber = "147"
+            startingLineNumber = "127"
+            endingLineNumber = "127"
             landmarkName = "getAllSchedule(userId:pageId:)"
             landmarkType = "7">
             <Locations>
