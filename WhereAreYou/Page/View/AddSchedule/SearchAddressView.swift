@@ -31,7 +31,7 @@ struct SearchAddressView: View {
             if let geo{
                 location.updatePlacemark(location: CLLocation(latitude: geo.latitude, longitude: geo.longitude))
             }
-            if vm.modifingSchecdule != nil{
+            if vm.schedule != nil{
                 modifyButton = true
             }
         }

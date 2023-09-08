@@ -17,9 +17,9 @@ struct ScheduleRowView: View {
     @State var goWebView = false
     @State var link = ""
     @State var delete = false
-    @Binding var scheduleBinding:Schedule?
+//    @Binding var scheduleBinding:Schedule?
     @Binding var binding:Bool
-    @Binding var photo:Bool
+//    @Binding var photo:Bool
     @EnvironmentObject var vm:PageViewModel
     @EnvironmentObject var vmAuth:AuthViewModel
     
@@ -29,10 +29,7 @@ struct ScheduleRowView: View {
         VStack(alignment: .leading){
             HStack(alignment: .bottom){
                 Button {
-                    scheduleBinding = schedule
-                    if schedule.imageUrl != nil || schedule.imageUrl != ""{
-                        photo = true
-                    }
+                    vm.photo = schedule.imageUrl ?? ""
                 } label: {
                     KFImage(URL(string: schedule.imageUrl ?? ""))
                         .placeholder { _ in
@@ -84,22 +81,22 @@ struct ScheduleRowView: View {
                                 }
                                     .foregroundColor(.black)
                             }
-                            
-                            
+
+
                         }.font(.caption)//.padding(.bottom,5)
                     }
                     Spacer()
                     Group{
                         Button {
                             modify = true
-                            vm.modifingSchecdule = schedule
+                            vm.schedule = schedule
                         } label: {
                             Image(systemName: "square.and.pencil")
                                 .padding(7.5)
                                 .background(Circle().foregroundColor(.white))
                                 .shadow(radius: 1)
                                 .font(.subheadline)
-                                
+
                         }
                         .navigationDestination(isPresented: $modify) {
                             SearchAddressView(geo: schedule.location, isSearch: $modify)
@@ -118,11 +115,11 @@ struct ScheduleRowView: View {
                                 .foregroundColor(.red)
                         }
 
-                        
+
                     }.foregroundColor(.gray)
                 }
-                
-                
+
+
                 VStack(alignment: .leading){
                     Text("내용")
                         .font(.body)
@@ -136,7 +133,7 @@ struct ScheduleRowView: View {
                         }
                         .font(.subheadline)
                         .padding(.top).bold()
-                        
+
                         ForEach(Array(links),id: \.0){ (key,value) in
                             Button {
                                 goWebView = true
@@ -147,21 +144,21 @@ struct ScheduleRowView: View {
                                     Text(value)
                                        .lineLimit(1).underline()
                                 } .foregroundColor(.gray).font(.caption)
-                                
+
                             }
 
                         }
                         .padding(.top,2)
                     }
-                    
+
                 }
-               
+
                     .frame(maxWidth: .infinity,alignment:.leading)
                     .padding(10)
                     .padding(.vertical)
                     .multilineTextAlignment(.leading).font(.subheadline)
                     .background(Color.gray.opacity(0.1))
-                
+
             }
             
         }
@@ -188,7 +185,7 @@ struct ScheduleRowView: View {
 struct ScheduleRowView_Previews: PreviewProvider {
     static var previews: some View {
         NavigationStack{
-            ScheduleRowView(schedule: CustomDataSet.shared.schedule(), num:1,scheduleBinding: .constant(CustomDataSet.shared.schedule()),binding: .constant(true),photo: .constant(false)).environmentObject(PageViewModel()).environmentObject(AuthViewModel())
+            ScheduleRowView(schedule: CustomDataSet.shared.schedule(), num:1, binding: .constant(true)).environmentObject(AuthViewModel())
         }
     }
 }

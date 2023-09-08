@@ -13,7 +13,7 @@ struct PageRowView: View {
 //    @StateObject var vm = PageViewModel()
     var body: some View {
         HStack{
-            KFImage(URL(string:page.pageImageUrl ?? "")!)
+            KFImage(URL(string:page.pageImageUrl ?? "https://firebasestorage.googleapis.com/v0/b/whereareyou-66f3a.appspot.com/o/background%2Fnight.jpeg?alt=media&token=2191462b-14b8-4407-adcf-f73a7ed0b39e"))
                 .resizable()
                 .clipShape(RoundedRectangle(cornerRadius: 20))
                 .frame(width: 70,height:70)

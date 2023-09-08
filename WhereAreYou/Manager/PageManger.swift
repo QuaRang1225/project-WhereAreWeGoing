@@ -47,25 +47,22 @@ final class PageManager{
     }
     func upadateUserPage(userId:String,url:String?,path:String?,pageInfo:Page)async throws{
         let document = userPageDocumentCollection(userId: userId).document(pageInfo.pageId)
-        let documentId = document.documentID
         
         var data:[String:Any] = [:]
         
         data = [
-            "page_id":documentId,
-            "page_admin":userId,
             "page_name":pageInfo.pageName,
             "page_subscript":pageInfo.pageSubscript,
             "page_overseas":pageInfo.pageOverseas,
-            "date_range":pageInfo.dateRange,
+            "date_range":pageInfo.dateRange
             
         ]
+       
         if let url,let path{
-            data["page_image_url"] = url as Any
-            data["page_image_path"] = path as Any
+            data["page_image_url"] = url == "x" ? NSNull() : url
+            data["page_image_path"] = path == "x" ? NSNull(): path
         }
-        print("페이지 수정중..")
-        try await document.updateData(data)
+        try await document.updateData(data as [AnyHashable : Any])
         
     }
     
@@ -104,12 +101,12 @@ final class PageManager{
             "location" : schedule.location,
             "link":schedule.link as Any
         ]
+        
         if let url,let path{
-            data["image_url_path"] =  path as Any
-            data["image_url"]  = url as Any
+            data["image_url_path"] = url == "x" ? NSNull() : path
+            data["image_url"] = path == "x" ? NSNull(): url
         }
-        print("스케쥴 수정중..")
-        try await field.updateData(data)
+        try await field.updateData(data as [AnyHashable : Any])
         
     }
     func deleteUserSchedule(userId:String,pageId:String,scheduleId:String) async throws{
@@ -130,4 +127,8 @@ final class PageManager{
     func getPage(userId:String,pageId:String)async throws -> Page{
         try await userPageDocumentCollection(userId: userId).document(pageId).getDocument(as:Page.self)
     }
+    func getSchedule(userId:String,pageId:String,scheduleId:String)async throws -> Schedule{
+        try await userScheduleDocumentCollection(userId: userId, pageId: pageId).document(scheduleId).getDocument(as: Schedule.self)
+    }
+    
 }

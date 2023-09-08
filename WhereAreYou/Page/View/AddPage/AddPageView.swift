@@ -10,7 +10,7 @@ import PhotosUI
 import Kingfisher
 import FirebaseFirestore
 
-struct SelectTypeView: View {
+struct AddPageView: View {
     
     @State var title = ""
     @State var text = ""
@@ -20,7 +20,6 @@ struct SelectTypeView: View {
     
     @State var isPage = false
     @State var changedDate = false
-    @State var isImage:String?
     @EnvironmentObject var vm:PageViewModel
     @EnvironmentObject var vmAuth:AuthViewModel
     @Environment(\.dismiss) var dismiss
@@ -44,14 +43,11 @@ struct SelectTypeView: View {
             }
             
         }
-        .onAppear{
-            isImage = vm.page?.pageImageUrl
-        }
         .foregroundColor(.black)
         .onTapGesture {
             UIApplication.shared.endEditing()
         }
-        .onReceive(vm.createPageSuccess) { _ in
+        .onReceive(vm.succenss) {
             dismiss()
         }
         .alert(isPresented: $changedDate) {
@@ -59,10 +55,10 @@ struct SelectTypeView: View {
                 title: Text("경고"),
                 message: Text("페이지의 날짜가 바뀌게 되면 해당 날짜의 일정은 모두 삭제 됩니다. 날짜를 수정하시겠습니까?"),
                 primaryButton: .destructive(Text("확인")) {
-                        
+                    isPage = true
                     Task{
                         if let page = vm.page,let user = vmAuth.user,let overseas{
-                            let modifiedPage = Page(pageId: page.pageId, pageAdmin: page.pageId, pageImagePath: page.pageImagePath, pageName: title, pageOverseas: overseas, pageSubscript: text, dateRange: vm.generateTimestamp(from: startDate, to: endDate))
+                            let modifiedPage = Page(pageId: page.pageId, pageAdmin: page.pageAdmin, pageImagePath: page.pageImagePath, pageName: title, pageOverseas: overseas, pageSubscript: text, dateRange: vm.generateTimestamp(from: startDate, to: endDate))
                                 let currentDate = page.dateRange
                                 let modifiyngDate = vm.generateTimestamp(from: startDate, to: endDate)
                                 
@@ -72,8 +68,6 @@ struct SelectTypeView: View {
                                 }
                                 vm.updatePage(user: user, pageInfo: modifiedPage)
                             }
-                            
-                        
                     }
                     
                 }, secondaryButton: .cancel(Text("취소")))
@@ -81,15 +75,15 @@ struct SelectTypeView: View {
     }
 }
 
-struct SelectTypeView_Previews: PreviewProvider {
+struct AddPageView_Previews: PreviewProvider {
     static var previews: some View {
-        SelectTypeView()
+        AddPageView()
             .environmentObject(AuthViewModel())
             .environmentObject(PageViewModel())
     }
 }
 
-extension SelectTypeView{
+extension AddPageView{
     var header:some View{
         HStack{
             Button {
@@ -108,7 +102,7 @@ extension SelectTypeView{
                             changedDate = true
                         }else{
                             vm.creagtePage(user:user, pageInfo: Page(pageId: "", pageAdmin: "",pageImageUrl: "",pageImagePath: "", pageName: title, pageOverseas: overseas, pageSubscript: text, dateRange: vm.generateTimestamp(from: startDate, to: endDate)))
-                            isPage = true
+                           
                             
                         }
                     }
@@ -148,8 +142,8 @@ extension SelectTypeView{
                             .clipShape(RoundedRectangle(cornerRadius: 50))
                         
                     }else{
-                        if let isImage,isImage != ""{
-                            KFImage(URL(string: isImage))
+                        if let image = vm.page?.pageImageUrl{
+                            KFImage(URL(string: image))
                                 .resizable()
                                 .scaledToFill()
                                 .frame(width: 120, height: 120)
@@ -161,11 +155,11 @@ extension SelectTypeView{
                     }
                 }
                 .overlay(alignment:.topTrailing,content: {
-                    if vm.data != nil || isImage != nil,isImage != ""{
+                    if vm.data != nil || vm.page?.pageImageUrl != nil{
                         Button {
                             vm.data = nil
-                            vm.selection = nil
-                            isImage = nil
+                            vm.page?.pageImageUrl = nil
+                            vm.page?.pageImagePath = nil
                         } label: {
                             Image(systemName: "xmark")
                                 .font(.subheadline)
@@ -176,8 +170,6 @@ extension SelectTypeView{
                                     Circle().foregroundColor(.gray)
                                 }
                         }
-
-                        
                     }
                    
                 })

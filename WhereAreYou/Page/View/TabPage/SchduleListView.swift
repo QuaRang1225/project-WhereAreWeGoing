@@ -11,24 +11,24 @@ import FirebaseFirestore
 
 
 struct SchduleListView: View {
-    @Binding var page:Page
+//    @Binding var page:Page
     
     @StateObject var location = LocationMagager()
     @EnvironmentObject var vmAuth:AuthViewModel
     @EnvironmentObject var vm:PageViewModel
     
     @State var isSearch = false
-    @State var time = Timestamp()
+//    @State var time = Timestamp()
     @State var date = 0
-    
-    @Binding var binding:Schedule?
-    @Binding var photo:Bool
+    @State var select:Schedule?
+    @State var rowButton:Bool?
+//    @Binding var photo:Bool
     
     
     
     var days:[Schedule]{
         let calendar = Calendar.current
-        return vm.schedules.filter({calendar.isDate($0.startTime.dateValue(), equalTo: page.dateRange[date].dateValue(), toGranularity: .day) || calendar.isDate($0.endTime.dateValue(), equalTo: page.dateRange[date].dateValue(), toGranularity: .day)}).sorted{$0.startTime < $1.startTime}
+        return vm.schedules.filter({calendar.isDate($0.startTime.dateValue(), equalTo: vm.page?.dateRange[date].dateValue() ?? Date(), toGranularity: .day) || calendar.isDate($0.endTime.dateValue(), equalTo: vm.page?.dateRange[date].dateValue() ?? Date(), toGranularity: .day)}).sorted{$0.startTime < $1.startTime}
     }
     var body: some View {
         ZStack{
@@ -39,7 +39,7 @@ struct SchduleListView: View {
                 HStack(spacing: 0){
                     HStack{
                         Text("\(date + 1)일차 : ").font(.caption).bold()
-                        Text("\(time.dateValue().toStringCalender())")
+                        Text("\(vm.page?.dateRange[date].dateValue().toStringCalender() ?? "")")
                             .font(.caption)
                         .foregroundColor(.black)
                         .bold()
@@ -85,34 +85,38 @@ struct SchduleListView: View {
                 .environmentObject(location)
                 .navigationBarBackButtonHidden()
         }
-        .onAppear{
-            if let user = vmAuth.user{
-                vm.getSchedule(user: user, pageId: page.pageId)
-            }
-            time = page.dateRange[date]
-        }
-        .onChange(of: date) { newValue in
-            time = page.dateRange[date]
-        }
-        .onReceive(vm.deleteSuccess) {  
-            if let user = vmAuth.user{
-                vm.getSchedule(user: user, pageId: page.pageId)
-            }
-        }
-        .onReceive(vm.createPageSuccess) {
-            Task{
-                if let user = vmAuth.user{
-                    time = try await vm.getPage(user: user, pageId: page.pageId).dateRange[0]
-                }
-            }
-        }
+//        .onAppear{
+//            guard let user = vmAuth.user else {return}
+//            
+//        }
+//        .onAppear{
+//            if let user = vmAuth.user{
+//                vm.getSchedule(user: user, pageId: page.pageId)
+//            }
+//            time = page.dateRange[date]
+//        }
+//        .onChange(of: date) { newValue in
+//            time = page.dateRange[date]
+//        }
+//        .onReceive(vm.deleteSuccess) {
+//            if let user = vmAuth.user{
+//                vm.getSchedule(user: user, pageId: page.pageId)
+//            }
+//        }
+//        .onReceive(vm.createPageSuccess) {
+//            Task{
+//                if let user = vmAuth.user{
+//                    time = try await vm.getPage(user: user, pageId: page.pageId).dateRange[0]
+//                }
+//            }
+//        }
     }
     
 }
 
 struct SchduleListView_Previews: PreviewProvider {
     static var previews: some View {
-        SchduleListView(page: .constant(CustomDataSet.shared.page()),binding: .constant(CustomDataSet.shared.schedule()),photo: .constant(false))
+        SchduleListView()
             .environmentObject(PageViewModel())
             .environmentObject(AuthViewModel())
             .background(Color.white.ignoresSafeArea())
@@ -122,9 +126,10 @@ struct SchduleListView_Previews: PreviewProvider {
 extension SchduleListView{
     var datePicker:some View{
         Picker("", selection: $date) {
-            ForEach(Array(page.dateRange.enumerated()),id: \.0){ (index,page) in
-                Text("\(index + 1)일차")
-                
+            if let dateRange = vm.page?.dateRange{
+                ForEach(Array(dateRange.enumerated()),id: \.0){ (index,page) in
+                    Text("\(index + 1)일차")
+                }
             }
         }
         .pickerStyle(.segmented)
@@ -154,7 +159,7 @@ extension SchduleListView{
                                 Circle()
                                     .frame(width: 10,height: 10)
                                     .foregroundColor(.white)
-                                if isCurrentDateInRange(startDate: schedule.startTime.dateValue(), endDate: schedule.endTime.dateValue()){
+                                if vm.isCurrentDateInRange(startDate: schedule.startTime.dateValue(), endDate: schedule.endTime.dateValue()){
                                     Text("⏰")
                                         .font(.title)
                                         .frame(width: 50,height: 50)
@@ -164,16 +169,16 @@ extension SchduleListView{
                         .foregroundColor(.customCyan2)
                     Button {
                         withAnimation {
-                            if binding == schedule{
-                                self.binding = nil
+                            guard let select = self.select else { return self.select = schedule }
+                            if select == schedule{
+                                self.select = nil
                             }else{
-                                self.binding = schedule
+                                self.select = schedule
                             }
-                            
                         }
                     } label: {
                         VStack{
-                            ScheduleRowView(schedule: schedule, num:index + 1,scheduleBinding: $binding,binding: schedule == binding ?  .constant(true) : .constant(false),photo: $photo).padding(.top,5)
+                            ScheduleRowView(schedule: schedule, num:index + 1, binding: self.select == schedule ? .constant(true) : .constant(false)).padding(.top,5)
                                 .environmentObject(vm)
                                 .environmentObject(vmAuth)
                             Divider()
@@ -191,13 +196,6 @@ extension SchduleListView{
             }
         }
     }
-    func isCurrentDateInRange(startDate: Date, endDate: Date) -> Bool {
-        let currentDate = Date()
-        if currentDate >= startDate && currentDate <= endDate {
-            return true
-        } else {
-            return false
-        }
-    }
+    
 }
 

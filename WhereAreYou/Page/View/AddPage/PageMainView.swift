@@ -15,18 +15,18 @@ struct PageMainView: View {
     @EnvironmentObject var vm:PageViewModel
     @EnvironmentObject var vmAuth:AuthViewModel
     @State var pageMode:PageTabFilter = .schedule
-    @State var page:Page
+    var page:Page
     
-    @State var photo = false
-    @State var binding:Schedule?
+//    @State var photo = false
+//    @State var binding:Schedule?
 
     @State var currentAmount:CGFloat = 0
     @State var currentDrageAmount:CGFloat = 0
     @State private var currentTime = Date()
     
-    @State var delete = false
-    @State var deletePage = false
-    @State var sett = false
+    @State var delete = false   //삭제 버튼 활성화
+    @State var deletePage = false   //삭제버튼 클릭 후 삭제 중 문구
+    @State var sett = false //페이지 설정 활성화
     
     let timer = Timer.publish(every: 1, on: .main, in: .common).autoconnect()
     
@@ -40,7 +40,7 @@ struct PageMainView: View {
                     ZStack{
                         switch pageMode {
                         case .schedule:
-                            SchduleListView(page: $page,binding: $binding, photo: $photo)
+                            SchduleListView()
                                 .environmentObject(vmAuth)
                         case .member:
                             MemberTabView()
@@ -73,11 +73,12 @@ struct PageMainView: View {
                     .padding(.bottom)
                     
             }
-            if photo{
+            if let photo = vm.photo{
                 Color.black.ignoresSafeArea().opacity(0.6).onTapGesture {
-                    photo = false
+                    vm.photo = nil
                 }
-                KFImage(URL(string: binding?.imageUrl ?? ""))
+                
+                KFImage(URL(string: photo))
                     .resizable()
                     .scaledToFit()
                     .scaleEffect(1 + currentAmount)
@@ -93,20 +94,11 @@ struct PageMainView: View {
                                 }
                             }
                     )
-                    
-
             }
             if deletePage{
                 CustomProgressView(title: "삭제 중..")
             }
             
-        }
-        .onReceive(vm.createPageSuccess){
-            Task{
-                if let user = vmAuth.user,let page = vm.page{
-                    self.page = try await vm.getPage(user: user,pageId: page.pageId)
-                }
-            }
         }
         .onReceive(vm.deleteSuccess){
             dismiss()
@@ -114,6 +106,7 @@ struct PageMainView: View {
         .confirmationDialog("일정 수정", isPresented: $delete, actions: {
             Button(role:.destructive){
                 if let user = vmAuth.user,let page = vm.page{
+                    deletePage = true
                     vm.deletePage(user: user, page:page)
                     delete = true
                 }
@@ -124,10 +117,9 @@ struct PageMainView: View {
             Text("정말 이 페이지를 삭제하시겠습니까?")
         })
         .onAppear{
-            Task{
-                vm.admin = try await UserManager.shared.getUser(userId: page.pageAdmin)
-                vm.page = page
-            }
+            guard let user = vmAuth.user else {return}
+            vm.getPage(user: user, pageId: page.pageId)
+            vm.getSchedules(user: user, pageId: page.pageId)
         }
         .onDisappear{
             sett = false
@@ -184,7 +176,7 @@ extension PageMainView{
                     Spacer()
                     VStack{
                         NavigationLink {
-                            SelectTypeView(title: page.pageName ,text: page.pageSubscript,overseas: page.pageOverseas, startDate: page.dateRange.first?.dateValue() ?? Date(),endDate: page.dateRange.last?.dateValue() ?? Date())
+                            AddPageView(title: page.pageName ,text: page.pageSubscript,overseas: page.pageOverseas, startDate: page.dateRange.first?.dateValue() ?? Date(),endDate: page.dateRange.last?.dateValue() ?? Date())
                                 .environmentObject(vm)
                                 .environmentObject(vmAuth)
                                 .navigationBarBackButtonHidden()
@@ -245,7 +237,7 @@ extension PageMainView{
     var background:some View{
         ZStack(alignment: .bottomTrailing){
             GeometryReader { pro in
-                KFImage(URL(string: page.pageImageUrl ?? "")!)
+                KFImage(URL(string: vm.page?.pageImageUrl ?? "https://firebasestorage.googleapis.com/v0/b/whereareyou-66f3a.appspot.com/o/background%2Fnight.jpeg?alt=media&token=2191462b-14b8-4407-adcf-f73a7ed0b39e"))
                     .resizable()
                     .overlay{
                         Color.black.opacity(0.3)
@@ -300,17 +292,17 @@ extension PageMainView{
                 Spacer()
                 VStack(alignment: .trailing,spacing: 5){
                     HStack{
-                        if page.pageOverseas{
+                        if ((vm.page?.pageOverseas) != nil){        //바
                             Text("🌏")
                         }else{
                             Text("🇰🇷")
                         }
-                        Text(page.pageName)
+                        Text(vm.page?.pageName ?? "")
                             .font(.title)
                             .bold()
                     }
                     
-                    Text(page.pageSubscript)
+                    Text(vm.page?.pageSubscript ?? "")
                         .font(.callout)
                 }
                 .foregroundColor(.white)

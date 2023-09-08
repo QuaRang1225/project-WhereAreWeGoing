@@ -14,18 +14,25 @@ import Combine
 @MainActor
 class PageViewModel:ObservableObject{
     
+    //---------Firestore데이터 ------------
     @Published var page:Page? = nil
-    @Published var admin:UserData? = nil
-    @Published var modifingSchecdule:Schedule? = nil
+    //    @Published var admin:UserData? = nil
+    @Published var schedule:Schedule? = nil
     @Published var pages:[Page] = []
     @Published var schedules:[Schedule] = []
     
+    //-----------프로필 선택 ---------------
     @Published var data:Data? = nil
     @Published var selection:PhotosPickerItem? = nil
     
+    
+    //---------- 기타공유 프로퍼티 -----------
     @Published var copy = false
-    var createPageSuccess = PassthroughSubject<(),Never>()
-    var createScheduleSuccess = PassthroughSubject<(),Never>()
+    @Published var photo:String?
+    
+    //    var createPageSuccess = PassthroughSubject<(),Never>()
+    //    var createScheduleSuccess = PassthroughSubject<(),Never>()
+    var succenss = PassthroughSubject<(),Never>()
     var deleteSuccess = PassthroughSubject<(),Never>()
     
     func creagtePage(user:UserData,pageInfo:Page){
@@ -39,7 +46,8 @@ class PageViewModel:ObservableObject{
                 url = try await StorageManager.shared.getUrlForImage(path: path ?? "")
             }
             try await PageManager.shared.createUserPage(userId: user.userId,url: url ,path: path, pageInfo: pageInfo)
-            createPageSuccess.send()
+            succenss.send()
+            //            createPageSuccess.send()
         }
     }
     func updatePage(user:UserData,pageInfo:Page){
@@ -57,19 +65,20 @@ class PageViewModel:ObservableObject{
                 path = try await StorageManager.shared.saveImage(data:data,userId: user.userId, mode: .page)    //사진이 없었지만 추가하는 경우
                 url = try await StorageManager.shared.getUrlForImage(path: path ?? "").absoluteString
                 
-            }
-            if self.data == nil{    //사진이 있다가 없애는경우
-                url = ""
-                path = ""
+            }else if self.page?.pageImageUrl == nil{    //사진이 있다가 없애는경우
+                url = "x"
+                path = "x"
             }
             try await PageManager.shared.upadateUserPage(userId: user.userId,url: url, path: path, pageInfo: pageInfo)
-            createPageSuccess.send()
+            self.page = try await PageManager.shared.getPage(userId: user.userId, pageId: pageInfo.pageId)
+            succenss.send()
         }
     }
     
     func creagteShcedule(user:UserData,pageId:String,schedule:Schedule){
         
         Task{
+            //            do{
             var url = URL(string: "")
             var path:String? = nil
             if let data = try await selection?.loadTransferable(type: Data.self){
@@ -78,7 +87,11 @@ class PageViewModel:ObservableObject{
             }
             
             try await PageManager.shared.createUserSchedule(userId: user.userId, pageId: pageId, url: url?.absoluteString, schedule: schedule,path:path)
-            createScheduleSuccess.send()
+            succenss.send()
+            //                self.schedule = try await PageManager.shared.getSchedule(userId: user.userId, pageId: pageId, scheduleId: schedule.id)
+            //            }catch{}
+            
+            //            createScheduleSuccess.send()
         }
     }
     func updateSchedule(user:UserData,pageId:String,schedule:Schedule){
@@ -96,12 +109,12 @@ class PageViewModel:ObservableObject{
                 url = try await StorageManager.shared.getUrlForImage(path: path ?? "").absoluteString
                 
             }
-            if self.data == nil{    //사진이 있다가 없애는경우
-                url = ""
-                path = ""
+            else if self.schedule?.imageUrl == nil{    //사진이 있다가 없애는경우
+                url = "x"
+                path = "x"
             }
             try await PageManager.shared.updateUSerSchedule(userId: user.userId, pageId: pageId, url: url, schedule: schedule,path: path)
-            createScheduleSuccess.send()
+            succenss.send()
         }
     }
     func deletePage(user:UserData,page:Page){
@@ -125,13 +138,15 @@ class PageViewModel:ObservableObject{
             pages = try await PageManager.shared.getAllPage(userId: user.userId)
         }
     }
-    func getSchedule(user:UserData,pageId:String){
+    func getSchedules(user:UserData,pageId:String){
         Task{
             schedules = try await PageManager.shared.getAllSchedule(userId: user.userId, pageId: pageId)
         }
     }
-    func getPage(user:UserData,pageId:String)async throws -> Page{
-        try await PageManager.shared.getPage(userId: user.userId, pageId: pageId)
+    func getPage(user:UserData,pageId:String){
+        Task{
+            page = try await PageManager.shared.getPage(userId: user.userId, pageId: pageId)
+        }
     }
     
     
@@ -149,9 +164,9 @@ class PageViewModel:ObservableObject{
         
         return dateArray
     }
+    
     func copyToPasteboard(text:String) {
         UIPasteboard.general.string = text
-            
         copy = true
         DispatchQueue.main.asyncAfter(deadline: .now() + 2) {
             withAnimation {
@@ -159,7 +174,14 @@ class PageViewModel:ObservableObject{
             }
         }
     }
-
+    func isCurrentDateInRange(startDate: Date, endDate: Date) -> Bool {
+        let currentDate = Date()
+        if currentDate >= startDate && currentDate <= endDate {
+            return true
+        } else {
+            return false
+        }
+    }
 }
 
 

@@ -90,11 +90,8 @@ extension MainView{
                         ProfileRowView(image: user.profileImageUrl ?? "", name:user.nickName ?? "", email: user.email ?? "")
                             .listRowSeparator(.hidden)  //리스트 줄 없앰
                             .listRowBackground(Color.clear)
-                    }else{
-                        ProfileRowView(image: CustomDataSet.shared.basicImage, name:"콰랑", email: "ㅇㅁㄴㅇㅁㄴㅇ")
-                            .listRowSeparator(.hidden)  //리스트 줄 없앰
-                            .listRowBackground(Color.clear)
                     }
+//
                    
                 }
             }.background(Color.white.frame(height: 100)
@@ -129,7 +126,7 @@ extension MainView{
     var collection:some View{
         HStack{
             NavigationLink {
-                SelectTypeView()
+                AddPageView()
                     .environmentObject(vm)
                     .environmentObject(vmAuth)
                     .navigationBarBackButtonHidden()

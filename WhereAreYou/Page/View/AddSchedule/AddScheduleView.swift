@@ -31,7 +31,6 @@ struct AddScheduleView: View {
     @EnvironmentObject var location:LocationMagager
     @Binding var isPage:Bool
     
-    @State var isImage:String?
     
 
     
@@ -90,7 +89,7 @@ struct AddScheduleView: View {
                 }
             }
             if progress{
-                CustomProgressView(title: vm.modifingSchecdule != nil ?  "일정 변경 중.." : "일정 추가 중.." )
+                CustomProgressView(title: vm.schedule != nil ?  "일정 변경 중.." : "일정 추가 중.." )
             }
         }
         .foregroundColor(.black)
@@ -101,11 +100,11 @@ struct AddScheduleView: View {
             UIApplication.shared.endEditing()
         }
         .onAppear{
-            isImage = vm.modifingSchecdule?.imageUrl
+            
             startDate = (vm.page?.dateRange.first?.dateValue() ?? Date())
             endDate = (vm.page?.dateRange.last?.dateValue() ?? Date())
             
-            if let schedule = vm.modifingSchecdule{
+            if let schedule = vm.schedule{
                 title = schedule.title
                 text = schedule.content.replacingOccurrences(of: "\\n", with: "\n")
                 locationSelect = LocationCategoryFilter.allCases.first(where: {$0.name == schedule.category}) ?? .other
@@ -120,7 +119,7 @@ struct AddScheduleView: View {
             }
         }
         .onDisappear{
-            vm.modifingSchecdule = nil
+            vm.schedule = nil
             vm.data = nil
         }
     }
@@ -137,7 +136,7 @@ struct AddScheduleView_Previews: PreviewProvider {
 extension AddScheduleView{
     var header:some View{
         ZStack(alignment: .top){
-            Text(vm.modifingSchecdule != nil ? "일정 변경" : "일정 작성")
+            Text(vm.schedule != nil ? "일정 변경" : "일정 작성")
                 .font(.title3)
                 .bold()
             VStack{
@@ -160,15 +159,15 @@ extension AddScheduleView{
                                 
                             }
                             if let user  = vmAuth.user,let page = vm.page{
-                                let schedule = Schedule(id:vm.modifingSchecdule?.id ?? "",imageUrl:vm.modifingSchecdule?.imageUrl,imageUrlPath: vm.modifingSchecdule?.imageUrlPath , category: locationSelect.name, title: title, startTime: startDate.toTimestamp(), endTime: endDate.toTimestamp(), content: text.replacingOccurrences(of: "\n", with: "\\n"), location: GeoPoint(latitude: (location.pickedPlaceMark?.location?.coordinate.latitude)!, longitude: (location.pickedPlaceMark?.location?.coordinate.longitude)!),link: linksArr)
-                                if vm.modifingSchecdule != nil{
+                                let schedule = Schedule(id:vm.schedule?.id ?? "",imageUrl:vm.schedule?.imageUrl,imageUrlPath: vm.schedule?.imageUrlPath , category: locationSelect.name, title: title, startTime: startDate.toTimestamp(), endTime: endDate.toTimestamp(), content: text.replacingOccurrences(of: "\n", with: "\\n"), location: GeoPoint(latitude: (location.pickedPlaceMark?.location?.coordinate.latitude)!, longitude: (location.pickedPlaceMark?.location?.coordinate.longitude)!),link: linksArr)
+                                if vm.schedule != nil{
                                     vm.updateSchedule(user: user, pageId: page.pageId, schedule: schedule)
                                 }else{
                                     vm.creagteShcedule(user: user, pageId: page.pageId, schedule: schedule)
                                 }
                             }
                         } label: {
-                            Text(vm.modifingSchecdule != nil ? "변경" : "작성" )
+                            Text(vm.schedule != nil ? "변경" : "작성" )
                         }
                         .padding(.trailing)
                         .bold()
@@ -179,7 +178,7 @@ extension AddScheduleView{
             
         }
         .foregroundColor(.black)
-        .onReceive(vm.createScheduleSuccess){
+        .onReceive(vm.succenss){
             isPage = false
         }
         
@@ -198,7 +197,7 @@ extension AddScheduleView{
                         .clipShape(RoundedRectangle(cornerRadius: 20))
                     
                 }else{
-                    if let image = isImage ,image != ""{
+                    if let image = vm.schedule?.imageUrl{
                         KFImage(URL(string: image))
                             .resizable()
                             .scaledToFill()
@@ -211,10 +210,11 @@ extension AddScheduleView{
                 }
             }
             .overlay(alignment:.topTrailing,content: {
-                if vm.data != nil || isImage != nil,isImage != ""{
+                if vm.data != nil || vm.schedule?.imageUrl != nil{
                     Button {
                         vm.data = nil
-                        isImage = nil
+                        vm.schedule?.imageUrl = nil
+                        vm.schedule?.imageUrlPath = nil
                     } label: {
                         Image(systemName: "xmark")
                             .font(.subheadline)

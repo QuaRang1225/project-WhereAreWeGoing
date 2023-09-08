@@ -15,28 +15,28 @@ struct MemberTabView: View {
     
     var body: some View {
         VStack(alignment: .leading,spacing: 0){
-            Section("방장"){
-                HStack{
-                    KFImage(URL(string: vm.admin?.profileImageUrl ?? ""))
-                        .resizable()
-                        .scaledToFill()
-                        .frame(width: 50,height: 50)
-                        .clipShape( RoundedRectangle(cornerRadius: 20))
-                        .overlay{
-                            Image("crown")
-                                .resizable()
-                                .frame(width: 50,height: 30)
-                                .rotationEffect(Angle(degrees: -20))
-                                .offset(x:-15)
-                                .offset(y:-25)
-                        }
-                    Text(vm.admin?.nickName ?? "")
-                        .bold()
-                    Spacer()
-                }
-            }
-            .foregroundColor(.black.opacity(0.7))
-            .padding()
+//            Section("방장"){
+//                HStack{
+//                    KFImage(URL(string: vm.admin?.profileImageUrl ?? ""))
+//                        .resizable()
+//                        .scaledToFill()
+//                        .frame(width: 50,height: 50)
+//                        .clipShape( RoundedRectangle(cornerRadius: 20))
+//                        .overlay{
+//                            Image("crown")
+//                                .resizable()
+//                                .frame(width: 50,height: 30)
+//                                .rotationEffect(Angle(degrees: -20))
+//                                .offset(x:-15)
+//                                .offset(y:-25)
+//                        }
+//                    Text(vm.admin?.nickName ?? "")
+//                        .bold()
+//                    Spacer()
+//                }
+//            }
+//            .foregroundColor(.black.opacity(0.7))
+//            .padding()
             Divider()
                 .padding(.horizontal)
             Section("맴버"){
