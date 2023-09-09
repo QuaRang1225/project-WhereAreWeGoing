@@ -121,6 +121,7 @@ struct AddScheduleView: View {
         .onDisappear{
             vm.schedule = nil
             vm.data = nil
+            vm.selection = nil
         }
     }
 }
@@ -226,7 +227,6 @@ extension AddScheduleView{
                             }
                     }
                     .offset(x:5,y:-5)
-                    
                     
                 }
                 

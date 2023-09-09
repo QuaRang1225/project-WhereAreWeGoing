@@ -170,11 +170,7 @@ extension SchduleListView{
                     Button {
                         withAnimation {
                             guard let select = self.select else { return self.select = schedule }
-                            if select == schedule{
-                                self.select = nil
-                            }else{
-                                self.select = schedule
-                            }
+                            self.select = select == schedule ? nil : schedule
                         }
                     } label: {
                         VStack{

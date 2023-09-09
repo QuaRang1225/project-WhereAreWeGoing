@@ -29,7 +29,9 @@ struct ScheduleRowView: View {
         VStack(alignment: .leading){
             HStack(alignment: .bottom){
                 Button {
-                    vm.photo = schedule.imageUrl ?? ""
+                    if let image = schedule.imageUrl{
+                        vm.photo = image
+                    }
                 } label: {
                     KFImage(URL(string: schedule.imageUrl ?? ""))
                         .placeholder { _ in

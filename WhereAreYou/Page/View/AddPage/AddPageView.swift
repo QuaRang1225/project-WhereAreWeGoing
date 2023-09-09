@@ -72,6 +72,11 @@ struct AddPageView: View {
                     
                 }, secondaryButton: .cancel(Text("취소")))
         }
+        .onDisappear{
+            vm.schedule = nil
+            vm.data = nil
+            vm.selection = nil
+        }
     }
 }
 
