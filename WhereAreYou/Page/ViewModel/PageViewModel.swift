@@ -30,6 +30,11 @@ class PageViewModel:ObservableObject{
     @Published var copy = false
     @Published var photo:String?
     
+    //--------- 맴버 -------------
+    @Published var admin:UserData?
+    @Published var request:[UserData] = []
+    @Published var member:[UserData] = []
+    
     //    var createPageSuccess = PassthroughSubject<(),Never>()
     //    var createScheduleSuccess = PassthroughSubject<(),Never>()
     var succenss = PassthroughSubject<(),Never>()
@@ -145,6 +150,18 @@ class PageViewModel:ObservableObject{
         }
     }
 
+    func getMembers(page:Page){
+        Task{
+            for req in page.request ?? []{
+                let person = try await UserManager.shared.getUser(userId: req)
+                self.request.append(person)
+            }
+            for mem in page.member ?? []{
+                let person = try await UserManager.shared.getUser(userId: mem)
+                self.member.append(person)
+            }
+        }
+    }
     
     
     func generateTimestamp(from: Date, to: Date) -> [Timestamp] {
@@ -178,6 +195,7 @@ class PageViewModel:ObservableObject{
             return false
         }
     }
+    
 }
 
 

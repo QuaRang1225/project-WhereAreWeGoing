@@ -44,6 +44,7 @@
 		81BA3E1B2A6FAC7700D38E93 /* PageMainView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 81BA3E1A2A6FAC7700D38E93 /* PageMainView.swift */; };
 		81CE1AF32A5A536100ED87FF /* UserManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 81CE1AF22A5A536100ED87FF /* UserManager.swift */; };
 		81CE1AFA2A5A686400ED87FF /* TestView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 81CE1AF92A5A686400ED87FF /* TestView.swift */; };
+		81CFD5F82AB1A50C008CC3C1 /* MemberListRowView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 81CFD5F72AB1A50C008CC3C1 /* MemberListRowView.swift */; };
 		81D5BCA62A4FE9F5001842FD /* WhereAreYouApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 81D5BCA52A4FE9F5001842FD /* WhereAreYouApp.swift */; };
 		81D5BCA82A4FE9F5001842FD /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 81D5BCA72A4FE9F5001842FD /* ContentView.swift */; };
 		81D5BCAA2A4FE9F6001842FD /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 81D5BCA92A4FE9F6001842FD /* Assets.xcassets */; };
@@ -138,6 +139,7 @@
 		81C2A5482A9A176B00F33076 /* GANGWONSTATE-SemiBold.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "GANGWONSTATE-SemiBold.ttf"; sourceTree = "<group>"; };
 		81CE1AF22A5A536100ED87FF /* UserManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserManager.swift; sourceTree = "<group>"; };
 		81CE1AF92A5A686400ED87FF /* TestView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TestView.swift; sourceTree = "<group>"; };
+		81CFD5F72AB1A50C008CC3C1 /* MemberListRowView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MemberListRowView.swift; sourceTree = "<group>"; };
 		81D5BCA52A4FE9F5001842FD /* WhereAreYouApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WhereAreYouApp.swift; sourceTree = "<group>"; };
 		81D5BCA72A4FE9F5001842FD /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
 		81D5BCA92A4FE9F6001842FD /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
@@ -213,7 +215,6 @@
 		8115A63A2A83677000B7C3FE /* AddPage */ = {
 			isa = PBXGroup;
 			children = (
-				81BA3E1A2A6FAC7700D38E93 /* PageMainView.swift */,
 				817268072A6A4ED70038BE70 /* AddPageView.swift */,
 			);
 			path = AddPage;
@@ -303,10 +304,11 @@
 		81BA3E0B2A6BC7F100D38E93 /* View */ = {
 			isa = PBXGroup;
 			children = (
+				81CFD5F52AB196AC008CC3C1 /* Schedule */,
 				8124AAC92A9E3FE4006DE03A /* Map */,
 				8115A63A2A83677000B7C3FE /* AddPage */,
 				81FEF6142A7391D50000B76B /* AddSchedule */,
-				81FEF5FD2A70C8F80000B76B /* TabPage */,
+				81FEF5FD2A70C8F80000B76B /* Page */,
 			);
 			path = View;
 			sourceTree = "<group>";
@@ -318,6 +320,15 @@
 				81C2A5472A9A176700F33076 /* GANGWONSTATE-SemiBold.otf */,
 			);
 			path = Font;
+			sourceTree = "<group>";
+		};
+		81CFD5F52AB196AC008CC3C1 /* Schedule */ = {
+			isa = PBXGroup;
+			children = (
+				8115A6512A83CFDA00B7C3FE /* ScheduleRowView.swift */,
+				81FEF6032A70CEB60000B76B /* SchduleListView.swift */,
+			);
+			path = Schedule;
 			sourceTree = "<group>";
 		};
 		81D5BC992A4FE9F5001842FD = {
@@ -431,6 +442,7 @@
 				81F0B4942A9DB49200E58629 /* CalenderView.swift */,
 				8180A0B72AA37BA500B90655 /* LinkWebView.swift */,
 				818F67C62AA8AE18007A8E19 /* RequestPageView.swift */,
+				81CFD5F72AB1A50C008CC3C1 /* MemberListRowView.swift */,
 			);
 			path = Component;
 			sourceTree = "<group>";
@@ -477,14 +489,13 @@
 			path = Search;
 			sourceTree = "<group>";
 		};
-		81FEF5FD2A70C8F80000B76B /* TabPage */ = {
+		81FEF5FD2A70C8F80000B76B /* Page */ = {
 			isa = PBXGroup;
 			children = (
-				8115A6512A83CFDA00B7C3FE /* ScheduleRowView.swift */,
+				81BA3E1A2A6FAC7700D38E93 /* PageMainView.swift */,
 				81FEF5FF2A70C9390000B76B /* MemberTabView.swift */,
-				81FEF6032A70CEB60000B76B /* SchduleListView.swift */,
 			);
-			path = TabPage;
+			path = Page;
 			sourceTree = "<group>";
 		};
 		81FEF6142A7391D50000B76B /* AddSchedule */ = {
@@ -644,6 +655,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				8172680A2A6A4F010038BE70 /* Travel.swift in Sources */,
+				81CFD5F82AB1A50C008CC3C1 /* MemberListRowView.swift in Sources */,
 				8115A6392A835B1900B7C3FE /* CustomProgressView.swift in Sources */,
 				813F523E2A594B5C00833427 /* AuthManager.swift in Sources */,
 				818F67C72AA8AE18007A8E19 /* RequestPageView.swift in Sources */,

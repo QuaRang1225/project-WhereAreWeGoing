@@ -44,6 +44,7 @@ struct PageMainView: View {
                                 .environmentObject(vmAuth)
                         case .member:
                             MemberTabView()
+                                .environmentObject(vm)
                         case .setting:
                             Text("")
                         }

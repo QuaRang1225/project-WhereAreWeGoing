@@ -8,7 +8,7 @@
 import Foundation
 import Firebase
 
-struct UserData:Codable{
+struct UserData:Codable,Hashable{
     
     let userId:String
     var nickName:String?
