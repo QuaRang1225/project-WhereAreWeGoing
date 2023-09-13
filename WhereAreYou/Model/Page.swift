@@ -29,7 +29,8 @@ struct Page:Codable,Hashable{
         case pageName = "page_name"
         case pageOverseas = "page_overseas"
         case pageSubscript = "page_subscript"
-        case request,member
+        case request = "request_user"
+        case member
         case dateRange = "date_range"
     }
 }

@@ -10,6 +10,7 @@ import Kingfisher
 
 struct RequestPageView: View {
     
+    @State var requested = false
     @State var user:UserData?
     @Binding var page:Page?
     @EnvironmentObject var vm:PageViewModel
@@ -81,11 +82,16 @@ struct RequestPageView: View {
             .cornerRadius(20)
             .shadow(radius: 5)
             Button {
-                
+                requested.toggle()
+                if let user = vmAuth.user,let pageid = page?.pageId{
+                    Task{
+                        try await PageManager.shared.requestPage(user:user,pageAdminId:self.user?.userId ?? "",pageId:pageid,cancel:!requested)
+                    }
+                }
             } label: {
-                Text("요청")
+                Text(requested ? "요청됨" : "요청")
                     .padding(.horizontal).padding(5)
-                    .background(Color.customCyan2.opacity(0.7))
+                    .background(requested ? Color.gray.opacity(0.6) :  Color.customCyan2.opacity(0.7))
                     .foregroundColor(.white)
                     .bold()
                     .cornerRadius(10)
@@ -94,10 +100,16 @@ struct RequestPageView: View {
 
             
         }
-        
         .onAppear{
             Task{
                 self.user = try await UserManager.shared.getUser(userId: page?.pageAdmin ?? "")
+            }
+            
+            if let request = page?.request,request.contains(vmAuth.user?.userId ?? ""){
+                self.requested = true
+            }
+            else {
+                self.requested = false
             }
         }
     }

@@ -109,6 +109,13 @@ final class PageManager{
         try await field.updateData(data as [AnyHashable : Any])
         
     }
+    
+    func requestPage(user:UserData,pageAdminId:String,pageId:String,cancel:Bool) async throws{
+        let pagePath = userPageDocumentCollection(userId: pageAdminId).document(pageId)
+        let data:[String:Any] = ["request_user": cancel ? FieldValue.arrayRemove([user.userId]) : FieldValue.arrayUnion([user.userId])]
+        print(data)
+        try await pagePath.updateData(data)
+    }
     func deleteUserSchedule(userId:String,pageId:String,scheduleId:String) async throws{
         let field = userPageDocumentCollection(userId: userId).document(pageId).collection("schedule").document(scheduleId)
         try await field.delete()

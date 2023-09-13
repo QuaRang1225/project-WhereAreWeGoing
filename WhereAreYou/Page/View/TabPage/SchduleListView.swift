@@ -85,31 +85,7 @@ struct SchduleListView: View {
                 .environmentObject(location)
                 .navigationBarBackButtonHidden()
         }
-//        .onAppear{
-//            guard let user = vmAuth.user else {return}
-//            
-//        }
-//        .onAppear{
-//            if let user = vmAuth.user{
-//                vm.getSchedule(user: user, pageId: page.pageId)
-//            }
-//            time = page.dateRange[date]
-//        }
-//        .onChange(of: date) { newValue in
-//            time = page.dateRange[date]
-//        }
-//        .onReceive(vm.deleteSuccess) {
-//            if let user = vmAuth.user{
-//                vm.getSchedule(user: user, pageId: page.pageId)
-//            }
-//        }
-//        .onReceive(vm.createPageSuccess) {
-//            Task{
-//                if let user = vmAuth.user{
-//                    time = try await vm.getPage(user: user, pageId: page.pageId).dateRange[0]
-//                }
-//            }
-//        }
+
     }
     
 }

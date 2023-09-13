@@ -292,8 +292,8 @@
             filePath = "WhereAreYou/Manager/PageManger.swift"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "123"
-            endingLineNumber = "123"
+            startingLineNumber = "130"
+            endingLineNumber = "130"
             landmarkName = "getAllSchedule(userId:pageId:)"
             landmarkType = "7">
             <Locations>
@@ -340,8 +340,8 @@
             filePath = "WhereAreYou/Page/ViewModel/PageViewModel.swift"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "141"
-            endingLineNumber = "141"
+            startingLineNumber = "137"
+            endingLineNumber = "137"
             landmarkName = "getPages(user:)"
             landmarkType = "7">
          </BreakpointContent>
@@ -356,8 +356,8 @@
             filePath = "WhereAreYou/Page/ViewModel/PageViewModel.swift"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "143"
-            endingLineNumber = "143"
+            startingLineNumber = "139"
+            endingLineNumber = "139"
             landmarkName = "getSchedules(user:pageId:)"
             landmarkType = "7">
             <Locations>
@@ -449,8 +449,8 @@
             filePath = "WhereAreYou/Manager/PageManger.swift"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "124"
-            endingLineNumber = "124"
+            startingLineNumber = "131"
+            endingLineNumber = "131"
             landmarkName = "getAllSchedule(userId:pageId:)"
             landmarkType = "7">
             <Locations>
@@ -808,8 +808,8 @@
             filePath = "WhereAreYou/Page/ViewModel/PageViewModel.swift"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "108"
-            endingLineNumber = "108"
+            startingLineNumber = "104"
+            endingLineNumber = "104"
             landmarkName = "updateSchedule(user:pageId:schedule:)"
             landmarkType = "7">
             <Locations>
@@ -886,8 +886,8 @@
             filePath = "WhereAreYou/Page/ViewModel/PageViewModel.swift"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "109"
-            endingLineNumber = "109"
+            startingLineNumber = "105"
+            endingLineNumber = "105"
             landmarkName = "updateSchedule(user:pageId:schedule:)"
             landmarkType = "7">
             <Locations>
@@ -979,8 +979,8 @@
             filePath = "WhereAreYou/Page/ViewModel/PageViewModel.swift"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "102"
-            endingLineNumber = "102"
+            startingLineNumber = "98"
+            endingLineNumber = "98"
             landmarkName = "updateSchedule(user:pageId:schedule:)"
             landmarkType = "7">
             <Locations>
@@ -1167,7 +1167,7 @@
             endingColumnNumber = "9223372036854775807"
             startingLineNumber = "53"
             endingLineNumber = "53"
-            landmarkName = "updatePage(user:pageInfo:)"
+            landmarkName = "creagtePage(user:pageInfo:)"
             landmarkType = "7">
          </BreakpointContent>
       </BreakpointProxy>
@@ -1289,8 +1289,8 @@
             filePath = "WhereAreYou/Page/ViewModel/PageViewModel.swift"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "97"
-            endingLineNumber = "97"
+            startingLineNumber = "93"
+            endingLineNumber = "93"
             landmarkName = "creagteShcedule(user:pageId:schedule:)"
             landmarkType = "7">
          </BreakpointContent>
@@ -1305,8 +1305,8 @@
             filePath = "WhereAreYou/Page/ViewModel/PageViewModel.swift"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "105"
-            endingLineNumber = "105"
+            startingLineNumber = "101"
+            endingLineNumber = "101"
             landmarkName = "updateSchedule(user:pageId:schedule:)"
             landmarkType = "7">
             <Locations>
@@ -1414,8 +1414,8 @@
             filePath = "WhereAreYou/Page/ViewModel/PageViewModel.swift"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "120"
-            endingLineNumber = "120"
+            startingLineNumber = "116"
+            endingLineNumber = "116"
             landmarkName = "updateSchedule(user:pageId:schedule:)"
             landmarkType = "7">
          </BreakpointContent>
@@ -1430,8 +1430,8 @@
             filePath = "WhereAreYou/Page/ViewModel/PageViewModel.swift"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "122"
-            endingLineNumber = "122"
+            startingLineNumber = "118"
+            endingLineNumber = "118"
             landmarkName = "deletePage(user:page:)"
             landmarkType = "7">
             <Locations>
@@ -1523,8 +1523,8 @@
             filePath = "WhereAreYou/Page/ViewModel/PageViewModel.swift"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "123"
-            endingLineNumber = "123"
+            startingLineNumber = "119"
+            endingLineNumber = "119"
             landmarkName = "deletePage(user:page:)"
             landmarkType = "7">
             <Locations>

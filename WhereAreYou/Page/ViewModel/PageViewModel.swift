@@ -88,10 +88,6 @@ class PageViewModel:ObservableObject{
             
             try await PageManager.shared.createUserSchedule(userId: user.userId, pageId: pageId, url: url?.absoluteString, schedule: schedule,path:path)
             succenss.send()
-            //                self.schedule = try await PageManager.shared.getSchedule(userId: user.userId, pageId: pageId, scheduleId: schedule.id)
-            //            }catch{}
-            
-            //            createScheduleSuccess.send()
         }
     }
     func updateSchedule(user:UserData,pageId:String,schedule:Schedule){
@@ -148,7 +144,7 @@ class PageViewModel:ObservableObject{
             page = try await PageManager.shared.getPage(userId: user.userId, pageId: pageId)
         }
     }
-    
+
     
     
     func generateTimestamp(from: Date, to: Date) -> [Timestamp] {
