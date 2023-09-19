@@ -10,7 +10,7 @@ import Kingfisher
 
 struct MemberTabView: View {
     
-    
+    @EnvironmentObject var vmAuth:AuthViewModel
     @EnvironmentObject var vm:PageViewModel
     
     var body: some View {
@@ -21,7 +21,13 @@ struct MemberTabView: View {
             .padding(.vertical)
             Divider()
             Section("맴버"){
-                emptymember
+                if vm.member.isEmpty{
+                    emptymember
+                }else{
+                    ForEach(vm.member,id:\.self){ member in
+                        MemberListRowView(image: member.profileImageUrl ?? "", name: member.nickName ?? "",admin: false)
+                    }
+                }
             }
             .padding(.vertical)
             Section("초대 요청"){
@@ -30,12 +36,33 @@ struct MemberTabView: View {
                 }else{
                     ForEach(vm.request,id:\.self) { request in
                         MemberListRowView(image: request.profileImageUrl ?? "", name: request.nickName ?? "",admin: false)
+                            .overlay(alignment:.trailing){
+                                Button {
+                                    if let user = vmAuth.user,let page = vm.page{
+                                        vm.userAccept(user: user, page:page, requestUser: request)
+                                    }
+                                } label: {
+                                    Text("수락")
+                                        .font(.caption)
+                                        .bold()
+                                        .foregroundColor(.white)
+                                        .padding(.horizontal)
+                                        .padding(5)
+                                        .background(Color.customCyan2.opacity(0.7))
+                                        .cornerRadius(20)
+                                }
+                            }
                     }
                 }
             }
             .padding(.vertical)
         }
         .padding()
+//        .onReceive(vm.succenss){
+//            if let page = vm.page{
+//                vm.getMembers(page: page)
+//            }
+//        }
         .onAppear{
             if let page = vm.page{
                 Task{
@@ -57,6 +84,7 @@ struct MemberTabView_Previews: PreviewProvider {
 
         MemberTabView()
             .environmentObject(PageViewModel())
+            .environmentObject(AuthViewModel())
           
     }
 }

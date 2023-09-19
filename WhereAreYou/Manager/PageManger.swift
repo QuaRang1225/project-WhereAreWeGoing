@@ -62,6 +62,7 @@ final class PageManager{
             data["page_image_url"] = url == "x" ? NSNull() : url
             data["page_image_path"] = path == "x" ? NSNull(): path
         }
+        print("페이지 수정중..")
         try await document.updateData(data as [AnyHashable : Any])
         
     }
@@ -106,6 +107,7 @@ final class PageManager{
             data["image_url_path"] = url == "x" ? NSNull() : path
             data["image_url"] = path == "x" ? NSNull(): url
         }
+        print("스케쥴 수정중..")
         try await field.updateData(data as [AnyHashable : Any])
         
     }
@@ -113,29 +115,53 @@ final class PageManager{
     func requestPage(user:UserData,pageAdminId:String,pageId:String,cancel:Bool) async throws{
         let pagePath = userPageDocumentCollection(userId: pageAdminId).document(pageId)
         let data:[String:Any] = ["request_user": cancel ? FieldValue.arrayRemove([user.userId]) : FieldValue.arrayUnion([user.userId])]
-        print(data)
+        print("페이지 맴버 요청중..")
+        try await pagePath.updateData(data)
+    }
+    func managingMemberPage(user:UserData,pageAdminId:String,pageId:String,cancel:Bool) async throws{
+        let pagePath = userPageDocumentCollection(userId: pageAdminId).document(pageId)
+        let data:[String:Any] = ["member": cancel ? FieldValue.arrayRemove([user.userId]) : FieldValue.arrayUnion([user.userId])]
+        print(cancel ? "맴버 삭제중.." : "맴버 추가중..")
         try await pagePath.updateData(data)
     }
     func deleteUserSchedule(userId:String,pageId:String,scheduleId:String) async throws{
         let field = userPageDocumentCollection(userId: userId).document(pageId).collection("schedule").document(scheduleId)
+        print("스케쥴 삭제중..")
         try await field.delete()
     }
     func deleteUserPage(userId:String,pageId:String) async throws{
         let field = userPageDocumentCollection(userId: userId).document(pageId)
+        print("페이지 삭제중..")
         try await field.delete()
     }
     func getAllPage(userId:String)async throws -> [Page]{    //전체페이지 불러오기
+        print("전체페이지 불러오는 중..")
         try await userPageDocumentCollection(userId: userId).getAllDocuments(as: Page.self)
     }
     func getAllSchedule(userId:String,pageId:String)async throws -> [Schedule]{    //전체스케쥴 불러오기
+        print("전체스케쥴 불러오는 중..")
         try await userScheduleDocumentCollection(userId: userId, pageId: pageId).getAllDocuments(as: Schedule.self)
         
     }
     func getPage(userId:String,pageId:String)async throws -> Page{
+        print("페이지 불러오는 중..")
         try await userPageDocumentCollection(userId: userId).document(pageId).getDocument(as:Page.self)
     }
     func getSchedule(userId:String,pageId:String,scheduleId:String)async throws -> Schedule{
+        print("스케쥴 불러오는 중..")
         try await userScheduleDocumentCollection(userId: userId, pageId: pageId).document(scheduleId).getDocument(as: Schedule.self)
+    }
+    func acceptUser(user:UserData,page:Page,requestUser:UserData)async throws{
+        try await requestPage(user: requestUser, pageAdminId: page.pageAdmin, pageId: page.pageId, cancel: true)   //초대요청 삭제
+        try await managingMemberPage(user: requestUser, pageAdminId: page.pageAdmin, pageId: page.pageId, cancel: false)   //맴버 리스트 추가
+            
+        let pagePath = userPageDocumentCollection(userId: page.pageId).document(page.pageId).path
+        let requestUserField = userDocument(userId: requestUser.userId)
+        
+        let data:[String:Any] = ["pages":FieldValue.arrayUnion([pagePath])]
+        print("유저 요청 수락 중")
+        try await requestUserField.updateData(data)
+        
     }
     
 }

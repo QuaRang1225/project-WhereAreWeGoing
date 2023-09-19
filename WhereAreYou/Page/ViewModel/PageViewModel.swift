@@ -152,6 +152,8 @@ class PageViewModel:ObservableObject{
 
     func getMembers(page:Page){
         Task{
+            self.request.removeAll()
+            self.member.removeAll()
             for req in page.request ?? []{
                 let person = try await UserManager.shared.getUser(userId: req)
                 self.request.append(person)
@@ -160,6 +162,12 @@ class PageViewModel:ObservableObject{
                 let person = try await UserManager.shared.getUser(userId: mem)
                 self.member.append(person)
             }
+        }
+    }
+    func userAccept(user:UserData,page:Page,requestUser:UserData){
+        Task{
+            try await PageManager.shared.acceptUser(user:user,page:page,requestUser:requestUser)
+            self.getMembers(page: try await PageManager.shared.getPage(userId: user.userId, pageId: page.pageId))
         }
     }
     
