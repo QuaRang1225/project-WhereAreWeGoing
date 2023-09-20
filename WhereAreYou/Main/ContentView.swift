@@ -35,21 +35,18 @@ struct ContentView: View {
             }
         }
         .onAppear{
-            DispatchQueue.main.asyncAfter(deadline: .now() + 2.0){
-                withAnimation(.easeIn(duration: 0.5)){
-                    isStart = true
-                }
-            }
             if let auth = try? AuthManager.shared.getUser(){    //자동로그인
                 Task{
                     vm.user = try await UserManager.shared.getUser(userId: auth.uid)
                 }
             }
+            DispatchQueue.main.asyncAfter(deadline: .now() + 2.0){
+                withAnimation(.easeIn(duration: 0.5)){
+                    isStart = true
+                }
+            }
+            
         }
-        
-//        .onTapGesture { //이거 넣으면 탭뷰 터치 안됨
-//            UIApplication.shared.endEditing()
-//        }
     }
 }
 

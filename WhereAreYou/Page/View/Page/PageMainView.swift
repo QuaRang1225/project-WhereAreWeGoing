@@ -110,7 +110,6 @@ struct PageMainView: View {
                 if let user = vmAuth.user,let page = vm.page{
                     deletePage = true
                     vm.deletePage(user: user, page:page)
-                    delete = true
                 }
             } label: {
                 Text("삭제하기")

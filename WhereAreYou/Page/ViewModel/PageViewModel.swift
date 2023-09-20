@@ -120,15 +120,20 @@ class PageViewModel:ObservableObject{
     }
     func deletePage(user:UserData,page:Page){
         Task{
-            try await StorageManager.shared.deleteImage(path: page.pageImagePath ?? "")
+            if let path = page.pageImagePath{
+                try await StorageManager.shared.deleteImage(path: path) //페이지 이미지가 없을 경우 필요가 없는 부분
+            }
             try await PageManager.shared.deleteUserPage(userId:user.userId,pageId:page.pageId)
+            getPages(user: user)
             deleteSuccess.send()
         }
     }
     
     func deleteSchedule(user:UserData,pageId:String,schedule:Schedule){
         Task{
-            try await StorageManager.shared.deleteImage(path: schedule.imageUrlPath ?? "")
+            if let path = schedule.imageUrlPath{
+                try await StorageManager.shared.deleteImage(path: path) //스케쥴 이미지가 없을 경우 필요가 없는 부분
+            }
             try await PageManager.shared.deleteUserSchedule(userId:user.userId,pageId:pageId,scheduleId:schedule.id)
             deleteSuccess.send()
         }

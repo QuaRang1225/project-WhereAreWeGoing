@@ -11,10 +11,9 @@ import MapKit
 import Kingfisher
 
 struct MainView: View {
-    let columns = [GridItem(),GridItem()]
-    @State var area:TravelFilter = .all
-
     
+
+    @State var area:TravelFilter = .all
     @StateObject var location = LocationMagager()
     @StateObject var vm = PageViewModel()
     @EnvironmentObject var vmAuth:AuthViewModel
@@ -58,14 +57,12 @@ struct MainView: View {
                 vm.getPages(user: user)
                 
             }
-            vm.page = nil
-            vm.data = nil
         }
-        .onReceive(vm.deleteSuccess) {
-            if let user = vmAuth.user{
-                vm.getPages(user: user)
-            }
-        }
+//        .onReceive(vm.deleteSuccess) {
+//            if let user = vmAuth.user{
+//                vm.getPages(user: user)
+//            }
+//        }
     }
 }
 
