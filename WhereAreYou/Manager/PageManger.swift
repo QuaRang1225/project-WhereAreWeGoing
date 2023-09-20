@@ -172,4 +172,15 @@ final class PageManager{
         }
         return myPages
     }
+    func outPage(admin:String,user:UserData,pageid:String)async throws{
+        
+        let pageMember = userPageDocumentCollection(userId: admin)   //페이지 맴버삭제를 위한 path
+        let myfield = userDocument(userId: user.userId) //내 프로필 path
+        
+//        let pageData:[String:Any] = ["member":FieldValue.arrayRemove([user.userId])]    //내 정보
+        let mydata:[String:Any] = ["pages" :FieldValue.arrayRemove([pageMember.document(pageid).path])] //페이지 정보
+        
+        try await myfield.updateData(mydata)
+//        try await pageMember.document(pageid).updateData(pageData)
+    }
 }

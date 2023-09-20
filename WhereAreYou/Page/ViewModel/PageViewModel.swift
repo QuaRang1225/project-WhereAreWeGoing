@@ -38,7 +38,10 @@ class PageViewModel:ObservableObject{
     //    var createPageSuccess = PassthroughSubject<(),Never>()
     //    var createScheduleSuccess = PassthroughSubject<(),Never>()
     var succenss = PassthroughSubject<(),Never>()
+    var memeberSuccess = PassthroughSubject<(),Never>()
     var deleteSuccess = PassthroughSubject<(),Never>()
+    var requestSuccess = PassthroughSubject<(),Never>()
+    var pageSuccess = PassthroughSubject<(),Never>()
     
     func creagtePage(user:UserData,pageInfo:Page){
         
@@ -127,6 +130,15 @@ class PageViewModel:ObservableObject{
             deleteSuccess.send()
         }
     }
+    func outPage(user:UserData,page:Page){
+        Task{
+//            do{
+            try await PageManager.shared.managingMemberPage(user: user, pageAdminId: page.pageAdmin, pageId: page.pageId, cancel: true)
+            try await PageManager.shared.outPage(admin:page.pageAdmin,user:user,pageid:page.pageId)
+//            }catch{}
+            deleteSuccess.send()
+        }
+    }
     
     func deleteSchedule(user:UserData,pageId:String,schedule:Schedule){
         Task{
@@ -140,10 +152,8 @@ class PageViewModel:ObservableObject{
     
     func getPages(user:UserData){
         Task{
-            do{
-                pages = try await PageManager.shared.getAllPage(userId: user.userId)
-                getNotAdminPage(user: user)
-            }catch{}
+            pages = try await PageManager.shared.getAllPage(userId: user.userId)
+            getNotAdminPage(user: user)
         }
     }
     func getSchedules(userId:String,pageId:String){
@@ -153,34 +163,49 @@ class PageViewModel:ObservableObject{
     }
     func getPage(userId:String,pageId:String){
         Task{
-            page = try await PageManager.shared.getPage(userId: userId, pageId: pageId)
+            self.page = try await PageManager.shared.getPage(userId: userId, pageId: pageId)
+            self.pageSuccess.send()
         }
     }
 
     func getMembers(page:Page){
         Task{
-            self.request.removeAll()
-            self.member.removeAll()
+            var request:[UserData] = []
+            var member:[UserData] = []
+            
             for req in page.request ?? []{
                 let person = try await UserManager.shared.getUser(userId: req)
-                self.request.append(person)
+                request.append(person)
             }
             for mem in page.member ?? []{
                 let person = try await UserManager.shared.getUser(userId: mem)
-                self.member.append(person)
+                member.append(person)
             }
+            
+            self.request = request
+            self.member = member
+            print("요청\(request)")
+            print("맴버\(member)")
+//            self.memeberSuccess.send()
         }
     }
     func userAccept(user:UserData,page:Page,requestUser:UserData){
         Task{
             try await PageManager.shared.acceptUser(user:user,page:page,requestUser:requestUser)
-            self.getMembers(page: try await PageManager.shared.getPage(userId: user.userId, pageId: page.pageId))
+           
+            self.requestSuccess.send()
         }
     }
     
     func getNotAdminPage(user:UserData){
         Task{
             pages.append(contentsOf: try await PageManager.shared.getNotAdminPages(user:user))
+            self.memeberSuccess.send()
+        }
+    }
+    func getAdmin(admin:String){
+        Task{
+            self.admin =  try await UserManager.shared.getUser(userId: admin)
         }
     }
     

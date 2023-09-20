@@ -58,25 +58,31 @@ struct MemberTabView: View {
             .padding(.vertical)
         }
         .padding()
-        .onAppear{
-            if let page = vm.page{
-                Task{
-                    vm.admin =  try await UserManager.shared.getUser(userId: page.pageAdmin)
-                    vm.getMembers(page: page)
-                }
-            }
+        .refreshable {
+            guard let page = vm.page,let user = vmAuth.user else { return }
+            vm.getAdmin(admin: page.pageAdmin)
+            vm.getMembers(page: page)
+            vm.getPage(userId: user.userId, pageId: page.pageId)
         }
+        .onReceive(vm.requestSuccess){
+            guard let user = vmAuth.user,let page = vm.page else {return}
+            vm.getPage(userId: user.userId, pageId: page.pageId)
+        }
+        .onReceive(vm.pageSuccess){
+            guard let page = vm.page else {return}
+            vm.getMembers(page: page)
+        }
+        
     }
-    
 }
 
 struct MemberTabView_Previews: PreviewProvider {
     static var previews: some View {
-
+        
         MemberTabView()
             .environmentObject(PageViewModel())
             .environmentObject(AuthViewModel())
-          
+        
     }
 }
 

@@ -85,6 +85,7 @@ struct SchduleListView: View {
                 .environmentObject(location)
                 .navigationBarBackButtonHidden()
         }
+       
 
     }
     

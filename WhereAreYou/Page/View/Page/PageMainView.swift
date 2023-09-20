@@ -21,9 +21,7 @@ struct PageMainView: View {
     @State var currentDrageAmount:CGFloat = 0
     @State private var currentTime = Date()
     
-    @State var delete = false   //삭제 버튼 활성화
-    @State var deletePage = false   //삭제버튼 클릭 후 삭제 중 문구
-    @State var sett = false //페이지 설정 활성화
+    @State var isPage = false
     
     let timer = Timer.publish(every: 1, on: .main, in: .common).autoconnect()
     
@@ -44,7 +42,7 @@ struct PageMainView: View {
                                 .environmentObject(vmAuth)
                                 .environmentObject(vm)
                         case .setting:
-                            Text("")
+                            PageSettingView(page: $page, deletePage: $isPage)
                         }
                     }.environmentObject(vm)
                     
@@ -56,7 +54,6 @@ struct PageMainView: View {
             .edgesIgnoringSafeArea(.top)
             .padding(.bottom,30)
             header
-                
             tabBar
             if vm.copy{
                 Text("클립보드에 복사되었습니다.")
@@ -94,40 +91,25 @@ struct PageMainView: View {
                             }
                     )
             }
-            if deletePage{
+            
+            if isPage{
                 CustomProgressView(title: "삭제 중..")
             }
-            
-        }.refreshable {
-            vm.getPage(userId: page.pageAdmin, pageId: page.pageId)
-            vm.getSchedules(userId: page.pageAdmin, pageId: page.pageId)
         }
-        .onReceive(vm.succenss){
-            if let page = vm.page{
-                self.page = page
-            }
-        }
+//        .refreshable {
+//            vm.getPage(userId: page.pageAdmin, pageId: page.pageId)
+//            vm.getSchedules(userId: page.pageAdmin, pageId: page.pageId)
+//        }
         .onReceive(vm.deleteSuccess){
             dismiss()
         }
-        .confirmationDialog("일정 수정", isPresented: $delete, actions: {
-            Button(role:.destructive){
-                if let user = vmAuth.user,let page = vm.page{
-                    deletePage = true
-                    vm.deletePage(user: user, page:page)
-                }
-            } label: {
-                Text("삭제하기")
-            }
-        },message: {
-            Text("정말 이 페이지를 삭제하시겠습니까?")
-        })
         .onAppear{
+            Task{
+                vm.admin = try await UserManager.shared.getUser(userId: page.pageAdmin)
+            }
             vm.getPage(userId: page.pageAdmin, pageId: page.pageId)
             vm.getSchedules(userId: page.pageAdmin, pageId: page.pageId)
-        }
-        .onDisappear{
-            sett = false
+            vm.getMembers(page: page)
         }
     }
 }
@@ -162,47 +144,19 @@ extension PageMainView{
 //                        .font(.title3)
 //                        .foregroundColor(.white)
 //                        .padding(.trailing)
-                    VStack{
-                        Button {
-                            withAnimation{
-                                sett.toggle()
-                            }
-                        } label: {
-                            Image(systemName: "ellipsis")
-                                .font(.title3)
-                                .foregroundColor(.white)
-                                .padding(.trailing)
-                        }
-                            
-                    }
-            }
-            if sett{
-                HStack{
-                    Spacer()
-                    VStack{
-                        NavigationLink {
-                            AddPageView(title: page.pageName ,text: page.pageSubscript,overseas: page.pageOverseas, startDate: page.dateRange.first?.dateValue() ?? Date(),endDate: page.dateRange.last?.dateValue() ?? Date())
-                                .environmentObject(vm)
-                                .environmentObject(vmAuth)
-                                .navigationBarBackButtonHidden()
-                        } label: {
-                            Text("수정하기")
-                               
-                        }.padding(.top,7.5)
-                        Divider().frame(width: 100)
-                        Button {
-                            delete = true
-                        } label: {
-                            Text("삭제하기").foregroundColor(.red)
-                        }
-                        Divider().frame(width: 100)
-                    }
-                    .padding(.horizontal)
-                    .font(.subheadline).foregroundColor(.black)
-                    .background(Color.white)
-                    .cornerRadius(10)
-                    .padding(.trailing)
-                }
+//                    VStack{
+//                        Button {
+//                            withAnimation{
+//                                sett.toggle()
+//                            }
+//                        } label: {
+//                            Image(systemName: "ellipsis")
+//                                .font(.title3)
+//                                .foregroundColor(.white)
+//                                .padding(.trailing)
+//                        }
+//
+//                    }
             }
         }
        
@@ -257,9 +211,6 @@ extension PageMainView{
                                     UIScreen.main.bounds.height/3 + pro.frame(in: .global).minY :
                                     UIScreen.main.bounds.height/3
                             )
-                            .onTapGesture {
-                            sett = false
-                        }
             }
             
             HStack(alignment: .bottom){

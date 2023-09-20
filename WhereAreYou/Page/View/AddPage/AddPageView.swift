@@ -89,13 +89,13 @@ extension AddPageView{
             Spacer()
             if overseas != nil && !text.isEmpty && !title.isEmpty{
                 Button {
-                    if let user = vmAuth.user,let overseas{
-                        if  vm.page != nil{
-                            changedDate = true
-                        }else{
-                            isPage = true
-                            vm.creagtePage(user:user, pageInfo: Page(pageId: "", pageAdmin: "",pageImageUrl: "",pageImagePath: "", pageName: title, pageOverseas: overseas, pageSubscript: text, dateRange: vm.generateTimestamp(from: startDate, to: endDate)))
-                        }
+                    guard let user = vmAuth.user,let overseas else {return}
+                    
+                    if  vm.page != nil{
+                        changedDate = true
+                    }else{
+                        isPage = true
+                        vm.creagtePage(user:user, pageInfo: Page(pageId: "", pageAdmin: "",pageImageUrl: "",pageImagePath: "", pageName: title, pageOverseas: overseas, pageSubscript: text, dateRange: vm.generateTimestamp(from: startDate, to: endDate)))
                     }
                 } label: {
                     Text(vm.page != nil ? "변경" : "완료")
