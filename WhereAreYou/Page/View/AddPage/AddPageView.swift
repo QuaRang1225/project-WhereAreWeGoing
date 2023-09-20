@@ -18,8 +18,8 @@ struct AddPageView: View {
     @State var startDate = Date()
     @State var endDate = Date() + 86400
     
-    @State var isPage = false
-    @State var changedDate = false
+    @State var isPage = false   //페이지 생성/수정 시 progressView 띄우기 위함
+    @State var changedDate = false  //날짜 수정 시 해당 일자의 일정 모두 삭제의 허용을 묻는 문구
     @EnvironmentObject var vm:PageViewModel
     @EnvironmentObject var vmAuth:AuthViewModel
     @Environment(\.dismiss) var dismiss
@@ -56,20 +56,7 @@ struct AddPageView: View {
                 message: Text("페이지의 날짜가 바뀌게 되면 해당 날짜의 일정은 모두 삭제 됩니다. 날짜를 수정하시겠습니까?"),
                 primaryButton: .destructive(Text("확인")) {
                     isPage = true
-                    Task{
-                        if let page = vm.page,let user = vmAuth.user,let overseas{
-                            let modifiedPage = Page(pageId: page.pageId, pageAdmin: page.pageAdmin, pageImagePath: page.pageImagePath, pageName: title, pageOverseas: overseas, pageSubscript: text, dateRange: vm.generateTimestamp(from: startDate, to: endDate))
-                                let currentDate = page.dateRange
-                                let modifiyngDate = vm.generateTimestamp(from: startDate, to: endDate)
-                                
-                                let changed = currentDate.filter{!(modifiyngDate.contains($0))}
-                                for change in changed {
-                                    vm.deleteSchedule(user: user, pageId: page.pageId, schedule: vm.schedules.first(where: {$0.startTime.dateValue().toTimeString() == change.dateValue().toTimeString()})! )
-                                }
-                                vm.updatePage(user: user, pageInfo: modifiedPage)
-                            }
-                    }
-                    
+                    scheduleDelete()
                 }, secondaryButton: .cancel(Text("취소")))
         }
         .onDisappear{
@@ -106,9 +93,8 @@ extension AddPageView{
                         if  vm.page != nil{
                             changedDate = true
                         }else{
+                            isPage = true
                             vm.creagtePage(user:user, pageInfo: Page(pageId: "", pageAdmin: "",pageImageUrl: "",pageImagePath: "", pageName: title, pageOverseas: overseas, pageSubscript: text, dateRange: vm.generateTimestamp(from: startDate, to: endDate)))
-                           
-                            
                         }
                     }
                 } label: {
@@ -123,7 +109,7 @@ extension AddPageView{
             }
             
         }
-
+        
     }
     var settingPageInfo:some View{
         VStack{
@@ -176,7 +162,7 @@ extension AddPageView{
                                 }
                         }
                     }
-                   
+                    
                 })
                 .onChange(of: vm.selection) { newItem in
                     Task {
@@ -242,7 +228,7 @@ extension AddPageView{
                                 Circle()
                                     .frame(width: 120,height: 120)
                                     .foregroundColor(overseas ?? false ? .black.opacity(0.3) : .clear)
-                                    
+                                
                             }
                     }
                     Text("해외")
@@ -277,6 +263,24 @@ extension AddPageView{
             return currentDate
         }else{
             return nil
+        }
+    }
+    func scheduleDelete(){
+        Task{
+            if let page = vm.page,let user = vmAuth.user,let overseas{
+                let currentDate = page.dateRange
+                let modifiyngDate = vm.generateTimestamp(from: startDate, to: endDate)
+                let modifiedPage = Page(pageId: page.pageId, pageAdmin: page.pageAdmin, pageImagePath: page.pageImagePath, pageName: title, pageOverseas: overseas, pageSubscript: text, dateRange: modifiyngDate)
+                
+                
+                let changed = currentDate.filter{!(modifiyngDate.contains($0))}
+                for change in changed {
+                    if let schedule = vm.schedules.first(where: {$0.startTime == change}){
+                        vm.deleteSchedule(user: user, pageId: page.pageId, schedule: schedule)
+                    }
+                }
+                vm.updatePage(user: user, pageInfo: modifiedPage)
+            }
         }
     }
 }

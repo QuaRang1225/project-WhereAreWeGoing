@@ -58,11 +58,6 @@ struct MainView: View {
                 
             }
         }
-//        .onReceive(vm.deleteSuccess) {
-//            if let user = vmAuth.user{
-//                vm.getPages(user: user)
-//            }
-//        }
     }
 }
 
@@ -88,8 +83,6 @@ extension MainView{
                             .listRowSeparator(.hidden)  //리스트 줄 없앰
                             .listRowBackground(Color.clear)
                     }
-//
-                   
                 }
             }.background(Color.white.frame(height: 100)
                 .cornerRadius(10).shadow(radius: 0.5, y: 1))
@@ -124,7 +117,7 @@ extension MainView{
         HStack{
             NavigationLink {
                 AddPageView()
-                    .environmentObject(vm)
+                    .environmentObject(PageViewModel())
                     .environmentObject(vmAuth)
                     .navigationBarBackButtonHidden()
             } label: {

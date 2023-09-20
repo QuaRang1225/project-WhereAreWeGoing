@@ -83,7 +83,6 @@ class PageViewModel:ObservableObject{
     func creagteShcedule(user:UserData,pageId:String,schedule:Schedule){
         
         Task{
-            //            do{
             var url = URL(string: "")
             var path:String? = nil
             if let data = try await selection?.loadTransferable(type: Data.self){

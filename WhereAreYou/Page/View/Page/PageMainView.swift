@@ -17,9 +17,6 @@ struct PageMainView: View {
     @State var pageMode:PageTabFilter = .schedule
     var page:Page
     
-//    @State var photo = false
-//    @State var binding:Schedule?
-
     @State var currentAmount:CGFloat = 0
     @State var currentDrageAmount:CGFloat = 0
     @State private var currentTime = Date()

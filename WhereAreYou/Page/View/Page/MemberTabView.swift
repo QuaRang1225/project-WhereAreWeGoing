@@ -58,11 +58,6 @@ struct MemberTabView: View {
             .padding(.vertical)
         }
         .padding()
-//        .onReceive(vm.succenss){
-//            if let page = vm.page{
-//                vm.getMembers(page: page)
-//            }
-//        }
         .onAppear{
             if let page = vm.page{
                 Task{
@@ -70,10 +65,6 @@ struct MemberTabView: View {
                     vm.getMembers(page: page)
                 }
             }
-        }
-        .onDisappear{
-            vm.request.removeAll()
-            vm.member.removeAll()
         }
     }
     
