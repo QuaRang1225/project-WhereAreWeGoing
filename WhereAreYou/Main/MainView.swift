@@ -56,6 +56,7 @@ struct MainView: View {
         .onAppear{
             if let user = vmAuth.user{
                 vm.getPages(user: user)
+                
             }
             vm.page = nil
             vm.data = nil
@@ -64,7 +65,6 @@ struct MainView: View {
             if let user = vmAuth.user{
                 vm.getPages(user: user)
             }
-            
         }
     }
 }
@@ -192,7 +192,6 @@ extension MainView{
     var filter:some View{
         VStack(alignment: .leading){
             Text("내 일정").font(.subheadline).bold()
-  
                 ScrollView(.horizontal,showsIndicators: false){
                     HStack{
                         ForEach(TravelFilter.allCases,id:\.self){ item in
@@ -231,6 +230,9 @@ extension MainView{
                         .environmentObject(vm)
                         .environmentObject(vmAuth)
                         .navigationBarBackButtonHidden()
+                        .onAppear{
+                            print(page)
+                        }
                 } label: {
                     PageRowView(page:page)
                 }

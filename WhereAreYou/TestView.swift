@@ -120,7 +120,13 @@ struct TestView:View{
 //        }
 //    }
     
+    class TestClass{
+        static let instance = TestClass()
         
+        func writeDocument(){
+            
+        }
+    }
         var body: some View {
             VStack{
                 

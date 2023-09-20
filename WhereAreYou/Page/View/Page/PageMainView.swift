@@ -119,9 +119,8 @@ struct PageMainView: View {
             Text("정말 이 페이지를 삭제하시겠습니까?")
         })
         .onAppear{
-            guard let user = vmAuth.user else {return}
-            vm.getPage(user: user, pageId: page.pageId)
-            vm.getSchedules(user: user, pageId: page.pageId)
+            vm.getPage(userId: page.pageAdmin, pageId: page.pageId)
+            vm.getSchedules(userId: page.pageAdmin, pageId: page.pageId)
         }
         .onDisappear{
             sett = false

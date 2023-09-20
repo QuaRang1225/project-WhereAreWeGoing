@@ -105,7 +105,7 @@ struct RequestPageView: View {
                 self.user = try await UserManager.shared.getUser(userId: page?.pageAdmin ?? "")
             }
             
-            if let request = page?.request,request.contains(vmAuth.user?.userId ?? ""){
+            if let request = page?.request,let user = vmAuth.user?.userId, request.contains(user){
                 self.requested = true
             }
             else {

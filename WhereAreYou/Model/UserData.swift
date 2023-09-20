@@ -16,8 +16,7 @@ struct UserData:Codable,Hashable{
     let email:String?
     let dateCreated:String?
     var profileImageUrl:String?
-    var affiliationPages:[String]?
-    var member:[String]?
+    var pages:[String]?
     var guestMode:Bool
     
     init(auth:AuthData){  //처음 값을 저장할때 - 인증

@@ -136,17 +136,20 @@ class PageViewModel:ObservableObject{
     
     func getPages(user:UserData){
         Task{
-            pages = try await PageManager.shared.getAllPage(userId: user.userId)
+            do{
+                pages = try await PageManager.shared.getAllPage(userId: user.userId)
+                getNotAdminPage(user: user)
+            }catch{}
         }
     }
-    func getSchedules(user:UserData,pageId:String){
+    func getSchedules(userId:String,pageId:String){
         Task{
-            schedules = try await PageManager.shared.getAllSchedule(userId: user.userId, pageId: pageId)
+            schedules = try await PageManager.shared.getAllSchedule(userId: userId, pageId: pageId)
         }
     }
-    func getPage(user:UserData,pageId:String){
+    func getPage(userId:String,pageId:String){
         Task{
-            page = try await PageManager.shared.getPage(userId: user.userId, pageId: pageId)
+            page = try await PageManager.shared.getPage(userId: userId, pageId: pageId)
         }
     }
 
@@ -168,6 +171,12 @@ class PageViewModel:ObservableObject{
         Task{
             try await PageManager.shared.acceptUser(user:user,page:page,requestUser:requestUser)
             self.getMembers(page: try await PageManager.shared.getPage(userId: user.userId, pageId: page.pageId))
+        }
+    }
+    
+    func getNotAdminPage(user:UserData){
+        Task{
+            pages.append(contentsOf: try await PageManager.shared.getNotAdminPages(user:user))
         }
     }
     

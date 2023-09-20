@@ -7,6 +7,7 @@
 
 import Foundation
 
+import Firebase
 import FirebaseFirestore
 import FirebaseFirestoreSwift
 
@@ -136,26 +137,26 @@ final class PageManager{
     }
     func getAllPage(userId:String)async throws -> [Page]{    //전체페이지 불러오기
         print("전체페이지 불러오는 중..")
-        try await userPageDocumentCollection(userId: userId).getAllDocuments(as: Page.self)
+        return try await userPageDocumentCollection(userId: userId).getAllDocuments(as: Page.self)
     }
     func getAllSchedule(userId:String,pageId:String)async throws -> [Schedule]{    //전체스케쥴 불러오기
         print("전체스케쥴 불러오는 중..")
-        try await userScheduleDocumentCollection(userId: userId, pageId: pageId).getAllDocuments(as: Schedule.self)
+        return try await userScheduleDocumentCollection(userId: userId, pageId: pageId).getAllDocuments(as: Schedule.self)
         
     }
     func getPage(userId:String,pageId:String)async throws -> Page{
         print("페이지 불러오는 중..")
-        try await userPageDocumentCollection(userId: userId).document(pageId).getDocument(as:Page.self)
+        return try await userPageDocumentCollection(userId: userId).document(pageId).getDocument(as:Page.self)
     }
     func getSchedule(userId:String,pageId:String,scheduleId:String)async throws -> Schedule{
         print("스케쥴 불러오는 중..")
-        try await userScheduleDocumentCollection(userId: userId, pageId: pageId).document(scheduleId).getDocument(as: Schedule.self)
+        return try await userScheduleDocumentCollection(userId: userId, pageId: pageId).document(scheduleId).getDocument(as: Schedule.self)
     }
     func acceptUser(user:UserData,page:Page,requestUser:UserData)async throws{
         try await requestPage(user: requestUser, pageAdminId: page.pageAdmin, pageId: page.pageId, cancel: true)   //초대요청 삭제
         try await managingMemberPage(user: requestUser, pageAdminId: page.pageAdmin, pageId: page.pageId, cancel: false)   //맴버 리스트 추가
             
-        let pagePath = userPageDocumentCollection(userId: page.pageId).document(page.pageId).path
+        let pagePath = userPageDocumentCollection(userId: user.userId).document(page.pageId).path
         let requestUserField = userDocument(userId: requestUser.userId)
         
         let data:[String:Any] = ["pages":FieldValue.arrayUnion([pagePath])]
@@ -163,5 +164,12 @@ final class PageManager{
         try await requestUserField.updateData(data)
         
     }
-    
+    func getNotAdminPages(user:UserData) async throws -> [Page]{
+        var myPages:[Page] = []
+        guard let pages = user.pages else { return myPages }
+        for page in pages {
+            myPages.append(try await Firestore.firestore().document(page).getDocument(as:Page.self))
+        }
+        return myPages
+    }
 }
