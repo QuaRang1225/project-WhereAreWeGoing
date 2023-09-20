@@ -50,7 +50,7 @@ struct PageMainView: View {
                     
                 }
             }
-           
+            
             .foregroundColor(.black)
             .background(Color.white)
             .edgesIgnoringSafeArea(.top)
@@ -98,6 +98,9 @@ struct PageMainView: View {
                 CustomProgressView(title: "삭제 중..")
             }
             
+        }.refreshable {
+            vm.getPage(userId: page.pageAdmin, pageId: page.pageId)
+            vm.getSchedules(userId: page.pageAdmin, pageId: page.pageId)
         }
         .onReceive(vm.succenss){
             if let page = vm.page{
@@ -155,10 +158,10 @@ extension PageMainView{
                             
                     }.shadow(color:.black,radius: 20)
                     Spacer()
-                    Image(systemName: "person.badge.plus")
-                        .font(.title3)
-                        .foregroundColor(.white)
-                        .padding(.trailing)
+//                    Image(systemName: "person.badge.plus")
+//                        .font(.title3)
+//                        .foregroundColor(.white)
+//                        .padding(.trailing)
                     VStack{
                         Button {
                             withAnimation{

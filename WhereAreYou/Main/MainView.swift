@@ -48,14 +48,25 @@ struct MainView: View {
                 filter
                 page
             }
+            
             .background(Color.gray.opacity(0.1))
         }
         .foregroundColor(.black)
         .background(Color.white)
         .onAppear{
             if let user = vmAuth.user{
+                Task{
+                    vmAuth.user = try await UserManager.shared.getUser(userId: user.userId)
+                }
                 vm.getPages(user: user)
-                
+            }
+        }
+        .refreshable {
+            if let user = vmAuth.user{
+                Task{
+                    vmAuth.user = try await UserManager.shared.getUser(userId: user.userId)
+                }
+                vm.getPages(user: user)
             }
         }
     }
