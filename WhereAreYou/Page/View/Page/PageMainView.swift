@@ -15,7 +15,7 @@ struct PageMainView: View {
     @EnvironmentObject var vm:PageViewModel
     @EnvironmentObject var vmAuth:AuthViewModel
     @State var pageMode:PageTabFilter = .schedule
-    var page:Page
+    @State var page:Page
     
     @State var currentAmount:CGFloat = 0
     @State var currentDrageAmount:CGFloat = 0
@@ -98,6 +98,11 @@ struct PageMainView: View {
                 CustomProgressView(title: "삭제 중..")
             }
             
+        }
+        .onReceive(vm.succenss){
+            if let page = vm.page{
+                self.page = page
+            }
         }
         .onReceive(vm.deleteSuccess){
             dismiss()
