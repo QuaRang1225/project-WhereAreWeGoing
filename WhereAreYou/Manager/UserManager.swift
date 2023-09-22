@@ -17,6 +17,7 @@ final class UserManager{
     static let shared = UserManager()
     private init(){}
     
+    private let pagesCollection = Firestore.firestore().collection("pages")
     private let userCollection = Firestore.firestore().collection("users")  //경로 설정
     
     private func userDocument(userId:String) -> DocumentReference{
@@ -71,22 +72,10 @@ final class UserManager{
     
     func getSearchPage(text:String)async throws -> [Page]{
         
-        var pages:[Page] = []
-        let snapshot = try await userCollection.getDocuments()
-        for userDocument in snapshot.documents{
-            let pagesCollection = try await userDocument.reference.collection("page").getDocuments()
-            for pageDocument in pagesCollection.documents{
-                    if let name = pageDocument.get("page_name") as? String,name.contains(text){
-                        let page = try await pageDocument.reference.getDocument(as: Page.self)
-                        pages.append(page)
-                    }
-                    if let id = pageDocument.get("page_id") as? String,id.contains(text){
-                        let page = try await pageDocument.reference.getDocument(as: Page.self)
-                        pages.append(page)
-                    }
-            }
-        }
-        return pages
+        var pages = try await pagesCollection.whereField("page_name", isGreaterThanOrEqualTo: text).getAllDocuments(as: Page.self)
+        pages.append(contentsOf: try await pagesCollection.whereField("page_id", isGreaterThanOrEqualTo: text).getAllDocuments(as: Page.self))
+        print(pages)
+        return Array(Set(pages))
         
     }
 }

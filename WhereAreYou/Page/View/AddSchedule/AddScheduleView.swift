@@ -8,7 +8,6 @@
 import SwiftUI
 import PhotosUI
 import Kingfisher
-//import Firebase
 import FirebaseFirestore
 
 struct AddScheduleView: View {
@@ -30,9 +29,6 @@ struct AddScheduleView: View {
     @EnvironmentObject var vm:PageViewModel
     @EnvironmentObject var location:LocationMagager
     @Binding var isPage:Bool
-    
-    
-
     
     var body: some View {
         ZStack{
@@ -92,6 +88,9 @@ struct AddScheduleView: View {
                 CustomProgressView(title: vm.schedule != nil ?  "일정 변경 중.." : "일정 추가 중.." )
             }
         }
+        .onReceive(vm.addDismiss) {
+            isPage = false
+        }
         .foregroundColor(.black)
         .background{
             Color.white.ignoresSafeArea()
@@ -100,26 +99,9 @@ struct AddScheduleView: View {
             UIApplication.shared.endEditing()
         }
         .onAppear{
-            
-            startDate = (vm.page?.dateRange.first?.dateValue() ?? Date())
-            endDate = (vm.page?.dateRange.last?.dateValue() ?? Date())
-            
-            if let schedule = vm.schedule{
-                title = schedule.title
-                text = schedule.content.replacingOccurrences(of: "\\n", with: "\n")
-                locationSelect = LocationCategoryFilter.allCases.first(where: {$0.name == schedule.category}) ?? .other
-                startDate = schedule.startTime.dateValue()
-                endDate = schedule.endTime.dateValue()
-                linksArr = schedule.link ?? [:]
-                
-                for (key,value) in linksArr{
-                    linktitles.append(key)
-                    links.append(value)
-                }
-            }
+            modifyModeSchedule()
         }
         .onDisappear{
-            vm.schedule = nil
             vm.data = nil
             vm.selection = nil
         }
@@ -160,7 +142,7 @@ extension AddScheduleView{
                                 
                             }
                             if let user  = vmAuth.user,let page = vm.page{
-                                let schedule = Schedule(id:vm.schedule?.id ?? "",imageUrl:vm.schedule?.imageUrl,imageUrlPath: vm.schedule?.imageUrlPath , category: locationSelect.name, title: title, startTime: startDate.toTimestamp(), endTime: endDate.toTimestamp(), content: text.replacingOccurrences(of: "\n", with: "\\n"), location: GeoPoint(latitude: (location.pickedPlaceMark?.location?.coordinate.latitude)!, longitude: (location.pickedPlaceMark?.location?.coordinate.longitude)!),link: linksArr)
+                                let schedule = Schedule(id:vm.schedule?.id ?? "",creatorImage: user.profileImageUrl ?? "",creatorName: user.nickName ?? "",imageUrl:vm.schedule?.imageUrl,imageUrlPath: vm.schedule?.imageUrlPath , category: locationSelect.name, title: title, startTime: startDate.toTimestamp(), endTime: endDate.toTimestamp(), content: text.replacingOccurrences(of: "\n", with: "\\n"), location: GeoPoint(latitude: (location.pickedPlaceMark?.location?.coordinate.latitude)!, longitude: (location.pickedPlaceMark?.location?.coordinate.longitude)!),link: linksArr)
                                 if vm.schedule != nil{
                                     vm.updateSchedule(user: user, pageId: page.pageId, schedule: schedule)
                                 }else{
@@ -179,9 +161,6 @@ extension AddScheduleView{
             
         }
         .foregroundColor(.black)
-        .onReceive(vm.succenss){
-            isPage = false
-        }
         
     }
     var photoPicker:some View{
@@ -300,6 +279,23 @@ extension AddScheduleView{
             }
             .foregroundColor(.black)
     }
-    
+    func modifyModeSchedule(){
+        startDate = (vm.page?.dateRange.first?.dateValue() ?? Date())
+        endDate = (vm.page?.dateRange.last?.dateValue() ?? Date())
+        
+        if let schedule = vm.schedule{
+            title = schedule.title
+            text = schedule.content.replacingOccurrences(of: "\\n", with: "\n")
+            locationSelect = LocationCategoryFilter.allCases.first(where: {$0.name == schedule.category}) ?? .other
+            startDate = schedule.startTime.dateValue()
+            endDate = schedule.endTime.dateValue()
+            linksArr = schedule.link ?? [:]
+            
+            for (key,value) in linksArr{
+                linktitles.append(key)
+                links.append(value)
+            }
+        }
+    }
 }
 

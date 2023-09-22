@@ -35,17 +35,13 @@ struct ContentView: View {
             }
         }
         .onAppear{
-            if let auth = try? AuthManager.shared.getUser(){    //자동로그인
-                Task{
-                    vm.user = try await UserManager.shared.getUser(userId: auth.uid)
-                }
-            }
             DispatchQueue.main.asyncAfter(deadline: .now() + 2.0){
                 withAnimation(.easeIn(duration: 0.5)){
                     isStart = true
                 }
             }
-            
+            guard let auth = try? AuthManager.shared.getUser() else { return }  //자동로그인
+            vm.getUser(auth: auth)
         }
     }
 }

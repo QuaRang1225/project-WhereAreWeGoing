@@ -90,8 +90,8 @@ class TestClass{
         try await field.updateData(data)
     }
     
-    func readDocument() async throws -> [Doc]{  //읽기
-        var docs:[Doc] = []
+//    func readDocument() async throws -> [Doc]{  //읽기
+//        var docs:[Doc] = []
 //        let listener = collection.addSnapshotListener({ snapshot, error in
 //            guard let documents = snapshot?.documentChanges else {return}
 //            for change in documents{
@@ -99,9 +99,9 @@ class TestClass{
 //                docs.append(try await change.document.reference.getDocument(as:Doc))
 //            }
 //        })
-        
-        return docs
-    }
+//
+//        return docs
+//    }
 }
 
 struct TestView:View{
@@ -115,7 +115,7 @@ struct TestView:View{
                     .onTapGesture {
                         Task{
                             try await TestClass.instance.writeDocument(name: "유영웅")
-                            self.docs = try await TestClass.instance.readDocument()
+//                            self.docs = try await TestClass.instance.readDocument()
                         }
                     }
                    
@@ -129,7 +129,7 @@ struct TestView:View{
                     .onTapGesture {
                         Task{
                             try await TestClass.instance.updateDocument(id:doc.id)
-                            self.docs = try await TestClass.instance.readDocument()
+//                            self.docs = try await TestClass.instance.readDocument()
                         }
                     }
                 if let age = doc.age{
@@ -139,7 +139,7 @@ struct TestView:View{
         }.foregroundColor(.primary)
             .onAppear{
                 Task{
-                    self.docs = try await TestClass.instance.readDocument()
+//                    self.docs = try await TestClass.instance.readDocument()
                 }
             }
     }

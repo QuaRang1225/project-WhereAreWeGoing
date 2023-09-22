@@ -10,6 +10,8 @@ import FirebaseFirestore
 
 struct Schedule:Codable,Hashable,Identifiable{
     var id:String
+    var creatorImage:String
+    var creatorName:String
     var imageUrl:String?
     var imageUrlPath:String?
     var category:String
@@ -23,6 +25,8 @@ struct Schedule:Codable,Hashable,Identifiable{
 
     enum CodingKeys:String,CodingKey{
         case id
+        case creatorImage = "creator_image"
+        case creatorName = "creator_name"
         case imageUrl = "image_url"
         case imageUrlPath = "image_url_path"
         case category

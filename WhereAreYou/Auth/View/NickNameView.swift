@@ -46,7 +46,6 @@ struct NickNameView: View {
                 .padding()
             }
         }
-       
         .navigationDestination(isPresented: $isProfile) {
             ProfileSelectView()
                 .environmentObject(vm)

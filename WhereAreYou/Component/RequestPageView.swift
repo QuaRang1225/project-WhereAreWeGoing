@@ -83,11 +83,8 @@ struct RequestPageView: View {
             .shadow(radius: 5)
             Button {
                 requested.toggle()
-                if let user = vmAuth.user,let pageid = page?.pageId{
-                    Task{
-                        try await PageManager.shared.requestPage(user:user,pageAdminId:self.user?.userId ?? "",pageId:pageid,cancel:!requested)
-                    }
-                }
+                guard let user = vmAuth.user,let pageid = page?.pageId else {return}
+                vm.requestPage(user:user,pageId:pageid,cancel:requested)
             } label: {
                 Text(requested ? "요청됨" : "요청")
                     .padding(.horizontal).padding(5)

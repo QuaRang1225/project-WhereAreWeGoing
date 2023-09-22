@@ -11,7 +11,7 @@ struct PageSettingView: View {
     
     @State var delete = false   //삭제 버튼 활성화
     @State var out = false
-    @Binding var page:Page
+    var page:Page
     @Binding var deletePage:Bool   //삭제버튼 클릭 후 삭제 중 문구
     
     @EnvironmentObject var vm:PageViewModel
@@ -53,10 +53,9 @@ struct PageSettingView: View {
         .padding(.leading)
         .confirmationDialog("일정 수정", isPresented: $delete, actions: {
             Button(role:.destructive){
-                if let user = vmAuth.user,let page = vm.page{
-                    deletePage = true
-                    vm.deletePage(user: user, page:page)
-                }
+                guard let page = vm.page else {return}
+                deletePage = true
+                vm.deletePage(page: page)
             } label: {
                 Text("삭제하기")
             }
@@ -75,17 +74,12 @@ struct PageSettingView: View {
         },message: {
             Text("정말 이 페이지를 나가시겠습니까?")
         })
-        .onReceive(vm.succenss){
-            if let page = vm.page{
-                self.page = page
-            }
-        }
     }
 }
 
 struct PageSettingView_Previews: PreviewProvider {
     static var previews: some View {
-        PageSettingView(page: .constant(CustomDataSet.shared.page()), deletePage: .constant(true))
+        PageSettingView(page: CustomDataSet.shared.page(), deletePage: .constant(true))
             .environmentObject(AuthViewModel())
             .environmentObject(PageViewModel())
     }

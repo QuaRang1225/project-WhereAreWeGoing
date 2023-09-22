@@ -9,6 +9,7 @@ import Foundation
 import PhotosUI
 import SwiftUI
 import FirebaseFirestore
+import FirebaseFirestoreSwift
 import Combine
 
 @MainActor
@@ -16,7 +17,6 @@ class PageViewModel:ObservableObject{
     
     //---------Firestore데이터 ------------
     @Published var page:Page? = nil
-    //    @Published var admin:UserData? = nil
     @Published var schedule:Schedule? = nil
     @Published var pages:[Page] = []
     @Published var schedules:[Schedule] = []
@@ -30,34 +30,35 @@ class PageViewModel:ObservableObject{
     @Published var copy = false
     @Published var photo:String?
     
-    //--------- 맴버 -------------
-    @Published var admin:UserData?
+    //--------- 페이지 -------------
+//    @Published var admin:UserData?
     @Published var request:[UserData] = []
     @Published var member:[UserData] = []
     
-    //    var createPageSuccess = PassthroughSubject<(),Never>()
-    //    var createScheduleSuccess = PassthroughSubject<(),Never>()
-    var succenss = PassthroughSubject<(),Never>()
-    var memeberSuccess = PassthroughSubject<(),Never>()
-    var deleteSuccess = PassthroughSubject<(),Never>()
-    var requestSuccess = PassthroughSubject<(),Never>()
-    var pageSuccess = PassthroughSubject<(),Never>()
+    //---------- 뷰 이벤트 -----------
+    var addDismiss = PassthroughSubject<(),Never>()
+    var pageDismiss = PassthroughSubject<(),Never>()
     
+    //
+    //--------------페이지-----------------------
+    //
+    
+    //페이지 생성
     func creagtePage(user:UserData,pageInfo:Page){
         
         Task{
             var url:URL? = nil
             var path:String? = nil
-            
+
             if let data = try await selection?.loadTransferable(type: Data.self){
                 path = try await StorageManager.shared.saveImage(data:data,userId: user.userId, mode: .page)
                 url = try await StorageManager.shared.getUrlForImage(path: path ?? "")
             }
             try await PageManager.shared.createUserPage(userId: user.userId,url: url ,path: path, pageInfo: pageInfo)
-            succenss.send()
-            //            createPageSuccess.send()
+            addDismiss.send()
         }
     }
+    //페이지 수정
     func updatePage(user:UserData,pageInfo:Page){
         
         Task{
@@ -78,11 +79,44 @@ class PageViewModel:ObservableObject{
                 path = "x"
             }
             try await PageManager.shared.upadateUserPage(userId: user.userId,url: url, path: path, pageInfo: pageInfo)
-            self.page = try await PageManager.shared.getPage(userId: user.userId, pageId: pageInfo.pageId)
-            succenss.send()
+            self.page = try await PageManager.shared.getPage(pageId: pageInfo.pageId)
+            addDismiss.send()
+        }
+    }
+    //페이지 삭제
+    func deletePage(page:Page){
+        Task{
+            guard let path = page.pageImagePath else { return }
+            try await StorageManager.shared.deleteImage(path: path) //페이지 이미지가 없을 경우 필요가 없는 부분
+            try await PageManager.shared.deleteUserPage(pageId: page.pageId)
+            pageDismiss.send()
+        }
+    }
+    //페이지 나감
+    func outPage(user:UserData,page:Page){
+        Task{
+            try await PageManager.shared.memberPage(user: user,pageId: page.pageId, cancel: true)
+            pageDismiss.send()
+        }
+    }
+    //페이지리스트 불러오기
+    func getPages(user:UserData){
+        Task{
+            pages = try await PageManager.shared.getAllUserPage(userId: user.userId)
+        }
+    }
+    //페이지 불러오기
+    func getPage(pageId:String){
+        Task{
+            self.page = try await PageManager.shared.getPage(pageId: pageId)
         }
     }
     
+    //
+    //--------------페이지-----------------------
+    //
+    
+    //일정 생성
     func creagteShcedule(user:UserData,pageId:String,schedule:Schedule){
         
         Task{
@@ -92,11 +126,11 @@ class PageViewModel:ObservableObject{
                 path = try await StorageManager.shared.saveImage(data:data,userId: user.userId, mode: .schedule)
                 url = try await StorageManager.shared.getUrlForImage(path: path ?? "")
             }
-            
-            try await PageManager.shared.createUserSchedule(userId: user.userId, pageId: pageId, url: url?.absoluteString, schedule: schedule,path:path)
-            succenss.send()
+            try await PageManager.shared.createUserSchedule(pageId: pageId, url: url?.absoluteString, schedule: schedule,path:path)
+            addDismiss.send()
         }
     }
+    //일정 수정
     func updateSchedule(user:UserData,pageId:String,schedule:Schedule){
         Task{
             var url:String? = nil
@@ -117,99 +151,64 @@ class PageViewModel:ObservableObject{
                 path = "x"
             }
             try await PageManager.shared.updateUSerSchedule(userId: user.userId, pageId: pageId, url: url, schedule: schedule,path: path)
-            succenss.send()
-        }
-    }
-    func deletePage(user:UserData,page:Page){
-        Task{
-            if let path = page.pageImagePath{
-                try await StorageManager.shared.deleteImage(path: path) //페이지 이미지가 없을 경우 필요가 없는 부분
-            }
-            try await PageManager.shared.deleteUserPage(userId:user.userId,pageId:page.pageId)
-            getPages(user: user)
-            deleteSuccess.send()
-        }
-    }
-    func outPage(user:UserData,page:Page){
-        Task{
-//            do{
-            try await PageManager.shared.managingMemberPage(user: user, pageAdminId: page.pageAdmin, pageId: page.pageId, cancel: true)
-            try await PageManager.shared.outPage(admin:page.pageAdmin,user:user,pageid:page.pageId)
-//            }catch{}
-            deleteSuccess.send()
+            addDismiss.send()
         }
     }
     
-    func deleteSchedule(user:UserData,pageId:String,schedule:Schedule){
+    //일정 삭제
+    func deleteSchedule(pageId:String,schedule:Schedule){
         Task{
-            if let path = schedule.imageUrlPath{
-                try await StorageManager.shared.deleteImage(path: path) //스케쥴 이미지가 없을 경우 필요가 없는 부분
-            }
-            try await PageManager.shared.deleteUserSchedule(userId:user.userId,pageId:pageId,scheduleId:schedule.id)
-            deleteSuccess.send()
+            guard let path = schedule.imageUrlPath else {return}
+            try await StorageManager.shared.deleteImage(path: path) //스케쥴 이미지가 없을 경우 필요가 없는 부분
+            try await PageManager.shared.deleteUserSchedule(pageId: pageId, scheduleId: schedule.id)
+            getSchedules(pageId: pageId)
         }
     }
     
-    func getPages(user:UserData){
+    //일정리스트 불러오기
+    func getSchedules(pageId:String){
         Task{
-            pages = try await PageManager.shared.getAllPage(userId: user.userId)
-            getNotAdminPage(user: user)
+            schedules = try await PageManager.shared.getAllUserSchedule(pageId: pageId)
         }
     }
-    func getSchedules(userId:String,pageId:String){
-        Task{
-            schedules = try await PageManager.shared.getAllSchedule(userId: userId, pageId: pageId)
-        }
-    }
-    func getPage(userId:String,pageId:String){
-        Task{
-            self.page = try await PageManager.shared.getPage(userId: userId, pageId: pageId)
-            self.pageSuccess.send()
-        }
-    }
-
+    
+    //
+    //---------------기능------------------
+    //
+    
+    //요청리스트와 맴버리스트 조회
     func getMembers(page:Page){
         Task{
-            var request:[UserData] = []
-            var member:[UserData] = []
-            
-            for req in page.request ?? []{
-                let person = try await UserManager.shared.getUser(userId: req)
-                request.append(person)
-            }
-            for mem in page.member ?? []{
-                let person = try await UserManager.shared.getUser(userId: mem)
-                member.append(person)
-            }
-            
-            self.request = request
-            self.member = member
-            print("요청\(request)")
-            print("맴버\(member)")
-//            self.memeberSuccess.send()
+            (self.request,self.member) = try await PageManager.shared.getMembersInfo(page:page)
         }
     }
-    func userAccept(user:UserData,page:Page,requestUser:UserData){
+    //페이지 요청 수락
+    func userAccept(page:Page,requestUser:UserData){
         Task{
-            try await PageManager.shared.acceptUser(user:user,page:page,requestUser:requestUser)
-           
-            self.requestSuccess.send()
+            try await PageManager.shared.acceptUser(pageId:page.pageId,requestUser:requestUser)
+            let pageInfo = try await PageManager.shared.getPage(pageId: page.pageId)
+            (self.request,self.member) = try await PageManager.shared.getMembersInfo(page:pageInfo)
         }
     }
-    
-    func getNotAdminPage(user:UserData){
+    //페이지 요청
+    func requestPage(user:UserData,pageId:String,cancel:Bool){
         Task{
-            pages.append(contentsOf: try await PageManager.shared.getNotAdminPages(user:user))
-            self.memeberSuccess.send()
+            try await PageManager.shared.requestPage(user:user,pageId:pageId,cancel:!cancel)
         }
     }
-    func getAdmin(admin:String){
-        Task{
-            self.admin =  try await UserManager.shared.getUser(userId: admin)
-        }
-    }
+    //어드민 정보 저장
+//    func getAdminInfo(userId:String){
+//        Task{
+//            self.admin = try await UserManager.shared.getUser(userId: userId)
+//        }
+//    }
+//
     
+    //
+    //-------------------------기타--------------------------
+    //
     
+    //시작과 끝 날짜를 입력하면 그 사이에 있는 값을 배열로 반화
     func generateTimestamp(from: Date, to: Date) -> [Timestamp] {
         var currentDate = from
         var dateArray: [Timestamp] = []
@@ -224,6 +223,7 @@ class PageViewModel:ObservableObject{
         return dateArray
     }
     
+    //클립보드 복사
     func copyToPasteboard(text:String) {
         UIPasteboard.general.string = text
         copy = true
@@ -233,6 +233,7 @@ class PageViewModel:ObservableObject{
             }
         }
     }
+    //현재 날짜가 입력한 날짜 범위안에 들어있는지 유무를 반환
     func isCurrentDateInRange(startDate: Date, endDate: Date) -> Bool {
         let currentDate = Date()
         if currentDate >= startDate && currentDate <= endDate {

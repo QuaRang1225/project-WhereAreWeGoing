@@ -35,14 +35,18 @@ final class AuthViewModel:ObservableObject{
     }
 
     func saveProfileImage(item:PhotosPickerItem){
-        guard let user else {return}
+        guard var user else {return}
         
         Task{
             guard let data = try await item.loadTransferable(type: Data.self) else {return}
            
             let path = try await StorageManager.shared.saveImage(data:data,userId: user.userId, mode: .profile)
             let url = try await StorageManager.shared.getUrlForImage(path: path)
+            user.guestMode = false
+            try UserManager.shared.createNewUser(user: user)
             try await UserManager.shared.updateUserProfileImagePath(userId: user.userId, path: path,url: url.absoluteString)
+            
+            self.user?.guestMode = false
         }
     }
     func deleteProfileImage(){
@@ -58,5 +62,10 @@ final class AuthViewModel:ObservableObject{
     func logOut(){
         try? AuthManager.shared.signOut()
         user = nil
+    }
+    func getUser(auth:AuthData){
+        Task{
+            user = try await UserManager.shared.getUser(userId: auth.uid)
+        }
     }
 }

@@ -15,7 +15,7 @@ struct PageMainView: View {
     @EnvironmentObject var vm:PageViewModel
     @EnvironmentObject var vmAuth:AuthViewModel
     @State var pageMode:PageTabFilter = .schedule
-    @State var page:Page
+    var page:Page
     
     @State var currentAmount:CGFloat = 0
     @State var currentDrageAmount:CGFloat = 0
@@ -37,12 +37,13 @@ struct PageMainView: View {
                         case .schedule:
                             SchduleListView()
                                 .environmentObject(vmAuth)
+                                .environmentObject(vm)
                         case .member:
                             MemberTabView()
                                 .environmentObject(vmAuth)
                                 .environmentObject(vm)
                         case .setting:
-                            PageSettingView(page: $page, deletePage: $isPage)
+                            PageSettingView(page: page, deletePage: $isPage)
                         }
                     }.environmentObject(vm)
                     
@@ -96,20 +97,13 @@ struct PageMainView: View {
                 CustomProgressView(title: "삭제 중..")
             }
         }
-//        .refreshable {
-//            vm.getPage(userId: page.pageAdmin, pageId: page.pageId)
-//            vm.getSchedules(userId: page.pageAdmin, pageId: page.pageId)
-//        }
-        .onReceive(vm.deleteSuccess){
-            dismiss()
-        }
         .onAppear{
-            Task{
-                vm.admin = try await UserManager.shared.getUser(userId: page.pageAdmin)
-            }
-            vm.getPage(userId: page.pageAdmin, pageId: page.pageId)
-            vm.getSchedules(userId: page.pageAdmin, pageId: page.pageId)
-            vm.getMembers(page: page)
+            vm.getPage(pageId: page.pageId)
+            vm.getSchedules(pageId: page.pageId)
+            
+        }
+        .onReceive(vm.pageDismiss) {
+            dismiss()
         }
     }
 }
@@ -140,23 +134,6 @@ extension PageMainView{
                             
                     }.shadow(color:.black,radius: 20)
                     Spacer()
-//                    Image(systemName: "person.badge.plus")
-//                        .font(.title3)
-//                        .foregroundColor(.white)
-//                        .padding(.trailing)
-//                    VStack{
-//                        Button {
-//                            withAnimation{
-//                                sett.toggle()
-//                            }
-//                        } label: {
-//                            Image(systemName: "ellipsis")
-//                                .font(.title3)
-//                                .foregroundColor(.white)
-//                                .padding(.trailing)
-//                        }
-//
-//                    }
             }
         }
        

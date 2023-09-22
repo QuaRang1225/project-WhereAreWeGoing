@@ -43,12 +43,12 @@ struct AddPageView: View {
             }
             
         }
+        .onReceive(vm.addDismiss){
+            dismiss()
+        }
         .foregroundColor(.black)
         .onTapGesture {
             UIApplication.shared.endEditing()
-        }
-        .onReceive(vm.succenss) {
-            dismiss()
         }
         .alert(isPresented: $changedDate) {
             Alert(
@@ -60,7 +60,6 @@ struct AddPageView: View {
                 }, secondaryButton: .cancel(Text("취소")))
         }
         .onDisappear{
-            vm.schedule = nil
             vm.data = nil
             vm.selection = nil
         }
@@ -253,34 +252,25 @@ extension AddPageView{
             }
             .foregroundColor(.black)
     }
-    func isTimeContationDate(startDate: Timestamp, currentDate: Timestamp) -> Timestamp? {
-        
-        let calendar = Calendar.current
-        let startDay = calendar.startOfDay(for: startDate.dateValue())
-        let endDay = calendar.date(byAdding: .second,value: 86399, to: startDay)
-        
-        if !(currentDate.dateValue() >= startDate.dateValue() && currentDate.dateValue() <= endDay!) {
-            return currentDate
-        }else{
-            return nil
-        }
-    }
+    
+    //------------ 페이지의 일정 변경 시 삭제되는 일자의 스케쥴이 있을 경우 그 스케쥴 삭제
     func scheduleDelete(){
         Task{
-            if let page = vm.page,let user = vmAuth.user,let overseas{
-                let currentDate = page.dateRange
-                let modifiyngDate = vm.generateTimestamp(from: startDate, to: endDate)
-                let modifiedPage = Page(pageId: page.pageId, pageAdmin: page.pageAdmin, pageImagePath: page.pageImagePath, pageName: title, pageOverseas: overseas, pageSubscript: text, dateRange: modifiyngDate)
-                
-                
-                let changed = currentDate.filter{!(modifiyngDate.contains($0))}
-                for change in changed {
-                    if let schedule = vm.schedules.first(where: {$0.startTime == change}){
-                        vm.deleteSchedule(user: user, pageId: page.pageId, schedule: schedule)
-                    }
-                }
-                vm.updatePage(user: user, pageInfo: modifiedPage)
+            guard let page = vm.page,let user = vmAuth.user,let overseas else {return}
+            
+            let currentDate = page.dateRange    //현재 페이지의 날짜들
+            let modifiyngDate = vm.generateTimestamp(from: startDate, to: endDate)  //뷰에서 설정한 날짜들
+            
+            let modifiedPage = Page(pageId: page.pageId, pageAdmin: page.pageAdmin, pageImagePath: page.pageImagePath, pageName: title, pageOverseas: overseas, pageSubscript: text, dateRange: modifiyngDate)  //수정되어 저장할 페이지
+            
+            
+            let changed = currentDate.filter{!(modifiyngDate.contains($0))}
+            for change in changed {
+                guard let schedule = vm.schedules.first(where: {$0.startTime == change}) else{ return }
+                vm.deleteSchedule(pageId: page.pageId, schedule: schedule)
             }
+            vm.updatePage(user: user, pageInfo: modifiedPage)
         }
+        
     }
 }

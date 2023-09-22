@@ -53,31 +53,12 @@ struct MainView: View {
         }
         .foregroundColor(.black)
         .background(Color.white)
-        .onReceive(vm.deleteSuccess){
-            vmAuth.user?.pages?.removeAll()
-            guard let user = vmAuth.user else {return}
-            vm.getPages(user: user)
-//            Task{
-//                vmAuth.user = try await UserManager.shared.getUser(userId:user.userId)
-//                print(vmAuth.user)
-//            }
-////
-////            print(user)
-//            vm.getPages(user: user)
-        }
         .onAppear{
             guard let user = vmAuth.user else {return}
-            Task{
-                vmAuth.user = try await UserManager.shared.getUser(userId: user.userId)
-            }
             vm.getPages(user: user)
-            
         }
         .refreshable {
             guard let user = vmAuth.user else {return}
-            Task{
-                vmAuth.user = try await UserManager.shared.getUser(userId: user.userId)
-            }
             vm.getPages(user: user)
         }
     }
