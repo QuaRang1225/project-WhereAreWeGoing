@@ -22,6 +22,7 @@ struct RequestPageView: View {
                 
                 KFImage(URL(string: page?.pageImageUrl ?? ""))
                     .resizable(resizingMode: .tile)
+                    .scaledToFill()
                     .frame(height: 200)
                     .clipped()
                     .overlay{
