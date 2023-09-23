@@ -82,20 +82,21 @@ struct RequestPageView: View {
             .background(Color.white)
             .cornerRadius(20)
             .shadow(radius: 5)
-            Button {
-                requested.toggle()
-                guard let user = vmAuth.user,let pageid = page?.pageId else {return}
-                vm.requestPage(user:user,pageId:pageid,cancel:requested)
-            } label: {
-                Text(requested ? "요청됨" : "요청")
-                    .padding(.horizontal).padding(5)
-                    .background(requested ? Color.gray.opacity(0.6) :  Color.customCyan2.opacity(0.7))
-                    .foregroundColor(.white)
-                    .bold()
-                    .cornerRadius(10)
-                    .padding()
+            if let pageMembers = page?.members, !pageMembers.contains(vmAuth.user?.userId ?? ""){
+                Button {
+                    requested.toggle()
+                    guard let user = vmAuth.user,let pageid = page?.pageId else {return}
+                    vm.requestPage(user:user,pageId:pageid,cancel:requested)
+                } label: {
+                    Text(requested ? "요청됨" : "요청")
+                        .padding(.horizontal).padding(5)
+                        .background(requested ? Color.gray.opacity(0.6) :  Color.customCyan2.opacity(0.7))
+                        .foregroundColor(.white)
+                        .bold()
+                        .cornerRadius(10)
+                        .padding()
+                }
             }
-
             
         }
         .onAppear{
