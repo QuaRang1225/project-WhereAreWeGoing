@@ -38,6 +38,7 @@ struct ScheduleRowView: View {
                             placeholder
                         }
                         .resizable()
+                        .scaledToFill()
                         .frame(width:100,height: 100)
                         .cornerRadius(20)
                 }

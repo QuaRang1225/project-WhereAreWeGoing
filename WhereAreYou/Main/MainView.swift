@@ -82,9 +82,10 @@ extension MainView{
             VStack(spacing: 0){
                 NavigationStack{
                     if let user = vmAuth.user{
-                        ProfileRowView(image: user.profileImageUrl ?? "", name:user.nickName ?? "", email: user.email ?? "")
+                        ProfileRowView(user:user)
                             .listRowSeparator(.hidden)  //리스트 줄 없앰
                             .listRowBackground(Color.clear)
+                            
                     }
                 }
             }.background(Color.white.frame(height: 100)

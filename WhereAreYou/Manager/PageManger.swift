@@ -83,7 +83,7 @@ final class PageManager{
             "id" : schduleId,
             "image_url" : url as Any,
             "image_url_path":path as Any,
-            "creator_image":schedule.creatorImage as Any,
+            "creator_image":schedule.creatorImage,
             "creator_name":schedule.creatorName,
             "category" : schedule.category,
             "title" : schedule.title,

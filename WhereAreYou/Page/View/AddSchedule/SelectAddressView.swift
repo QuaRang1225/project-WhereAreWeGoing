@@ -52,7 +52,7 @@ struct SelectAddressView: View {
                         }
                         RoundedRectangle(cornerRadius: 20)
                             .foregroundColor(.white)
-                            .frame(height: UIScreen.main.bounds.height/4)
+                            .frame(height: UIScreen.main.bounds.height/3.5)
                             .overlay {
                                 VStack(alignment: .trailing){
                                     Button {

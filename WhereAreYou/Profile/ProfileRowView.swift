@@ -9,12 +9,12 @@ import SwiftUI
 import Kingfisher
 
 struct ProfileRowView: View {
-    let image:String
-    let name:String
-    let email:String
+    
+//    let userid:String
+    @State var user:UserData
     var body: some View {
         HStack{
-            KFImage(URL(string: image))
+            KFImage(URL(string: user.profileImageUrl ?? ""))
                 .resizable()
                 .scaledToFill()
                 .frame(width: 50,height: 50)
@@ -22,10 +22,10 @@ struct ProfileRowView: View {
                 .padding(.trailing,10)
                 .shadow(radius: 0.5)
             VStack(alignment: .leading){
-                Text(name)
+                Text(user.nickName ?? "")
                     .font(.body)
                     .bold()
-                Text(email)
+                Text(user.email ?? "")
                     .font(.caption)
             }
             Spacer()
@@ -39,12 +39,18 @@ struct ProfileRowView: View {
 
             
             
-        }.foregroundColor(.black).padding(.horizontal)
+        }
+        .foregroundColor(.black).padding(.horizontal)
+//        .onAppear{
+//            Task{
+//               user = try await UserManager.shared.getUser(userId:userid)
+//            }
+//        }
     }
 }
 
-struct ProfileRowView_Previews: PreviewProvider {
-    static var previews: some View {
-        ProfileRowView(image: "https://firebasestorage.googleapis.com/v0/b/whereareyou-66f3a.appspot.com/o/users%2F4KYzTqO9HthK3nnOUAyIMKcaxa03%2F0872D400-F1EE-40D0-BD92-FA9A90861E75.jpeg?alt=media&token=27c21b90-fd04-40f3-975f-8adb00efd035", name: "콰랑", email: "dbduddnd@gmail.com")
-    }
-}
+//struct ProfileRowView_Previews: PreviewProvider {
+//    static var previews: some View {
+//        ProfileRowView(user:UserData())
+//    }
+//}

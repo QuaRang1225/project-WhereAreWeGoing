@@ -34,10 +34,10 @@ struct ProfileSelectView: View {
                     }
                     Button {
                         create = true
-                        vm.user?.profileImageUrl = CustomDataSet.shared.images.randomElement()
                         Task{
                             guard var user = vm.user else {return}
                             user.guestMode = false
+                            user.profileImageUrl = CustomDataSet.shared.images.randomElement()
                             try UserManager.shared.createNewUser(user: user)
                             vm.user?.guestMode = false
                         }

@@ -14,9 +14,10 @@ struct UserData:Codable,Hashable{
     let userId:String
     var nickName:String?
     let email:String?
-    let dateCreated:String?
+    let dateCreated:String
     var profileImageUrl:String?
     var guestMode:Bool
+    
     
     init(auth:AuthData){  //처음 값을 저장할때 - 인증
         self.userId = auth.uid

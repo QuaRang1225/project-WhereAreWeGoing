@@ -201,7 +201,7 @@ struct ScheduleMapView: View {
                         .padding()
                         .foregroundColor(.black)
                     }
-                
+                    .padding(.bottom)
                     .padding(.horizontal,10)
                     .shadow(radius: 10)
             }

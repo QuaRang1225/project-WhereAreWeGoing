@@ -158,8 +158,9 @@ extension PageMainView{
                                             .padding(.bottom,40)
                                     }
                                     .foregroundColor(pageMode == tabItem ?  .customCyan2 : .gray.opacity(0.7))
-                                    .padding(.top)
+                                    .padding(.vertical)
                                     .bold()
+                                
                             }
                         }
                     }.frame(maxWidth: .infinity)
