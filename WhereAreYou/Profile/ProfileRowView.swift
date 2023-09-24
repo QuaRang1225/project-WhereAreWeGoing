@@ -12,6 +12,9 @@ struct ProfileRowView: View {
     
 //    let userid:String
     @State var user:UserData
+    @State var profile = false
+    @State var nickname = false
+    @EnvironmentObject var vmAuth:AuthViewModel
     var body: some View {
         HStack{
             KFImage(URL(string: user.profileImageUrl ?? ""))
@@ -30,15 +33,55 @@ struct ProfileRowView: View {
             }
             Spacer()
             NavigationLink {
-                
+                VStack{
+                    ZStack(alignment: .leading){
+                        Image(systemName: "chevron.left")
+                        Text("프로필 변경").font(.title3).frame(maxWidth: .infinity).bold()
+                    }.padding(.bottom)
+                    ScrollView{
+                        VStack(alignment: .leading) {
+                            Button {
+                                profile = true
+                            } label: {
+                                Text("프로필 사진 변경")
+                            }
+                            Divider()
+                            Button {
+                               nickname = true
+                            } label: {
+                                Text("닉네임 변경")
+                            }
+                            Divider()
+                            Text("로그아웃")
+                                .foregroundColor(.red)
+                            Divider()
+                            Text("탈퇴하기")
+                                .foregroundColor(.red)
+                            Divider()
+                        }
+                        
+                    }
+                    
+                }
+                .foregroundColor(.black)
+                .padding()
+                .background(Color.white.ignoresSafeArea())
+                .navigationBarBackButtonHidden()
             } label: {
                 Image(systemName: "chevron.right")
                     .foregroundColor(.gray.opacity(0.5))
                     
             }
-
-            
-            
+            .sheet(isPresented: $nickname){
+                NickNameView(text: user.nickName ?? "",modify: true)
+                    .environmentObject(vmAuth)
+                    .navigationBarBackButtonHidden()
+            }
+            .sheet(isPresented: $profile) {
+                ProfileSelectView(modify: true)
+                .environmentObject(vmAuth)
+                .navigationBarBackButtonHidden()
+            }
         }
         .foregroundColor(.black).padding(.horizontal)
 //        .onAppear{

@@ -10,6 +10,7 @@ import SwiftUI
 struct InfoSettingTabView: View {
     
     @EnvironmentObject var vm:AuthViewModel
+    
     var body: some View {
         TabView(selection: $vm.infoSetting) {
             NickNameView()

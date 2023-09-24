@@ -8,6 +8,7 @@
 import Foundation
 import PhotosUI
 import SwiftUI
+import Combine
 
 @MainActor
 final class AuthViewModel:ObservableObject{
@@ -16,6 +17,8 @@ final class AuthViewModel:ObservableObject{
     @Published var infoSetting:InfoSettingFilter = .nickname
     @Published var selectedItem: PhotosPickerItem? = nil
     @Published var selectedImageData: Data? = nil
+    
+    var changedSuccess = PassthroughSubject<(),Never>()
     
     func signUp(email:String,password:String) async throws{
         let authUser = try await AuthManager.shared.createUser(email: email, password: password) //값을 굳이 안쓰고 컴파일러에 값이 있을
@@ -33,7 +36,12 @@ final class AuthViewModel:ObservableObject{
             print("에러 발생: \(error)")
         }
     }
-
+    func updateNickname(userId:String,text:String){
+        Task{
+            try await UserManager.shared.updateUsetNickname(userId:userId,text:text)
+            changedSuccess.send()
+        }
+    }
     func saveProfileImage(item:PhotosPickerItem){
         guard var user else {return}
         
@@ -46,7 +54,7 @@ final class AuthViewModel:ObservableObject{
             try UserManager.shared.createNewUser(user: user)
             try await UserManager.shared.updateUserProfileImagePath(userId: user.userId, path: path,url: url.absoluteString)
             
-            self.user?.guestMode = false
+            self.user = try await UserManager.shared.getUser(userId: user.userId)
         }
     }
     func deleteProfileImage(){
@@ -55,6 +63,28 @@ final class AuthViewModel:ObservableObject{
         Task{
             try await StorageManager.shared.deleteImage(path: path)
             try await UserManager.shared.updateUserProfileImagePath(userId: user.userId, path: nil, url: nil)
+            changedSuccess.send()
+        }
+    }
+    func updateProfileImage(item:PhotosPickerItem){
+        guard let user,let path = user.profileImageUrl else {return}
+        Task{
+            try await StorageManager.shared.deleteImage(path: path)
+            
+            guard let data = try await item.loadTransferable(type: Data.self) else {return}
+            let path = try await StorageManager.shared.saveImage(data:data,userId: user.userId, mode: .profile)
+            let url = try await StorageManager.shared.getUrlForImage(path: path)
+            
+            try await UserManager.shared.updateUserProfileImagePath(userId: user.userId, path: path,url: url.absoluteString)
+            changedSuccess.send()
+        }
+    }
+    func noImageSave(){
+        guard let user,let path = user.profileImageUrl else {return}
+        Task{
+            try await StorageManager.shared.deleteImage(path: path)
+            try await UserManager.shared.updateUserProfileImagePath(userId: user.userId, path: nil,url:CustomDataSet.shared.images.randomElement())
+            changedSuccess.send()
         }
     }
     

@@ -85,7 +85,8 @@ extension MainView{
                         ProfileRowView(user:user)
                             .listRowSeparator(.hidden)  //리스트 줄 없앰
                             .listRowBackground(Color.clear)
-                            
+                            .environmentObject(vmAuth)
+                            .navigationBarBackButtonHidden()
                     }
                 }
             }.background(Color.white.frame(height: 100)

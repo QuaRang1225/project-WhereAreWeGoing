@@ -16,6 +16,7 @@ struct UserData:Codable,Hashable{
     let email:String?
     let dateCreated:String
     var profileImageUrl:String?
+//    var profileImagePath:String?
     var guestMode:Bool
     
     
@@ -25,6 +26,7 @@ struct UserData:Codable,Hashable{
         self.nickName = nil
         self.dateCreated = "\(Timestamp().dateValue())"
         self.profileImageUrl = nil
+//        self.profileImagePath = nil
         self.guestMode = true
     }
 }

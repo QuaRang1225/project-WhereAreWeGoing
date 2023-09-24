@@ -36,10 +36,12 @@ struct PageMainView: View {
                         switch pageMode {
                         case .schedule:
                             SchduleListView()
+                                .padding(.bottom)
                                 .environmentObject(vmAuth)
                                 .environmentObject(vm)
                         case .member:
                             MemberTabView()
+                                .padding(.bottom)
                                 .environmentObject(vmAuth)
                                 .environmentObject(vm)
                         case .setting:

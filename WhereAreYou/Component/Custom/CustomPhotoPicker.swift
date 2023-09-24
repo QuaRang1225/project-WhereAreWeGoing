@@ -7,11 +7,11 @@
 
 import SwiftUI
 import PhotosUI
+import Kingfisher
 
 struct CustomPhotoPicker: View {
-    
-    
-    
+ 
+    @State var profile:String? = nil
     @EnvironmentObject var vm:AuthViewModel
     var body: some View {
         PhotosPicker(
@@ -26,16 +26,46 @@ struct CustomPhotoPicker: View {
                            .clipShape(Circle())
                            .frame(width: 200, height: 200)
                    }else{
-                       Circle()
-                           .stroke(lineWidth: 5)
-                           .frame(width: 200, height: 200)
-                           .overlay {
-                               Image(systemName: "camera")
+                       Group{
+                           if let profile{
+                               KFImage(URL(string: profile))
                                    .resizable()
                                    .scaledToFill()
-                                   .frame(width: 50,height: 50)
+                                   .frame(width: 200, height: 200)
+                                   .clipShape(Circle())
+                           }else{
+                               Circle()
+                                   .stroke(lineWidth: 5)
+                                   .frame(width: 200, height: 200)
+                                   .overlay {
+                                       Image(systemName: "camera")
+                                           .resizable()
+                                           .scaledToFill()
+                                           .frame(width: 50,height: 50)
+                                   }
+                                   .foregroundColor(.customCyan)
+                              }
+                       }
+                       .overlay(alignment:.topTrailing){
+                           
+                           if vm.selectedItem != nil || profile != nil{
+                               Button {
+                                   vm.selectedItem = nil
+                                   vm.selectedImageData = nil
+                                   profile = nil
+                               } label: {
+                                   Image(systemName: "xmark")
+                                       .padding(7)
+                                       .foregroundColor(.white)
+                                       .background(Color.gray)
+                                       .clipShape(Circle())
+                                      
+                               }
+                               .padding([.top,.trailing])
                            }
-                           .foregroundColor(.customCyan)
+                       }
+
+                       
                    }
                }.onChange(of: vm.selectedItem) { newItem in
                    Task {
@@ -44,6 +74,10 @@ struct CustomPhotoPicker: View {
                        }
                    }
                }
+               .onAppear{
+                   profile = vm.user?.profileImageUrl
+               }
+               
     }
 }
 
