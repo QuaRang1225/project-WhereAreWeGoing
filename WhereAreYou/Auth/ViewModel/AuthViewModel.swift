@@ -58,7 +58,7 @@ final class AuthViewModel:ObservableObject{
         }
     }
     func deleteProfileImage(){
-        guard let user,let path = user.profileImageUrl else {return}
+        guard let user,let path = user.profileImagePath else {return}
         
         Task{
             try await StorageManager.shared.deleteImage(path: path)
@@ -67,7 +67,7 @@ final class AuthViewModel:ObservableObject{
         }
     }
     func updateProfileImage(item:PhotosPickerItem){
-        guard let user,let path = user.profileImageUrl else {return}
+        guard let user,let path = user.profileImagePath else {return}
         Task{
             try await StorageManager.shared.deleteImage(path: path)
             
@@ -80,10 +80,11 @@ final class AuthViewModel:ObservableObject{
         }
     }
     func noImageSave(){
-        guard let user,let path = user.profileImageUrl else {return}
         Task{
+            guard let user,let path = user.profileImagePath else {return}
             try await StorageManager.shared.deleteImage(path: path)
             try await UserManager.shared.updateUserProfileImagePath(userId: user.userId, path: nil,url:CustomDataSet.shared.images.randomElement())
+            self.user = try await UserManager.shared.getUser(userId: user.userId)
             changedSuccess.send()
         }
     }
