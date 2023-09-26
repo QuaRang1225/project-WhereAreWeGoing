@@ -9,12 +9,13 @@ import SwiftUI
 
 struct ProfileChangeView: View {
     
-    @State var user:UserData
+
     @State var profile = false
     @State var nickname = false
     @Environment(\.dismiss) var dismiss
     
     @EnvironmentObject var vmAuth:AuthViewModel
+    
     var body: some View {
         VStack{
             ZStack(alignment: .leading){
@@ -55,7 +56,7 @@ struct ProfileChangeView: View {
         .background(Color.white.ignoresSafeArea())
         .navigationBarBackButtonHidden()
         .sheet(isPresented: $nickname){
-            NickNameView(text: user.nickName ?? "",modify: true)
+            NickNameView(text: vmAuth.user?.nickName ?? "",modify: true)
                 .environmentObject(vmAuth)
                 .navigationBarBackButtonHidden()
         }
@@ -67,9 +68,9 @@ struct ProfileChangeView: View {
     }
 }
 
-//struct ProfileChangeView_Previews: PreviewProvider {
-//    static var previews: some View {
-//        ProfileChangeView(user: UserData)
-//            .environmentObject(AuthViewModel())
-//    }
-//}
+struct ProfileChangeView_Previews: PreviewProvider {
+    static var previews: some View {
+        ProfileChangeView()
+            .environmentObject(AuthViewModel())
+    }
+}

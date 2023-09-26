@@ -12,7 +12,7 @@ import Kingfisher
 
 struct MainView: View {
     
-
+    
     @State var area:TravelFilter = .all
     @StateObject var location = LocationMagager()
     @StateObject var vm = PageViewModel()
@@ -81,13 +81,12 @@ extension MainView{
                 .frame(maxWidth: .infinity,alignment: .leading).padding(.top,30)
             VStack(spacing: 0){
                 NavigationStack{
-                    if let user = vmAuth.user{
-                        ProfileRowView(user:user)
-                            .listRowSeparator(.hidden)  //리스트 줄 없앰
-                            .listRowBackground(Color.clear)
-                            .environmentObject(vmAuth)
-                            .navigationBarBackButtonHidden()
-                    }
+                    ProfileRowView()
+                        .listRowSeparator(.hidden)  //리스트 줄 없앰
+                        .listRowBackground(Color.clear)
+                        .environmentObject(vmAuth)
+                        .navigationBarBackButtonHidden()
+                    
                 }
             }.background(Color.white.frame(height: 100)
                 .cornerRadius(10).shadow(radius: 0.5, y: 1))
@@ -155,8 +154,8 @@ extension MainView{
                                         .offset(y:1)
                                 }
                             Text("여행추가")
-                               .bold()
-                               .font(.caption)
+                                .bold()
+                                .font(.caption)
                         }
                         
                     }
@@ -181,36 +180,36 @@ extension MainView{
                         }
                     }
             }
-
+            
         }.padding(.horizontal,10).padding(.top,10)
     }
     var filter:some View{
         VStack(alignment: .leading){
             Text("내 일정").font(.subheadline).bold()
-                ScrollView(.horizontal,showsIndicators: false){
-                    HStack{
-                        ForEach(TravelFilter.allCases,id:\.self){ item in
-                            Button {
-                                area = item
-                            } label: {
-                                RoundedRectangle(cornerRadius: 10)
-                                    .frame(width: 100,height: 30)
-                                    .shadow(radius: 2,y:2)
-                                    .foregroundColor(item == area ? .gray.opacity(0.3):.white)
-                                    .overlay{
-                                        HStack(spacing: 3) {
-                                            Text(item.image)
-                                            Text(item.name)
-                                        }
-                                        .bold()
-                                        .font(.caption)
-                                        .foregroundColor(.black)
+            ScrollView(.horizontal,showsIndicators: false){
+                HStack{
+                    ForEach(TravelFilter.allCases,id:\.self){ item in
+                        Button {
+                            area = item
+                        } label: {
+                            RoundedRectangle(cornerRadius: 10)
+                                .frame(width: 100,height: 30)
+                                .shadow(radius: 2,y:2)
+                                .foregroundColor(item == area ? .gray.opacity(0.3):.white)
+                                .overlay{
+                                    HStack(spacing: 3) {
+                                        Text(item.image)
+                                        Text(item.name)
                                     }
-                                    .padding(.vertical,3)
-                            }
+                                    .bold()
+                                    .font(.caption)
+                                    .foregroundColor(.black)
+                                }
+                                .padding(.vertical,3)
                         }
                     }
                 }
+            }
             .bold()
             .font(.body)
             .frame(maxWidth: .infinity,alignment: .leading)
@@ -231,7 +230,7 @@ extension MainView{
                 if page != selectFilter.last{
                     Divider()
                 }
-            
+                
             }
             .padding(10)
             

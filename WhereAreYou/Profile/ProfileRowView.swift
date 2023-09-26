@@ -10,15 +10,11 @@ import Kingfisher
 
 struct ProfileRowView: View {
     
-//    let userid:String
-    @State var user:UserData
-   
-    
     @EnvironmentObject var vmAuth:AuthViewModel
     
     var body: some View {
         HStack{
-            KFImage(URL(string: user.profileImageUrl ?? ""))
+            KFImage(URL(string: vmAuth.user?.profileImageUrl ?? ""))
                 .resizable()
                 .scaledToFill()
                 .frame(width: 50,height: 50)
@@ -26,16 +22,19 @@ struct ProfileRowView: View {
                 .padding(.trailing,10)
                 .shadow(radius: 0.5)
             VStack(alignment: .leading){
-                Text(user.nickName ?? "")
+                Text(vmAuth.user?.nickName ?? "")
                     .font(.body)
                     .bold()
-                Text(user.email ?? "")
+                Text(vmAuth.user?.email ?? "")
                     .font(.caption)
             }
             Spacer()
             NavigationLink {
-                ProfileChangeView(user: user)
-                    .environmentObject(vmAuth)
+                if let user = vmAuth.user{
+                    ProfileChangeView()
+                        .environmentObject(vmAuth)
+                }
+                
             } label: {
                 Image(systemName: "chevron.right")
                     .foregroundColor(.gray.opacity(0.5))
@@ -44,16 +43,12 @@ struct ProfileRowView: View {
             
         }
         .foregroundColor(.black).padding(.horizontal)
-//        .onAppear{
-//            Task{
-//               user = try await UserManager.shared.getUser(userId:userid)
-//            }
-//        }
     }
 }
 
-//struct ProfileRowView_Previews: PreviewProvider {
-//    static var previews: some View {
-//        ProfileRowView(user:UserData())
-//    }
-//}
+struct ProfileRowView_Previews: PreviewProvider {
+    static var previews: some View {
+        ProfileRowView()
+            .environmentObject(AuthViewModel())
+    }
+}
