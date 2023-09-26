@@ -79,8 +79,9 @@ final class AuthViewModel:ObservableObject{
             guard let data = try await item.loadTransferable(type: Data.self) else {return}
             let path = try await StorageManager.shared.saveImage(data:data,userId: user.userId, mode: .profile)
             let url = try await StorageManager.shared.getUrlForImage(path: path)
-            
             try await UserManager.shared.updateUserProfileImagePath(userId: user.userId, path: path,url: url.absoluteString)
+            
+           
             self.user = try await UserManager.shared.getUser(userId: user.userId)
             changedSuccess.send()
         }

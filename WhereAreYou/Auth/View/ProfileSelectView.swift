@@ -57,7 +57,7 @@ struct ProfileSelectView: View {
                 }
             }
             if create{
-                CustomProgressView(title: "계정 생성 중..").ignoresSafeArea()
+                CustomProgressView(title: modify ? "프로필 변경 중.." : "계정 생성 중..").ignoresSafeArea()
             }
         }
         .onDisappear{

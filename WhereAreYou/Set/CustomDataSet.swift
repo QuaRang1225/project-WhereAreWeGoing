@@ -31,7 +31,7 @@ class CustomDataSet{
     }
     
     func schedule() -> Schedule{
-        Schedule(id:"asdasdas",creatorImage: "https://firebasestorage.googleapis.com/v0/b/whereareyou-66f3a.appspot.com/o/page_image%2F4KYzTqO9HthK3nnOUAyIMKcaxa03%2F125AFB52-3B93-4F16-B101-09AC390A6715.jpeg?alt=media&token=f98a6c58-c46f-474c-bf81-ff3fe7c09e00",creatorName: "quarang",imageUrl:"https://firebasestorage.googleapis.com/v0/b/whereareyou-66f3a.appspot.com/o/page_image%2F4KYzTqO9HthK3nnOUAyIMKcaxa03%2F125AFB52-3B93-4F16-B101-09AC390A6715.jpeg?alt=media&token=f98a6c58-c46f-474c-bf81-ff3fe7c09e00", category: "카페/휴식", title: "아무", startTime: "1:00PM".toDate().toTimestamp(), endTime: "3:00PM".toDate().toTimestamp()  , content: "아무게\n아무게", location: GeoPoint(latitude: 36.298959, longitude: 127.354729), link:["asd":"https://console.firebase.google.com/u/0/project/whereareyou-66f3a/firestore/data/~2Fusers~2F4KYzTqO9HthK3nnOUAyIMKcaxa03~2Fpage~2F6DORTzvH6zavb7g49BrB~2Fschedule?hl=ko"])
+        Schedule(id:"asdasdas",imageUrl:"https://firebasestorage.googleapis.com/v0/b/whereareyou-66f3a.appspot.com/o/page_image%2F4KYzTqO9HthK3nnOUAyIMKcaxa03%2F125AFB52-3B93-4F16-B101-09AC390A6715.jpeg?alt=media&token=f98a6c58-c46f-474c-bf81-ff3fe7c09e00", category: "카페/휴식", title: "아무", startTime: "1:00PM".toDate().toTimestamp(), endTime: "3:00PM".toDate().toTimestamp()  , content: "아무게\n아무게", location: GeoPoint(latitude: 36.298959, longitude: 127.354729), link:["asd":"https://console.firebase.google.com/u/0/project/whereareyou-66f3a/firestore/data/~2Fusers~2F4KYzTqO9HthK3nnOUAyIMKcaxa03~2Fpage~2F6DORTzvH6zavb7g49BrB~2Fschedule?hl=ko"])
     }
     func pages() -> [Page]{
         [

@@ -40,6 +40,7 @@ final class UserManager{
     func createNewUser(user:UserData) throws{   //DB에 저장
         try userDocument(userId: user.userId).setData(from: user,merge: false,encoder: encoder)
     }
+    
     func updateUserProfileImagePath(userId:String,path:String?,url:String?)async throws{
         let data:[String:Any] = [
             "profile_image_url":url as Any,
@@ -78,7 +79,18 @@ final class UserManager{
             }
         }
     }
-    
+    func updatePages(userId:String,pagesId:String) async throws{
+        let field = userDocument(userId: userId)
+        let data:[String:Any] = ["pages":FieldValue.arrayUnion([pagesId])]
+        try await field.updateData(data)
+    }
+//    func setData(userId:String)async throws{
+//        let field = pagesCollection.whereField("members", arrayContains: userId)
+//        let pages = try await field.getAllDocuments(as: Page.self)
+//        for page in pages {
+//            page.members.
+//        }
+//    }
     func getSearchPage(text:String)async throws -> [Page]{
         
         var pages = try await pagesCollection.whereField("page_name", isGreaterThanOrEqualTo: text).getAllDocuments(as: Page.self)

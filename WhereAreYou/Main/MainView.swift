@@ -56,6 +56,7 @@ struct MainView: View {
         .onAppear{
             guard let user = vmAuth.user else {return}
             vm.getPages(user: user)
+            
         }
         .refreshable {
             guard let user = vmAuth.user else {return}

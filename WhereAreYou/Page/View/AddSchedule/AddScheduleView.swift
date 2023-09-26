@@ -141,13 +141,12 @@ extension AddScheduleView{
                                 linksArr[linktitles[index]] = links[index]
                                 
                             }
-                            if let user  = vmAuth.user,let page = vm.page{
-                                let schedule = Schedule(id:vm.schedule?.id ?? "",creatorImage: user.profileImageUrl ?? "",creatorName: user.nickName ?? "",imageUrl:vm.schedule?.imageUrl,imageUrlPath: vm.schedule?.imageUrlPath , category: locationSelect.name, title: title, startTime: startDate.toTimestamp(), endTime: endDate.toTimestamp(), content: text.replacingOccurrences(of: "\n", with: "\\n"), location: GeoPoint(latitude: (location.pickedPlaceMark?.location?.coordinate.latitude)!, longitude: (location.pickedPlaceMark?.location?.coordinate.longitude)!),link: linksArr)
-                                if vm.schedule != nil{
-                                    vm.updateSchedule(user: user, pageId: page.pageId, schedule: schedule)
-                                }else{
-                                    vm.creagteShcedule(user: user, pageId: page.pageId, schedule: schedule)
-                                }
+                            guard let user  = vmAuth.user,let page = vm.page else { return }
+                            let schedule = Schedule(id:vm.schedule?.id ?? "",imageUrl:vm.schedule?.imageUrl,imageUrlPath: vm.schedule?.imageUrlPath , category: locationSelect.name, title: title, startTime: startDate.toTimestamp(), endTime: endDate.toTimestamp(), content: text.replacingOccurrences(of: "\n", with: "\\n"), location: GeoPoint(latitude: (location.pickedPlaceMark?.location?.coordinate.latitude)!, longitude: (location.pickedPlaceMark?.location?.coordinate.longitude)!),link: linksArr)
+                            if vm.schedule != nil{
+                                vm.updateSchedule(user: user, pageId: page.pageId, schedule: schedule)
+                            }else{
+                                vm.creagteShcedule(user: user, pageId: page.pageId, schedule: schedule)
                             }
                         } label: {
                             Text(vm.schedule != nil ? "변경" : "작성" )

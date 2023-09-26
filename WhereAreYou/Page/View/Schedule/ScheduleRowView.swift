@@ -44,22 +44,10 @@ struct ScheduleRowView: View {
                 }
                 Spacer()
                 VStack(alignment: .trailing){
-                    HStack{
-                        KFImage(URL(string: schedule.creatorImage))
-                            .resizable()
-                            .scaledToFill()
-                            .frame(width: 25,height: 25)
-                            .clipShape( RoundedRectangle(cornerRadius: 20))
-                            
-                        Text(schedule.creatorName)
-                            .font(.caption2)
-                            .bold()
-                        Spacer()
-                        Text("\(num). \(schedule.title)")
-                            .bold()
-                            .font(.body)
-                            .padding(.bottom,2)
-                    }
+                    Text("\(num). \(schedule.title)")
+                        .bold()
+                        .font(.body)
+                        .padding(.bottom,2)
                    
                     HStack{
                         ForEach(LocationCategoryFilter.allCases,id: \.self){ filter in

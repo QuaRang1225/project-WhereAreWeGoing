@@ -48,9 +48,12 @@ final class PageManager{
             
         ]
        
-        let create: Void = try await document.setData(data,merge: false)
-        print("페이지 생성중..\(create)")
-        return create
+       
+        
+        
+        print("페이지 생성중..")
+        try await document.setData(data,merge: false)
+        try await UserManager.shared.updatePages(userId: userId, pagesId: document.documentID)
         
     }
     func upadateUserPage(userId:String,url:String?,path:String?,pageInfo:Page)async throws{
@@ -83,8 +86,6 @@ final class PageManager{
             "id" : schduleId,
             "image_url" : url as Any,
             "image_url_path":path as Any,
-            "creator_image":schedule.creatorImage,
-            "creator_name":schedule.creatorName,
             "category" : schedule.category,
             "title" : schedule.title,
             "start_time" : schedule.startTime,
@@ -129,8 +130,11 @@ final class PageManager{
     }
     func memberPage(user:UserData,pageId:String,cancel:Bool) async throws{
         let pagePath = pageDocument(pageId: pageId)
+        
         let data:[String:Any] = ["members": cancel ? FieldValue.arrayRemove([user.userId]) : FieldValue.arrayUnion([user.userId])]
+        
         print(cancel ? "맴버 삭제중.." : "맴버 추가중..")
+        try await UserManager.shared.updatePages(userId: user.userId, pagesId: pageId)
         try await pagePath.updateData(data)
     }
     func deleteUserSchedule(pageId:String,scheduleId:String) async throws{
@@ -138,9 +142,14 @@ final class PageManager{
         print("스케쥴 삭제중..")
         try await field.delete()
     }
-    func deleteUserPage(pageId:String) async throws{
+    func deleteUserPage(userId:String,pageId:String) async throws{
         let field = pageDocument(pageId: pageId)
+        
+        let user = userDocument(userId: userId)
+        let userdata:[String:Any] = ["pages":FieldValue.arrayRemove([pageId])]
+        
         print("페이지 삭제중..")
+        try await user.updateData(userdata)
         try await field.delete()
     }
     func getAllUserPage(userId:String)async throws -> [Page]{    //전체페이지 불러오기

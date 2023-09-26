@@ -55,7 +55,7 @@ struct PageSettingView: View {
             Button(role:.destructive){
                 guard let page = vm.page else {return}
                 deletePage = true
-                vm.deletePage(page: page)
+                vm.deletePage(userId:vmAuth.user?.userId ?? "",page: page)
             } label: {
                 Text("삭제하기")
             }

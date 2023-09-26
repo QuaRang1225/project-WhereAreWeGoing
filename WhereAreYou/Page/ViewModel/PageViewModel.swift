@@ -31,7 +31,6 @@ class PageViewModel:ObservableObject{
     @Published var photo:String?
     
     //--------- 페이지 -------------
-//    @Published var admin:UserData?
     @Published var request:[UserData] = []
     @Published var member:[UserData] = []
     
@@ -84,11 +83,11 @@ class PageViewModel:ObservableObject{
         }
     }
     //페이지 삭제
-    func deletePage(page:Page){
+    func deletePage(userId:String,page:Page){
         Task{
             guard let path = page.pageImagePath else { return }
             try await StorageManager.shared.deleteImage(path: path) //페이지 이미지가 없을 경우 필요가 없는 부분
-            try await PageManager.shared.deleteUserPage(pageId: page.pageId)
+            try await PageManager.shared.deleteUserPage(userId:userId,pageId: page.pageId)
             pageDismiss.send()
         }
     }
@@ -172,6 +171,7 @@ class PageViewModel:ObservableObject{
         }
     }
     
+    
     //
     //---------------기능------------------
     //
@@ -196,13 +196,7 @@ class PageViewModel:ObservableObject{
             try await PageManager.shared.requestPage(user:user,pageId:pageId,cancel:!cancel)
         }
     }
-    //어드민 정보 저장
-//    func getAdminInfo(userId:String){
-//        Task{
-//            self.admin = try await UserManager.shared.getUser(userId: userId)
-//        }
-//    }
-//
+
     
     //
     //-------------------------기타--------------------------
