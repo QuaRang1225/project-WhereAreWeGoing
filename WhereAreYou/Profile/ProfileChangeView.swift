@@ -12,6 +12,10 @@ struct ProfileChangeView: View {
 
     @State var profile = false
     @State var nickname = false
+    
+    @State var logout = false
+    @State var delete = false
+    
     @Environment(\.dismiss) var dismiss
     
     @EnvironmentObject var vmAuth:AuthViewModel
@@ -40,11 +44,19 @@ struct ProfileChangeView: View {
                         Text("닉네임 변경")
                     }
                     Divider()
-                    Text("로그아웃")
-                        .foregroundColor(.red)
+                    Button {
+                        logout = true
+                    } label: {
+                        Text("로그아웃")
+                            .foregroundColor(.red)
+                    }
                     Divider()
-                    Text("탈퇴하기")
-                        .foregroundColor(.red)
+                    Button {
+                        delete = true
+                    } label: {
+                        Text("탈퇴하기")
+                            .foregroundColor(.red)
+                    }
                     Divider()
                 }
                 
@@ -65,6 +77,25 @@ struct ProfileChangeView: View {
             .environmentObject(vmAuth)
             .navigationBarBackButtonHidden()
         }
+        .confirmationDialog("로그아웃", isPresented: $logout, actions: {
+            Button(role:.destructive){
+                vmAuth.logOut()
+            } label: {
+                Text("로그아웃")
+            }
+        },message: {
+            Text("정말 로그아웃 하시겠습니까?")
+        })
+        .confirmationDialog("계정 탈퇴", isPresented: $delete, actions: {
+            Button(role:.destructive){
+                vmAuth.delete()
+            } label: {
+                Text("탈퇴하기")
+            }
+        },message: {
+            Text("정말 탈퇴 하시겠습니까?")
+        })
+        
     }
 }
 

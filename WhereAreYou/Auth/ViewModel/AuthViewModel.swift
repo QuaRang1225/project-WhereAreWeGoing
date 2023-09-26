@@ -21,10 +21,14 @@ final class AuthViewModel:ObservableObject{
     var changedSuccess = PassthroughSubject<(),Never>()
     
     func signUp(email:String,password:String) async throws{
-        let authUser = try await AuthManager.shared.createUser(email: email, password: password) //값을 굳이 안쓰고 컴파일러에 값이 있을
-        user = UserData(auth: authUser)
-        try UserManager.shared.createNewUser(user: user!)
-        print("가입 성공")
+        do{
+            let authUser = try await AuthManager.shared.createUser(email: email, password: password) //값을 굳이 안쓰고 컴파일러에 값이 있을
+            user = UserData(auth: authUser)
+            try UserManager.shared.createNewUser(user: user!)
+            print("가입 성공")
+        }catch{
+            print("에러 발생: \(error)")
+        }
     }
     func signIn(email: String, password: String) async throws {
         do {
@@ -32,8 +36,7 @@ final class AuthViewModel:ObservableObject{
             user = try await UserManager.shared.getUser(userId: authUser.uid)
             print("인증 성공")
         } catch {
-            // Handle any errors that might occur during authentication or user retrieval.
-            print("에러 발생: \(error)")
+            print("에러 발생: \(error.localizedDescription)")
         }
     }
     func updateNickname(userId:String,text:String){
@@ -100,6 +103,12 @@ final class AuthViewModel:ObservableObject{
     func logOut(){
         try? AuthManager.shared.signOut()
         user = nil
+    }
+    func delete(){
+        Task{
+            try? await AuthManager.shared.delete()
+            user = nil
+        }
     }
     func getUser(auth:AuthData){
         Task{

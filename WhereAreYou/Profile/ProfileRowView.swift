@@ -30,11 +30,8 @@ struct ProfileRowView: View {
             }
             Spacer()
             NavigationLink {
-                if let user = vmAuth.user{
-                    ProfileChangeView()
-                        .environmentObject(vmAuth)
-                }
-                
+                ProfileChangeView()
+                    .environmentObject(vmAuth)
             } label: {
                 Image(systemName: "chevron.right")
                     .foregroundColor(.gray.opacity(0.5))
