@@ -10,6 +10,7 @@ import FirebaseFirestore
 
 struct Schedule:Codable,Hashable,Identifiable{
     var id:String
+
     var imageUrl:String?
     var imageUrlPath:String?
     var category:String

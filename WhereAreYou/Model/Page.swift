@@ -7,6 +7,7 @@
 
 import Foundation
 import FirebaseFirestore
+import FirebaseFirestoreSwift
 
 struct Page:Codable,Hashable{
     
@@ -18,7 +19,7 @@ struct Page:Codable,Hashable{
     let pageOverseas:Bool
     let pageSubscript:String
     var request:[String]?
-    var member:[String]?
+    var members:[String]?
     let dateRange:[Timestamp]
     
     enum CodingKeys:String,CodingKey{
@@ -30,7 +31,7 @@ struct Page:Codable,Hashable{
         case pageOverseas = "page_overseas"
         case pageSubscript = "page_subscript"
         case request = "request_user"
-        case member
+        case members
         case dateRange = "date_range"
     }
 }

@@ -16,9 +16,6 @@ final class StorageManager{
     
     private let storage = Storage.storage().reference()
     
-    private var imageRef:StorageReference{  //이미지 폴터경로
-        storage.child("iamges")
-    }
     
     private func userReferance(userId:String,mode:ImageSaveFilter) -> StorageReference{  //메타데이터
         switch mode{
@@ -54,10 +51,37 @@ final class StorageManager{
         
     }
     func deleteImage(path:String) async throws{
-        try await getProfileImageURL(path: path).delete()
+        do {
+            try await getProfileImageURL(path: path).delete()
+        } catch let error {
+            print("사진삭제실패 : \(error.localizedDescription)")
+        }
+        
     }
-    
-    
+    func deleteAllPageImage(path:String) async throws{
+        let pagePath = userReferance(userId: path, mode: .page)
+        let pageList = try await pagePath.listAll()
+        for page in pageList.items{
+            do{
+                try await page.delete()
+            } catch let error {
+                print("페이지 사진삭제실패 : \(error.localizedDescription)")
+            }
+        }
+    }
+    func deleteAllScheuleImage(path:String) async throws{
+        let schedulePath = userReferance(userId: path, mode: .schedule)
+        
+        let scheduleList = try await schedulePath.listAll()
+        
+        for schedule in scheduleList.items{
+            do{
+                try await schedule.delete()
+            } catch let error {
+                print("스케쥴 사진삭제실패 : \(error.localizedDescription)")
+            }
+        }
+    }
     
     
 }

@@ -18,8 +18,12 @@ struct AddPageView: View {
     @State var startDate = Date()
     @State var endDate = Date() + 86400
     
-    @State var isPage = false
-    @State var changedDate = false
+    @State var isPage = false   //페이지 생성/수정 시 progressView 띄우기 위함
+    @State var changedDate = false  //날짜 수정 시 해당 일자의 일정 모두 삭제의 허용을 묻는 문구
+    
+    @State var data:Data? = nil
+    @State var selection:PhotosPickerItem? = nil
+    
     @EnvironmentObject var vm:PageViewModel
     @EnvironmentObject var vmAuth:AuthViewModel
     @Environment(\.dismiss) var dismiss
@@ -43,12 +47,15 @@ struct AddPageView: View {
             }
             
         }
+        .onReceive(vm.addDismiss){
+            Task{
+                vmAuth.user = try await UserManager.shared.getUser(userId: vmAuth.user?.userId ?? "")
+            }
+            dismiss()
+        }
         .foregroundColor(.black)
         .onTapGesture {
             UIApplication.shared.endEditing()
-        }
-        .onReceive(vm.succenss) {
-            dismiss()
         }
         .alert(isPresented: $changedDate) {
             Alert(
@@ -56,26 +63,8 @@ struct AddPageView: View {
                 message: Text("페이지의 날짜가 바뀌게 되면 해당 날짜의 일정은 모두 삭제 됩니다. 날짜를 수정하시겠습니까?"),
                 primaryButton: .destructive(Text("확인")) {
                     isPage = true
-                    Task{
-                        if let page = vm.page,let user = vmAuth.user,let overseas{
-                            let modifiedPage = Page(pageId: page.pageId, pageAdmin: page.pageAdmin, pageImagePath: page.pageImagePath, pageName: title, pageOverseas: overseas, pageSubscript: text, dateRange: vm.generateTimestamp(from: startDate, to: endDate))
-                                let currentDate = page.dateRange
-                                let modifiyngDate = vm.generateTimestamp(from: startDate, to: endDate)
-                                
-                                let changed = currentDate.filter{!(modifiyngDate.contains($0))}
-                                for change in changed {
-                                    vm.deleteSchedule(user: user, pageId: page.pageId, schedule: vm.schedules.first(where: {$0.startTime.dateValue().toTimeString() == change.dateValue().toTimeString()})! )
-                                }
-                                vm.updatePage(user: user, pageInfo: modifiedPage)
-                            }
-                    }
-                    
+                    scheduleDelete()
                 }, secondaryButton: .cancel(Text("취소")))
-        }
-        .onDisappear{
-            vm.schedule = nil
-            vm.data = nil
-            vm.selection = nil
         }
     }
 }
@@ -102,14 +91,13 @@ extension AddPageView{
             Spacer()
             if overseas != nil && !text.isEmpty && !title.isEmpty{
                 Button {
-                    if let user = vmAuth.user,let overseas{
-                        if  vm.page != nil{
-                            changedDate = true
-                        }else{
-                            vm.creagtePage(user:user, pageInfo: Page(pageId: "", pageAdmin: "",pageImageUrl: "",pageImagePath: "", pageName: title, pageOverseas: overseas, pageSubscript: text, dateRange: vm.generateTimestamp(from: startDate, to: endDate)))
-                           
-                            
-                        }
+                    guard let user = vmAuth.user,let overseas else {return}
+                    
+                    if  vm.page != nil{
+                        changedDate = true
+                    }else{
+                        isPage = true
+                        vm.creagtePage(user:user, pageInfo: Page(pageId: "", pageAdmin: "",pageImageUrl: "",pageImagePath: "", pageName: title, pageOverseas: overseas, pageSubscript: text, dateRange: vm.generateTimestamp(from: startDate, to: endDate)),item: selection)
                     }
                 } label: {
                     Text(vm.page != nil ? "변경" : "완료")
@@ -123,7 +111,7 @@ extension AddPageView{
             }
             
         }
-
+        
     }
     var settingPageInfo:some View{
         VStack{
@@ -135,10 +123,10 @@ extension AddPageView{
                 .foregroundColor(.gray)
                 .padding(.bottom)
             PhotosPicker(
-                selection: $vm.selection,
+                selection: $selection,
                 matching: .images,
                 photoLibrary: .shared()) {
-                    if let selectedImageData = vm.data,
+                    if let selectedImageData = data,
                        let uiImage = UIImage(data: selectedImageData) {
                         Image(uiImage: uiImage)
                             .resizable()
@@ -160,9 +148,9 @@ extension AddPageView{
                     }
                 }
                 .overlay(alignment:.topTrailing,content: {
-                    if vm.data != nil || vm.page?.pageImageUrl != nil{
+                    if data != nil || vm.page?.pageImageUrl != nil{
                         Button {
-                            vm.data = nil
+                            data = nil
                             vm.page?.pageImageUrl = nil
                             vm.page?.pageImagePath = nil
                         } label: {
@@ -176,12 +164,12 @@ extension AddPageView{
                                 }
                         }
                     }
-                   
+                    
                 })
-                .onChange(of: vm.selection) { newItem in
+                .onChange(of: selection) { newItem in
                     Task {
                         if let data = try? await newItem?.loadTransferable(type: Data.self) {
-                            vm.data = data
+                            self.data = data
                         }
                     }
                 }
@@ -242,7 +230,7 @@ extension AddPageView{
                                 Circle()
                                     .frame(width: 120,height: 120)
                                     .foregroundColor(overseas ?? false ? .black.opacity(0.3) : .clear)
-                                    
+                                
                             }
                     }
                     Text("해외")
@@ -267,16 +255,25 @@ extension AddPageView{
             }
             .foregroundColor(.black)
     }
-    func isTimeContationDate(startDate: Timestamp, currentDate: Timestamp) -> Timestamp? {
-        
-        let calendar = Calendar.current
-        let startDay = calendar.startOfDay(for: startDate.dateValue())
-        let endDay = calendar.date(byAdding: .second,value: 86399, to: startDay)
-        
-        if !(currentDate.dateValue() >= startDate.dateValue() && currentDate.dateValue() <= endDay!) {
-            return currentDate
-        }else{
-            return nil
+    
+    //------------ 페이지의 일정 변경 시 삭제되는 일자의 스케쥴이 있을 경우 그 스케쥴 삭제
+    func scheduleDelete(){
+        Task{
+            guard let page = vm.page,let user = vmAuth.user,let overseas else {return}
+            
+            let currentDate = page.dateRange    //현재 페이지의 날짜들
+            let modifiyngDate = vm.generateTimestamp(from: startDate, to: endDate)  //뷰에서 설정한 날짜들
+            
+            let modifiedPage = Page(pageId: page.pageId, pageAdmin: page.pageAdmin, pageImagePath: page.pageImagePath, pageName: title, pageOverseas: overseas, pageSubscript: text, dateRange: modifiyngDate)  //수정되어 저장할 페이지
+            
+            
+            let changed = currentDate.filter{!(modifiyngDate.contains($0))}
+            for change in changed {
+                guard let schedule = vm.schedules.first(where: {$0.startTime == change}) else{ return }
+                vm.deleteSchedule(pageId: page.pageId, schedule: schedule)
+            }
+            vm.updatePage(user: user, pageInfo: modifiedPage,item: selection)
         }
+        
     }
 }

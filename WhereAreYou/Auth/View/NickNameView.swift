@@ -10,6 +10,8 @@ import SwiftUI
 struct NickNameView: View {
     @State var text = ""
     @State var isProfile = false
+    @State var modify = false
+    @Environment(\.dismiss) var dismiss
     @EnvironmentObject var vm:AuthViewModel
     var body: some View {
         VStack{
@@ -18,7 +20,7 @@ struct NickNameView: View {
                 .bold()
                 .frame(maxWidth: .infinity,alignment: .leading)
                 .padding(.leading)
-                .padding(.bottom,30)
+                .padding(.vertical,30)
                 .foregroundColor(.black)
             ScrollView {
                 CustomTextField(placeholder: "입력..", isSecure: false, color: .customCyan, text: $text)
@@ -29,28 +31,38 @@ struct NickNameView: View {
                     .padding(.bottom)
                 SelectButton(color: .customCyan, textColor: .white, text: "확인") {
                     withAnimation(.linear){
-                        vm.user?.nickName = text
-                        vm.infoSetting = InfoSettingFilter.profile
+                        if !modify{
+                            vm.user?.nickName = text
+                            vm.infoSetting = InfoSettingFilter.profile
+                        }else{
+                            guard let userId = vm.user?.userId else {return}
+                            vm.updateNickname(userId: userId, text: text)
+                        }
                     }
                 }
-                Button {
-                    withAnimation(.linear){
-                        vm.user?.nickName = "으딩이\(Range(1...10).randomElement() ?? 1)"
-                        vm.infoSetting = InfoSettingFilter.profile
+                if !modify{
+                    Button {
+                        withAnimation(.linear){
+                            vm.user?.nickName = "으딩이\(Range(1...10).randomElement() ?? 1)"
+                            vm.infoSetting = InfoSettingFilter.profile
+                        }
+                    } label: {
+                        Text("건너뛰기")
+                            .font(.caption)
+                            .foregroundColor(.gray)
                     }
-                } label: {
-                    Text("건너뛰기")
-                        .font(.caption)
-                        .foregroundColor(.gray)
+                    .padding()
                 }
-                .padding()
             }
         }
-       
-        .navigationDestination(isPresented: $isProfile) {
-            ProfileSelectView()
-                .environmentObject(vm)
+        .background(Color.white.ignoresSafeArea())
+        .onReceive(vm.changedSuccess){
+            dismiss()
         }
+//        .navigationDestination(isPresented: $isProfile) {
+//            ProfileSelectView()
+//                .environmentObject(vm)
+//        }
         .onTapGesture { //이거 넣으면 탭뷰 터치 안됨
             UIApplication.shared.endEditing()
         }

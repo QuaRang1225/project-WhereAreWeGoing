@@ -8,7 +8,6 @@
 import SwiftUI
 import PhotosUI
 import Kingfisher
-//import Firebase
 import FirebaseFirestore
 
 struct AddScheduleView: View {
@@ -23,16 +22,17 @@ struct AddScheduleView: View {
     @State var links:[String] = []
     @State var linktitles:[String] = []
     
+    
     @State var startDate = Date()
     @State var endDate = Date()
+    
+    @State var data:Data? = nil
+    @State var selection:PhotosPickerItem? = nil
     
     @EnvironmentObject var vmAuth:AuthViewModel
     @EnvironmentObject var vm:PageViewModel
     @EnvironmentObject var location:LocationMagager
     @Binding var isPage:Bool
-    
-    
-
     
     var body: some View {
         ZStack{
@@ -92,6 +92,9 @@ struct AddScheduleView: View {
                 CustomProgressView(title: vm.schedule != nil ?  "일정 변경 중.." : "일정 추가 중.." )
             }
         }
+        .onReceive(vm.addDismiss) {
+            isPage = false
+        }
         .foregroundColor(.black)
         .background{
             Color.white.ignoresSafeArea()
@@ -100,28 +103,7 @@ struct AddScheduleView: View {
             UIApplication.shared.endEditing()
         }
         .onAppear{
-            
-            startDate = (vm.page?.dateRange.first?.dateValue() ?? Date())
-            endDate = (vm.page?.dateRange.last?.dateValue() ?? Date())
-            
-            if let schedule = vm.schedule{
-                title = schedule.title
-                text = schedule.content.replacingOccurrences(of: "\\n", with: "\n")
-                locationSelect = LocationCategoryFilter.allCases.first(where: {$0.name == schedule.category}) ?? .other
-                startDate = schedule.startTime.dateValue()
-                endDate = schedule.endTime.dateValue()
-                linksArr = schedule.link ?? [:]
-                
-                for (key,value) in linksArr{
-                    linktitles.append(key)
-                    links.append(value)
-                }
-            }
-        }
-        .onDisappear{
-            vm.schedule = nil
-            vm.data = nil
-            vm.selection = nil
+            modifyModeSchedule()
         }
     }
 }
@@ -159,13 +141,12 @@ extension AddScheduleView{
                                 linksArr[linktitles[index]] = links[index]
                                 
                             }
-                            if let user  = vmAuth.user,let page = vm.page{
-                                let schedule = Schedule(id:vm.schedule?.id ?? "",imageUrl:vm.schedule?.imageUrl,imageUrlPath: vm.schedule?.imageUrlPath , category: locationSelect.name, title: title, startTime: startDate.toTimestamp(), endTime: endDate.toTimestamp(), content: text.replacingOccurrences(of: "\n", with: "\\n"), location: GeoPoint(latitude: (location.pickedPlaceMark?.location?.coordinate.latitude)!, longitude: (location.pickedPlaceMark?.location?.coordinate.longitude)!),link: linksArr)
-                                if vm.schedule != nil{
-                                    vm.updateSchedule(user: user, pageId: page.pageId, schedule: schedule)
-                                }else{
-                                    vm.creagteShcedule(user: user, pageId: page.pageId, schedule: schedule)
-                                }
+                            guard let user  = vmAuth.user,let page = vm.page else { return }
+                            let schedule = Schedule(id:vm.schedule?.id ?? "",imageUrl:vm.schedule?.imageUrl,imageUrlPath: vm.schedule?.imageUrlPath , category: locationSelect.name, title: title, startTime: startDate.toTimestamp(), endTime: endDate.toTimestamp(), content: text.replacingOccurrences(of: "\n", with: "\\n"), location: GeoPoint(latitude: (location.pickedPlaceMark?.location?.coordinate.latitude)!, longitude: (location.pickedPlaceMark?.location?.coordinate.longitude)!),link: linksArr)
+                            if vm.schedule != nil{
+                                vm.updateSchedule(user: user, pageId: page.pageId, schedule: schedule, item: selection)
+                            }else{
+                                vm.creagteShcedule(user: user, pageId: page.pageId, schedule: schedule,item: selection)
                             }
                         } label: {
                             Text(vm.schedule != nil ? "변경" : "작성" )
@@ -179,17 +160,14 @@ extension AddScheduleView{
             
         }
         .foregroundColor(.black)
-        .onReceive(vm.succenss){
-            isPage = false
-        }
         
     }
     var photoPicker:some View{
         PhotosPicker(
-            selection: $vm.selection,
+            selection: $selection,
             matching: .images,
             photoLibrary: .shared()) {
-                if let selectedImageData = vm.data,
+                if let selectedImageData = data,
                    let uiImage = UIImage(data: selectedImageData) {
                     Image(uiImage: uiImage)
                         .resizable()
@@ -211,9 +189,9 @@ extension AddScheduleView{
                 }
             }
             .overlay(alignment:.topTrailing,content: {
-                if vm.data != nil || vm.schedule?.imageUrl != nil{
+                if data != nil || vm.schedule?.imageUrl != nil{
                     Button {
-                        vm.data = nil
+                        data = nil
                         vm.schedule?.imageUrl = nil
                         vm.schedule?.imageUrlPath = nil
                     } label: {
@@ -230,10 +208,10 @@ extension AddScheduleView{
                     
                 }
                 
-            }).onChange(of: vm.selection) { newItem in
+            }).onChange(of: selection) { newItem in
                 Task {
                     if let data = try? await newItem?.loadTransferable(type: Data.self) {
-                        vm.data = data
+                        self.data = data
                         
                     }
                 }
@@ -300,6 +278,23 @@ extension AddScheduleView{
             }
             .foregroundColor(.black)
     }
-    
+    func modifyModeSchedule(){
+        startDate = (vm.page?.dateRange.first?.dateValue() ?? Date())
+        endDate = (vm.page?.dateRange.last?.dateValue() ?? Date())
+        
+        if let schedule = vm.schedule{
+            title = schedule.title
+            text = schedule.content.replacingOccurrences(of: "\\n", with: "\n")
+            locationSelect = LocationCategoryFilter.allCases.first(where: {$0.name == schedule.category}) ?? .other
+            startDate = schedule.startTime.dateValue()
+            endDate = schedule.endTime.dateValue()
+            linksArr = schedule.link ?? [:]
+            
+            for (key,value) in linksArr{
+                linktitles.append(key)
+                links.append(value)
+            }
+        }
+    }
 }
 

@@ -17,11 +17,12 @@ struct SelectButton: View {
             action()
         } label: {
             RoundedRectangle(cornerRadius: 10)
-                .frame(height: 50)
+                .frame(height: 40)
                 .foregroundColor(color)
                 .overlay {
                     Text(text)
                         .bold()
+                        .font(.subheadline)
                         .foregroundColor(textColor)
                 }
                 .padding(.horizontal)

@@ -14,11 +14,12 @@ struct UserData:Codable,Hashable{
     let userId:String
     var nickName:String?
     let email:String?
-    let dateCreated:String?
+    let dateCreated:String
     var profileImageUrl:String?
-    var affiliationPages:[String]?
-    var member:[String]?
+    var profileImagePath:String?
+    var pages:[String]?
     var guestMode:Bool
+    
     
     init(auth:AuthData){  //처음 값을 저장할때 - 인증
         self.userId = auth.uid
@@ -26,6 +27,8 @@ struct UserData:Codable,Hashable{
         self.nickName = nil
         self.dateCreated = "\(Timestamp().dateValue())"
         self.profileImageUrl = nil
+        self.profileImagePath = nil
+        self.pages = nil
         self.guestMode = true
     }
 }

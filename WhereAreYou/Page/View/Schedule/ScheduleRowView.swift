@@ -17,13 +17,13 @@ struct ScheduleRowView: View {
     @State var goWebView = false
     @State var link = ""
     @State var delete = false
-//    @Binding var scheduleBinding:Schedule?
+    @State var modify = false
+    
     @Binding var binding:Bool
-//    @Binding var photo:Bool
     @EnvironmentObject var vm:PageViewModel
     @EnvironmentObject var vmAuth:AuthViewModel
     
-    @State var modify = false
+    
     
     var body: some View {
         VStack(alignment: .leading){
@@ -38,6 +38,7 @@ struct ScheduleRowView: View {
                             placeholder
                         }
                         .resizable()
+                        .scaledToFill()
                         .frame(width:100,height: 100)
                         .cornerRadius(20)
                 }
@@ -47,6 +48,7 @@ struct ScheduleRowView: View {
                         .bold()
                         .font(.body)
                         .padding(.bottom,2)
+                   
                     HStack{
                         ForEach(LocationCategoryFilter.allCases,id: \.self){ filter in
                             if filter.name == schedule.category{
@@ -85,7 +87,7 @@ struct ScheduleRowView: View {
                             }
 
 
-                        }.font(.caption)//.padding(.bottom,5)
+                        }.font(.caption)
                     }
                     Spacer()
                     Group{
@@ -153,22 +155,17 @@ struct ScheduleRowView: View {
                         .padding(.top,2)
                     }
 
-                }
-
-                    .frame(maxWidth: .infinity,alignment:.leading)
-                    .padding(10)
-                    .padding(.vertical)
-                    .multilineTextAlignment(.leading).font(.subheadline)
-                    .background(Color.gray.opacity(0.1))
-
+                }                .frame(maxWidth: .infinity,alignment:.leading)
+                .padding(10)
+                .padding(.vertical)
+                .multilineTextAlignment(.leading).font(.subheadline)
+                .background(Color.gray.opacity(0.1))
             }
-            
         }
         .confirmationDialog("일정 삭제", isPresented: $delete, actions: {
             Button(role:.destructive){
-                if let user = vmAuth.user,let page = vm.page{
-                    vm.deleteSchedule(user: user, pageId: page.pageId, schedule: schedule)
-                }
+                guard let page = vm.page else {return}
+                vm.deleteSchedule(pageId: page.pageId, schedule: schedule)
             } label: {
                 Text("삭제")
             }
@@ -187,7 +184,7 @@ struct ScheduleRowView: View {
 struct ScheduleRowView_Previews: PreviewProvider {
     static var previews: some View {
         NavigationStack{
-            ScheduleRowView(schedule: CustomDataSet.shared.schedule(), num:1, binding: .constant(true)).environmentObject(AuthViewModel())
+            ScheduleRowView(schedule: CustomDataSet.shared.schedule(), num:1, binding: .constant(true)).environmentObject(AuthViewModel()).environmentObject(PageViewModel())
         }
     }
 }

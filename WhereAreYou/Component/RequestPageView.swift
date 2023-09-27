@@ -22,6 +22,7 @@ struct RequestPageView: View {
                 
                 KFImage(URL(string: page?.pageImageUrl ?? ""))
                     .resizable(resizingMode: .tile)
+                    .scaledToFill()
                     .frame(height: 200)
                     .clipped()
                     .overlay{
@@ -81,23 +82,21 @@ struct RequestPageView: View {
             .background(Color.white)
             .cornerRadius(20)
             .shadow(radius: 5)
-            Button {
-                requested.toggle()
-                if let user = vmAuth.user,let pageid = page?.pageId{
-                    Task{
-                        try await PageManager.shared.requestPage(user:user,pageAdminId:self.user?.userId ?? "",pageId:pageid,cancel:!requested)
-                    }
+            if let pageMembers = page?.members, !pageMembers.contains(vmAuth.user?.userId ?? ""){
+                Button {
+                    requested.toggle()
+                    guard let user = vmAuth.user,let pageid = page?.pageId else {return}
+                    vm.requestPage(user:user,pageId:pageid,cancel:requested)
+                } label: {
+                    Text(requested ? "요청됨" : "요청")
+                        .padding(.horizontal).padding(5)
+                        .background(requested ? Color.gray.opacity(0.6) :  Color.customCyan2.opacity(0.7))
+                        .foregroundColor(.white)
+                        .bold()
+                        .cornerRadius(10)
+                        .padding()
                 }
-            } label: {
-                Text(requested ? "요청됨" : "요청")
-                    .padding(.horizontal).padding(5)
-                    .background(requested ? Color.gray.opacity(0.6) :  Color.customCyan2.opacity(0.7))
-                    .foregroundColor(.white)
-                    .bold()
-                    .cornerRadius(10)
-                    .padding()
             }
-
             
         }
         .onAppear{
@@ -105,7 +104,7 @@ struct RequestPageView: View {
                 self.user = try await UserManager.shared.getUser(userId: page?.pageAdmin ?? "")
             }
             
-            if let request = page?.request,request.contains(vmAuth.user?.userId ?? ""){
+            if let request = page?.request,let user = vmAuth.user?.userId, request.contains(user){
                 self.requested = true
             }
             else {

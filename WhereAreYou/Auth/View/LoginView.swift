@@ -10,6 +10,7 @@ import Firebase
 
 struct LoginView: View {
     
+    @State var error = false
     @State var isRegister = false
     @State var email = ""
     @State var password = ""
@@ -59,8 +60,9 @@ struct LoginView: View {
                     .padding(.vertical)
                     Group{
                         HStack{
+                            Spacer()
                             Group{
-                                Text("비밀번호 찾기")
+                                Text("비밀번호 찾기").fixedSize(horizontal: true, vertical: false)
                                 Text("|")
                                 Text("아이디 찾기")
                                 Text("|")
@@ -69,14 +71,20 @@ struct LoginView: View {
                                 } label: {
                                     Text("회원가입")
                                 }
-                            }
+                            }.font(.caption2)
                             .frame(maxWidth: .infinity)
-                            .font(.caption)
+                            
                         }
                         .padding(.horizontal,30)
                     }
                 }
             }
+        }
+        .onChange(of: vm.errorString){ _ in
+            error = true
+        }
+        .alert(isPresented: $error){
+            Alert(title:Text("알림") ,message: Text(vm.errorString),dismissButton:.none)
         }
         .background{
             AuthBackground()
@@ -94,7 +102,7 @@ struct LoginView: View {
             RegisterView().navigationBarBackButtonHidden()
                 .environmentObject(vm)
         }
-        .onTapGesture { //이거 넣으면 탭뷰 터치 안됨
+        .onTapGesture {
             UIApplication.shared.endEditing()
         }
     }

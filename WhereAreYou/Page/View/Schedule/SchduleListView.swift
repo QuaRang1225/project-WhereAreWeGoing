@@ -11,25 +11,23 @@ import FirebaseFirestore
 
 
 struct SchduleListView: View {
-//    @Binding var page:Page
+
     
     @StateObject var location = LocationMagager()
     @EnvironmentObject var vmAuth:AuthViewModel
     @EnvironmentObject var vm:PageViewModel
     
     @State var isSearch = false
-//    @State var time = Timestamp()
     @State var date = 0
     @State var select:Schedule?
     @State var rowButton:Bool?
-//    @Binding var photo:Bool
-    
     
     
     var days:[Schedule]{
         let calendar = Calendar.current
         return vm.schedules.filter({calendar.isDate($0.startTime.dateValue(), equalTo: vm.page?.dateRange[date].dateValue() ?? Date(), toGranularity: .day) || calendar.isDate($0.endTime.dateValue(), equalTo: vm.page?.dateRange[date].dateValue() ?? Date(), toGranularity: .day)}).sorted{$0.startTime < $1.startTime}
     }
+    
     var body: some View {
         ZStack{
             VStack {
@@ -85,6 +83,7 @@ struct SchduleListView: View {
                 .environmentObject(location)
                 .navigationBarBackButtonHidden()
         }
+       
 
     }
     

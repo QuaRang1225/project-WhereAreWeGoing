@@ -10,21 +10,26 @@ import Kingfisher
 
 struct MemberTabView: View {
     
+    
     @EnvironmentObject var vmAuth:AuthViewModel
     @EnvironmentObject var vm:PageViewModel
+    
+    var admin:UserData?{
+        vm.member.first(where: {$0.userId == vm.page?.pageAdmin})
+    }
     
     var body: some View {
         VStack(alignment: .leading,spacing: 0){
             Section("방장"){
-                MemberListRowView(image: vm.admin?.profileImageUrl ?? "", name: vm.admin?.nickName ?? "",admin: true)
+                MemberListRowView(image: admin?.profileImageUrl ?? "", name: admin?.nickName ?? "",admin: true)
             }
             .padding(.vertical)
             Divider()
             Section("맴버"){
-                if vm.member.isEmpty{
+                if vm.member.filter({$0 != admin}).isEmpty{
                     emptymember
                 }else{
-                    ForEach(vm.member,id:\.self){ member in
+                    ForEach(vm.member.filter({$0 != admin}),id:\.self){ member in
                         MemberListRowView(image: member.profileImageUrl ?? "", name: member.nickName ?? "",admin: false)
                     }
                 }
@@ -38,9 +43,8 @@ struct MemberTabView: View {
                         MemberListRowView(image: request.profileImageUrl ?? "", name: request.nickName ?? "",admin: false)
                             .overlay(alignment:.trailing){
                                 Button {
-                                    if let user = vmAuth.user,let page = vm.page{
-                                        vm.userAccept(user: user, page:page, requestUser: request)
-                                    }
+                                    guard let page = vm.page else {return}
+                                    vm.userAccept(page: page, requestUser: request)
                                 } label: {
                                     Text("수락")
                                         .font(.caption)
@@ -58,34 +62,20 @@ struct MemberTabView: View {
             .padding(.vertical)
         }
         .padding()
-//        .onReceive(vm.succenss){
-//            if let page = vm.page{
-//                vm.getMembers(page: page)
-//            }
-//        }
         .onAppear{
-            if let page = vm.page{
-                Task{
-                    vm.admin =  try await UserManager.shared.getUser(userId: page.pageAdmin)
-                    vm.getMembers(page: page)
-                }
-            }
-        }
-        .onDisappear{
-            vm.request.removeAll()
-            vm.member.removeAll()
+            guard let page = vm.page else {return}
+            vm.getMembers(page: page)
         }
     }
-    
 }
 
 struct MemberTabView_Previews: PreviewProvider {
     static var previews: some View {
-
+        
         MemberTabView()
             .environmentObject(PageViewModel())
             .environmentObject(AuthViewModel())
-          
+        
     }
 }
 

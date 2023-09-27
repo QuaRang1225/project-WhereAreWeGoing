@@ -18,6 +18,7 @@ struct CustomProgressView: View {
                     .environment(\.colorScheme, .light)
                 Text(title)
                     .font(.caption)
+                    .foregroundColor(.black)
             }
             .background{
                 RoundedRectangle(cornerRadius: 30)

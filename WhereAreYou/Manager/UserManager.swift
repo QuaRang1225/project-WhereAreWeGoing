@@ -17,11 +17,13 @@ final class UserManager{
     static let shared = UserManager()
     private init(){}
     
+    private let pagesCollection = Firestore.firestore().collection("pages")
     private let userCollection = Firestore.firestore().collection("users")  //경로 설정
     
     private func userDocument(userId:String) -> DocumentReference{
         userCollection.document(userId)
     }
+ 
     
     
     //snakeCase적용 위함
@@ -39,8 +41,18 @@ final class UserManager{
     func createNewUser(user:UserData) throws{   //DB에 저장
         try userDocument(userId: user.userId).setData(from: user,merge: false,encoder: encoder)
     }
+    
     func updateUserProfileImagePath(userId:String,path:String?,url:String?)async throws{
-        let data:[String:Any] = ["profile_image_url":url as Any]
+        let data:[String:Any] = [
+            "profile_image_url":url as Any,
+            "profile_image_path":path as Any
+        ]
+        try await userDocument(userId:userId).updateData(data)
+    }
+    func updateUsetNickname(userId:String,text:String)async throws{
+        let data:[String:Any] = [
+            "nick_name":text as Any
+        ]
         try await userDocument(userId:userId).updateData(data)
     }
     
@@ -68,25 +80,32 @@ final class UserManager{
             }
         }
     }
+    func updatePages(userId:String,pagesId:String) async throws{
+        let data:[String:Any] = ["pages":FieldValue.arrayUnion([pagesId])]
+        print("유저정보에 페이지 정보저장")
+        try await userDocument(userId: userId).updateData(data)
+    }
     
     func getSearchPage(text:String)async throws -> [Page]{
         
-        var pages:[Page] = []
-        let snapshot = try await userCollection.getDocuments()
-        for userDocument in snapshot.documents{
-            let pagesCollection = try await userDocument.reference.collection("page").getDocuments()
-            for pageDocument in pagesCollection.documents{
-                    if let name = pageDocument.get("page_name") as? String,name.contains(text){
-                        let page = try await pageDocument.reference.getDocument(as: Page.self)
-                        pages.append(page)
-                    }
-                    if let id = pageDocument.get("page_id") as? String,id.contains(text){
-                        let page = try await pageDocument.reference.getDocument(as: Page.self)
-                        pages.append(page)
-                    }
-            }
-        }
-        return pages
+        var pages = try await pagesCollection.whereField("page_name", isGreaterThanOrEqualTo: text).getAllDocuments(as: Page.self)
+        pages.append(contentsOf: try await pagesCollection.whereField("page_id", isGreaterThanOrEqualTo: text).getAllDocuments(as: Page.self))
+        print(pages)
+        return Array(Set(pages))
         
+    }
+    func deleteUser(user:UserData)async throws{
+        guard let pages = user.pages else {return}
+        print("계정삭제 중")
+        
+        try await userDocument(userId: user.userId).delete()    //본인 정보 삭제
+        try await StorageManager.shared.deleteImage(path: user.profileImagePath ?? "")  //본인 프로필 사진 삭제
+        
+    
+
+        for page in pages{
+            try await PageManager.shared.deleteUserPage(pageId: page)   //본인의 페이지 모두 삭제
+            try await PageManager.shared.memberPage(user: user, pageId: page, cancel: true) //본인이 속한 페이지에서 본인 정보 모두 삭제
+        }
     }
 }

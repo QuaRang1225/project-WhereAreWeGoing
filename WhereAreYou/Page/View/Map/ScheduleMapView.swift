@@ -54,6 +54,7 @@ struct ScheduleMapView: View {
                                 
                             KFImage(URL(string:anno.imageUrl ?? ""))
                                 .resizable()
+                                .scaledToFill()
                                 .frame(width: 45,height: 45)
                                 .clipShape(Circle())
                                 .font(.title)
@@ -150,8 +151,8 @@ struct ScheduleMapView: View {
                             HStack{
                                 KFImage(URL(string: schedule.imageUrl ?? ""))
                                     .resizable()
-                                    .frame(width: 70,height: 70)
                                     .scaledToFill()
+                                    .frame(width: 70,height: 70)
                                     .clipShape(Circle())
                                 
                                 VStack(alignment: .leading,spacing: 5){
@@ -201,7 +202,7 @@ struct ScheduleMapView: View {
                         .padding()
                         .foregroundColor(.black)
                     }
-                
+                    .padding(.bottom)
                     .padding(.horizontal,10)
                     .shadow(radius: 10)
             }

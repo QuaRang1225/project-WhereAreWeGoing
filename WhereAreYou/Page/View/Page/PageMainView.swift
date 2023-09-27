@@ -17,16 +17,11 @@ struct PageMainView: View {
     @State var pageMode:PageTabFilter = .schedule
     var page:Page
     
-//    @State var photo = false
-//    @State var binding:Schedule?
-
     @State var currentAmount:CGFloat = 0
     @State var currentDrageAmount:CGFloat = 0
     @State private var currentTime = Date()
     
-    @State var delete = false   //삭제 버튼 활성화
-    @State var deletePage = false   //삭제버튼 클릭 후 삭제 중 문구
-    @State var sett = false //페이지 설정 활성화
+    @State var isPage = false
     
     let timer = Timer.publish(every: 1, on: .main, in: .common).autoconnect()
     
@@ -41,25 +36,27 @@ struct PageMainView: View {
                         switch pageMode {
                         case .schedule:
                             SchduleListView()
+                                .padding(.bottom)
                                 .environmentObject(vmAuth)
+                                .environmentObject(vm)
                         case .member:
                             MemberTabView()
+                                .padding(.bottom)
                                 .environmentObject(vmAuth)
                                 .environmentObject(vm)
                         case .setting:
-                            Text("")
+                            PageSettingView(page: page, deletePage: $isPage)
                         }
                     }.environmentObject(vm)
                     
                 }
             }
-           
+            
             .foregroundColor(.black)
             .background(Color.white)
             .edgesIgnoringSafeArea(.top)
             .padding(.bottom,30)
             header
-                
             tabBar
             if vm.copy{
                 Text("클립보드에 복사되었습니다.")
@@ -97,34 +94,18 @@ struct PageMainView: View {
                             }
                     )
             }
-            if deletePage{
+            
+            if isPage{
                 CustomProgressView(title: "삭제 중..")
             }
+        }
+        .onAppear{
+            vm.getPage(pageId: page.pageId)
+            vm.getSchedules(pageId: page.pageId)
             
         }
-        .onReceive(vm.deleteSuccess){
+        .onReceive(vm.pageDismiss) {
             dismiss()
-        }
-        .confirmationDialog("일정 수정", isPresented: $delete, actions: {
-            Button(role:.destructive){
-                if let user = vmAuth.user,let page = vm.page{
-                    deletePage = true
-                    vm.deletePage(user: user, page:page)
-                    delete = true
-                }
-            } label: {
-                Text("삭제하기")
-            }
-        },message: {
-            Text("정말 이 페이지를 삭제하시겠습니까?")
-        })
-        .onAppear{
-            guard let user = vmAuth.user else {return}
-            vm.getPage(user: user, pageId: page.pageId)
-            vm.getSchedules(user: user, pageId: page.pageId)
-        }
-        .onDisappear{
-            sett = false
         }
     }
 }
@@ -155,51 +136,6 @@ extension PageMainView{
                             
                     }.shadow(color:.black,radius: 20)
                     Spacer()
-                    Image(systemName: "person.badge.plus")
-                        .font(.title3)
-                        .foregroundColor(.white)
-                        .padding(.trailing)
-                    VStack{
-                        Button {
-                            withAnimation{
-                                sett.toggle()
-                            }
-                        } label: {
-                            Image(systemName: "ellipsis")
-                                .font(.title3)
-                                .foregroundColor(.white)
-                                .padding(.trailing)
-                        }
-                            
-                    }
-            }
-            if sett{
-                HStack{
-                    Spacer()
-                    VStack{
-                        NavigationLink {
-                            AddPageView(title: page.pageName ,text: page.pageSubscript,overseas: page.pageOverseas, startDate: page.dateRange.first?.dateValue() ?? Date(),endDate: page.dateRange.last?.dateValue() ?? Date())
-                                .environmentObject(vm)
-                                .environmentObject(vmAuth)
-                                .navigationBarBackButtonHidden()
-                        } label: {
-                            Text("수정하기")
-                               
-                        }.padding(.top,7.5)
-                        Divider().frame(width: 100)
-                        Button {
-                            delete = true
-                        } label: {
-                            Text("삭제하기").foregroundColor(.red)
-                        }
-                        Divider().frame(width: 100)
-                    }
-                    .padding(.horizontal)
-                    .font(.subheadline).foregroundColor(.black)
-                    .background(Color.white)
-                    .cornerRadius(10)
-                    .padding(.trailing)
-                }
             }
         }
        
@@ -224,8 +160,9 @@ extension PageMainView{
                                             .padding(.bottom,40)
                                     }
                                     .foregroundColor(pageMode == tabItem ?  .customCyan2 : .gray.opacity(0.7))
-                                    .padding(.top)
+                                    .padding(.vertical)
                                     .bold()
+                                
                             }
                         }
                     }.frame(maxWidth: .infinity)
@@ -254,9 +191,6 @@ extension PageMainView{
                                     UIScreen.main.bounds.height/3 + pro.frame(in: .global).minY :
                                     UIScreen.main.bounds.height/3
                             )
-                            .onTapGesture {
-                            sett = false
-                        }
             }
             
             HStack(alignment: .bottom){
