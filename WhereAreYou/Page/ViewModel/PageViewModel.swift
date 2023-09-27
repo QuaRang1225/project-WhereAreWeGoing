@@ -21,11 +21,6 @@ class PageViewModel:ObservableObject{
     @Published var pages:[Page] = []
     @Published var schedules:[Schedule] = []
     
-    //-----------프로필 선택 ---------------
-    @Published var data:Data? = nil
-    @Published var selection:PhotosPickerItem? = nil
-    
-    
     //---------- 기타공유 프로퍼티 -----------
     @Published var copy = false
     @Published var photo:String?
@@ -43,28 +38,29 @@ class PageViewModel:ObservableObject{
     //
     
     //페이지 생성
-    func creagtePage(user:UserData,pageInfo:Page){
+    func creagtePage(user:UserData,pageInfo:Page,item:PhotosPickerItem?){
         
         Task{
             var url:URL? = nil
             var path:String? = nil
 
-            if let data = try await selection?.loadTransferable(type: Data.self){
+            if let data = try await item?.loadTransferable(type: Data.self){
                 path = try await StorageManager.shared.saveImage(data:data,userId: user.userId, mode: .page)
                 url = try await StorageManager.shared.getUrlForImage(path: path ?? "")
             }
-            try await PageManager.shared.createUserPage(userId: user.userId,url: url ,path: path, pageInfo: pageInfo)
+            let pageId = try await PageManager.shared.createUserPage(userId: user.userId,url: url ,path: path, pageInfo: pageInfo)
+            try await UserManager.shared.updatePages(userId: user.userId, pagesId: pageId)
             addDismiss.send()
         }
     }
     //페이지 수정
-    func updatePage(user:UserData,pageInfo:Page){
+    func updatePage(user:UserData,pageInfo:Page,item:PhotosPickerItem?){
         
         Task{
             var url:String? = nil
             var path:String? = nil
             
-            if let data = try await selection?.loadTransferable(type: Data.self){
+            if let data = try await item?.loadTransferable(type: Data.self){
                 if let image = pageInfo.pageImagePath{
                     if image != ""{    //원래 사진이 있고(아예없거나 비어있을때) 다른 사진으로 바꾸는 경우
                         try await StorageManager.shared.deleteImage(path: image)
@@ -83,18 +79,27 @@ class PageViewModel:ObservableObject{
         }
     }
     //페이지 삭제
-    func deletePage(userId:String,page:Page){
+    func deletePage(user:UserData,page:Page){
         Task{
-            guard let path = page.pageImagePath else { return }
-            try await StorageManager.shared.deleteImage(path: path) //페이지 이미지가 없을 경우 필요가 없는 부분
-            try await PageManager.shared.deleteUserPage(userId:userId,pageId: page.pageId)
+            if let path = page.pageImagePath{
+                try await StorageManager.shared.deleteImage(path: path) //페이지 이미지가 없을 경우 필요가 없는 부분
+            }
+            try await PageManager.shared.deleteUserPage(pageId: page.pageId)    //본인 페이지 삭제
+            try await PageManager.shared.updateMemberPage(userId:user.userId,pageId: page.pageId)   //본인 정보에서 페이지id 삭제
+            if let members = page.members{
+                for member in members {
+                    try await PageManager.shared.updateMemberPage(userId:member,pageId: page.pageId)    //해당 페이지에 속한 모든 멤버정보에서도 페이지id 삭제
+                }
+            }
+            try await StorageManager.shared.deleteAllScheuleImage(path: user.userId)    //페이지에 속했었던 모든 스케쥴 사진 삭제 - 디렉토리를 알아서 삭제됨
             pageDismiss.send()
         }
     }
     //페이지 나감
     func outPage(user:UserData,page:Page){
         Task{
-            try await PageManager.shared.memberPage(user: user,pageId: page.pageId, cancel: true)
+            try await PageManager.shared.memberPage(user: user,pageId: page.pageId, cancel: true)   //본인 정보에 페이지id 삭제
+            try await PageManager.shared.updateMemberPage(userId:user.userId,pageId: page.pageId)   //기본 페이지에 본인 멤버 목록에서 삭제
             pageDismiss.send()
         }
     }
@@ -112,16 +117,16 @@ class PageViewModel:ObservableObject{
     }
     
     //
-    //--------------페이지-----------------------
+    //--------------스케쥴-----------------------
     //
     
     //일정 생성
-    func creagteShcedule(user:UserData,pageId:String,schedule:Schedule){
+    func creagteShcedule(user:UserData,pageId:String,schedule:Schedule,item:PhotosPickerItem?){
         
         Task{
             var url = URL(string: "")
             var path:String? = nil
-            if let data = try await selection?.loadTransferable(type: Data.self){
+            if let data = try await item?.loadTransferable(type: Data.self){
                 path = try await StorageManager.shared.saveImage(data:data,userId: user.userId, mode: .schedule)
                 url = try await StorageManager.shared.getUrlForImage(path: path ?? "")
             }
@@ -130,12 +135,12 @@ class PageViewModel:ObservableObject{
         }
     }
     //일정 수정
-    func updateSchedule(user:UserData,pageId:String,schedule:Schedule){
+    func updateSchedule(user:UserData,pageId:String,schedule:Schedule,item:PhotosPickerItem?){
         Task{
             var url:String? = nil
             var path:String? = nil
             
-            if let data = try await selection?.loadTransferable(type: Data.self){
+            if let data = try await item?.loadTransferable(type: Data.self){
                 if let image = schedule.imageUrlPath{
                     if image != ""{    //원래 사진이 있고(아예없거나 비어있을때) 다른 사진으로 바꾸는 경우
                         try await StorageManager.shared.deleteImage(path: image)

@@ -23,6 +23,7 @@ final class UserManager{
     private func userDocument(userId:String) -> DocumentReference{
         userCollection.document(userId)
     }
+ 
     
     
     //snakeCase적용 위함
@@ -80,17 +81,11 @@ final class UserManager{
         }
     }
     func updatePages(userId:String,pagesId:String) async throws{
-        let field = userDocument(userId: userId)
         let data:[String:Any] = ["pages":FieldValue.arrayUnion([pagesId])]
-        try await field.updateData(data)
+        print("유저정보에 페이지 정보저장")
+        try await userDocument(userId: userId).updateData(data)
     }
-//    func setData(userId:String)async throws{
-//        let field = pagesCollection.whereField("members", arrayContains: userId)
-//        let pages = try await field.getAllDocuments(as: Page.self)
-//        for page in pages {
-//            page.members.
-//        }
-//    }
+    
     func getSearchPage(text:String)async throws -> [Page]{
         
         var pages = try await pagesCollection.whereField("page_name", isGreaterThanOrEqualTo: text).getAllDocuments(as: Page.self)
@@ -98,5 +93,19 @@ final class UserManager{
         print(pages)
         return Array(Set(pages))
         
+    }
+    func deleteUser(user:UserData)async throws{
+        guard let pages = user.pages else {return}
+        print("계정삭제 중")
+        
+        try await userDocument(userId: user.userId).delete()    //본인 정보 삭제
+        try await StorageManager.shared.deleteImage(path: user.profileImagePath ?? "")  //본인 프로필 사진 삭제
+        
+    
+
+        for page in pages{
+            try await PageManager.shared.deleteUserPage(pageId: page)   //본인의 페이지 모두 삭제
+            try await PageManager.shared.memberPage(user: user, pageId: page, cancel: true) //본인이 속한 페이지에서 본인 정보 모두 삭제
+        }
     }
 }

@@ -13,12 +13,15 @@ import Combine
 @MainActor
 final class AuthViewModel:ObservableObject{
     
+    @Published var errorString:String = ""
+    
     @Published var user:UserData? = nil
     @Published var infoSetting:InfoSettingFilter = .nickname
     @Published var selectedItem: PhotosPickerItem? = nil
     @Published var selectedImageData: Data? = nil
     
     var changedSuccess = PassthroughSubject<(),Never>()
+    var deleteSuccess = PassthroughSubject<(),Never>()
     
     func signUp(email:String,password:String) async throws{
         do{
@@ -27,7 +30,12 @@ final class AuthViewModel:ObservableObject{
             try UserManager.shared.createNewUser(user: user!)
             print("가입 성공")
         }catch{
-            print("에러 발생: \(error)")
+            switch error.localizedDescription{
+            case "The password must be 6 characters long or more.":
+                return errorString = "비밀번호는 최소 6자 이상으로 해주세요!"
+            default:
+                return print("에러 발생: \(error.localizedDescription)")
+            }
         }
     }
     func signIn(email: String, password: String) async throws {
@@ -36,7 +44,12 @@ final class AuthViewModel:ObservableObject{
             user = try await UserManager.shared.getUser(userId: authUser.uid)
             print("인증 성공")
         } catch {
-            print("에러 발생: \(error.localizedDescription)")
+            switch error.localizedDescription{
+            case "There is no user record corresponding to this identifier. The user may have been deleted.":
+                return errorString = "사용자를 찾을 수 없습니다. 이메일 혹은 비밀번호를 확인해주세요!"
+            default:
+                return print("에러 발생: \(error.localizedDescription)")
+            }
         }
     }
     func updateNickname(userId:String,text:String){
@@ -104,10 +117,13 @@ final class AuthViewModel:ObservableObject{
         try? AuthManager.shared.signOut()
         user = nil
     }
-    func delete(){
+    func delete(user:UserData){
         Task{
-            try? await AuthManager.shared.delete()
-            user = nil
+            try await AuthManager.shared.delete()   //유저 정보 삭제
+            try await StorageManager.shared.deleteAllPageImage(path: "\(user.userId)")  //본인의 페이지 사진 모두 삭제
+            try await StorageManager.shared.deleteAllScheuleImage(path: "\(user.userId)")   //본인의 스케쥴 사진 모두 삭제
+            try await UserManager.shared.deleteUser(user: user)
+            
         }
     }
     func getUser(auth:AuthData){

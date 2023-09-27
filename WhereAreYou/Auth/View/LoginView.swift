@@ -10,6 +10,7 @@ import Firebase
 
 struct LoginView: View {
     
+    @State var error = false
     @State var isRegister = false
     @State var email = ""
     @State var password = ""
@@ -71,7 +72,6 @@ struct LoginView: View {
                                     Text("회원가입")
                                 }
                             }.font(.caption2)
-//                            Spacer()
                             .frame(maxWidth: .infinity)
                             
                         }
@@ -79,6 +79,12 @@ struct LoginView: View {
                     }
                 }
             }
+        }
+        .onChange(of: vm.errorString){ _ in
+            error = true
+        }
+        .alert(isPresented: $error){
+            Alert(title:Text("알림") ,message: Text(vm.errorString),dismissButton:.none)
         }
         .background{
             AuthBackground()

@@ -59,9 +59,7 @@ struct ProfileChangeView: View {
                     }
                     Divider()
                 }
-                
             }
-            
         }
         .foregroundColor(.black)
         .padding()
@@ -88,14 +86,15 @@ struct ProfileChangeView: View {
         })
         .confirmationDialog("계정 탈퇴", isPresented: $delete, actions: {
             Button(role:.destructive){
-                vmAuth.delete()
+                guard let user = vmAuth.user else {return}
+                vmAuth.delete(user: user)
+                vmAuth.user = nil
             } label: {
                 Text("탈퇴하기")
             }
         },message: {
             Text("정말 탈퇴 하시겠습니까?")
         })
-        
     }
 }
 

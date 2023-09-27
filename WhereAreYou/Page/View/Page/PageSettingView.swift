@@ -53,9 +53,9 @@ struct PageSettingView: View {
         .padding(.leading)
         .confirmationDialog("일정 수정", isPresented: $delete, actions: {
             Button(role:.destructive){
-                guard let page = vm.page else {return}
+                guard let page = vm.page,let user = vmAuth.user else {return}
                 deletePage = true
-                vm.deletePage(userId:vmAuth.user?.userId ?? "",page: page)
+                vm.deletePage(user:user,page: page)
             } label: {
                 Text("삭제하기")
             }

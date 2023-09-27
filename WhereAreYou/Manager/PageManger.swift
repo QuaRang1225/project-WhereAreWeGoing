@@ -32,7 +32,7 @@ final class PageManager{
     private func scheduleDocument(pageId:String,scheduleId:String) -> DocumentReference{
         pageDocument(pageId: pageId).collection("schedule").document(scheduleId)
     }
-    func createUserPage(userId:String,url:URL?,path:String?,pageInfo:Page)async throws{
+    func createUserPage(userId:String,url:URL?,path:String?,pageInfo:Page)async throws -> String{
         let document = pageCollection.document()
         
         let data:[String:Any] = [
@@ -47,13 +47,10 @@ final class PageManager{
             "date_range":pageInfo.dateRange,
             
         ]
-       
-       
-        
         
         print("페이지 생성중..")
         try await document.setData(data,merge: false)
-        try await UserManager.shared.updatePages(userId: userId, pagesId: document.documentID)
+        return document.documentID
         
     }
     func upadateUserPage(userId:String,url:String?,path:String?,pageInfo:Page)async throws{
@@ -142,15 +139,14 @@ final class PageManager{
         print("스케쥴 삭제중..")
         try await field.delete()
     }
-    func deleteUserPage(userId:String,pageId:String) async throws{
-        let field = pageDocument(pageId: pageId)
-        
+    func deleteUserPage(pageId:String) async throws{
+        try await pageDocument(pageId: pageId).delete()
+    }
+    func updateMemberPage(userId:String,pageId:String)async throws{
         let user = userDocument(userId: userId)
         let userdata:[String:Any] = ["pages":FieldValue.arrayRemove([pageId])]
         
-        print("페이지 삭제중..")
         try await user.updateData(userdata)
-        try await field.delete()
     }
     func getAllUserPage(userId:String)async throws -> [Page]{    //전체페이지 불러오기
         let pages = pageCollection.whereField("members", arrayContains: userId)

@@ -69,12 +69,16 @@ struct RegisterView: View {
                         .foregroundColor(.gray)
                         .padding(.leading)
                         .padding(.bottom)
-                    if let check = authCheck{
-                        Text(check.phraseText)
-                            .font(.caption)
-                            .foregroundColor(.red)
-                            .padding(.leading)
+                    Group{
+                        if let check = authCheck{
+                            Text(!vm.errorString.isEmpty ? vm.errorString: check.phraseText)
+                                .font(.caption)
+                                .foregroundColor(.red)
+                                .padding(.leading)
+                        }
+                        
                     }
+                   
                     SelectButton(color: .customCyan, textColor: .white, text: "회원가입") {
                         self.authCheck = invaildAuth()
                         if authCheck == .SUCCESS{
@@ -121,6 +125,9 @@ struct RegisterView: View {
         }
         .onTapGesture { //이거 넣으면 탭뷰 터치 안됨
             UIApplication.shared.endEditing()
+        }
+        .onDisappear{
+            vm.errorString = ""
         }
     }
     func invaildAuth() -> ErrorAuthFilter{

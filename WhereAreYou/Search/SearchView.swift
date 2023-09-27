@@ -27,6 +27,7 @@ struct SearchView: View {
                 Spacer()
                 SelectButton(color: !text.isEmpty ? .customCyan:.customCyan2.opacity(0.5), textColor:.white, text: "검색") {
                     Task{
+                        guard !text.isEmpty else {return}
                         pages = try await UserManager.shared.getSearchPage(text: text)
                         noResult = pages == [] ? true : false
                     }

@@ -22,8 +22,12 @@ struct AddScheduleView: View {
     @State var links:[String] = []
     @State var linktitles:[String] = []
     
+    
     @State var startDate = Date()
     @State var endDate = Date()
+    
+    @State var data:Data? = nil
+    @State var selection:PhotosPickerItem? = nil
     
     @EnvironmentObject var vmAuth:AuthViewModel
     @EnvironmentObject var vm:PageViewModel
@@ -101,10 +105,6 @@ struct AddScheduleView: View {
         .onAppear{
             modifyModeSchedule()
         }
-        .onDisappear{
-            vm.data = nil
-            vm.selection = nil
-        }
     }
 }
 
@@ -144,9 +144,9 @@ extension AddScheduleView{
                             guard let user  = vmAuth.user,let page = vm.page else { return }
                             let schedule = Schedule(id:vm.schedule?.id ?? "",imageUrl:vm.schedule?.imageUrl,imageUrlPath: vm.schedule?.imageUrlPath , category: locationSelect.name, title: title, startTime: startDate.toTimestamp(), endTime: endDate.toTimestamp(), content: text.replacingOccurrences(of: "\n", with: "\\n"), location: GeoPoint(latitude: (location.pickedPlaceMark?.location?.coordinate.latitude)!, longitude: (location.pickedPlaceMark?.location?.coordinate.longitude)!),link: linksArr)
                             if vm.schedule != nil{
-                                vm.updateSchedule(user: user, pageId: page.pageId, schedule: schedule)
+                                vm.updateSchedule(user: user, pageId: page.pageId, schedule: schedule, item: selection)
                             }else{
-                                vm.creagteShcedule(user: user, pageId: page.pageId, schedule: schedule)
+                                vm.creagteShcedule(user: user, pageId: page.pageId, schedule: schedule,item: selection)
                             }
                         } label: {
                             Text(vm.schedule != nil ? "변경" : "작성" )
@@ -164,10 +164,10 @@ extension AddScheduleView{
     }
     var photoPicker:some View{
         PhotosPicker(
-            selection: $vm.selection,
+            selection: $selection,
             matching: .images,
             photoLibrary: .shared()) {
-                if let selectedImageData = vm.data,
+                if let selectedImageData = data,
                    let uiImage = UIImage(data: selectedImageData) {
                     Image(uiImage: uiImage)
                         .resizable()
@@ -189,9 +189,9 @@ extension AddScheduleView{
                 }
             }
             .overlay(alignment:.topTrailing,content: {
-                if vm.data != nil || vm.schedule?.imageUrl != nil{
+                if data != nil || vm.schedule?.imageUrl != nil{
                     Button {
-                        vm.data = nil
+                        data = nil
                         vm.schedule?.imageUrl = nil
                         vm.schedule?.imageUrlPath = nil
                     } label: {
@@ -208,10 +208,10 @@ extension AddScheduleView{
                     
                 }
                 
-            }).onChange(of: vm.selection) { newItem in
+            }).onChange(of: selection) { newItem in
                 Task {
                     if let data = try? await newItem?.loadTransferable(type: Data.self) {
-                        vm.data = data
+                        self.data = data
                         
                     }
                 }

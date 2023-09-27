@@ -89,19 +89,7 @@ class TestClass{
         print("나이 추가")
         try await field.updateData(data)
     }
-    
-//    func readDocument() async throws -> [Doc]{  //읽기
-//        var docs:[Doc] = []
-//        let listener = collection.addSnapshotListener({ snapshot, error in
-//            guard let documents = snapshot?.documentChanges else {return}
-//            for change in documents{
-////                docs = try await collection.getAllDocuments(as: Doc.self)
-//                docs.append(try await change.document.reference.getDocument(as:Doc))
-//            }
-//        })
-//
-//        return docs
-//    }
+
 }
 
 struct TestView:View{
@@ -115,7 +103,6 @@ struct TestView:View{
                     .onTapGesture {
                         Task{
                             try await TestClass.instance.writeDocument(name: "유영웅")
-//                            self.docs = try await TestClass.instance.readDocument()
                         }
                     }
                    

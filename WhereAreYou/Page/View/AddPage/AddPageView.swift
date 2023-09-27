@@ -20,6 +20,10 @@ struct AddPageView: View {
     
     @State var isPage = false   //페이지 생성/수정 시 progressView 띄우기 위함
     @State var changedDate = false  //날짜 수정 시 해당 일자의 일정 모두 삭제의 허용을 묻는 문구
+    
+    @State var data:Data? = nil
+    @State var selection:PhotosPickerItem? = nil
+    
     @EnvironmentObject var vm:PageViewModel
     @EnvironmentObject var vmAuth:AuthViewModel
     @Environment(\.dismiss) var dismiss
@@ -44,6 +48,9 @@ struct AddPageView: View {
             
         }
         .onReceive(vm.addDismiss){
+            Task{
+                vmAuth.user = try await UserManager.shared.getUser(userId: vmAuth.user?.userId ?? "")
+            }
             dismiss()
         }
         .foregroundColor(.black)
@@ -58,10 +65,6 @@ struct AddPageView: View {
                     isPage = true
                     scheduleDelete()
                 }, secondaryButton: .cancel(Text("취소")))
-        }
-        .onDisappear{
-            vm.data = nil
-            vm.selection = nil
         }
     }
 }
@@ -94,7 +97,7 @@ extension AddPageView{
                         changedDate = true
                     }else{
                         isPage = true
-                        vm.creagtePage(user:user, pageInfo: Page(pageId: "", pageAdmin: "",pageImageUrl: "",pageImagePath: "", pageName: title, pageOverseas: overseas, pageSubscript: text, dateRange: vm.generateTimestamp(from: startDate, to: endDate)))
+                        vm.creagtePage(user:user, pageInfo: Page(pageId: "", pageAdmin: "",pageImageUrl: "",pageImagePath: "", pageName: title, pageOverseas: overseas, pageSubscript: text, dateRange: vm.generateTimestamp(from: startDate, to: endDate)),item: selection)
                     }
                 } label: {
                     Text(vm.page != nil ? "변경" : "완료")
@@ -120,10 +123,10 @@ extension AddPageView{
                 .foregroundColor(.gray)
                 .padding(.bottom)
             PhotosPicker(
-                selection: $vm.selection,
+                selection: $selection,
                 matching: .images,
                 photoLibrary: .shared()) {
-                    if let selectedImageData = vm.data,
+                    if let selectedImageData = data,
                        let uiImage = UIImage(data: selectedImageData) {
                         Image(uiImage: uiImage)
                             .resizable()
@@ -145,9 +148,9 @@ extension AddPageView{
                     }
                 }
                 .overlay(alignment:.topTrailing,content: {
-                    if vm.data != nil || vm.page?.pageImageUrl != nil{
+                    if data != nil || vm.page?.pageImageUrl != nil{
                         Button {
-                            vm.data = nil
+                            data = nil
                             vm.page?.pageImageUrl = nil
                             vm.page?.pageImagePath = nil
                         } label: {
@@ -163,10 +166,10 @@ extension AddPageView{
                     }
                     
                 })
-                .onChange(of: vm.selection) { newItem in
+                .onChange(of: selection) { newItem in
                     Task {
                         if let data = try? await newItem?.loadTransferable(type: Data.self) {
-                            vm.data = data
+                            self.data = data
                         }
                     }
                 }
@@ -269,7 +272,7 @@ extension AddPageView{
                 guard let schedule = vm.schedules.first(where: {$0.startTime == change}) else{ return }
                 vm.deleteSchedule(pageId: page.pageId, schedule: schedule)
             }
-            vm.updatePage(user: user, pageInfo: modifiedPage)
+            vm.updatePage(user: user, pageInfo: modifiedPage,item: selection)
         }
         
     }
