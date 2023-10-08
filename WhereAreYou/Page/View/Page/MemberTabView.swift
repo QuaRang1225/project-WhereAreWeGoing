@@ -31,6 +31,23 @@ struct MemberTabView: View {
                 }else{
                     ForEach(vm.member.filter({$0 != admin}),id:\.self){ member in
                         MemberListRowView(image: member.profileImageUrl ?? "", name: member.nickName ?? "",admin: false)
+                            .overlay(alignment:.trailing){
+                                if vmAuth.user?.userId == vm.page?.pageAdmin{
+                                    Button {
+                                        guard let page = vm.page else {return}
+                                        vm.kickMember(userId: member.userId, pageId: page.pageId)
+                                    } label: {
+                                        Text("강퇴")
+                                            .font(.caption)
+                                            .bold()
+                                            .foregroundColor(.white)
+                                            .padding(.horizontal)
+                                            .padding(5)
+                                            .background(Color.customCyan2.opacity(0.7))
+                                            .cornerRadius(20)
+                                    }
+                                }
+                            }
                     }
                 }
             }
@@ -63,6 +80,7 @@ struct MemberTabView: View {
         }
         .padding()
         .onAppear{
+            vm.getPage(pageId: vm.page?.pageId ?? "")
             guard let page = vm.page else {return}
             vm.getMembers(page: page)
         }

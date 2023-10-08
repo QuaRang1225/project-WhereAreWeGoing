@@ -2064,8 +2064,8 @@
             filePath = "WhereAreYou/Manager/UserManager.swift"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "97"
-            endingLineNumber = "97"
+            startingLineNumber = "95"
+            endingLineNumber = "95"
             landmarkName = "deleteUser(user:)"
             landmarkType = "7">
             <Locations>
@@ -2142,8 +2142,8 @@
             filePath = "WhereAreYou/Manager/UserManager.swift"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "100"
-            endingLineNumber = "100"
+            startingLineNumber = "98"
+            endingLineNumber = "98"
             landmarkName = "deleteUser(user:)"
             landmarkType = "7">
             <Locations>
@@ -2310,8 +2310,8 @@
             filePath = "WhereAreYou/Manager/UserManager.swift"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "101"
-            endingLineNumber = "101"
+            startingLineNumber = "99"
+            endingLineNumber = "99"
             landmarkName = "deleteUser(user:)"
             landmarkType = "7">
             <Locations>
@@ -2388,8 +2388,8 @@
             filePath = "WhereAreYou/Manager/UserManager.swift"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "102"
-            endingLineNumber = "102"
+            startingLineNumber = "100"
+            endingLineNumber = "100"
             landmarkName = "deleteUser(user:)"
             landmarkType = "7">
             <Locations>
@@ -2459,7 +2459,7 @@
       <BreakpointProxy
          BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
          <BreakpointContent
-            uuid = "D471C415-FABC-4345-A946-309A883C1911"
+            uuid = "CAFE1EBC-C891-4EFA-85B0-3D3FACF4BEAE"
             shouldBeEnabled = "No"
             ignoreCount = "0"
             continueAfterRunningActions = "No"
@@ -2468,84 +2468,6 @@
             endingColumnNumber = "9223372036854775807"
             startingLineNumber = "103"
             endingLineNumber = "103"
-            landmarkName = "deleteUser(user:)"
-            landmarkType = "7">
-            <Locations>
-               <Location
-                  uuid = "D471C415-FABC-4345-A946-309A883C1911 - f970622313c1a1b"
-                  shouldBeEnabled = "Yes"
-                  ignoreCount = "0"
-                  continueAfterRunningActions = "No"
-                  symbolName = "(5) suspend resume partial function for WhereAreYou.UserManager.deleteUser(user: WhereAreYou.UserData) async throws -&gt; ()"
-                  moduleName = "WhereAreYou"
-                  usesParentBreakpointCondition = "Yes"
-                  urlString = "file:///Users/quarang/Documents/QUARANG&apos;S/Project/WhereAreYou/WhereAreYou/Manager/UserManager.swift"
-                  startingColumnNumber = "9223372036854775807"
-                  endingColumnNumber = "9223372036854775807"
-                  startingLineNumber = "103"
-                  endingLineNumber = "103"
-                  offsetFromSymbolStart = "140">
-               </Location>
-               <Location
-                  uuid = "D471C415-FABC-4345-A946-309A883C1911 - 91726fc5c98b4512"
-                  shouldBeEnabled = "Yes"
-                  ignoreCount = "0"
-                  continueAfterRunningActions = "No"
-                  symbolName = "(6) await resume partial function for WhereAreYou.UserManager.deleteUser(user: WhereAreYou.UserData) async throws -&gt; ()"
-                  moduleName = "WhereAreYou"
-                  usesParentBreakpointCondition = "Yes"
-                  urlString = "file:///Users/quarang/Documents/QUARANG&apos;S/Project/WhereAreYou/WhereAreYou/Manager/UserManager.swift"
-                  startingColumnNumber = "9223372036854775807"
-                  endingColumnNumber = "9223372036854775807"
-                  startingLineNumber = "103"
-                  endingLineNumber = "103"
-                  offsetFromSymbolStart = "44">
-               </Location>
-               <Location
-                  uuid = "D471C415-FABC-4345-A946-309A883C1911 - be9a4fbed3655e19"
-                  shouldBeEnabled = "Yes"
-                  ignoreCount = "0"
-                  continueAfterRunningActions = "No"
-                  symbolName = "(7) suspend resume partial function for WhereAreYou.UserManager.deleteUser(user: WhereAreYou.UserData) async throws -&gt; ()"
-                  moduleName = "WhereAreYou"
-                  usesParentBreakpointCondition = "Yes"
-                  urlString = "file:///Users/quarang/Documents/QUARANG&apos;S/Project/WhereAreYou/WhereAreYou/Manager/UserManager.swift"
-                  startingColumnNumber = "9223372036854775807"
-                  endingColumnNumber = "9223372036854775807"
-                  startingLineNumber = "103"
-                  endingLineNumber = "103"
-                  offsetFromSymbolStart = "84">
-               </Location>
-               <Location
-                  uuid = "D471C415-FABC-4345-A946-309A883C1911 - b432a0e78bbe6b5c"
-                  shouldBeEnabled = "Yes"
-                  ignoreCount = "0"
-                  continueAfterRunningActions = "No"
-                  symbolName = "(16) suspend resume partial function for WhereAreYou.UserManager.deleteUser(user: WhereAreYou.UserData) async throws -&gt; ()"
-                  moduleName = "WhereAreYou"
-                  usesParentBreakpointCondition = "Yes"
-                  urlString = "file:///Users/quarang/Documents/QUARANG&apos;S/Project/WhereAreYou/WhereAreYou/Manager/UserManager.swift"
-                  startingColumnNumber = "9223372036854775807"
-                  endingColumnNumber = "9223372036854775807"
-                  startingLineNumber = "103"
-                  endingLineNumber = "103"
-                  offsetFromSymbolStart = "44">
-               </Location>
-            </Locations>
-         </BreakpointContent>
-      </BreakpointProxy>
-      <BreakpointProxy
-         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
-         <BreakpointContent
-            uuid = "CAFE1EBC-C891-4EFA-85B0-3D3FACF4BEAE"
-            shouldBeEnabled = "No"
-            ignoreCount = "0"
-            continueAfterRunningActions = "No"
-            filePath = "WhereAreYou/Manager/UserManager.swift"
-            startingColumnNumber = "9223372036854775807"
-            endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "107"
-            endingLineNumber = "107"
             landmarkName = "deleteUser(user:)"
             landmarkType = "7">
             <Locations>
@@ -2652,8 +2574,8 @@
             filePath = "WhereAreYou/Manager/UserManager.swift"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "108"
-            endingLineNumber = "108"
+            startingLineNumber = "104"
+            endingLineNumber = "104"
             landmarkName = "deleteUser(user:)"
             landmarkType = "7">
             <Locations>

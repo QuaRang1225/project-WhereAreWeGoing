@@ -98,7 +98,7 @@ class PageViewModel:ObservableObject{
     //페이지 나감
     func outPage(user:UserData,page:Page){
         Task{
-            try await PageManager.shared.memberPage(user: user,pageId: page.pageId, cancel: true)   //본인 정보에 페이지id 삭제
+            try await PageManager.shared.memberPage(userId: user.userId,pageId: page.pageId, cancel: true)   //본인 정보에 페이지id 삭제
             try await PageManager.shared.updateMemberPage(userId:user.userId,pageId: page.pageId)   //기본 페이지에 본인 멤버 목록에서 삭제
             pageDismiss.send()
         }
@@ -198,10 +198,18 @@ class PageViewModel:ObservableObject{
     //페이지 요청
     func requestPage(user:UserData,pageId:String,cancel:Bool){
         Task{
-            try await PageManager.shared.requestPage(user:user,pageId:pageId,cancel:!cancel)
+            try await PageManager.shared.requestPage(userId:user.userId,pageId:pageId,cancel:!cancel)
         }
     }
 
+    func kickMember(userId:String,pageId:String){
+        Task{
+            try await PageManager.shared.memberPage(userId:userId,pageId:pageId,cancel:true)
+            try await PageManager.shared.updateMemberPage(userId: userId, pageId: pageId)
+            let pageInfo = try await PageManager.shared.getPage(pageId: pageId)
+            (self.request,self.member) = try await PageManager.shared.getMembersInfo(page:pageInfo)
+        }
+    }
     
     //
     //-------------------------기타--------------------------
