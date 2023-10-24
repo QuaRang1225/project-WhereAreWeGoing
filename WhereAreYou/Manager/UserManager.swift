@@ -23,8 +23,6 @@ final class UserManager{
     private func userDocument(userId:String) -> DocumentReference{
         userCollection.document(userId)
     }
- 
-    
     
     //snakeCase적용 위함
     private let encoder:Firestore.Encoder = {
@@ -100,12 +98,10 @@ final class UserManager{
         
         try await userDocument(userId: user.userId).delete()    //본인 정보 삭제
         try await StorageManager.shared.deleteImage(path: user.profileImagePath ?? "")  //본인 프로필 사진 삭제
-        
-    
 
         for page in pages{
             try await PageManager.shared.deleteUserPage(pageId: page)   //본인의 페이지 모두 삭제
-            try await PageManager.shared.memberPage(user: user, pageId: page, cancel: true) //본인이 속한 페이지에서 본인 정보 모두 삭제
+            try await PageManager.shared.memberPage(userId: user.userId, pageId: page, cancel: true) //본인이 속한 페이지에서 본인 정보 모두 삭제
         }
     }
 }

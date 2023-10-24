@@ -62,14 +62,17 @@ struct LoginView: View {
                         HStack{
                             Spacer()
                             Group{
-                                Text("비밀번호 찾기").fixedSize(horizontal: true, vertical: false)
-                                Text("|")
-                                Text("아이디 찾기")
-                                Text("|")
+//                                Text("비밀번호 찾기").fixedSize(horizontal: true, vertical: false)
+//                                Text("|")
+//                                Text("아이디 찾기")
+//                                Text("|")
                                 Button {
                                     isRegister = true
                                 } label: {
-                                    Text("회원가입")
+                                    HStack{
+                                        Text("계정이 없으신가요?")
+                                        Text("회원가입").bold()
+                                    }
                                 }
                             }.font(.caption2)
                             .frame(maxWidth: .infinity)

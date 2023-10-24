@@ -119,19 +119,19 @@ final class PageManager{
         
     }
     
-    func requestPage(user:UserData,pageId:String,cancel:Bool) async throws{
+    func requestPage(userId:String,pageId:String,cancel:Bool) async throws{
         let pagePath = pageDocument(pageId: pageId)
-        let data:[String:Any] = ["request_user": cancel ? FieldValue.arrayRemove([user.userId]) : FieldValue.arrayUnion([user.userId])]
+        let data:[String:Any] = ["request_user": cancel ? FieldValue.arrayRemove([userId]) : FieldValue.arrayUnion([userId])]
         print("페이지 맴버 요청중..")
         try await pagePath.updateData(data)
     }
-    func memberPage(user:UserData,pageId:String,cancel:Bool) async throws{
+    func memberPage(userId:String,pageId:String,cancel:Bool) async throws{
         let pagePath = pageDocument(pageId: pageId)
         
-        let data:[String:Any] = ["members": cancel ? FieldValue.arrayRemove([user.userId]) : FieldValue.arrayUnion([user.userId])]
+        let data:[String:Any] = ["members": cancel ? FieldValue.arrayRemove([userId]) : FieldValue.arrayUnion([userId])]
         
         print(cancel ? "맴버 삭제중.." : "맴버 추가중..")
-        try await UserManager.shared.updatePages(userId: user.userId, pagesId: pageId)
+        try await UserManager.shared.updatePages(userId: userId, pagesId: pageId)
         try await pagePath.updateData(data)
     }
     func deleteUserSchedule(pageId:String,scheduleId:String) async throws{
@@ -167,8 +167,8 @@ final class PageManager{
         return try await scheduleDocument(pageId: pageId, scheduleId: scheduleId).getDocument(as:Schedule.self)
     }
     func acceptUser(pageId:String,requestUser:UserData)async throws{
-        try await requestPage(user: requestUser, pageId: pageId, cancel: true) //수락 후 요청 목록에서 삭제
-        try await memberPage(user: requestUser, pageId: pageId, cancel: false)   //맴버 리스트 추가
+        try await requestPage(userId: requestUser.userId, pageId: pageId, cancel: true) //수락 후 요청 목록에서 삭제
+        try await memberPage(userId: requestUser.userId, pageId: pageId, cancel: false)   //맴버 리스트 추가
         print("유저 요청 수락 중")
     }
     func getMembersInfo(page:Page)async throws -> ([UserData],[UserData]){
