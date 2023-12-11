@@ -106,15 +106,7 @@ extension SearchAddressView{
     }
     var search:some View{
         VStack(alignment: .leading){
-            HStack{
-                CustomTextField(placeholder: "지번,도로명으로 검색..", isSecure: false, color: .gray.opacity(0.8), text: $location.searchText)
-                Button {
-                    location.fetchPlaces(value: location.searchText)
-                } label: {
-                    Text("검색")
-                }
-                .padding(.trailing)
-            }
+            CustomTextField(placeholder: "지번,도로명으로 검색..", isSecure: false, color: .gray.opacity(0.8), text: $location.searchText)
             Button {
                 location.updatePlacemark(location: .init(latitude: location.mapRegion.center.latitude, longitude: location.mapRegion.center.longitude))
                 isAddress = true
