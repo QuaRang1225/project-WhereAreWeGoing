@@ -1,6 +1,7 @@
+![where 복사본](https://github.com/QuaRang1225/WhereAreYou/assets/31721255/1973ec08-839f-4a60-8438-6ef642a4a312)
 # 우리어디가
+<img width="989" alt="스크린샷 2023-12-04 오후 5 53 56" src="https://github.com/QuaRang1225/WhereAreYou/assets/31721255/b2e03aa2-0285-4373-bded-d6e063c7d908">
 
-![스크린샷 2023-12-04 오후 5.53.56.png](https://prod-files-secure.s3.us-west-2.amazonaws.com/c69fd57e-19b5-42cc-9103-f834beb12682/50c2cb20-df2d-45ac-87bf-ce6a78cfc5d7/%E1%84%89%E1%85%B3%E1%84%8F%E1%85%B3%E1%84%85%E1%85%B5%E1%86%AB%E1%84%89%E1%85%A3%E1%86%BA_2023-12-04_%E1%84%8B%E1%85%A9%E1%84%92%E1%85%AE_5.53.56.png)
 
 ---
 
@@ -28,27 +29,21 @@ https://github.com/QuaRang1225/WhereAreYou
 
 > **레이아웃**
 > 
+<img src="https://github.com/QuaRang1225/WhereAreYou/assets/31721255/3ce90d58-cec8-4cb7-b8a0-558eca253a2b" width="250" height="500">
 
-![페이지 작성화면](https://prod-files-secure.s3.us-west-2.amazonaws.com/c69fd57e-19b5-42cc-9103-f834beb12682/32499a1e-f689-4043-a7a5-0b917777d3ae/rounded-in-photoretrica_(1).png)
+<img src="https://github.com/QuaRang1225/WhereAreYou/assets/31721255/91d50567-a605-4ee7-88b1-ce27bb809acd" width="250" height="500">
 
-페이지 작성화면
-
-![메인화면](https://prod-files-secure.s3.us-west-2.amazonaws.com/c69fd57e-19b5-42cc-9103-f834beb12682/9699e06e-fa50-413f-83a6-07ef312af170/rounded-in-photoretrica_(4).png)
-
-메인화면
 
 **여행 페이지 작성 및 메인화면**
 
 - 전체 여행 스케쥴 정보를 담은 내용 작성 후 페이지 생성
 - 생성한 페이지는 내 일정 리스트에 추가됨
 
-![게시물 작성화면](https://prod-files-secure.s3.us-west-2.amazonaws.com/c69fd57e-19b5-42cc-9103-f834beb12682/3b1a5de1-51c8-4097-97c3-94e49509ad9f/rounded-in-photoretrica_(2).png)
+<img src="https://github.com/QuaRang1225/WhereAreYou/assets/31721255/62023fa1-b8ef-4207-b123-4d754ce32dcc" width="250" height="500">
 
-게시물 작성화면
+<img src="https://github.com/QuaRang1225/WhereAreYou/assets/31721255/329c045f-754d-462b-93e9-495ad2e43424" width="250" height="500">
 
-![일정 리스트 및 지도화면](https://prod-files-secure.s3.us-west-2.amazonaws.com/c69fd57e-19b5-42cc-9103-f834beb12682/ad3b585d-ee9a-4e8e-a3a1-2c9b96406f7d/Group_36.png)
 
-일정 리스트 및 지도화면
 
 **게시물 작성 화면**
 
@@ -57,14 +52,10 @@ https://github.com/QuaRang1225/WhereAreYou
 **일정 리스트 화면**
 
 - 작성된 일정은 페이지 멤버들은 모두 확인,수정,삭제가 가능하며 MapAnnotation으로도 확인가능
+<img src="https://github.com/QuaRang1225/WhereAreYou/assets/31721255/378a7cc3-f4d1-4cf4-baf4-eada3ca836d3" width="250" height="500">
 
-![페이지 검색화면](https://prod-files-secure.s3.us-west-2.amazonaws.com/c69fd57e-19b5-42cc-9103-f834beb12682/758a2ec6-27c7-4b93-a1f6-88ebe6ac0a5d/IMG_9504.png)
+<img src="https://github.com/QuaRang1225/WhereAreYou/assets/31721255/a9a4db21-54ef-48b4-a54e-1055b3accb96" width="250" height="500">
 
-페이지 검색화면
-
-![멤버 목록화면](https://prod-files-secure.s3.us-west-2.amazonaws.com/c69fd57e-19b5-42cc-9103-f834beb12682/c2fdb437-6ce4-4c9e-8b6a-00d704e1de05/IMG_7D2F2AB0AE88-1.jpeg)
-
-멤버 목록화면
 
 **페이지 검색화면** 
 
@@ -91,9 +82,10 @@ https://github.com/QuaRang1225/WhereAreYou
 > 여행지 검색은 어떤 방식으로 해야할까?
 > 
 
-![스크린샷 2023-12-04 오후 9.10.11.png](https://prod-files-secure.s3.us-west-2.amazonaws.com/c69fd57e-19b5-42cc-9103-f834beb12682/712ed74d-22fb-4731-b950-af4107f1a75c/%E1%84%89%E1%85%B3%E1%84%8F%E1%85%B3%E1%84%85%E1%85%B5%E1%86%AB%E1%84%89%E1%85%A3%E1%86%BA_2023-12-04_%E1%84%8B%E1%85%A9%E1%84%92%E1%85%AE_9.10.11.png)
+<img width="434" alt="스크린샷 2023-12-04 오후 9 10 11" src="https://github.com/QuaRang1225/WhereAreYou/assets/31721255/a4f1c628-b9ba-494b-8228-259fcf15d788">
 
-![스크린샷 2023-12-04 오후 9.23.39.png](https://prod-files-secure.s3.us-west-2.amazonaws.com/c69fd57e-19b5-42cc-9103-f834beb12682/5165b0ff-9a31-4e6c-bba6-239f32fdb235/%E1%84%89%E1%85%B3%E1%84%8F%E1%85%B3%E1%84%85%E1%85%B5%E1%86%AB%E1%84%89%E1%85%A3%E1%86%BA_2023-12-04_%E1%84%8B%E1%85%A9%E1%84%92%E1%85%AE_9.23.39.png)
+![스크린샷 2023-12-04 오후 9 23 39](https://github.com/QuaRang1225/WhereAreYou/assets/31721255/5cbb83c1-f6fe-4ec7-9066-d1814a1a22f0)
+
 
 검색 기능은 다음과 같은 방법을 사용했습니다.
 
