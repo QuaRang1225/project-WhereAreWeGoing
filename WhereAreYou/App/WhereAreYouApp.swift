@@ -21,8 +21,10 @@ struct WhereAreYouApp: App {
     @UIApplicationDelegateAdaptor(AppDelegate.self) var delegate
     var body: some Scene {
         WindowGroup {
-            ContentView()
-                .environment(\.colorScheme,.light)
+            NavigationStack{
+                ContentView()
+            }
+            .environment(\.colorScheme,.light)
         }
     }
 }

@@ -10,6 +10,7 @@ import PhotosUI
 import SwiftUI
 import Combine
 
+
 @MainActor
 final class AuthViewModel:ObservableObject{
     
@@ -44,13 +45,11 @@ final class AuthViewModel:ObservableObject{
         do {
             let authUser = try await AuthManager.shared.signInUser(email: email, password: password)
             user = try await UserManager.shared.getUser(userId: authUser.uid)
-            print("인증 성공")
+            errorString = ""
         } catch {
-            switch error.localizedDescription{
-            case "There is no user record corresponding to this identifier. The user may have been deleted.":
-                return errorString = "사용자를 찾을 수 없습니다. 이메일 혹은 비밀번호를 확인해주세요!"
-            default:
-                return print("에러 발생: \(error.localizedDescription)")
+            if let maybeError = error as NSError? {
+                guard email.isEmpty || password.isEmpty else { return  errorString = "입력하지 않은 부분이 존재합니다." }
+                errorString = ErrorManager.getErrorMessage(error: maybeError)
             }
         }
     }

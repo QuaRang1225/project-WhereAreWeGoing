@@ -27,6 +27,7 @@
 		81740BAA2A516B4900AAD0FE /* LocationManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 81740BA92A516B4900AAD0FE /* LocationManager.swift */; };
 		81740BAD2A516B7100AAD0FE /* exView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 81740BAC2A516B7100AAD0FE /* exView.swift */; };
 		8176A72E2B5FAEC200E9217F /* AuthSelectView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8176A72D2B5FAEC200E9217F /* AuthSelectView.swift */; };
+		8176A7302B5FC60900E9217F /* ErrorManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8176A72F2B5FC60900E9217F /* ErrorManager.swift */; };
 		817DCB2F2AA6FAA100844855 /* FirebaseAnalytics in Frameworks */ = {isa = PBXBuildFile; productRef = 817DCB2E2AA6FAA100844855 /* FirebaseAnalytics */; };
 		817DCB312AA6FAA100844855 /* FirebaseAnalyticsSwift in Frameworks */ = {isa = PBXBuildFile; productRef = 817DCB302AA6FAA100844855 /* FirebaseAnalyticsSwift */; };
 		817DCB332AA6FAA100844855 /* FirebaseAuth in Frameworks */ = {isa = PBXBuildFile; productRef = 817DCB322AA6FAA100844855 /* FirebaseAuth */; };
@@ -125,6 +126,7 @@
 		81740BA92A516B4900AAD0FE /* LocationManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocationManager.swift; sourceTree = "<group>"; };
 		81740BAC2A516B7100AAD0FE /* exView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = exView.swift; sourceTree = "<group>"; };
 		8176A72D2B5FAEC200E9217F /* AuthSelectView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuthSelectView.swift; sourceTree = "<group>"; };
+		8176A72F2B5FC60900E9217F /* ErrorManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ErrorManager.swift; sourceTree = "<group>"; };
 		8180A0B52AA03EBD00B90655 /* exTimestamp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = exTimestamp.swift; sourceTree = "<group>"; };
 		8180A0B72AA37BA500B90655 /* LinkWebView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LinkWebView.swift; sourceTree = "<group>"; };
 		818F67C62AA8AE18007A8E19 /* RequestPageView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RequestPageView.swift; sourceTree = "<group>"; };
@@ -273,6 +275,7 @@
 				81CE1AF22A5A536100ED87FF /* UserManager.swift */,
 				81234CD82A5BE84E007D9BB6 /* StorageManager.swift */,
 				8115A63B2A8367B300B7C3FE /* PageManger.swift */,
+				8176A72F2B5FC60900E9217F /* ErrorManager.swift */,
 			);
 			path = Manager;
 			sourceTree = "<group>";
@@ -591,7 +594,7 @@
 			attributes = {
 				BuildIndependentTargetsInParallel = 1;
 				LastSwiftUpdateCheck = 1430;
-				LastUpgradeCheck = 1430;
+				LastUpgradeCheck = 1520;
 				TargetAttributes = {
 					81D5BCA12A4FE9F5001842FD = {
 						CreatedOnToolsVersion = 14.3.1;
@@ -711,6 +714,7 @@
 				81D5BCF12A500586001842FD /* EmailAddress.swift in Sources */,
 				81F0B4952A9DB49200E58629 /* CalenderView.swift in Sources */,
 				81D5BCF52A501049001842FD /* RegisterView.swift in Sources */,
+				8176A7302B5FC60900E9217F /* ErrorManager.swift in Sources */,
 				813F52432A595AC500833427 /* AuthViewModel.swift in Sources */,
 				81D7B1DE2A5D450700D5AACD /* ProfileRowView.swift in Sources */,
 				81BA3E1B2A6FAC7700D38E93 /* PageMainView.swift in Sources */,
@@ -800,6 +804,7 @@
 				DEBUG_INFORMATION_FORMAT = dwarf;
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
 				ENABLE_TESTABILITY = YES;
+				ENABLE_USER_SCRIPT_SANDBOXING = YES;
 				GCC_C_LANGUAGE_STANDARD = gnu11;
 				GCC_DYNAMIC_NO_PIC = NO;
 				GCC_NO_COMMON_BLOCKS = YES;
@@ -860,6 +865,7 @@
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
 				ENABLE_NS_ASSERTIONS = NO;
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_USER_SCRIPT_SANDBOXING = YES;
 				GCC_C_LANGUAGE_STANDARD = gnu11;
 				GCC_NO_COMMON_BLOCKS = YES;
 				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;

@@ -45,6 +45,9 @@ struct CustomTextField: View {
         }
         .padding(.horizontal)
         .foregroundColor(.black)
+        .padding(.vertical)
+        .background(Color.gray.opacity(0.1))
+        .cornerRadius(10)
        
     }
 }

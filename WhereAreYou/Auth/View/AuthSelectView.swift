@@ -13,6 +13,7 @@ struct AuthSelectView: View {
     @EnvironmentObject var vm:AuthViewModel
     
     var body: some View {
+        
         VStack{
             header
             NavigationLink {
@@ -46,6 +47,7 @@ struct AuthSelectView: View {
         }
         .background{
             ZStack{
+                Color.white
                 Image("over")
                     .resizable()
                     .frame(width: 1000, height: 1000)
@@ -58,8 +60,9 @@ struct AuthSelectView: View {
                         }
                     }
                     .opacity(0.3)
-                Color.gray.opacity(0.1).ignoresSafeArea()
+                Color.gray.opacity(0.1)
             }
+            .ignoresSafeArea()
         }
     }
 }
@@ -67,6 +70,7 @@ struct AuthSelectView: View {
 #Preview {
     AuthSelectView()
         .environmentObject(AuthViewModel())
+        .environment(\.colorScheme, .light)
 }
 
 extension AuthSelectView{
