@@ -76,7 +76,6 @@ struct RegisterView: View {
                                 .foregroundColor(.red)
                                 .padding(.leading)
                         }
-                        
                     }
                    
                     SelectButton(color: .customCyan, textColor: .white, text: "회원가입") {
@@ -87,6 +86,7 @@ struct RegisterView: View {
                                     try await vm.signUp(email: "\(email)@\(mailStatus.name)", password: password)
                                 }catch{
                                     print("에러명 " + error.localizedDescription)
+                                    
                                 }
                             }
                         }

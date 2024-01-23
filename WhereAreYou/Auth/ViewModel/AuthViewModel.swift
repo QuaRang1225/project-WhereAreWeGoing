@@ -33,6 +33,8 @@ final class AuthViewModel:ObservableObject{
             switch error.localizedDescription{
             case "The password must be 6 characters long or more.":
                 return errorString = "비밀번호는 최소 6자 이상으로 해주세요!"
+            case "The email address is already in use by another account.":
+                return errorString = "이미 존재하는 이메일입니다!"
             default:
                 return print("에러 발생: \(error.localizedDescription)")
             }

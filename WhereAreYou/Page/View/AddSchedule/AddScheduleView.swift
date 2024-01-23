@@ -12,7 +12,6 @@ import FirebaseFirestore
 
 struct AddScheduleView: View {
     
-    
     @State var title = ""
     @State var text = ""
     @State var progress = false
@@ -139,10 +138,10 @@ extension AddScheduleView{
                             progress = true
                             for index in 0..<min(links.count, linktitles.count) {
                                 linksArr[linktitles[index]] = links[index]
-                                
                             }
-                            guard let user  = vmAuth.user,let page = vm.page else { return }
+                            guard let user = vmAuth.user,let page = vm.page else { return }
                             let schedule = Schedule(id:vm.schedule?.id ?? "",imageUrl:vm.schedule?.imageUrl,imageUrlPath: vm.schedule?.imageUrlPath , category: locationSelect.name, title: title, startTime: startDate.toTimestamp(), endTime: endDate.toTimestamp(), content: text.replacingOccurrences(of: "\n", with: "\\n"), location: GeoPoint(latitude: (location.pickedPlaceMark?.location?.coordinate.latitude)!, longitude: (location.pickedPlaceMark?.location?.coordinate.longitude)!),link: linksArr)
+                            
                             if vm.schedule != nil{
                                 vm.updateSchedule(user: user, pageId: page.pageId, schedule: schedule, item: selection)
                             }else{
