@@ -2682,8 +2682,8 @@
             filePath = "WhereAreYou/Auth/ViewModel/AuthViewModel.swift"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "121"
-            endingLineNumber = "121"
+            startingLineNumber = "117"
+            endingLineNumber = "117"
             landmarkName = "delete(user:)"
             landmarkType = "7">
          </BreakpointContent>
@@ -2746,8 +2746,8 @@
             filePath = "WhereAreYou/Auth/ViewModel/AuthViewModel.swift"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "123"
-            endingLineNumber = "123"
+            startingLineNumber = "119"
+            endingLineNumber = "119"
             landmarkName = "delete(user:)"
             landmarkType = "7">
             <Locations>

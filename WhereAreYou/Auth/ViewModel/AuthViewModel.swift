@@ -29,15 +29,11 @@ final class AuthViewModel:ObservableObject{
             let authUser = try await AuthManager.shared.createUser(email: email, password: password) //값을 굳이 안쓰고 컴파일러에 값이 있을
             try UserManager.shared.createNewUser(user: UserData(auth: authUser))
             user = UserData(auth: authUser)
-            print("가입 성공")
+            errorString = ""
         }catch{
-            switch error.localizedDescription{
-            case "The password must be 6 characters long or more.":
-                return errorString = "비밀번호는 최소 6자 이상으로 해주세요!"
-            case "The email address is already in use by another account.":
-                return errorString = "이미 존재하는 이메일입니다!"
-            default:
-                return print("에러 발생: \(error.localizedDescription)")
+            if let maybeError = error as NSError? {
+                guard email.isEmpty || password.isEmpty else { return  errorString = "입력하지 않은 부분이 존재합니다." }
+                errorString = ErrorManager.getErrorMessage(error: maybeError)
             }
         }
     }
