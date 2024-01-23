@@ -28,7 +28,6 @@ struct RegisterView: View {
                     passwordInputView
                     passwordConfirmInputView
                     registerButton
-                    
                 }
             }
         }
@@ -139,16 +138,10 @@ extension RegisterView{
     var registerButton:some View{
         VStack(alignment: .leading){
             SelectButton(color: .customCyan, textColor: .white, text: "회원가입") {
-               
-                    Task{
-                        do{
-                            try await vm.signUp(email: "\(email)@\(mailStatus.name)", password: password)
-                        }catch{
-                            print("에러명 " + error.localizedDescription)
-                            
-                        }
-                    }
-                
+                Task{
+                    guard password != passwordConfirm else { return  vm.errorString = "입력하지 않은 부분이 존재합니다." }
+                    try await vm.signUp(email: "\(email)@\(mailStatus.name)", password: password)
+                }
             }
             .padding(.top)
             Text("비밀번호는 8~20자 사이 대,소문자와 숫자, !_@$%^&+= 등의 기호를 사용할수 있습니다.")

@@ -45,6 +45,7 @@ final class AuthViewModel:ObservableObject{
         } catch {
             if let maybeError = error as NSError? {
                 guard email.isEmpty || password.isEmpty else { return  errorString = "입력하지 않은 부분이 존재합니다." }
+                
                 errorString = ErrorManager.getErrorMessage(error: maybeError)
             }
         }
