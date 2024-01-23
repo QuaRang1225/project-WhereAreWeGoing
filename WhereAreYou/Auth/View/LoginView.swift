@@ -15,44 +15,25 @@ struct LoginView: View {
     @State var email = ""
     @State var password = ""
     @State var mailStatus:EmailAddress = .gmail
+    
+    @Environment(\.dismiss) var dismiss
     @EnvironmentObject var vm:AuthViewModel
     @FocusState private var focus:FormField?
     
     var body: some View {
         VStack(spacing: 25){
-            Text("로그인하기")
-                .font(.title)
-                .bold()
-                .frame(maxWidth: .infinity,alignment: .leading)
-                .padding(.leading)
-                .padding(.bottom,30)
+           header
             ScrollView(showsIndicators: false){
                 VStack(alignment: .leading) {
-                    Text("이메일")
-                        .bold()
-                        .padding(.leading)
-                    HStack{
-                        CustomTextField(placeholder: "입력..", isSecure: false, color: .customCyan, text: $email)
-                            .textContentType(.emailAddress)
-                            .disableAutocorrection(true)
-                            .submitLabel(.next)
-                            .focused($focus, equals:FormField.email)
-                        Text("@")
-                        Picker("", selection: $mailStatus) {
-                            ForEach(EmailAddress.allCases,id: \.self){
-                                Text($0.name)
-                            }
-                        }
-                        .accentColor(.black)
-                    }
+                    emailView
                     Text("비밀번호")
                         .bold()
                         .padding(.leading)
-                    CustomTextField(placeholder: "입력..", isSecure: true,color: .customCyan, text: $password)
+                    CustomTextField(placeholder: "입력..", isSecure: true, text: $password)
                         .textContentType(.password)
                         .submitLabel(.done)
                         .focused($focus, equals:FormField.password)
-                    SelectButton(color: .customCyan, textColor: .white, text: "로그인") {
+                    SelectButton(color: .white, textColor: .gray, text: "로그인") {
                         Task{
                             try await vm.signIn(email: "\(email)@\(mailStatus.name)", password: password)
                         }
@@ -83,16 +64,13 @@ struct LoginView: View {
                 }
             }
         }
+        .background(Color.gray.opacity(0.1))
         .onChange(of: vm.errorString){ _ in
             error = true
         }
         .alert(isPresented: $error){
             Alert(title:Text("알림") ,message: Text(vm.errorString),dismissButton:.none)
         }
-        .background{
-            AuthBackground()
-        }
-        .foregroundColor(.black)
         .onSubmit {
             switch focus {
             case .email:
@@ -121,4 +99,43 @@ struct LoginView_Previews: PreviewProvider {
     }
 }
 
-
+extension LoginView{
+    var header:some View{
+        HStack{
+            Button {
+                dismiss()
+            } label: {
+                Image(systemName: "chevron.left")
+            }
+            Text("로그인하기")
+                
+        }
+        .foregroundStyle(.black)
+        .font(.title)
+        .bold()
+        .frame(maxWidth: .infinity,alignment: .leading)
+        .padding(.leading)
+        .padding(.bottom,30)
+    }
+    var emailView:some View{
+        VStack{
+            Text("이메일")
+                .bold()
+                .padding(.leading)
+            HStack{
+                CustomTextField(placeholder: "입력..", isSecure: false,text: $email)
+                    .textContentType(.emailAddress)
+                    .disableAutocorrection(true)
+                    .submitLabel(.next)
+                    .focused($focus, equals:FormField.email)
+                Text("@")
+                Picker("", selection: $mailStatus) {
+                    ForEach(EmailAddress.allCases,id: \.self){
+                        Text($0.name)
+                    }
+                }
+                .accentColor(.black)
+            }
+        }
+    }
+}

@@ -2839,8 +2839,8 @@
             filePath = "WhereAreYou/Manager/StorageManager.swift"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "66"
-            endingLineNumber = "66"
+            startingLineNumber = "67"
+            endingLineNumber = "67"
             landmarkName = "deleteAllPageImage(path:)"
             landmarkType = "7">
             <Locations>
@@ -2917,8 +2917,8 @@
             filePath = "WhereAreYou/Manager/StorageManager.swift"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "62"
-            endingLineNumber = "62"
+            startingLineNumber = "63"
+            endingLineNumber = "63"
             landmarkName = "deleteAllPageImage(path:)"
             landmarkType = "7">
          </BreakpointContent>
@@ -2933,8 +2933,8 @@
             filePath = "WhereAreYou/Manager/StorageManager.swift"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "63"
-            endingLineNumber = "63"
+            startingLineNumber = "64"
+            endingLineNumber = "64"
             landmarkName = "deleteAllPageImage(path:)"
             landmarkType = "7">
             <Locations>

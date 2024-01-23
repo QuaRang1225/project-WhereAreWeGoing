@@ -21,9 +21,10 @@ struct InfoSettingTabView: View {
                 .environmentObject(vm)
         }
         .tabViewStyle(.page)
-        .background{
-            AuthBackground()
+        .onAppear{
+            vm.infoSetting = .nickname
         }
+        
     }
 }
 

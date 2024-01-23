@@ -26,8 +26,8 @@ final class AuthViewModel:ObservableObject{
     func signUp(email:String,password:String) async throws{
         do{
             let authUser = try await AuthManager.shared.createUser(email: email, password: password) //값을 굳이 안쓰고 컴파일러에 값이 있을
+            try UserManager.shared.createNewUser(user: UserData(auth: authUser))
             user = UserData(auth: authUser)
-            try UserManager.shared.createNewUser(user: user!)
             print("가입 성공")
         }catch{
             switch error.localizedDescription{
@@ -122,6 +122,7 @@ final class AuthViewModel:ObservableObject{
     func delete(user:UserData){
         Task{
             try await AuthManager.shared.delete()   //유저 정보 삭제
+            try await StorageManager.shared.deleteImage(path: "/\(user.userId)")
             try await StorageManager.shared.deleteAllPageImage(path: "\(user.userId)")  //본인의 페이지 사진 모두 삭제
             try await StorageManager.shared.deleteAllScheuleImage(path: "\(user.userId)")   //본인의 스케쥴 사진 모두 삭제
             try await UserManager.shared.deleteUser(user: user)

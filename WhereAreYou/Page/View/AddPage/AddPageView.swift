@@ -174,9 +174,9 @@ extension AddPageView{
                     }
                 }
                 .padding(.bottom)
-            CustomTextField(placeholder: "제목..", isSecure: false,color: .black, text: $title)
+            CustomTextField(placeholder: "제목..", isSecure: false,text: $title)
                 .padding(.horizontal,100)
-            CustomTextField(placeholder: "소개글을 작성해주세요..", isSecure: false,color: .black, text: $text)
+            CustomTextField(placeholder: "소개글을 작성해주세요..", isSecure: false, text: $text)
                 .padding()
         }
     }

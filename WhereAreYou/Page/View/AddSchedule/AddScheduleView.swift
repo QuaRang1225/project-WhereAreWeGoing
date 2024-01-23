@@ -64,7 +64,7 @@ struct AddScheduleView: View {
                         Text("제목")
                             .bold()
                             .padding(.trailing)
-                        CustomTextField(placeholder: "일정의 제목을 입력해주세요", isSecure: false, color: .black, text: $title)
+                        CustomTextField(placeholder: "일정의 제목을 입력해주세요", isSecure: false, text: $title)
                     }
                     .padding(.leading)
                     .padding(.bottom,10)
@@ -256,7 +256,7 @@ extension AddScheduleView{
                         .padding(.vertical,3).environment(\.colorScheme, .light)
                     HStack(spacing: 0) {
                         Image(systemName: "link")
-                        CustomTextField(placeholder: "링크\(index + 1)", isSecure: false, color: .gray, text: $links[index])
+                        CustomTextField(placeholder: "링크\(index + 1)", isSecure: false,  text: $links[index])
                     }
                 }
             }

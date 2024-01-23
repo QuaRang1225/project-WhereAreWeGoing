@@ -23,7 +23,7 @@ struct NickNameView: View {
                 .padding(.vertical,30)
                 .foregroundColor(.black)
             ScrollView {
-                CustomTextField(placeholder: "입력..", isSecure: false, color: .customCyan, text: $text)
+                CustomTextField(placeholder: "입력..", isSecure: false, text: $text)
                     .padding(.top,50)
                 Text("닉네임을 설정하지 않을 시 이메일로 자동설정 되며. 이후에 변경할 수 있습니다.")
                     .foregroundColor(.gray)

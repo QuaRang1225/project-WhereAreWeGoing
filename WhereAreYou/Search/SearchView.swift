@@ -23,7 +23,7 @@ struct SearchView: View {
                     .foregroundColor(.black)
                     .padding(.bottom)
                     .bold()
-                CustomTextField(placeholder: "페이지명 혹은 페이지ID를 입력해주세요..", isSecure: false,color: .customCyan, text: $text)
+                CustomTextField(placeholder: "페이지명 혹은 페이지ID를 입력해주세요..", isSecure: false, text: $text)
                 Spacer()
                 SelectButton(color: !text.isEmpty ? .customCyan:.customCyan2.opacity(0.5), textColor:.white, text: "검색") {
                     Task{
