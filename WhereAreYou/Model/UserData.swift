@@ -20,7 +20,16 @@ struct UserData:Codable,Hashable{
     var pages:[String]?
     var guestMode:Bool
     
-    
+    init(userId:String,nickname:String?,email:String?,dateCreated:String,profileImageUrl:String?,profileImagePath:String?,pages:[String],guestMode:Bool){
+        self.userId = userId
+        self.nickName = nickname
+        self.email = email
+        self.dateCreated = dateCreated
+        self.profileImagePath = profileImagePath
+        self.profileImageUrl = profileImageUrl
+        self.pages = pages
+        self.guestMode = guestMode
+    }
     init(auth:AuthData){  //처음 값을 저장할때 - 인증
         self.userId = auth.uid
         self.email = auth.email

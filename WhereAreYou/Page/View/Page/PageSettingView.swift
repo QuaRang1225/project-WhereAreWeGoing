@@ -80,7 +80,7 @@ struct PageSettingView: View {
 struct PageSettingView_Previews: PreviewProvider {
     static var previews: some View {
         PageSettingView(page: CustomDataSet.shared.page(), deletePage: .constant(true))
-            .environmentObject(AuthViewModel())
+            .environmentObject(AuthViewModel(user: CustomDataSet.shared.user()))
             .environmentObject(PageViewModel())
     }
 }

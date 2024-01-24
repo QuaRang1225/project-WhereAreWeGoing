@@ -80,7 +80,7 @@ struct CustomPhotoPicker: View {
 struct CustomPhotoPicker_Previews: PreviewProvider {
     static var previews: some View {
         CustomPhotoPicker()
-            .environmentObject(AuthViewModel())
+            .environmentObject(AuthViewModel(user: CustomDataSet.shared.user()))
     }
 }
 

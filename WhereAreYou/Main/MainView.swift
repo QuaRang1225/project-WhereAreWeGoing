@@ -12,7 +12,7 @@ import Kingfisher
 
 struct MainView: View {
     
-    
+//    @State var profile = false
     @State var area:TravelFilter = .all
     @StateObject var location = LocationMagager()
     @StateObject var vm = PageViewModel()
@@ -36,20 +36,26 @@ struct MainView: View {
                     .resizable()
                     .frame(width: 120,height: 30)
                 Spacer()
+//                Button {
+//                    profile = true
+//                } label: {
+//                    KFImage(URL(string: (vmAuth.user?.profileImageUrl)!))
+//                }
+
             }
             .font(.title3)
             .padding(.horizontal)
             .bold().padding(.bottom,10)
             Divider()
             ScrollView{
-                profile
+                profileView
                 search
                 collection
                 filter
                 page
             }
             
-            .background(Color.gray.opacity(0.1))
+//            .background(Color.gray.opacity(0.1))
         }
         .foregroundColor(.black)
         .background(Color.white)
@@ -69,13 +75,13 @@ struct MainView_Previews: PreviewProvider {
     static var previews: some View {
         NavigationStack{
             MainView()
-                .environmentObject(AuthViewModel())
+                .environmentObject(AuthViewModel(user: CustomDataSet.shared.user()))
         }
     }
 }
 
 extension MainView{
-    var profile:some View{
+    var profileView:some View{
         VStack{
             Text("내 프로필").font(.subheadline).padding(.leading)
                 .bold()

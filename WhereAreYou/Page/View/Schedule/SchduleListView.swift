@@ -93,7 +93,7 @@ struct SchduleListView_Previews: PreviewProvider {
     static var previews: some View {
         SchduleListView()
             .environmentObject(PageViewModel())
-            .environmentObject(AuthViewModel())
+            .environmentObject(AuthViewModel(user: CustomDataSet.shared.user()))
             .background(Color.white.ignoresSafeArea())
     }
 }

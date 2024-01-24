@@ -46,6 +46,6 @@ struct ProfileRowView: View {
 struct ProfileRowView_Previews: PreviewProvider {
     static var previews: some View {
         ProfileRowView()
-            .environmentObject(AuthViewModel())
+            .environmentObject(AuthViewModel(user: CustomDataSet.shared.user()))
     }
 }

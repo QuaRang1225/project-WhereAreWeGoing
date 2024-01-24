@@ -53,7 +53,7 @@ struct RegisterView_Previews: PreviewProvider {
     static var previews: some View {
         RegisterView()
             .environment(\.colorScheme,.light)
-            .environmentObject(AuthViewModel())
+            .environmentObject(AuthViewModel(user: CustomDataSet.shared.user()))
     }
 }
 

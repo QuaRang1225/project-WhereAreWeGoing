@@ -115,7 +115,7 @@ struct PageMainView_Previews: PreviewProvider {
         NavigationStack{
             PageMainView(page: CustomDataSet.shared.page())
                 .environmentObject(PageViewModel())
-                .environmentObject(AuthViewModel())
+                .environmentObject(AuthViewModel(user: CustomDataSet.shared.user()))
         }
     }
 }

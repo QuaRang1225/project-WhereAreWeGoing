@@ -97,7 +97,7 @@ struct AuthSelectView: View {
 
 #Preview {
     AuthSelectView()
-        .environmentObject(AuthViewModel())
+        .environmentObject(AuthViewModel(user: CustomDataSet.shared.user()))
         .environment(\.colorScheme, .light)
 }
 

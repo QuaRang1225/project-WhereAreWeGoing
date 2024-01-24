@@ -101,6 +101,6 @@ struct ProfileChangeView: View {
 struct ProfileChangeView_Previews: PreviewProvider {
     static var previews: some View {
         ProfileChangeView()
-            .environmentObject(AuthViewModel())
+            .environmentObject(AuthViewModel(user: CustomDataSet.shared.user()))
     }
 }

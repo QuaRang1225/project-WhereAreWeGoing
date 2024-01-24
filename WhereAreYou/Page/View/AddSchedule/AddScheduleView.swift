@@ -112,7 +112,7 @@ struct AddScheduleView_Previews: PreviewProvider {
         AddScheduleView(isPage: .constant(true))
             .environmentObject(PageViewModel())
             .environmentObject(LocationMagager())
-            .environmentObject(AuthViewModel())
+            .environmentObject(AuthViewModel(user: CustomDataSet.shared.user()))
     }
 }
 extension AddScheduleView{

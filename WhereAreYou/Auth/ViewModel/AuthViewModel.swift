@@ -24,6 +24,10 @@ final class AuthViewModel:ObservableObject{
     var changedSuccess = PassthroughSubject<(),Never>()
     var deleteSuccess = PassthroughSubject<(),Never>()
     
+    
+    init(user:UserData?){
+        self.user = user
+    }
     func signUp(email:String,password:String) async throws{
         do{
             let authUser = try await AuthManager.shared.createUser(email: email, password: password) //값을 굳이 안쓰고 컴파일러에 값이 있을

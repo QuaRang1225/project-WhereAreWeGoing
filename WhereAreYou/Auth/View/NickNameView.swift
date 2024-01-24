@@ -47,7 +47,7 @@ struct NickNameView: View {
 struct NickNameView_Previews: PreviewProvider {
     static var previews: some View {
         NickNameView()
-            .environmentObject(AuthViewModel())
+            .environmentObject(AuthViewModel(user: CustomDataSet.shared.user()))
     }
 }
 

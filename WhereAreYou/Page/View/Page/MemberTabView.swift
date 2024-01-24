@@ -92,7 +92,7 @@ struct MemberTabView_Previews: PreviewProvider {
         
         MemberTabView()
             .environmentObject(PageViewModel())
-            .environmentObject(AuthViewModel())
+            .environmentObject(AuthViewModel(user: CustomDataSet.shared.user()))
         
     }
 }

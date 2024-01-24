@@ -150,6 +150,6 @@ struct ProfileSelectView: View {
 struct ProfileSelectView_Previews: PreviewProvider {
     static var previews: some View {
         ProfileSelectView()
-            .environmentObject(AuthViewModel())
+            .environmentObject(AuthViewModel(user: CustomDataSet.shared.user()))
     }
 }

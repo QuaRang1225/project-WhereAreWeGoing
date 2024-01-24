@@ -31,7 +31,7 @@ struct InfoSettingTabView: View {
 struct InfoSelectTabView_Previews: PreviewProvider {
     static var previews: some View {
         InfoSettingTabView()
-            .environmentObject(AuthViewModel())
+            .environmentObject(AuthViewModel(user: CustomDataSet.shared.user()))
     }
 }
 

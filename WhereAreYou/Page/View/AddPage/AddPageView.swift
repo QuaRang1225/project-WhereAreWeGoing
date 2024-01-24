@@ -72,7 +72,7 @@ struct AddPageView: View {
 struct AddPageView_Previews: PreviewProvider {
     static var previews: some View {
         AddPageView()
-            .environmentObject(AuthViewModel())
+            .environmentObject(AuthViewModel(user: CustomDataSet.shared.user()))
             .environmentObject(PageViewModel())
     }
 }

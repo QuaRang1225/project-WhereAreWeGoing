@@ -14,8 +14,8 @@
             filePath = "WhereAreYou/Auth/ViewModel/AuthViewModel.swift"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "27"
-            endingLineNumber = "27"
+            startingLineNumber = "31"
+            endingLineNumber = "31"
             landmarkName = "signUp(email:password:)"
             landmarkType = "7">
             <Locations>
@@ -2682,8 +2682,8 @@
             filePath = "WhereAreYou/Auth/ViewModel/AuthViewModel.swift"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "136"
-            endingLineNumber = "136"
+            startingLineNumber = "140"
+            endingLineNumber = "140"
             landmarkName = "delete(user:)"
             landmarkType = "7">
          </BreakpointContent>
@@ -2698,8 +2698,8 @@
             filePath = "WhereAreYou/Main/MainView.swift"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "57"
-            endingLineNumber = "57"
+            startingLineNumber = "63"
+            endingLineNumber = "63"
             landmarkName = "body"
             landmarkType = "24">
             <Locations>
@@ -2746,8 +2746,8 @@
             filePath = "WhereAreYou/Auth/ViewModel/AuthViewModel.swift"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "138"
-            endingLineNumber = "138"
+            startingLineNumber = "142"
+            endingLineNumber = "142"
             landmarkName = "delete(user:)"
             landmarkType = "7">
             <Locations>

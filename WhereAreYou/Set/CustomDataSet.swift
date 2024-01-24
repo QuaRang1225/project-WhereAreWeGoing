@@ -43,5 +43,8 @@ class CustomDataSet{
          
          ]
     }
+    func user() ->UserData{
+        UserData(userId: "4KYzTqO9HthK3nnOUAyIMKcaxa03", nickname: "콰랑", email: "dbduddnd1225@gmail.com", dateCreated: "2023년 07월 29일", profileImageUrl:"https://firebasestorage.googleapis.com:443/v0/b/whereareyou-66f3a.appspot.com/o/users%2FKZ9JPJYGB2NnoDfjz3Ayq9X1d8D3%2F94F078A6-F6A0-4606-AB47-2FA3DD021BF0.jpeg?alt=media&token=96bdd7de-70ca-46fd-9fee-14db1db4177c", profileImagePath: "users/KZ9JPJYGB2NnoDfjz3Ayq9X1d8D3/94F078A6-F6A0-4606-AB47-2FA3DD021BF0.jpeg", pages: [], guestMode: true)
+    }
 
 }

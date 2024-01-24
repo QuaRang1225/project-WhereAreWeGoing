@@ -118,6 +118,6 @@ struct RequestPageView_Previews: PreviewProvider {
     static var previews: some View {
         RequestPageView(page: .constant(CustomDataSet.shared.page()))
             .environmentObject(PageViewModel())
-            .environmentObject(AuthViewModel())
+            .environmentObject(AuthViewModel(user: CustomDataSet.shared.user()))
     }
 }
