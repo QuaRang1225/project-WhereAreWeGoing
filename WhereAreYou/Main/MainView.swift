@@ -12,7 +12,11 @@ import Kingfisher
 
 struct MainView: View {
     
-//    @State var profile = false
+    @State var currentPage = 0
+    @GestureState var dragOffset:CGFloat = 0
+    
+    
+    @State var profile = false
     @State var area:TravelFilter = .all
     @StateObject var location = LocationMagager()
     @StateObject var vm = PageViewModel()
@@ -30,34 +34,93 @@ struct MainView: View {
     
     var body: some View {
         VStack(alignment: .leading,spacing: 0){
+            header
             
-            HStack(spacing: 20){
-                Image("lofo")
-                    .resizable()
-                    .frame(width: 120,height: 30)
+            HStack{
+                VStack(alignment: .leading){
+                    if let user = vmAuth.user {
+                        Group{
+                            Text((user.nickName ?? "") + "님,")
+                            Text("안녕하세요.")
+                                .padding(.bottom,10)
+                        }
+                        .foregroundColor(.black)
+                        .font(.title2)
+                        Group{
+                            Text("여행을 추가하여 리더가 되고,")
+                            Text("여행을 찾아 팀원이 될 수 있어요.")
+                                .padding(.bottom)
+                        }
+                        .foregroundColor(.black.opacity(0.7))
+                        
+                    }
+                    button()
+                    
+                }
+                .padding(.leading)
                 Spacer()
-//                Button {
-//                    profile = true
-//                } label: {
-//                    KFImage(URL(string: (vmAuth.user?.profileImageUrl)!))
-//                }
-
+                Image("triper")
+                    .resizable()
+                    .frame(width: 150,height: 220)
             }
-            .font(.title3)
-            .padding(.horizontal)
-            .bold().padding(.bottom,10)
-            Divider()
-            ScrollView{
-                profileView
-                search
-                collection
-                filter
-                page
+            .bold()
+            .padding(.top)
+            .padding(.bottom)
+            search
+            VStack(alignment:.leading){
+                Text("내 페이지")
+                    .font(.title2)
+                    .padding(.bottom)
+                HStack{
+                    VStack(alignment:.leading){
+                        Text("송도")
+                        Text("송도가 좋은게~ 유흥가가 없어~")
+                            .font(.subheadline)
+                            .opacity(0.6)
+                    }
+                    Spacer()
+                    Text("D-15")
+                        .font(.largeTitle)
+                }
+                
             }
-            
-//            .background(Color.gray.opacity(0.1))
+            .bold()
+            .padding()
+            .foregroundColor(.black)
+            Spacer()
+            ZStack{
+                ForEach(0..<CustomDataSet.shared.images.count,id:\.self){ index in
+                    KFImage(URL(string: CustomDataSet.shared.images[index]))
+                        .resizable()
+                        .frame(width:290,height: 200)
+                        .shadow(radius: 5)
+                        .opacity(currentPage == index ? 1.0 : 0.5)
+                        .scaleEffect(currentPage == index ? 1.2 : 0.8)
+                        .cornerRadius(10)
+                        .offset(x:CGFloat(index - currentPage) * 300 + dragOffset)
+                }
+            }
+            .frame(maxWidth:.infinity)
+            .gesture(
+                DragGesture()
+                    .onEnded({ value in
+                        let threshold:CGFloat = 50
+                        if value.translation.width > threshold{
+                            withAnimation {
+                                currentPage = max(0,currentPage - 1)
+                            }
+                        }else if value.translation.width < -threshold{
+                            withAnimation {
+                                currentPage = min(CustomDataSet.shared.images.count-1,currentPage + 1)
+                            }
+                        }
+                    })
+            )
+            .padding(.bottom,20)
         }
-        .foregroundColor(.black)
+        .sheet(isPresented: $profile){
+            ProfileChangeView()
+        }
         .background(Color.white)
         .onAppear{
             guard let user = vmAuth.user else {return}
@@ -81,25 +144,63 @@ struct MainView_Previews: PreviewProvider {
 }
 
 extension MainView{
-    var profileView:some View{
-        VStack{
-            Text("내 프로필").font(.subheadline).padding(.leading)
-                .bold()
-                .frame(maxWidth: .infinity,alignment: .leading).padding(.top,30)
-            VStack(spacing: 0){
-                NavigationStack{
-                    ProfileRowView()
-                        .listRowSeparator(.hidden)  //리스트 줄 없앰
-                        .listRowBackground(Color.clear)
-                        .environmentObject(vmAuth)
-                        .navigationBarBackButtonHidden()
-                    
+    var header:some View{
+        HStack(spacing: 20){
+            Image("lofo")
+                .resizable()
+                .frame(width: 120,height: 30)
+            Spacer()
+            Button {
+                profile = true
+            } label: {
+                if let profile = vmAuth.user?.profileImageUrl{
+                    KFImage(URL(string: (profile)))
+                        .resizable()
+                        .frame(width: 50,height: 50)
+                        .clipShape(/*@START_MENU_TOKEN@*/Circle()/*@END_MENU_TOKEN@*/)
+                }else{
+                    ProgressView()
+                        .environment(\.colorScheme, .light)
                 }
-            }.background(Color.white.frame(height: 100)
-                .cornerRadius(10).shadow(radius: 0.5, y: 1))
-            .padding(10)
-            .padding(.top,15)
+                
+            }
             
+        }
+        .font(.title3)
+        .padding(.horizontal)
+        .bold()
+        .padding(.bottom,10)
+    }
+    
+    func button() -> some View{
+        HStack{
+            NavigationLink{
+                AddPageView()
+                    .environmentObject(PageViewModel())
+                    .environmentObject(vmAuth)
+                    .navigationBarBackButtonHidden()
+            } label:{
+                Capsule()
+                    .frame(width: 100,height: 50)
+                    .foregroundColor(.customCyan3)
+                    .overlay {
+                        Text("여행 추가")
+                            .foregroundStyle(.white)
+                    }
+            }
+            NavigationLink{
+                CalenderView()
+                    .environmentObject(vm)
+                    .navigationBarBackButtonHidden()
+            } label:{
+                Capsule()
+                    .stroke(lineWidth: 1)
+                    .frame(width: 100,height: 50)
+                    .overlay {
+                        Text("여행 일정")
+                    }
+                    .foregroundColor(.customCyan3)
+            }
         }
     }
     
@@ -118,111 +219,47 @@ extension MainView{
                     HStack{
                         Image(systemName: "magnifyingglass")
                             .padding(.leading)
+                            .foregroundColor(.gray)
                         Text("찾으시는 페이지가 있으세요?").font(.subheadline).foregroundColor(.gray.opacity(0.5))
                     }
                 }
         }.padding(.top,30).padding(.horizontal,10)
     }
     
-    var collection:some View{
-        HStack{
-            NavigationLink {
-                AddPageView()
-                    .environmentObject(PageViewModel())
-                    .environmentObject(vmAuth)
-                    .navigationBarBackButtonHidden()
-            } label: {
-                RoundedRectangle(cornerRadius: 10)
-                    .frame(height: 100)
-                    .foregroundColor(.cyan.opacity(0.1))
-                    .shadow(radius: 1)
-                    .overlay{
-                        Circle()
-                            .overlay{
-                                Circle()
-                                    .offset(x:40)
-                                    .padding()
-                            }
-                            .overlay{
-                                Circle()
-                                    .offset(x:-40)
-                                    .padding(25)
-                            }
-                            .foregroundColor(.white)
-                            .padding(10)
-                        VStack{
-                            Image("travel")
-                                .resizable()
-                                .frame(width: 50, height: 50)
-                                .background(alignment:.bottom){
-                                    Ellipse()
-                                        .frame(height:3)
-                                        .foregroundColor(.black.opacity(0.5))
-                                        .offset(y:1)
-                                }
-                            Text("여행추가")
-                                .bold()
-                                .font(.caption)
-                        }
-                        
-                    }
-            }
-            NavigationLink {
-                CalenderView()
-                    .environmentObject(vm)
-                    .navigationBarBackButtonHidden()
-            } label: {
-                RoundedRectangle(cornerRadius: 10)
-                    .frame(height: 100)
-                    .foregroundColor(.white)
-                    .shadow(radius: 0.3)
-                    .overlay{
-                        VStack{
-                            Image("calender")
-                                .resizable()
-                                .frame(width: 50, height: 50)
-                            Text("일정확인")
-                                .bold()
-                                .font(.caption)
-                        }
-                    }
-            }
-            
-        }.padding(.horizontal,10).padding(.top,10)
-    }
-    var filter:some View{
-        VStack(alignment: .leading){
-            Text("내 일정").font(.subheadline).bold()
-            ScrollView(.horizontal,showsIndicators: false){
-                HStack{
-                    ForEach(TravelFilter.allCases,id:\.self){ item in
-                        Button {
-                            area = item
-                        } label: {
-                            RoundedRectangle(cornerRadius: 10)
-                                .frame(width: 100,height: 30)
-                                .shadow(radius: 2,y:2)
-                                .foregroundColor(item == area ? .gray.opacity(0.3):.white)
-                                .overlay{
-                                    HStack(spacing: 3) {
-                                        Text(item.image)
-                                        Text(item.name)
-                                    }
-                                    .bold()
-                                    .font(.caption)
-                                    .foregroundColor(.black)
-                                }
-                                .padding(.vertical,3)
-                        }
-                    }
-                }
-            }
-            .bold()
-            .font(.body)
-            .frame(maxWidth: .infinity,alignment: .leading)
-        }.padding(.horizontal,7.5)
-            .padding(.top,10)
-    }
+    
+    //    var filter:some View{
+    //        VStack(alignment: .leading){
+    //            Text("내 일정").font(.subheadline).bold()
+    //            ScrollView(.horizontal,showsIndicators: false){
+    //                HStack{
+    //                    ForEach(TravelFilter.allCases,id:\.self){ item in
+    //                        Button {
+    //                            area = item
+    //                        } label: {
+    //                            RoundedRectangle(cornerRadius: 10)
+    //                                .frame(width: 100,height: 30)
+    //                                .shadow(radius: 2,y:2)
+    //                                .foregroundColor(item == area ? .gray.opacity(0.3):.white)
+    //                                .overlay{
+    //                                    HStack(spacing: 3) {
+    //                                        Text(item.image)
+    //                                        Text(item.name)
+    //                                    }
+    //                                    .bold()
+    //                                    .font(.caption)
+    //                                    .foregroundColor(.black)
+    //                                }
+    //                                .padding(.vertical,3)
+    //                        }
+    //                    }
+    //                }
+    //            }
+    //            .bold()
+    //            .font(.body)
+    //            .frame(maxWidth: .infinity,alignment: .leading)
+    //        }.padding(.horizontal,7.5)
+    //            .padding(.top,10)
+    //    }
     var page:some View{
         VStack(spacing:0){
             ForEach(selectFilter,id:\.self){ page in
