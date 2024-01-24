@@ -16,7 +16,6 @@ struct RegisterView: View {
     @State var mailStatus:EmailAddress = .gmail
     
     @FocusState private var focus:FormField?
-    @Environment(\.dismiss)var dismiss
     @EnvironmentObject var vm:AuthViewModel
     
     var body: some View {
@@ -59,21 +58,13 @@ struct RegisterView_Previews: PreviewProvider {
 
 extension RegisterView{
     var header:some View{
-        HStack{
-            Button {
-                dismiss()
-            } label: {
-                Image(systemName: "chevron.left")
-            }
-            Text("회원가입하기")
-                
-        }
+        Text("회원가입하기")
         .foregroundStyle(.black)
         .font(.title)
         .bold()
         .frame(maxWidth: .infinity,alignment: .leading)
         .padding(.leading)
-        .padding(.bottom,30)
+        .padding(.vertical,30)
     }
     var emailInputView:some View{
         VStack(alignment: .leading) {
@@ -138,8 +129,8 @@ extension RegisterView{
     var registerButton:some View{
         VStack(alignment: .leading){
             SelectButton(color: .customCyan, textColor: .white, text: "회원가입") {
+                guard password != passwordConfirm else { return  vm.errorString = "비밀번호가 일치하지 않습니다." }
                 Task{
-                    guard password != passwordConfirm else { return  vm.errorString = "입력하지 않은 부분이 존재합니다." }
                     try await vm.signUp(email: "\(email)@\(mailStatus.name)", password: password)
                 }
             }

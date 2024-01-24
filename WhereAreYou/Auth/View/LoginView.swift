@@ -15,7 +15,7 @@ struct LoginView: View {
     @State var password = ""
     @State var mailStatus:EmailAddress = .gmail
     
-    @Environment(\.dismiss) var dismiss
+   
     @EnvironmentObject var vm:AuthViewModel
     @FocusState private var focus:FormField?
     
@@ -62,21 +62,13 @@ struct LoginView_Previews: PreviewProvider {
 
 extension LoginView{
     var header:some View{
-        HStack{
-            Button {
-                dismiss()
-            } label: {
-                Image(systemName: "chevron.left")
-            }
-            Text("로그인하기")
-                
-        }
+        Text("로그인하기")
         .foregroundStyle(.black)
         .font(.title)
         .bold()
         .frame(maxWidth: .infinity,alignment: .leading)
         .padding(.leading)
-        .padding(.bottom,30)
+        .padding(.vertical,30)
     }
     var emailInputView:some View{
         VStack(alignment: .leading){

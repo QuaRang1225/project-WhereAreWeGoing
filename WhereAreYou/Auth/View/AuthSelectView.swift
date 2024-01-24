@@ -9,6 +9,8 @@ import SwiftUI
 
 struct AuthSelectView: View {
     
+    @State var login = false
+    @State var register = false
     @State private var rotation: Double = 0.0
     @EnvironmentObject var vm:AuthViewModel
     
@@ -16,53 +18,75 @@ struct AuthSelectView: View {
         
         VStack{
             header
-            NavigationLink {
-                LoginView()
-                    .environmentObject(vm)
+            ZStack{
+                
+                Image("space")
+                    .resizable()
+                    .frame(width: 300,height:250)
+                Image("earth")
+                    .resizable()
+                    .rotationEffect(.degrees(rotation))
+                    .overlay{
+                        Image("shade")
+                            .resizable()
+                            .offset(x:18,y:14)
+                            .frame(width: 175,height: 175)
+                    }
+                    .frame(width: 200,height: 200)
+                    .padding(.top,120)
+                    .onAppear() {
+                        withAnimation(.linear(duration: 80).repeatForever()){
+                            self.rotation = 360.0 // 초기 회전 각도 설정
+                        }
+                    }
+                Image("plain")
+                    .resizable()
+                    .frame(width: 70,height: 70)
+                    .offset(y:-40)
+                
+                
+            }
+            Button {
+                login = true
             } label: {
                 Text("로그인 하기")
                     .foregroundStyle(.white)
                     .frame(maxWidth: .infinity)
                     .padding(.vertical)
-                    .background(Color.customCyan2)
+                    .background(Color.customCyan3)
                     .cornerRadius(10)
                     .bold()
                     .padding(.horizontal)
             }
             .padding(.bottom,5)
-            NavigationLink {
-                RegisterView()
-                    .environmentObject(vm)
+            Button {
+                register = true
             } label: {
-                Text("회원가입 하기")
-                    .foregroundStyle(.black.opacity(0.8))
-                    .frame(maxWidth: .infinity)
-                    .padding(.vertical)
-                    .background(Color.white)
-                    .cornerRadius(10)
-                    .bold()
+                RoundedRectangle(cornerRadius: 10)
+                    
+                    .stroke(.gray,lineWidth:1)
+                    .foregroundStyle(.white)
+                    .frame(height: 50)
+                    .padding(0.5)
+                    .background()
+                    .overlay{
+                        Text("회원가입 하기")
+                            .foregroundStyle(.black)
+                    }
                     .padding(.horizontal)
             }
             Spacer()
         }
         .background{
-            ZStack{
-                Color.white
-                Image("over")
-                    .resizable()
-                    .frame(width: 1000, height: 1000)
-                    .foregroundColor(.blue)
-                    .rotationEffect(.degrees(rotation))
-                    .offset(y:500)
-                    .onAppear() {
-                        withAnimation(.linear(duration: 60).repeatForever()){
-                            self.rotation = 360.0 // 초기 회전 각도 설정
-                        }
-                    }
-                    .opacity(0.3)
-                Color.gray.opacity(0.1)
-            }
-            .ignoresSafeArea()
+            Color.white.ignoresSafeArea()
+        }
+        .sheet(isPresented: $login) {
+            LoginView()
+                .environmentObject(vm)
+        }
+        .sheet(isPresented: $register) {
+            RegisterView()
+                .environmentObject(vm)
         }
     }
 }
@@ -79,10 +103,10 @@ extension AuthSelectView{
             VStack(alignment: .leading){
                 Text("환영합니다.")
                     .font(.largeTitle)
-                    .bold()
                     .padding(.bottom,5)
-                Text("여행.. 준비됐어요..?")
+                Text("우리 어디갈까요?")
             }
+            .bold()
             Spacer()
         }
         .padding(.horizontal)
