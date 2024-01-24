@@ -12,9 +12,9 @@ import Kingfisher
 
 struct MainView: View {
     
-    @State var currentPage = 0
+    @State var currentPageIndex = 0
     @GestureState var dragOffset:CGFloat = 0
-    
+    @State var currentPage:Page?
     
     @State var profile = false
     @State var area:TravelFilter = .all
@@ -22,65 +22,27 @@ struct MainView: View {
     @StateObject var vm = PageViewModel(page: nil, pages: [])
     @EnvironmentObject var vmAuth:AuthViewModel
     
-    var selectFilter:[Page]{
-        if area == .domestic{
-            return vm.pages.filter({$0.pageOverseas == false})
-        }else if area == .overseas{
-            return vm.pages.filter({$0.pageOverseas == true})
-        }else{
-            return vm.pages
-        }
-    }
+  
     
     var body: some View {
         VStack(alignment: .leading,spacing: 0){
             header
-            
-            HStack{
-                VStack(alignment: .leading){
-                    if let user = vmAuth.user {
-                        Group{
-                            Text((user.nickName ?? "") + "님,")
-                            Text("안녕하세요.")
-                                .padding(.bottom,10)
-                        }
-                        .foregroundColor(.black)
-                        .font(.title2)
-                        Group{
-                            Text("여행을 추가하여 리더가 되고,")
-                            Text("여행을 찾아 팀원이 될 수 있어요.")
-                                .padding(.bottom)
-                        }
-                        .foregroundColor(.black.opacity(0.7))
-                        
-                    }
-                    button()
-                    
-                }
-                .padding(.leading)
-                Spacer()
-                Image("triper")
-                    .resizable()
-                    .frame(width: 150,height: 220)
+            ScrollView(showsIndicators: false){
+               contents
+                search
+                page
             }
-            .bold()
-            .padding(.top)
-            .padding(.bottom)
-            search
-            page
         }
         .sheet(isPresented: $profile){
             ProfileChangeView()
         }
-        .background(Color.white)
-        .onAppear{
-            guard let user = vmAuth.user else {return}
-            vm.getPages(user: user)
-            
+        .background{
+            Color.white.ignoresSafeArea()
         }
-        .refreshable {
-            guard let user = vmAuth.user else {return}
-            vm.getPages(user: user)
+        .onAppear{
+                guard let user = vmAuth.user else {return}
+                vm.getPages(user: user)
+    
         }
     }
 }
@@ -178,45 +140,57 @@ extension MainView{
     }
     var page:some View{
         VStack(alignment: .leading){
-            VStack(alignment:.leading){
-                Text("내 페이지")
-                    .font(.title2)
-                    .padding(.bottom)
-                HStack{
-                    VStack(alignment:.leading){
-                        Text(selectFilter[currentPage].pageName)
-                        Text(selectFilter[currentPage].pageSubscript)
-                            .font(.subheadline)
-                            .opacity(0.6)
-                    }
-                    Spacer()
-                    Text("D-15")
-                        .font(.largeTitle)
-                }
-                
-            }
-            .bold()
-            .padding()
-            .foregroundColor(.black)
-            Spacer()
+            Text("내 페이지")
+                .font(.title2)
+                .padding(.bottom)
+                .foregroundColor(.black)
+                .bold()
             ZStack{
-                ForEach(0..<selectFilter.count,id:\.self){ index in
-                    NavigationLink {
-                        PageMainView(page: selectFilter[index])
-                            .environmentObject(vm)
-                            .environmentObject(vmAuth)
-                            .navigationBarBackButtonHidden()
-                    } label: {
-                        KFImage(URL(string: selectFilter[index].pageImageUrl ?? ""))
+                ForEach(0..<vm.pages.count,id:\.self){ index in
+                    VStack(alignment:.leading){
+                        HStack{
+                            VStack(alignment:.leading){
+                                Text(vm.pages[index].pageName)
+                                Text(vm.pages[index].pageSubscript)
+                                    .foregroundStyle(.black.opacity(0.7))
+                                    .font(.subheadline)
+                                    .opacity(0.6)
+                            }
+                            .opacity(currentPageIndex == index ? 1.0 : 0)
+                            .bold()
+                            .foregroundColor(.black)
+                            Spacer()
+                            Text("D-15")
+                                .font(.largeTitle)
+                                .foregroundColor(.black)
+                        }
+                        
+                        KFImage(URL(string: vm.pages[index].pageImageUrl ?? ""))
                             .resizable()
-                            .frame(width:290,height: 200)
+                            .frame(width:vm.pages.count == 1 ? UIScreen.main.bounds.width - 20 : 300,height: vm.pages.count == 1 ? UIScreen.main.bounds.height/3 : UIScreen.main.bounds.height/4)
                             .shadow(radius: 5)
-                            .opacity(currentPage == index ? 1.0 : 0.5)
-                            .scaleEffect(currentPage == index ? 1.2 : 0.8)
+                            .overlay(alignment: .bottomTrailing) {
+                                NavigationLink {
+                                    PageMainView(page: vm.pages[index])
+                                        .environmentObject(vm)
+                                        .environmentObject(vmAuth)
+                                        .navigationBarBackButtonHidden()
+                                } label: {
+                                    HStack{
+                                        Image(systemName:"chevron.forward.circle.fill")
+                                    }
+                                    .font(.title)
+                                    .bold()
+                                    .foregroundColor(.white)
+                                    .shadow(radius: 10)
+                                    .offset(x:-40,y:-30)
+                                }
+                            }
+                            .opacity(currentPageIndex == index ? 1.0 : 0.5)
+                            .scaleEffect(currentPageIndex == index ? 1.2 : 0.8)
                             .cornerRadius(10)
-                            .offset(x:CGFloat(index - currentPage) * 300 + dragOffset)
+                            .offset(x:CGFloat(index - currentPageIndex) * 300 + dragOffset)
                     }
-                    
                 }
             }
             .frame(maxWidth:.infinity)
@@ -226,18 +200,51 @@ extension MainView{
                         let threshold:CGFloat = 50
                         if value.translation.width > threshold{
                             withAnimation {
-                                currentPage = max(0,currentPage - 1)
+                                currentPageIndex = max(0,currentPageIndex - 1)
                             }
                         }else if value.translation.width < -threshold{
                             withAnimation {
-                                currentPage = min(CustomDataSet.shared.images.count-1,currentPage + 1)
+                                currentPageIndex = min(vm.pages.count-1,currentPageIndex + 1)
                             }
                         }
                     })
             )
             .padding(.bottom,20)
         }
+        .padding()
         
+    }
+    var contents:some View{
+        HStack{
+            VStack(alignment: .leading){
+                if let user = vmAuth.user {
+                    Group{
+                        Text((user.nickName ?? "") + "님,")
+                        Text("안녕하세요.")
+                            .padding(.bottom,10)
+                    }
+                    .foregroundColor(.black)
+                    .font(.title2)
+                    Group{
+                        Text("여행을 추가하여 리더가 되고,")
+                        Text("여행을 찾아 팀원이 될 수 있어요.")
+                            .padding(.bottom)
+                    }
+                    .foregroundColor(.black.opacity(0.7))
+                    
+                }
+                button()
+                
+            }
+            .padding(.leading)
+            Spacer()
+            Image("triper")
+                .resizable()
+                .frame(width: 150,height: 220)
+        }
+        .bold()
+        .padding(.top)
+        .padding(.bottom)
     }
 }
 

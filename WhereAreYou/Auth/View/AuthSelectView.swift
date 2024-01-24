@@ -78,6 +78,7 @@ struct AuthSelectView: View {
             }
             Spacer()
         }
+        .environment(\.colorScheme, .light)
         .background{
             Color.white.ignoresSafeArea()
         }
