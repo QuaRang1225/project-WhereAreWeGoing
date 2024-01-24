@@ -30,6 +30,7 @@ struct RegisterView: View {
                 }
             }
         }
+        .background(Color.white)
         .navigationBarBackButtonHidden()
         .onSubmit {
             switch focus {
@@ -128,7 +129,7 @@ extension RegisterView{
     }
     var registerButton:some View{
         VStack(alignment: .leading){
-            SelectButton(color: .customCyan, textColor: .white, text: "회원가입") {
+            SelectButton(color: .customCyan3, textColor: .white, text: "회원가입") {
                 guard password != passwordConfirm else { return  vm.errorString = "비밀번호가 일치하지 않습니다." }
                 Task{
                     try await vm.signUp(email: "\(email)@\(mailStatus.name)", password: password)

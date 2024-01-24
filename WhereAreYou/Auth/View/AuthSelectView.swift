@@ -46,6 +46,7 @@ struct AuthSelectView: View {
                 
                 
             }
+            Spacer()
             Button {
                 login = true
             } label: {
@@ -82,12 +83,15 @@ struct AuthSelectView: View {
         }
         .sheet(isPresented: $login) {
             LoginView()
+                .environment(\.colorScheme,.light)
                 .environmentObject(vm)
         }
         .sheet(isPresented: $register) {
             RegisterView()
+                .environment(\.colorScheme,.light)
                 .environmentObject(vm)
         }
+        
     }
 }
 

@@ -26,7 +26,7 @@ struct LoginView: View {
                 VStack(alignment: .leading) {
                     emailInputView
                     passwordInputView
-                    SelectButton(color: .customCyan, textColor: .white, text: "로그인") {
+                    SelectButton(color: .customCyan3, textColor: .white, text: "로그인") {
                         Task{
                             try await vm.signIn(email: "\(email)@\(mailStatus.name)", password: password)
                         }
@@ -35,6 +35,7 @@ struct LoginView: View {
                 }
             }
         }
+        .background(Color.white)
         .navigationBarBackButtonHidden()
         .onSubmit {
             switch focus {
