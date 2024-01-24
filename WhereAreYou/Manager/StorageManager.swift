@@ -35,6 +35,7 @@ final class StorageManager{
     func getUrlForImage(path:String) async throws -> URL{   //메타데이터 경로 다운로드
         try await getProfileImageURL(path: path).downloadURL()
     }
+    
     func saveImage(data:Data,userId:String,mode:ImageSaveFilter)async throws -> String{
         
         let meta = StorageMetadata()

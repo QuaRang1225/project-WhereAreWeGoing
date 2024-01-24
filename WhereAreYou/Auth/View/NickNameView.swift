@@ -18,7 +18,7 @@ struct NickNameView: View {
             header
             ScrollView {
                 nicknameInputView
-                SelectButton(color: .customCyan, textColor: .white, text: "확인") {
+                SelectButton(color: .customCyan3, textColor: .white, text: "확인") {
                     withAnimation(.linear){
                         vm.user?.nickName = text
                         vm.infoSetting = InfoSettingFilter.profile
@@ -37,12 +37,10 @@ struct NickNameView: View {
                 .padding()
             }
         }
+        .background(.white)
         .onTapGesture { //이거 넣으면 탭뷰 터치 안됨
             UIApplication.shared.endEditing()
         }
-//        .onDisappear{
-//            UIApplication.shared.endEditing()
-//        }
     }
 }
 

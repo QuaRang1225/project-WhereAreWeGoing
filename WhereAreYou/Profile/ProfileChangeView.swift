@@ -71,9 +71,9 @@ struct ProfileChangeView: View {
                 .navigationBarBackButtonHidden()
         }
         .sheet(isPresented: $profile) {
-            ProfileSelectView(modify: true)
-            .environmentObject(vmAuth)
-            .navigationBarBackButtonHidden()
+//            ProfileSelectView(modify: true)
+//            .environmentObject(vmAuth)
+//            .navigationBarBackButtonHidden()
         }
         .confirmationDialog("로그아웃", isPresented: $logout, actions: {
             Button(role:.destructive){

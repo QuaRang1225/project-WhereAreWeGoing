@@ -57,7 +57,19 @@ final class AuthViewModel:ObservableObject{
             changedSuccess.send()
         }
     }
-    func saveProfileImage(item:PhotosPickerItem){
+    
+    func saveImageProfileImage(item:String){
+        Task{
+            guard var user else {return}
+            user.profileImageUrl = item
+            user.guestMode = false
+            try UserManager.shared.createNewUser(user: user)
+            self.user = user
+//            try await UserManager.shared.updateUserProfileImagePath(userId: user.userId, path: nil, url: profile)
+//                                vm.user?.guestMode =
+        }
+    }
+    func savePhotoProfileImage(item:PhotosPickerItem){
         guard var user else {return}
         
         Task{
@@ -65,13 +77,19 @@ final class AuthViewModel:ObservableObject{
            
             let path = try await StorageManager.shared.saveImage(data:data,userId: user.userId, mode: .profile)
             let url = try await StorageManager.shared.getUrlForImage(path: path)
+            user.profileImagePath = path
+            user.profileImageUrl = url.absoluteString
             user.guestMode = false
+//            user.guestMode = false
+//            try UserManager.shared.createNewUser(user: user)
+//            try await UserManager.shared.updateUserProfileImagePath(userId: user.userId, path: path,url: url.absoluteString)
             try UserManager.shared.createNewUser(user: user)
-            try await UserManager.shared.updateUserProfileImagePath(userId: user.userId, path: path,url: url.absoluteString)
-            
-            self.user = try await UserManager.shared.getUser(userId: user.userId)
+            self.user = user
+//            self.user = try await UserManager.shared.getUser(userId: user.userId)
         }
     }
+    
+    
     func deleteProfileImage(){
         guard let user,let path = user.profileImagePath else {return}
         

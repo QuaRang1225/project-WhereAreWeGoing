@@ -212,8 +212,8 @@
             filePath = "WhereAreYou/Manager/StorageManager.swift"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "38"
-            endingLineNumber = "38"
+            startingLineNumber = "39"
+            endingLineNumber = "39"
             landmarkName = "saveImage(data:userId:mode:)"
             landmarkType = "7">
             <Locations>
@@ -2682,8 +2682,8 @@
             filePath = "WhereAreYou/Auth/ViewModel/AuthViewModel.swift"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "118"
-            endingLineNumber = "118"
+            startingLineNumber = "136"
+            endingLineNumber = "136"
             landmarkName = "delete(user:)"
             landmarkType = "7">
          </BreakpointContent>
@@ -2746,8 +2746,8 @@
             filePath = "WhereAreYou/Auth/ViewModel/AuthViewModel.swift"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "120"
-            endingLineNumber = "120"
+            startingLineNumber = "138"
+            endingLineNumber = "138"
             landmarkName = "delete(user:)"
             landmarkType = "7">
             <Locations>
@@ -2839,8 +2839,8 @@
             filePath = "WhereAreYou/Manager/StorageManager.swift"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "67"
-            endingLineNumber = "67"
+            startingLineNumber = "68"
+            endingLineNumber = "68"
             landmarkName = "deleteAllPageImage(path:)"
             landmarkType = "7">
             <Locations>
@@ -2917,8 +2917,8 @@
             filePath = "WhereAreYou/Manager/StorageManager.swift"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "63"
-            endingLineNumber = "63"
+            startingLineNumber = "64"
+            endingLineNumber = "64"
             landmarkName = "deleteAllPageImage(path:)"
             landmarkType = "7">
          </BreakpointContent>
@@ -2933,8 +2933,8 @@
             filePath = "WhereAreYou/Manager/StorageManager.swift"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "64"
-            endingLineNumber = "64"
+            startingLineNumber = "65"
+            endingLineNumber = "65"
             landmarkName = "deleteAllPageImage(path:)"
             landmarkType = "7">
             <Locations>
