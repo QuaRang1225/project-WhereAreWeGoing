@@ -37,6 +37,10 @@ class PageViewModel:ObservableObject{
     //--------------페이지-----------------------
     //
     
+    init(page:Page?,pages:[Page]){
+        self.page = page
+        self.pages = pages
+    }
     //페이지 생성
     func creagtePage(user:UserData,pageInfo:Page,item:PhotosPickerItem?){
         

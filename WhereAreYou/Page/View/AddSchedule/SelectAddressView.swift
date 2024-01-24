@@ -126,7 +126,7 @@ struct SelectAddressView_Previews: PreviewProvider {
         SelectAddressView(isPage: .constant(true))
             .environmentObject(LocationMagager())
             .environmentObject(AuthViewModel(user: CustomDataSet.shared.user()))
-            .environmentObject(PageViewModel())
+            .environmentObject(PageViewModel(page: nil, pages: CustomDataSet.shared.pages()))
     }
 }
 

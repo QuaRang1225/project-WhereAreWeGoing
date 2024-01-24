@@ -231,7 +231,7 @@ struct ScheduleMapView: View {
 struct ScheduleMapView_Previews: PreviewProvider {
     static var previews: some View {
         ScheduleMapView(schedule: CustomDataSet.shared.schedule())
-            .environmentObject(PageViewModel())
+            .environmentObject(PageViewModel(page: nil, pages: CustomDataSet.shared.pages()))
     }
 }
 

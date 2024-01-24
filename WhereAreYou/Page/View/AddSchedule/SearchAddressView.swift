@@ -66,7 +66,7 @@ struct SearchAddressView_Previews: PreviewProvider {
     static var previews: some View {
         NavigationStack{
             SearchAddressView(geo: GeoPoint(latitude: 34, longitude: 127), isSearch: .constant(false))
-                .environmentObject(PageViewModel())
+                .environmentObject(PageViewModel(page: nil, pages: CustomDataSet.shared.pages()))
                 .environmentObject(AuthViewModel(user: CustomDataSet.shared.user()))
                 .environmentObject(LocationMagager())
         }

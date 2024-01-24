@@ -87,7 +87,7 @@ struct SearchView: View {
 struct SearchView_Previews: PreviewProvider {
     static var previews: some View {
         SearchView()
-            .environmentObject(PageViewModel())
+            .environmentObject(PageViewModel(page: nil, pages: CustomDataSet.shared.pages()))
             .environmentObject(AuthViewModel(user: CustomDataSet.shared.user()))
     }
 }

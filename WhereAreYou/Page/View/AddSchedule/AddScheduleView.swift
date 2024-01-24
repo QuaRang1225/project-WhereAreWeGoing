@@ -110,7 +110,7 @@ struct AddScheduleView: View {
 struct AddScheduleView_Previews: PreviewProvider {
     static var previews: some View {
         AddScheduleView(isPage: .constant(true))
-            .environmentObject(PageViewModel())
+            .environmentObject(PageViewModel(page: nil, pages: CustomDataSet.shared.pages()))
             .environmentObject(LocationMagager())
             .environmentObject(AuthViewModel(user: CustomDataSet.shared.user()))
     }

@@ -184,7 +184,7 @@ struct ScheduleRowView: View {
 struct ScheduleRowView_Previews: PreviewProvider {
     static var previews: some View {
         NavigationStack{
-            ScheduleRowView(schedule: CustomDataSet.shared.schedule(), num:1, binding: .constant(true)).environmentObject(AuthViewModel(user: CustomDataSet.shared.user())).environmentObject(PageViewModel())
+            ScheduleRowView(schedule: CustomDataSet.shared.schedule(), num:1, binding: .constant(true)).environmentObject(AuthViewModel(user: CustomDataSet.shared.user())).environmentObject(PageViewModel(page: nil, pages: CustomDataSet.shared.pages()))
         }
     }
 }

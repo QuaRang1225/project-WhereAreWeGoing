@@ -19,7 +19,7 @@ struct MainView: View {
     @State var profile = false
     @State var area:TravelFilter = .all
     @StateObject var location = LocationMagager()
-    @StateObject var vm = PageViewModel()
+    @StateObject var vm = PageViewModel(page: nil, pages: [])
     @EnvironmentObject var vmAuth:AuthViewModel
     
     var selectFilter:[Page]{
@@ -67,56 +67,7 @@ struct MainView: View {
             .padding(.top)
             .padding(.bottom)
             search
-            VStack(alignment:.leading){
-                Text("내 페이지")
-                    .font(.title2)
-                    .padding(.bottom)
-                HStack{
-                    VStack(alignment:.leading){
-                        Text("송도")
-                        Text("송도가 좋은게~ 유흥가가 없어~")
-                            .font(.subheadline)
-                            .opacity(0.6)
-                    }
-                    Spacer()
-                    Text("D-15")
-                        .font(.largeTitle)
-                }
-                
-            }
-            .bold()
-            .padding()
-            .foregroundColor(.black)
-            Spacer()
-            ZStack{
-                ForEach(0..<CustomDataSet.shared.images.count,id:\.self){ index in
-                    KFImage(URL(string: CustomDataSet.shared.images[index]))
-                        .resizable()
-                        .frame(width:290,height: 200)
-                        .shadow(radius: 5)
-                        .opacity(currentPage == index ? 1.0 : 0.5)
-                        .scaleEffect(currentPage == index ? 1.2 : 0.8)
-                        .cornerRadius(10)
-                        .offset(x:CGFloat(index - currentPage) * 300 + dragOffset)
-                }
-            }
-            .frame(maxWidth:.infinity)
-            .gesture(
-                DragGesture()
-                    .onEnded({ value in
-                        let threshold:CGFloat = 50
-                        if value.translation.width > threshold{
-                            withAnimation {
-                                currentPage = max(0,currentPage - 1)
-                            }
-                        }else if value.translation.width < -threshold{
-                            withAnimation {
-                                currentPage = min(CustomDataSet.shared.images.count-1,currentPage + 1)
-                            }
-                        }
-                    })
-            )
-            .padding(.bottom,20)
+            page
         }
         .sheet(isPresented: $profile){
             ProfileChangeView()
@@ -137,7 +88,7 @@ struct MainView: View {
 struct MainView_Previews: PreviewProvider {
     static var previews: some View {
         NavigationStack{
-            MainView()
+            MainView(vm:PageViewModel(page: nil, pages: CustomDataSet.shared.pages()))
                 .environmentObject(AuthViewModel(user: CustomDataSet.shared.user()))
         }
     }
@@ -176,7 +127,7 @@ extension MainView{
         HStack{
             NavigationLink{
                 AddPageView()
-                    .environmentObject(PageViewModel())
+                    .environmentObject(PageViewModel(page: nil, pages: CustomDataSet.shared.pages()))
                     .environmentObject(vmAuth)
                     .navigationBarBackButtonHidden()
             } label:{
@@ -225,64 +176,68 @@ extension MainView{
                 }
         }.padding(.top,30).padding(.horizontal,10)
     }
-    
-    
-    //    var filter:some View{
-    //        VStack(alignment: .leading){
-    //            Text("내 일정").font(.subheadline).bold()
-    //            ScrollView(.horizontal,showsIndicators: false){
-    //                HStack{
-    //                    ForEach(TravelFilter.allCases,id:\.self){ item in
-    //                        Button {
-    //                            area = item
-    //                        } label: {
-    //                            RoundedRectangle(cornerRadius: 10)
-    //                                .frame(width: 100,height: 30)
-    //                                .shadow(radius: 2,y:2)
-    //                                .foregroundColor(item == area ? .gray.opacity(0.3):.white)
-    //                                .overlay{
-    //                                    HStack(spacing: 3) {
-    //                                        Text(item.image)
-    //                                        Text(item.name)
-    //                                    }
-    //                                    .bold()
-    //                                    .font(.caption)
-    //                                    .foregroundColor(.black)
-    //                                }
-    //                                .padding(.vertical,3)
-    //                        }
-    //                    }
-    //                }
-    //            }
-    //            .bold()
-    //            .font(.body)
-    //            .frame(maxWidth: .infinity,alignment: .leading)
-    //        }.padding(.horizontal,7.5)
-    //            .padding(.top,10)
-    //    }
     var page:some View{
-        VStack(spacing:0){
-            ForEach(selectFilter,id:\.self){ page in
-                NavigationLink {
-                    PageMainView(page: page)
-                        .environmentObject(vm)
-                        .environmentObject(vmAuth)
-                        .navigationBarBackButtonHidden()
-                } label: {
-                    PageRowView(page:page)
-                }
-                if page != selectFilter.last{
-                    Divider()
+        VStack(alignment: .leading){
+            VStack(alignment:.leading){
+                Text("내 페이지")
+                    .font(.title2)
+                    .padding(.bottom)
+                HStack{
+                    VStack(alignment:.leading){
+                        Text(selectFilter[currentPage].pageName)
+                        Text(selectFilter[currentPage].pageSubscript)
+                            .font(.subheadline)
+                            .opacity(0.6)
+                    }
+                    Spacer()
+                    Text("D-15")
+                        .font(.largeTitle)
                 }
                 
             }
-            .padding(10)
-            
-            
+            .bold()
+            .padding()
+            .foregroundColor(.black)
+            Spacer()
+            ZStack{
+                ForEach(0..<selectFilter.count,id:\.self){ index in
+                    NavigationLink {
+                        PageMainView(page: selectFilter[index])
+                            .environmentObject(vm)
+                            .environmentObject(vmAuth)
+                            .navigationBarBackButtonHidden()
+                    } label: {
+                        KFImage(URL(string: selectFilter[index].pageImageUrl ?? ""))
+                            .resizable()
+                            .frame(width:290,height: 200)
+                            .shadow(radius: 5)
+                            .opacity(currentPage == index ? 1.0 : 0.5)
+                            .scaleEffect(currentPage == index ? 1.2 : 0.8)
+                            .cornerRadius(10)
+                            .offset(x:CGFloat(index - currentPage) * 300 + dragOffset)
+                    }
+                    
+                }
+            }
+            .frame(maxWidth:.infinity)
+            .gesture(
+                DragGesture()
+                    .onEnded({ value in
+                        let threshold:CGFloat = 50
+                        if value.translation.width > threshold{
+                            withAnimation {
+                                currentPage = max(0,currentPage - 1)
+                            }
+                        }else if value.translation.width < -threshold{
+                            withAnimation {
+                                currentPage = min(CustomDataSet.shared.images.count-1,currentPage + 1)
+                            }
+                        }
+                    })
+            )
+            .padding(.bottom,20)
         }
-        .background(Color.white).cornerRadius(10)
-        .shadow(radius:1,y:2)
-        .padding(.horizontal,5)
+        
     }
 }
 

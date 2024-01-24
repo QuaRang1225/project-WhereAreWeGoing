@@ -117,7 +117,7 @@ struct RequestPageView: View {
 struct RequestPageView_Previews: PreviewProvider {
     static var previews: some View {
         RequestPageView(page: .constant(CustomDataSet.shared.page()))
-            .environmentObject(PageViewModel())
+            .environmentObject(PageViewModel(page: nil, pages: CustomDataSet.shared.pages()))
             .environmentObject(AuthViewModel(user: CustomDataSet.shared.user()))
     }
 }
