@@ -67,11 +67,9 @@ struct AddPageView: View {
                                 }
                                 .bold()
                                 .padding()
-                                
                         }
                     }
                 }
-                
             }
             if isPage{
                 CustomProgressView(title: vm.page != nil ? "페이지 수정중.." : "페이지 생성중..")

@@ -36,6 +36,6 @@ extension Date {
         Timestamp(date: self)
     }
     func toTomorrow() -> Date{
-        Calendar.current.date(byAdding: .day, value: 1, to: self)!
+        Calendar.current.date(bySettingHour: 23, minute: 19, second: 29, of: self)! // (byAdding: .minute, value: 1, to: self)!
     }
 }

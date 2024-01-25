@@ -38,7 +38,7 @@ class CustomDataSet{
     ]
 
     func page() -> Page{
-        Page(pageId: "asdasdadsad", pageAdmin: "4KYzTqO9HthK3nnOUAyIMKcaxa03", pageImageUrl: CustomDataSet.shared.images.first!, pageImagePath: nil, pageName: "으딩이", pageOverseas: false, pageSubscript: "으딩이와 함께 하는 우리어디가", request: ["4KYzTqO9HthK3nnOUAyIMKcaxa03"],members: ["4KYzTqO9HthK3nnOUAyIMKcaxa03"],dateRange: [Timestamp(date: "2023년 07월 26일".toDate()),Timestamp(date: "2023년 07월 27일".toDate()),Timestamp(date: "2023년 07월 28일".toDate()),Timestamp(date: "2023년 07월 29일".toDate())])
+        Page(pageId: "asdasdadsad", pageAdmin: "4KYzTqO9HthK3nnOUAyIMKcaxa03", pageImageUrl: CustomDataSet.shared.backgroudImage.first!, pageImagePath: nil, pageName: "으딩이", pageOverseas: false, pageSubscript: "으딩이와 함께 하는 우리어디가", request: ["4KYzTqO9HthK3nnOUAyIMKcaxa03"],members: ["4KYzTqO9HthK3nnOUAyIMKcaxa03"],dateRange: [Timestamp(date: "2023년 07월 26일".toDate()),Timestamp(date: "2023년 07월 27일".toDate()),Timestamp(date: "2023년 07월 28일".toDate()),Timestamp(date: "2023년 07월 29일".toDate())])
     }
     
     func schedule() -> Schedule{

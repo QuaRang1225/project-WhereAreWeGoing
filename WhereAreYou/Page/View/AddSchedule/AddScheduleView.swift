@@ -12,6 +12,7 @@ import FirebaseFirestore
 
 struct AddScheduleView: View {
     
+    @State var settingEndDate = false
     @State var title = ""
     @State var text = ""
     @State var progress = false
@@ -33,6 +34,7 @@ struct AddScheduleView: View {
     @EnvironmentObject var location:LocationMagager
     @Binding var isPage:Bool
     
+ 
     var body: some View {
         ZStack{
             VStack{
@@ -84,6 +86,9 @@ struct AddScheduleView: View {
                         }
                         .environment(\.colorScheme, .light)
                         .padding()
+                        .onTapGesture {
+                            UIApplication.shared.endEditing()
+                        }
                     
                 }
             }
@@ -98,11 +103,10 @@ struct AddScheduleView: View {
         .background{
             Color.white.ignoresSafeArea()
         }
-        .onTapGesture {
-            UIApplication.shared.endEditing()
-        }
+        
         .onAppear{
             modifyModeSchedule()
+            
         }
     }
 }
@@ -219,15 +223,16 @@ extension AddScheduleView{
     }
     var timePicker:some View{
         VStack{
-            
-            HStack{
-                DatePicker("일정 시작", selection: $startDate,in:((vm.page?.dateRange.first?.dateValue() ?? Date())...(vm.page?.dateRange.last?.dateValue() ?? Date()))).environment(\.locale, .init(identifier: "ko_KR"))
-                Text("부터")
-            }
-            HStack{
-                DatePicker("일정 끝", selection: $endDate,in:(startDate...(vm.page?.dateRange.last?.dateValue().toTomorrow() ?? Date())))
-                    .environment(\.locale, .init(identifier: "ko_KR"))
-                Text("까지")
+            if settingEndDate{
+                HStack{
+                    DatePicker("일정 시작", selection: $startDate,in:((vm.page?.dateRange.first?.dateValue() ?? Date())...(vm.page?.dateRange.last?.dateValue().toTomorrow() ?? Date()))).environment(\.locale, .init(identifier: "ko_KR"))
+                    Text("부터")
+                }
+                HStack{
+                    DatePicker("일정 끝", selection: $endDate,in:(startDate...(vm.page?.dateRange.last?.dateValue().toTomorrow() ?? Date())))
+                        .environment(\.locale, .init(identifier: "ko_KR"))
+                    Text("까지")
+                }
             }
         }
         .bold()
@@ -280,7 +285,7 @@ extension AddScheduleView{
     func modifyModeSchedule(){
         startDate = (vm.page?.dateRange.first?.dateValue() ?? Date())
         endDate = (vm.page?.dateRange.last?.dateValue() ?? Date())
-        
+        settingEndDate = true
         if let schedule = vm.schedule{
             title = schedule.title
             text = schedule.content.replacingOccurrences(of: "\\n", with: "\n")

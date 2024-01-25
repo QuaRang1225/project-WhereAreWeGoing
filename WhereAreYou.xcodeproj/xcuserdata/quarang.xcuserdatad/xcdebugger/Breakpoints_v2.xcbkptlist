@@ -1860,8 +1860,8 @@
             filePath = "WhereAreYou/Page/View/AddPage/AddPageView.swift"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "81"
-            endingLineNumber = "81"
+            startingLineNumber = "79"
+            endingLineNumber = "79"
             landmarkName = "body"
             landmarkType = "24">
             <Locations>
@@ -1938,8 +1938,8 @@
             filePath = "WhereAreYou/Page/View/AddPage/AddPageView.swift"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "83"
-            endingLineNumber = "83"
+            startingLineNumber = "81"
+            endingLineNumber = "81"
             landmarkName = "body"
             landmarkType = "24">
             <Locations>
@@ -2997,6 +2997,69 @@
                   startingLineNumber = "64"
                   endingLineNumber = "64"
                   offsetFromSymbolStart = "48">
+               </Location>
+            </Locations>
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            uuid = "FC9B8082-2585-49C6-A772-812AA1CC9EE4"
+            shouldBeEnabled = "No"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "WhereAreYou/Page/View/AddSchedule/AddScheduleView.swift"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "285"
+            endingLineNumber = "285"
+            landmarkName = "modifyModeSchedule()"
+            landmarkType = "7">
+            <Locations>
+               <Location
+                  uuid = "FC9B8082-2585-49C6-A772-812AA1CC9EE4 - d563892acd2eb2f"
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "WhereAreYou.AddScheduleView.modifyModeSchedule() -&gt; ()"
+                  moduleName = "WhereAreYou"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/quarang/Documents/QUARANG&apos;S/Project/WhereAreYou/WhereAreYou/Page/View/AddSchedule/AddScheduleView.swift"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "286"
+                  endingLineNumber = "286"
+                  offsetFromSymbolStart = "2016">
+               </Location>
+               <Location
+                  uuid = "FC9B8082-2585-49C6-A772-812AA1CC9EE4 - d563892acd2eb2f"
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "WhereAreYou.AddScheduleView.modifyModeSchedule() -&gt; ()"
+                  moduleName = "WhereAreYou"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/quarang/Documents/QUARANG&apos;S/Project/WhereAreYou/WhereAreYou/Page/View/AddSchedule/AddScheduleView.swift"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "286"
+                  endingLineNumber = "286"
+                  offsetFromSymbolStart = "2156">
+               </Location>
+               <Location
+                  uuid = "FC9B8082-2585-49C6-A772-812AA1CC9EE4 - d563892acd2eb4c"
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "WhereAreYou.AddScheduleView.modifyModeSchedule() -&gt; ()"
+                  moduleName = "WhereAreYou"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/quarang/Documents/QUARANG&apos;S/Project/WhereAreYou/WhereAreYou/Page/View/AddSchedule/AddScheduleView.swift"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "285"
+                  endingLineNumber = "285"
+                  offsetFromSymbolStart = "920">
                </Location>
             </Locations>
          </BreakpointContent>
