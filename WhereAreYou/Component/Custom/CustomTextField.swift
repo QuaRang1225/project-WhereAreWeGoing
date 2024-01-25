@@ -13,41 +13,45 @@ struct CustomTextField: View {
     @Binding var text:String
     var body: some View {
         VStack{
-            HStack{
-                if !isSecure{
-                    TextField("",text: $text)
-                        .overlay(alignment:.leading) {
-                            if text.isEmpty{
-                                Text(placeholder)
-                                    .foregroundColor(.gray)
-                                    .allowsHitTesting(false)
-                            }
+            Capsule()
+                .stroke(lineWidth: 1)
+                .foregroundColor(.gray)
+                .frame(height: 50)
+                .overlay {
+                    HStack{
+                        if !isSecure{
+                            TextField("",text: $text)
+                                .overlay(alignment:.leading) {
+                                    if text.isEmpty{
+                                        Text(placeholder)
+                                            .foregroundColor(.gray)
+                                            .allowsHitTesting(false)
+                                    }
+                                } .padding(.horizontal)
+                        }else{
+                            SecureField("",text: $text)
+                                .overlay(alignment:.leading) {
+                                    if text.isEmpty{
+                                        Text(placeholder)
+                                            .foregroundColor(.gray)
+                                            .allowsHitTesting(false)
+                                    }
+                                } .padding(.horizontal)
                         }
-                }else{
-                    SecureField("",text: $text)
-                        .overlay(alignment:.leading) {
-                            if text.isEmpty{
-                                Text(placeholder)
+                        if !text.isEmpty{
+                            Button {
+                                text = ""
+                            } label: {
+                                Image(systemName: "xmark.circle.fill")
                                     .foregroundColor(.gray)
-                                    .allowsHitTesting(false)
                             }
+                            .padding(.trailing)
                         }
-                }
-                if !text.isEmpty{
-                    Button {
-                        text = ""
-                    } label: {
-                        Image(systemName: "xmark.circle.fill")
-                            .foregroundColor(.gray)
                     }
                 }
-            }
+            
         }
-        .padding(.horizontal)
         .foregroundColor(.black)
-        .padding(.vertical)
-        .background(Color.gray.opacity(0.1))
-        .cornerRadius(10)
        
     }
 }

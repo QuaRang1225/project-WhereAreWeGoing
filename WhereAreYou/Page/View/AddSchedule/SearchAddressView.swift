@@ -107,6 +107,7 @@ extension SearchAddressView{
     var search:some View{
         VStack(alignment: .leading){
             CustomTextField(placeholder: "지번,도로명으로 검색..", isSecure: false,  text: $location.searchText)
+                .padding(.horizontal)
             Button {
                 location.updatePlacemark(location: .init(latitude: location.mapRegion.center.latitude, longitude: location.mapRegion.center.longitude))
                 isAddress = true
