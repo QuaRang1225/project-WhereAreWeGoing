@@ -91,9 +91,9 @@ struct AddScheduleView: View {
                 CustomProgressView(title: vm.schedule != nil ?  "일정 변경 중.." : "일정 추가 중.." )
             }
         }
-        .onReceive(vm.addDismiss) {
-            isPage = false
-        }
+//        .onReceive(vm.addDismiss) {
+//            isPage = false
+//        }
         .foregroundColor(.black)
         .background{
             Color.white.ignoresSafeArea()

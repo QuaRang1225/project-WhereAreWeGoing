@@ -32,19 +32,19 @@ final class PageManager{
     private func scheduleDocument(pageId:String,scheduleId:String) -> DocumentReference{
         pageDocument(pageId: pageId).collection("schedule").document(scheduleId)
     }
-    func createUserPage(userId:String,url:URL?,path:String?,pageInfo:Page)async throws -> String{
+    func createUserPage(userId:String,url:String,path:String?,pageInfo:Page)async throws -> String{
         let document = pageCollection.document()
         
         let data:[String:Any] = [
             "page_id":document.documentID,
             "page_admin":userId,
-            "page_image_url":url?.absoluteString as Any,
+            "page_image_url":url,
             "page_image_path":path as Any,
             "page_name":pageInfo.pageName,
             "page_subscript":pageInfo.pageSubscript,
             "page_overseas":pageInfo.pageOverseas,
             "members":FieldValue.arrayUnion([userId]),
-            "date_range":pageInfo.dateRange,
+            "date_range":pageInfo.dateRange
             
         ]
         

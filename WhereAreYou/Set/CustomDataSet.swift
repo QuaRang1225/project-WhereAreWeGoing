@@ -25,6 +25,17 @@ class CustomDataSet{
     "https://firebasestorage.googleapis.com/v0/b/whereareyou-66f3a.appspot.com/o/basic%2FGroup%2023.png?alt=media&token=a1003133-8e84-435e-be01-d3633c5fa0a3"
     
     ]
+    let backgroudImage = [
+        "https://firebasestorage.googleapis.com/v0/b/whereareyou-66f3a.appspot.com/o/city%2F1639a559-1798-482f-ab70-a54b9093168c.png?alt=media&token=d4fbb014-b8a0-4d7c-b5db-34eb7bafd6c9",
+        "https://firebasestorage.googleapis.com/v0/b/whereareyou-66f3a.appspot.com/o/city%2F16ac5928-08ff-4639-908d-af6a8d998c20.png?alt=media&token=a810522e-d2a5-4f22-98a0-d3336c7d3de5",
+        "https://firebasestorage.googleapis.com/v0/b/whereareyou-66f3a.appspot.com/o/city%2F1730dba3-d5dc-4e96-96eb-7806444ec959.png?alt=media&token=f9afc43c-a146-4b29-b938-56025bc04576",
+        "https://firebasestorage.googleapis.com/v0/b/whereareyou-66f3a.appspot.com/o/city%2F40bdf8aa-7723-4a90-b78e-42bbc0744311.png?alt=media&token=1bfc8238-ef13-4f97-bd84-f2db394e5102",
+        "https://firebasestorage.googleapis.com/v0/b/whereareyou-66f3a.appspot.com/o/city%2F5d72208f-e2fc-443a-9f06-1499bf6bb4c5.png?alt=media&token=eb3032c8-7820-40e7-80e4-fbe3d35051ce",
+        "https://firebasestorage.googleapis.com/v0/b/whereareyou-66f3a.appspot.com/o/city%2Faf584690-9125-4966-8d20-5a1f86b2241a.png?alt=media&token=931ab283-e50c-4045-960c-d4fd97b93678",
+        "https://firebasestorage.googleapis.com/v0/b/whereareyou-66f3a.appspot.com/o/city%2Ff34f7802-67f2-49ac-86c5-57a972b4195f.png?alt=media&token=bf24a8d8-0386-426f-9106-7305a178b891",
+        "https://firebasestorage.googleapis.com/v0/b/whereareyou-66f3a.appspot.com/o/city%2Ff704fa9b-b182-4bb3-83da-d95db6a40523.png?alt=media&token=75b2c893-4581-4fd2-9d3d-8aeb095d7ab0"
+        
+    ]
 
     func page() -> Page{
         Page(pageId: "asdasdadsad", pageAdmin: "4KYzTqO9HthK3nnOUAyIMKcaxa03", pageImageUrl: CustomDataSet.shared.images.first!, pageImagePath: nil, pageName: "으딩이", pageOverseas: false, pageSubscript: "으딩이와 함께 하는 우리어디가", request: ["4KYzTqO9HthK3nnOUAyIMKcaxa03"],members: ["4KYzTqO9HthK3nnOUAyIMKcaxa03"],dateRange: [Timestamp(date: "2023년 07월 26일".toDate()),Timestamp(date: "2023년 07월 27일".toDate()),Timestamp(date: "2023년 07월 28일".toDate()),Timestamp(date: "2023년 07월 29일".toDate())])

@@ -28,17 +28,48 @@ struct AddPageView: View {
     @EnvironmentObject var vmAuth:AuthViewModel
     @Environment(\.dismiss) var dismiss
     
+    @State var pageImage = CustomDataSet.shared.backgroudImage.first!
+    
     var body: some View {
         ZStack{
             Color.white.ignoresSafeArea()
             
-            VStack(spacing:10){
+            VStack{
                 header
                 ScrollView{
-                    settingPageInfo
-                    settingDate
-                    settingOversease
-                    Spacer()
+                    VStack(alignment: .leading){
+                        Group{
+                            settingPageImage
+                            settingPageInfo
+                        }
+                        .onTapGesture {
+                            UIApplication.shared.endEditing()
+                        }
+                        settingDate
+                        Button {
+                            guard overseas != nil && !text.isEmpty && !title.isEmpty else { return }
+                            guard let user = vmAuth.user,let overseas else {return}
+                            
+                            if  vm.page != nil{
+                                changedDate = true
+                            }else{
+                                isPage = true
+                                let page = Page(pageId: "", pageAdmin: "",pageImageUrl: "",pageImagePath: "", pageName: title, pageOverseas: overseas, pageSubscript: text, dateRange: vm.generateTimestamp(from: startDate, to: endDate))
+                                vm.creagtePage(user:user, pageInfo: page,item: selection, image: pageImage)
+                            }
+                        } label: {
+                            RoundedRectangle(cornerRadius: 10)
+                                .frame(height: 50)
+                                .foregroundColor(overseas != nil && !text.isEmpty && !title.isEmpty ? .customCyan3 : .gray)
+                                .overlay {
+                                    Text(vm.page != nil ? "변경" : "완료")
+                                        .foregroundColor(.white)
+                                }
+                                .bold()
+                                .padding()
+                                
+                        }
+                    }
                 }
                 
             }
@@ -47,16 +78,12 @@ struct AddPageView: View {
             }
             
         }
-        .onReceive(vm.addDismiss){
-            Task{
-                vmAuth.user = try await UserManager.shared.getUser(userId: vmAuth.user?.userId ?? "")
-            }
+        .onReceive(vm.addDismiss){ pageId in
+            vmAuth.user?.pages?.append(pageId)
             dismiss()
         }
         .foregroundColor(.black)
-        .onTapGesture {
-            UIApplication.shared.endEditing()
-        }
+       
         .alert(isPresented: $changedDate) {
             Alert(
                 title: Text("경고"),
@@ -87,104 +114,104 @@ extension AddPageView{
                     .font(.title3)
                     .foregroundColor(.black)
             }
-            .padding()
+            .padding(.bottom)
             Spacer()
-            if overseas != nil && !text.isEmpty && !title.isEmpty{
-                Button {
-                    guard let user = vmAuth.user,let overseas else {return}
-                    
-                    if  vm.page != nil{
-                        changedDate = true
-                    }else{
-                        isPage = true
-                        vm.creagtePage(user:user, pageInfo: Page(pageId: "", pageAdmin: "",pageImageUrl: "",pageImagePath: "", pageName: title, pageOverseas: overseas, pageSubscript: text, dateRange: vm.generateTimestamp(from: startDate, to: endDate)),item: selection)
-                    }
-                } label: {
-                    Text(vm.page != nil ? "변경" : "완료")
-                        .padding()
-                        .foregroundColor(.black)
-                }
-            }else{
-                Text("완료")
-                    .padding()
-                    .foregroundColor(.gray)
-            }
+            
+
             
         }
-        
+        .padding(.leading)
     }
-    var settingPageInfo:some View{
-        VStack{
+    var settingPageImage:some View{
+        VStack(alignment: .leading){
             Text("어디로 여행하세요?")
-                .font(.title)
                 .bold()
-                .padding(.bottom,10)
+                .font(.title)
             Text("방제목, 소개글, 사진 등을 선택해 주세요")
                 .foregroundColor(.gray)
                 .padding(.bottom)
-            PhotosPicker(
-                selection: $selection,
-                matching: .images,
-                photoLibrary: .shared()) {
-                    if let selectedImageData = data,
-                       let uiImage = UIImage(data: selectedImageData) {
-                        Image(uiImage: uiImage)
-                            .resizable()
-                            .scaledToFill()
-                            .frame(width: 120, height: 120)
-                            .clipShape(RoundedRectangle(cornerRadius: 50))
-                        
-                    }else{
-                        if let image = vm.page?.pageImageUrl{
+            Group{
+                if let selectedImageData = data,
+                   let uiImage = UIImage(data: selectedImageData) {
+                    Image(uiImage: uiImage)
+                        .resizable()
+                }else{
+                    KFImage(URL(string: pageImage))
+                        .resizable()
+                        .placeholder{
+                            Color.gray.opacity(0.2)
+                        }
+                }
+            }
+            .frame(height: 200)
+            .cornerRadius(10)
+            ScrollView(.horizontal) {
+                HStack{
+                    PhotosPicker(
+                        selection: $selection,
+                        matching: .images,
+                        photoLibrary: .shared()) {
+                            if let selectedImageData = data,
+                               let uiImage = UIImage(data: selectedImageData) {
+                                Image(uiImage: uiImage)
+                                    .resizable()
+                                    .scaledToFill()
+                                    .frame(width: 100, height: 100)
+                                    .clipShape(RoundedRectangle(cornerRadius: 10))
+        
+                            }else{
+                                emptyImage
+                            }
+                        }
+                    ForEach(CustomDataSet.shared.backgroudImage,id: \.self){ image in
+                        Button{
+                            data = nil
+                            selection = nil
+                            pageImage = image
+                        }label: {
                             KFImage(URL(string: image))
                                 .resizable()
-                                .scaledToFill()
-                                .frame(width: 120, height: 120)
-                                .clipShape(RoundedRectangle(cornerRadius: 50))
-                        }else{
-                            emptyImage
-                        }
-                        
-                    }
-                }
-                .overlay(alignment:.topTrailing,content: {
-                    if data != nil || vm.page?.pageImageUrl != nil{
-                        Button {
-                            data = nil
-                            vm.page?.pageImageUrl = nil
-                            vm.page?.pageImagePath = nil
-                        } label: {
-                            Image(systemName: "xmark")
-                                .font(.subheadline)
-                                .bold()
-                                .foregroundColor(.white)
-                                .padding(5)
-                                .background{
-                                    Circle().foregroundColor(.gray)
+                                .placeholder{
+                                    Color.gray.opacity(0.2)
                                 }
+                                .frame(width: 100,height: 100)
+                                .cornerRadius(10)
                         }
-                    }
-                    
-                })
-                .onChange(of: selection) { newItem in
-                    Task {
-                        if let data = try? await newItem?.loadTransferable(type: Data.self) {
-                            self.data = data
-                        }
+                       
                     }
                 }
-                .padding(.bottom)
-            CustomTextField(placeholder: "제목..", isSecure: false,text: $title)
-                .padding(.horizontal,100)
-            CustomTextField(placeholder: "소개글을 작성해주세요..", isSecure: false, text: $text)
-                .padding()
+            }
+            .onChange(of: selection) { newItem in
+                Task {
+                    guard let data = try? await newItem?.loadTransferable(type: Data.self) else { return }
+                    self.data = data
+                    self.pageImage.removeAll()
+                }
+            }
         }
+        .padding([.horizontal,.bottom])
+    }
+    var settingPageInfo:some View{
+        VStack(alignment: .leading){
+            HStack(alignment: .bottom){
+                Text("페이지 정보")
+                    .bold()
+                    .font(.title2)
+                Spacer()
+                settingOversease
+            }
+           
+            CustomTextField(placeholder: "제목..", isSecure: false,text: $title)
+                .padding(.trailing,100)
+            CustomTextField(placeholder: "소개글을 작성해주세요..", isSecure: false, text: $text)
+        }
+        .padding()
     }
     
     var settingDate:some View{
-        VStack{
+        VStack(alignment:.leading){
             HStack{
-                DatePicker("가는 날", selection: $startDate,in:(Date())...,displayedComponents: .date)
+                DatePicker("가는날", selection: $startDate,in:(Date())...,displayedComponents: .date)
                     .environment(\.locale, .init(identifier: "ko_KR"))
                 Text("부터")
             }
@@ -197,10 +224,10 @@ extension AddPageView{
         .environment(\.colorScheme, .light)
         .environment(\.locale, Locale.init(identifier: "ko"))
         .bold()
-        .padding(.horizontal,30)
+        .padding(.horizontal)
     }
     var settingOversease:some View{
-        HStack{
+        HStack(spacing: 15){
             Group{
                 VStack{
                     Button {
@@ -208,16 +235,16 @@ extension AddPageView{
                     } label: {
                         Image("korean")
                             .resizable()
-                            .frame(width: 120,height: 120)
+                            .frame(width: 30,height: 30)
                             .overlay {
                                 Circle()
-                                    .frame(width: 120,height: 120)
+                                    .frame(width: 30,height: 30)
                                     .foregroundColor(overseas ?? true ? .clear : .black.opacity(0.3))
                             }
                         
                     }
                     Text("국내")
-                    
+                        .font(.caption)
                 }
                 VStack{
                     Button {
@@ -225,28 +252,25 @@ extension AddPageView{
                     } label: {
                         Image("over")
                             .resizable()
-                            .frame(width: 120,height: 120)
+                            .frame(width: 30,height: 30)
                             .overlay {
                                 Circle()
-                                    .frame(width: 120,height: 120)
+                                    .frame(width: 30,height: 30)
                                     .foregroundColor(overseas ?? false ? .black.opacity(0.3) : .clear)
                                 
                             }
                     }
                     Text("해외")
+                        .font(.caption)
                 }
             }
-            .padding()
-            .bold()
-            .frame(height: 200)
             .shadow(radius: 5)
         }
-        .padding()
     }
     var emptyImage:some View{
-        RoundedRectangle(cornerRadius: 50)
+        RoundedRectangle(cornerRadius: 10)
             .stroke(lineWidth: 3)
-            .frame(width: 120, height: 120)
+            .frame(width: 100, height: 100)
             .overlay {
                 Image(systemName: "camera")
                     .resizable()
@@ -254,6 +278,7 @@ extension AddPageView{
                     .frame(width: 30,height: 30)
             }
             .foregroundColor(.black)
+            .padding(2)
     }
     
     //------------ 페이지의 일정 변경 시 삭제되는 일자의 스케쥴이 있을 경우 그 스케쥴 삭제

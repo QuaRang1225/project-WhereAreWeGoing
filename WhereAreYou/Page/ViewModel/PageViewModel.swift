@@ -30,7 +30,7 @@ class PageViewModel:ObservableObject{
     @Published var member:[UserData] = []
     
     //---------- 뷰 이벤트 -----------
-    var addDismiss = PassthroughSubject<(),Never>()
+    var addDismiss = PassthroughSubject<String,Never>()
     var pageDismiss = PassthroughSubject<(),Never>()
     
     //
@@ -42,19 +42,23 @@ class PageViewModel:ObservableObject{
         self.pages = pages
     }
     //페이지 생성
-    func creagtePage(user:UserData,pageInfo:Page,item:PhotosPickerItem?){
+    func creagtePage(user:UserData,pageInfo:Page,item:PhotosPickerItem?,image:String){
         
         Task{
-            var url:URL? = nil
+            var url:String = ""
             var path:String? = nil
 
             if let data = try await item?.loadTransferable(type: Data.self){
                 path = try await StorageManager.shared.saveImage(data:data,userId: user.userId, mode: .page)
-                url = try await StorageManager.shared.getUrlForImage(path: path ?? "")
+                url = try await StorageManager.shared.getUrlForImage(path: path ?? "").absoluteString
+            }else if !image.isEmpty{
+                url = image
             }
+            
             let pageId = try await PageManager.shared.createUserPage(userId: user.userId,url: url ,path: path, pageInfo: pageInfo)
             try await UserManager.shared.updatePages(userId: user.userId, pagesId: pageId)
-            addDismiss.send()
+            pages = try await PageManager.shared.getAllUserPage(userId: user.userId)
+            addDismiss.send(pageId)
         }
     }
     //페이지 수정
@@ -79,7 +83,7 @@ class PageViewModel:ObservableObject{
             }
             try await PageManager.shared.upadateUserPage(userId: user.userId,url: url, path: path, pageInfo: pageInfo)
             self.page = try await PageManager.shared.getPage(pageId: pageInfo.pageId)
-            addDismiss.send()
+//            addDismiss.send()
         }
     }
     //페이지 삭제
@@ -135,7 +139,7 @@ class PageViewModel:ObservableObject{
                 url = try await StorageManager.shared.getUrlForImage(path: path ?? "")
             }
             try await PageManager.shared.createUserSchedule(pageId: pageId, url: url?.absoluteString, schedule: schedule,path:path)
-            addDismiss.send()
+//            addDismiss.send()
         }
     }
     //일정 수정
@@ -159,7 +163,7 @@ class PageViewModel:ObservableObject{
                 path = "x"
             }
             try await PageManager.shared.updateUSerSchedule(userId: user.userId, pageId: pageId, url: url, schedule: schedule,path: path)
-            addDismiss.send()
+//            addDismiss.send()
         }
     }
     

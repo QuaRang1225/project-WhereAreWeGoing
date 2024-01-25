@@ -40,9 +40,8 @@ struct MainView: View {
             Color.white.ignoresSafeArea()
         }
         .onAppear{
-                guard let user = vmAuth.user else {return}
-                vm.getPages(user: user)
-    
+            guard let user = vmAuth.user else {return}
+            vm.getPages(user: user)
         }
     }
 }
@@ -89,7 +88,7 @@ extension MainView{
         HStack{
             NavigationLink{
                 AddPageView()
-                    .environmentObject(PageViewModel(page: nil, pages: CustomDataSet.shared.pages()))
+                    .environmentObject(vm)
                     .environmentObject(vmAuth)
                     .navigationBarBackButtonHidden()
             } label:{
@@ -136,7 +135,7 @@ extension MainView{
                         Text("찾으시는 페이지가 있으세요?").font(.subheadline).foregroundColor(.gray.opacity(0.5))
                     }
                 }
-        }.padding(.top,30).padding(.horizontal,10)
+        }.padding(.top,30).padding(.horizontal)
     }
     var page:some View{
         VStack(alignment: .leading){
@@ -179,12 +178,13 @@ extension MainView{
                                     HStack{
                                         Image(systemName:"chevron.forward.circle.fill")
                                     }
-                                    .font(.title)
+                                    .font(.largeTitle)
                                     .bold()
                                     .foregroundColor(.white)
                                     .shadow(radius: 10)
-                                    .offset(x:-40,y:-30)
+                                    
                                 }
+                                .offset(x:-40,y:-30)
                             }
                             .opacity(currentPageIndex == index ? 1.0 : 0.5)
                             .scaleEffect(currentPageIndex == index ? 1.2 : 0.8)

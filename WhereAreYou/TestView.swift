@@ -93,10 +93,11 @@ class TestClass{
 }
 
 struct TestView:View{
-    
+    @State var a  = Date()
     @State var docs:[Doc] = []
     var body: some View {
-       
+        DatePicker("오는 날", selection: $a,displayedComponents: .date)
+            .environment(\.locale, .init(identifier: "ko_KR"))
         VStack{
             Group{
                 Text("이름 추가")
