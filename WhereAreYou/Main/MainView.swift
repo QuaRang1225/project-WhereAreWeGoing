@@ -6,8 +6,6 @@
 //
 
 import SwiftUI
-import CoreLocationUI
-import MapKit
 import Kingfisher
 
 struct MainView: View {
@@ -18,7 +16,7 @@ struct MainView: View {
     
     @State var profile = false
     @State var area:TravelFilter = .all
-    @StateObject var location = LocationMagager()
+    
     @StateObject var vm = PageViewModel(page: nil, pages: [])
     @EnvironmentObject var vmAuth:AuthViewModel
     
@@ -166,7 +164,7 @@ extension MainView{
                         
                         KFImage(URL(string: vm.pages[index].pageImageUrl ?? ""))
                             .resizable()
-                            .frame(width:vm.pages.count == 1 ? UIScreen.main.bounds.width - 20 : 300,height: vm.pages.count == 1 ? UIScreen.main.bounds.height/3 : UIScreen.main.bounds.height/4)
+                            .frame(width:vm.pages.count == 1 ? UIScreen.main.bounds.width - 20 : UIScreen.main.bounds.width/1.25,height: vm.pages.count == 1 ? UIScreen.main.bounds.height/3 : UIScreen.main.bounds.height/3.75)
                             .shadow(radius: 5)
                             .overlay(alignment: .bottomTrailing) {
                                 NavigationLink {

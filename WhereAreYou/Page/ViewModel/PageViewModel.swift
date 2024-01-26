@@ -129,17 +129,23 @@ class PageViewModel:ObservableObject{
     //
     
     //일정 생성
-    func creagteShcedule(user:UserData,pageId:String,schedule:Schedule,item:PhotosPickerItem?){
+    func creagteShcedule(user:UserData,pageId:String,schedule:Schedule,item:PhotosPickerItem?,image:String){
         
         Task{
-            var url = URL(string: "")
+            var url:String = ""
             var path:String? = nil
+            
             if let data = try await item?.loadTransferable(type: Data.self){
                 path = try await StorageManager.shared.saveImage(data:data,userId: user.userId, mode: .schedule)
-                url = try await StorageManager.shared.getUrlForImage(path: path ?? "")
+                url = try await StorageManager.shared.getUrlForImage(path: path ?? "").absoluteString
             }
-            try await PageManager.shared.createUserSchedule(pageId: pageId, url: url?.absoluteString, schedule: schedule,path:path)
-//            addDismiss.send()
+            else if !image.isEmpty{
+                url = image
+            }
+            
+            let scheduleId = try await PageManager.shared.createUserSchedule(pageId: pageId, url: url, schedule: schedule,path:path)
+            schedules = try await PageManager.shared.getAllUserSchedule(pageId: pageId)
+            addDismiss.send(scheduleId)
         }
     }
     //일정 수정

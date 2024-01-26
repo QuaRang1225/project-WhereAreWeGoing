@@ -74,7 +74,7 @@ final class PageManager{
         
     }
     
-    func createUserSchedule(pageId:String,url:String?,schedule:Schedule,path:String?)async throws{
+    func createUserSchedule(pageId:String,url:String?,schedule:Schedule,path:String?)async throws -> String{
         let field = pageDocument(pageId: pageId).collection("schedule").document()
         let schduleId = field.documentID
         
@@ -93,6 +93,7 @@ final class PageManager{
         ]
         print("스케쥴 생성중..")
         try await field.setData(data,merge: false)
+        return schduleId
         
     }
     func updateUSerSchedule(userId:String,pageId:String,url:String?,schedule:Schedule,path:String?)async throws{

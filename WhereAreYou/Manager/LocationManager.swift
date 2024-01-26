@@ -13,9 +13,9 @@ import Combine
 
 final class LocationMagager:NSObject,ObservableObject,CLLocationManagerDelegate,MKMapViewDelegate{
     
-    private var manager = CLLocationManager()
+    var manager = CLLocationManager()
     
-    var regionSuccess = PassthroughSubject<(),Never>()
+//    var regionSuccess = PassthroughSubject<(),Never>()
     var mySpan = MKCoordinateSpan(latitudeDelta: 0.001, longitudeDelta: 0.001)
     var cancellable:AnyCancellable?
     @Published var mapRegion = MKCoordinateRegion()
@@ -126,15 +126,15 @@ final class LocationMagager:NSObject,ObservableObject,CLLocationManagerDelegate,
     }
     internal func locationManagerDidChangeAuthorization(_ manager: CLLocationManager){   //위치 서비스에 대한 권한 상태가 변경될 때 호출되는 델리게이트 메서드 (위치를 사용할때 호출 -- 로케이션 버튼)
         self.cheackLocationAuthrization()
-        regionSuccess.send()
+//        regionSuccess.send()
     }
     internal func locationManager(_ manager: CLLocationManager, didUpdateLocations locations: [CLLocation]) {    //현제 위치 불러오는 메서드
         
         locations.last.map {
-            
             self.mapRegion = MKCoordinateRegion(
                 center: CLLocationCoordinate2D(latitude: $0.coordinate.latitude, longitude: $0.coordinate.longitude),
                 span: mySpan)
+            
         }
     }
 }

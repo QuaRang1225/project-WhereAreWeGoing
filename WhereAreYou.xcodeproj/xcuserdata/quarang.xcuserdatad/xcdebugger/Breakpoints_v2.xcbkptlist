@@ -276,8 +276,8 @@
             filePath = "WhereAreYou/Manager/PageManger.swift"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "156"
-            endingLineNumber = "156"
+            startingLineNumber = "157"
+            endingLineNumber = "157"
             landmarkName = "getAllUserSchedule(pageId:)"
             landmarkType = "7">
             <Locations>
@@ -324,8 +324,8 @@
             filePath = "WhereAreYou/Page/ViewModel/PageViewModel.swift"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "181"
-            endingLineNumber = "181"
+            startingLineNumber = "187"
+            endingLineNumber = "187"
             landmarkName = "getSchedules(pageId:)"
             landmarkType = "7">
          </BreakpointContent>
@@ -340,8 +340,8 @@
             filePath = "WhereAreYou/Page/ViewModel/PageViewModel.swift"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "183"
-            endingLineNumber = "183"
+            startingLineNumber = "189"
+            endingLineNumber = "189"
             landmarkName = "getSchedules(pageId:)"
             landmarkType = "7">
             <Locations>
@@ -433,8 +433,8 @@
             filePath = "WhereAreYou/Manager/PageManger.swift"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "158"
-            endingLineNumber = "158"
+            startingLineNumber = "159"
+            endingLineNumber = "159"
             landmarkName = "getAllUserSchedule(pageId:)"
             landmarkType = "7">
             <Locations>
@@ -792,8 +792,8 @@
             filePath = "WhereAreYou/Page/ViewModel/PageViewModel.swift"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "157"
-            endingLineNumber = "157"
+            startingLineNumber = "163"
+            endingLineNumber = "163"
             landmarkName = "updateSchedule(user:pageId:schedule:item:)"
             landmarkType = "7">
             <Locations>
@@ -870,8 +870,8 @@
             filePath = "WhereAreYou/Page/ViewModel/PageViewModel.swift"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "158"
-            endingLineNumber = "158"
+            startingLineNumber = "164"
+            endingLineNumber = "164"
             landmarkName = "updateSchedule(user:pageId:schedule:item:)"
             landmarkType = "7">
             <Locations>
@@ -963,8 +963,8 @@
             filePath = "WhereAreYou/Page/ViewModel/PageViewModel.swift"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "151"
-            endingLineNumber = "151"
+            startingLineNumber = "157"
+            endingLineNumber = "157"
             landmarkName = "updateSchedule(user:pageId:schedule:item:)"
             landmarkType = "7">
             <Locations>
@@ -1273,8 +1273,8 @@
             filePath = "WhereAreYou/Page/ViewModel/PageViewModel.swift"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "146"
-            endingLineNumber = "146"
+            startingLineNumber = "152"
+            endingLineNumber = "152"
             landmarkName = "updateSchedule(user:pageId:schedule:item:)"
             landmarkType = "7">
          </BreakpointContent>
@@ -1289,8 +1289,8 @@
             filePath = "WhereAreYou/Page/ViewModel/PageViewModel.swift"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "154"
-            endingLineNumber = "154"
+            startingLineNumber = "160"
+            endingLineNumber = "160"
             landmarkName = "updateSchedule(user:pageId:schedule:item:)"
             landmarkType = "7">
             <Locations>
@@ -1398,8 +1398,8 @@
             filePath = "WhereAreYou/Page/ViewModel/PageViewModel.swift"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "169"
-            endingLineNumber = "169"
+            startingLineNumber = "175"
+            endingLineNumber = "175"
             landmarkName = "PageViewModel"
             landmarkType = "3">
          </BreakpointContent>
@@ -1537,8 +1537,8 @@
             filePath = "WhereAreYou/Page/ViewModel/PageViewModel.swift"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "168"
-            endingLineNumber = "168"
+            startingLineNumber = "174"
+            endingLineNumber = "174"
             landmarkName = "updateSchedule(user:pageId:schedule:item:)"
             landmarkType = "7">
          </BreakpointContent>
@@ -1553,8 +1553,8 @@
             filePath = "WhereAreYou/Page/ViewModel/PageViewModel.swift"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "167"
-            endingLineNumber = "167"
+            startingLineNumber = "173"
+            endingLineNumber = "173"
             landmarkName = "updateSchedule(user:pageId:schedule:item:)"
             landmarkType = "7">
             <Locations>
@@ -2698,8 +2698,8 @@
             filePath = "WhereAreYou/Main/MainView.swift"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "43"
-            endingLineNumber = "43"
+            startingLineNumber = "41"
+            endingLineNumber = "41"
             landmarkName = "body"
             landmarkType = "24">
             <Locations>
@@ -3011,8 +3011,8 @@
             filePath = "WhereAreYou/Page/View/AddSchedule/AddScheduleView.swift"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "285"
-            endingLineNumber = "285"
+            startingLineNumber = "369"
+            endingLineNumber = "369"
             landmarkName = "modifyModeSchedule()"
             landmarkType = "7">
             <Locations>
@@ -3062,6 +3062,38 @@
                   offsetFromSymbolStart = "920">
                </Location>
             </Locations>
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            uuid = "E4EADD78-DF61-4C01-8909-D399D29FB39B"
+            shouldBeEnabled = "No"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "WhereAreYou/Manager/LocationManager.swift"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "131"
+            endingLineNumber = "131"
+            landmarkName = "locationManagerDidChangeAuthorization(_:)"
+            landmarkType = "7">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            uuid = "D4D65EC8-8665-4247-B4CE-760F6AB3586A"
+            shouldBeEnabled = "No"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "WhereAreYou/Manager/LocationManager.swift"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "134"
+            endingLineNumber = "134"
+            landmarkName = "locationManager(_:didUpdateLocations:)"
+            landmarkType = "7">
          </BreakpointContent>
       </BreakpointProxy>
    </Breakpoints>

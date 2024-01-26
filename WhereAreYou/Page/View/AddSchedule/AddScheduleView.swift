@@ -26,69 +26,99 @@ struct AddScheduleView: View {
     @State var startDate = Date()
     @State var endDate = Date()
     
+    
+    @State var scheduleImage = CustomDataSet.shared.placeImage.first!
     @State var data:Data? = nil
     @State var selection:PhotosPickerItem? = nil
     
     @EnvironmentObject var vmAuth:AuthViewModel
     @EnvironmentObject var vm:PageViewModel
     @EnvironmentObject var location:LocationMagager
-    @Binding var isPage:Bool
+    //    @Binding var isPage:Bool
     
- 
+    
     var body: some View {
         ZStack{
             VStack{
-                header
+                Capsule()
+                    .frame(width: 100,height: 5)
+                    .opacity(0.3)
+                    .padding(.top)
                 ScrollView(showsIndicators: false){
-                    VStack{
+                    VStack(alignment: .leading){
+                        Text("사진 선택")
+                            .font(.title3)
+                            .bold()
                         photoPicker
-                        Text("사진첨부")
-                            .bold()
-                            .padding(.bottom,5)
-                        Text("사진추가는 선태사항입니다.")
-                            .foregroundColor(.gray.opacity(0.6))
-                            .font(.caption)
-                    }
-                    HStack{
-                        Text("종류")
-                            .bold()
-                        Spacer()
-                        Picker("", selection: $locationSelect){
-                            ForEach(LocationCategoryFilter.allCases,id: \.self) { catefory in
-                                ShceduleCategoryRowView(filter: catefory)
-                                    .padding(.horizontal)
+                        HStack{
+                            Text("종류")
+                                .bold()
+                            Spacer()
+                            Picker("", selection: $locationSelect){
+                                ForEach(LocationCategoryFilter.allCases,id: \.self) { catefory in
+                                    ShceduleCategoryRowView(filter: catefory)
+                                        .padding(.horizontal)
+                                }
                             }
+                            .accentColor(.black)
                         }
-                        .accentColor(.black)
-                    }
-                    .padding(.leading)
-                    HStack{
-                        Text("제목")
-                            .bold()
-                            .padding(.trailing)
-                        CustomTextField(placeholder: "일정의 제목을 입력해주세요", isSecure: false, text: $title)
-                    }
-                    .padding(.leading)
-                    .padding(.bottom,10)
-                    
-                    timePicker
-                    addlink
-                    TextEditor(text: $text)
-                        .frame(height: 500)
-                        .border(Color.black, width: 3)
-                        .overlay(alignment:.topLeading){
-                            if text.isEmpty{
-                                Text("일정을 자세히 적어주세요")
-                                    .padding(7)
-                                    .foregroundColor(.gray)
-                                    .allowsHitTesting(false)
+                        HStack{
+                            Text("제목")
+                                .bold()
+                                .padding(.trailing)
+                            CustomTextField(placeholder: "일정의 제목을 입력해주세요", isSecure: false, text: $title)
+                            
+                        }
+                        .padding(.bottom,10)
+                        
+                        timePicker
+                        addlink
+                        TextEditor(text: $text)
+                            .frame(height: 500)
+                            .border(Color.black, width: 3)
+                            .overlay(alignment:.topLeading){
+                                if text.isEmpty{
+                                    Text("일정을 자세히 적어주세요")
+                                        .padding(7)
+                                        .foregroundColor(.gray)
+                                        .allowsHitTesting(false)
+                                }
                             }
+                            .environment(\.colorScheme, .light)
+                            .padding(.vertical)
+                            .onTapGesture {
+                                UIApplication.shared.endEditing()
+                            }
+                        Button {
+                            guard !text.isEmpty && !title.isEmpty else { return }
+                            
+                            progress = true
+                            for index in 0..<min(links.count, linktitles.count) {
+                                linksArr[linktitles[index]] = links[index]
+                            }
+                            guard let user = vmAuth.user,let page = vm.page else { return }
+                            
+                            let schedule = Schedule(id:vm.schedule?.id ?? "",imageUrl:vm.schedule?.imageUrl,imageUrlPath: vm.schedule?.imageUrlPath , category: locationSelect.name, title: title, startTime: startDate.toTimestamp(), endTime: endDate.toTimestamp(), content: text.replacingOccurrences(of: "\n", with: "\\n"), location: GeoPoint(latitude: (location.pickedPlaceMark?.location?.coordinate.latitude)!, longitude: (location.pickedPlaceMark?.location?.coordinate.longitude)!),link: linksArr)
+                            
+                            //                               if vm.schedule != nil{
+                            //                                   vm.updateSchedule(user: user, pageId: page.pageId, schedule: schedule, item: selection)
+                            //                               }else{
+                            vm.creagteShcedule(user: user, pageId: page.pageId, schedule: schedule,item: selection,image:scheduleImage)
+                            //                               }
+                            
+                        } label: {
+                            RoundedRectangle(cornerRadius: 10)
+                                .frame(height: 50)
+                                .foregroundColor(!text.isEmpty && !title.isEmpty ? .customCyan3 : .gray)
+                                .overlay {
+                                    Text(vm.page != nil ? "변경" : "완료")
+                                        .foregroundColor(.white)
+                                }
+                                .bold()
                         }
-                        .environment(\.colorScheme, .light)
-                        .padding()
-                        .onTapGesture {
-                            UIApplication.shared.endEditing()
-                        }
+                        
+                    }
+                    .padding()
                     
                 }
             }
@@ -96,9 +126,6 @@ struct AddScheduleView: View {
                 CustomProgressView(title: vm.schedule != nil ?  "일정 변경 중.." : "일정 추가 중.." )
             }
         }
-//        .onReceive(vm.addDismiss) {
-//            isPage = false
-//        }
         .foregroundColor(.black)
         .background{
             Color.white.ignoresSafeArea()
@@ -113,7 +140,7 @@ struct AddScheduleView: View {
 
 struct AddScheduleView_Previews: PreviewProvider {
     static var previews: some View {
-        AddScheduleView(isPage: .constant(true))
+        AddScheduleView()
             .environmentObject(PageViewModel(page: nil, pages: CustomDataSet.shared.pages()))
             .environmentObject(LocationMagager())
             .environmentObject(AuthViewModel(user: CustomDataSet.shared.user()))
@@ -121,105 +148,156 @@ struct AddScheduleView_Previews: PreviewProvider {
 }
 extension AddScheduleView{
     var header:some View{
-        ZStack(alignment: .top){
-            Text(vm.schedule != nil ? "일정 변경" : "일정 작성")
-                .font(.title3)
-                .bold()
-            VStack{
-                HStack{
-                    Button {
-                        isPage = false
-                    } label: {
-                        Image(systemName: "chevron.left")
-                            .font(.title3)
-                            .bold()
-                            .padding(.leading)
-                        
-                    }.shadow(color:.black,radius: 20)
-                    Spacer()
-                    if !text.isEmpty,!title.isEmpty,startDate != endDate{
-                        Button {
-                            progress = true
-                            for index in 0..<min(links.count, linktitles.count) {
-                                linksArr[linktitles[index]] = links[index]
-                            }
-                            guard let user = vmAuth.user,let page = vm.page else { return }
-                            let schedule = Schedule(id:vm.schedule?.id ?? "",imageUrl:vm.schedule?.imageUrl,imageUrlPath: vm.schedule?.imageUrlPath , category: locationSelect.name, title: title, startTime: startDate.toTimestamp(), endTime: endDate.toTimestamp(), content: text.replacingOccurrences(of: "\n", with: "\\n"), location: GeoPoint(latitude: (location.pickedPlaceMark?.location?.coordinate.latitude)!, longitude: (location.pickedPlaceMark?.location?.coordinate.longitude)!),link: linksArr)
-                            
-                            if vm.schedule != nil{
-                                vm.updateSchedule(user: user, pageId: page.pageId, schedule: schedule, item: selection)
-                            }else{
-                                vm.creagteShcedule(user: user, pageId: page.pageId, schedule: schedule,item: selection)
-                            }
-                        } label: {
-                            Text(vm.schedule != nil ? "변경" : "작성" )
-                        }
-                        .padding(.trailing)
-                        .bold()
-                    }
-                }
-                
-            }
+        VStack(alignment: .leading){
+            
+            
+            //            VStack{
+            //                HStack{
+            //
+            //                    if !text.isEmpty,!title.isEmpty,startDate != endDate{
+            //                        Button {
+            //                            progress = true
+            //                            for index in 0..<min(links.count, linktitles.count) {
+            //                                linksArr[linktitles[index]] = links[index]
+            //                            }
+            //                            guard let user = vmAuth.user,let page = vm.page else { return }
+            //                            let schedule = Schedule(id:vm.schedule?.id ?? "",imageUrl:vm.schedule?.imageUrl,imageUrlPath: vm.schedule?.imageUrlPath , category: locationSelect.name, title: title, startTime: startDate.toTimestamp(), endTime: endDate.toTimestamp(), content: text.replacingOccurrences(of: "\n", with: "\\n"), location: GeoPoint(latitude: (location.pickedPlaceMark?.location?.coordinate.latitude)!, longitude: (location.pickedPlaceMark?.location?.coordinate.longitude)!),link: linksArr)
+            //
+            //                            if vm.schedule != nil{
+            //                                vm.updateSchedule(user: user, pageId: page.pageId, schedule: schedule, item: selection)
+            //                            }else{
+            //                                vm.creagteShcedule(user: user, pageId: page.pageId, schedule: schedule,item: selection)
+            //                            }
+            //                        } label: {
+            //                            Text(vm.schedule != nil ? "변경" : "작성" )
+            //                        }
+            //                        .padding(.trailing)
+            //                        .bold()
+            //                    }
+            //                }
+            //
+            //            }
             
         }
         .foregroundColor(.black)
         
     }
+    
     var photoPicker:some View{
-        PhotosPicker(
-            selection: $selection,
-            matching: .images,
-            photoLibrary: .shared()) {
+        VStack{
+            Group{
                 if let selectedImageData = data,
                    let uiImage = UIImage(data: selectedImageData) {
                     Image(uiImage: uiImage)
                         .resizable()
-                        .scaledToFill()
-                        .frame(width: 100, height: 100)
-                        .clipShape(RoundedRectangle(cornerRadius: 20))
-                    
                 }else{
-                    if let image = vm.schedule?.imageUrl{
-                        KFImage(URL(string: image))
-                            .resizable()
-                            .scaledToFill()
-                            .frame(width: 100, height: 100)
-                            .clipShape(RoundedRectangle(cornerRadius: 20))
-                    }
-                    else{
-                        emptyImage
-                    }
+                    KFImage(URL(string: scheduleImage))
+                        .resizable()
+                        .placeholder{
+                            Color.gray.opacity(0.2)
+                        }
                 }
             }
-            .overlay(alignment:.topTrailing,content: {
-                if data != nil || vm.schedule?.imageUrl != nil{
-                    Button {
-                        data = nil
-                        vm.schedule?.imageUrl = nil
-                        vm.schedule?.imageUrlPath = nil
-                    } label: {
-                        Image(systemName: "xmark")
-                            .font(.subheadline)
-                            .bold()
-                            .foregroundColor(.white)
-                            .padding(5)
-                            .background{
-                                Circle().foregroundColor(.gray)
+            .frame(height: 300)
+            .cornerRadius(10)
+            ScrollView(.horizontal) {
+                HStack{
+                    PhotosPicker(
+                        selection: $selection,
+                        matching: .images,
+                        photoLibrary: .shared()) {
+                            if let selectedImageData = data,
+                               let uiImage = UIImage(data: selectedImageData) {
+                                Image(uiImage: uiImage)
+                                    .resizable()
+                                    .scaledToFill()
+                                    .frame(width: 100, height: 100)
+                                    .clipShape(RoundedRectangle(cornerRadius: 10))
+                                
+                            }else{
+                                emptyImage
                             }
-                    }
-                    .offset(x:5,y:-5)
-                    
-                }
-                
-            }).onChange(of: selection) { newItem in
-                Task {
-                    if let data = try? await newItem?.loadTransferable(type: Data.self) {
-                        self.data = data
+                        }
+                    ForEach(CustomDataSet.shared.placeImage,id: \.self){ image in
+                        Button{
+                            data = nil
+                            selection = nil
+                            scheduleImage = image
+                        }label: {
+                            KFImage(URL(string: image))
+                                .resizable()
+                                .placeholder{
+                                    Color.gray.opacity(0.2)
+                                }
+                                .frame(width: 100,height: 100)
+                                .cornerRadius(10)
+                        }
                         
                     }
                 }
             }
-            .padding(.top)
+            .onChange(of: selection) { newItem in
+                Task {
+                    guard let data = try? await newItem?.loadTransferable(type: Data.self) else { return }
+                    self.data = data
+                    self.scheduleImage.removeAll()
+                }
+            }
+        }
+        //        PhotosPicker(
+        //            selection: $selection,
+        //            matching: .images,
+        //            photoLibrary: .shared()) {
+        //                if let selectedImageData = data,
+        //                   let uiImage = UIImage(data: selectedImageData) {
+        //                    Image(uiImage: uiImage)
+        //                        .resizable()
+        //                        .scaledToFill()
+        //                        .frame(width: 100, height: 100)
+        //                        .clipShape(RoundedRectangle(cornerRadius: 20))
+        //
+        //                }else{
+        //                    if let image = vm.schedule?.imageUrl{
+        //                        KFImage(URL(string: image))
+        //                            .resizable()
+        //                            .scaledToFill()
+        //                            .frame(width: 100, height: 100)
+        //                            .clipShape(RoundedRectangle(cornerRadius: 20))
+        //                    }
+        //                    else{
+        //                        emptyImage
+        //                    }
+        //                }
+        //            }
+        //            .overlay(alignment:.topTrailing,content: {
+        //                if data != nil || vm.schedule?.imageUrl != nil{
+        //                    Button {
+        //                        data = nil
+        //                        vm.schedule?.imageUrl = nil
+        //                        vm.schedule?.imageUrlPath = nil
+        //                    } label: {
+        //                        Image(systemName: "xmark")
+        //                            .font(.subheadline)
+        //                            .bold()
+        //                            .foregroundColor(.white)
+        //                            .padding(5)
+        //                            .background{
+        //                                Circle().foregroundColor(.gray)
+        //                            }
+        //                    }
+        //                    .offset(x:5,y:-5)
+        //
+        //                }
+        //
+        //            }).onChange(of: selection) { newItem in
+        //                Task {
+        //                    if let data = try? await newItem?.loadTransferable(type: Data.self) {
+        //                        self.data = data
+        //
+        //                    }
+        //                }
+        //            }
+        //            .padding(.top)
     }
     var timePicker:some View{
         VStack{
@@ -236,12 +314,12 @@ extension AddScheduleView{
             }
         }
         .bold()
-        .padding(.horizontal)
         .environment(\.colorScheme, .light)
     }
     var addlink:some View{
         VStack{
-            HStack(spacing: 0){
+            HStack(spacing: 5){
+                
                 Button {
                     links.append("")
                     linktitles.append("")
@@ -257,21 +335,26 @@ extension AddScheduleView{
             }
             ForEach(0..<links.count, id: \.self) { index in
                 VStack(alignment: .leading){
-                    TextField("링크명",text: $linktitles[index])
-                        .padding(.vertical,3).environment(\.colorScheme, .light)
-                    HStack(spacing: 0) {
-                        Image(systemName: "link")
-                        CustomTextField(placeholder: "링크\(index + 1)", isSecure: false,  text: $links[index])
+                    HStack{
+                        Button {
+                            linktitles.remove(at: index)
+                            links.remove(at: index)
+                        } label: {
+                            Image(systemName: "minus.circle.fill")
+                                .foregroundColor(.red)
+                        }
+                        
+                        TextField("링크명",text: $linktitles[index])
+                            .padding(.vertical,3).environment(\.colorScheme, .light)
                     }
+                    CustomTextField(placeholder: "링크", isSecure: false,  text: $links[index])
                 }
             }
         }
-        .font(.subheadline)
-        .padding(.horizontal)
         
     }
     var emptyImage:some View{
-        RoundedRectangle(cornerRadius: 20)
+        RoundedRectangle(cornerRadius: 10)
             .stroke(lineWidth: 3)
             .frame(width: 100, height: 100)
             .overlay {
@@ -281,6 +364,7 @@ extension AddScheduleView{
                     .frame(width: 30,height: 30)
             }
             .foregroundColor(.black)
+            .padding(2)
     }
     func modifyModeSchedule(){
         startDate = (vm.page?.dateRange.first?.dateValue() ?? Date())

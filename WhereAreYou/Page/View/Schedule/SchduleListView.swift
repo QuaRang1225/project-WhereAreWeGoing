@@ -77,7 +77,8 @@ struct SchduleListView: View {
         }
         .padding()
         .navigationDestination(isPresented: $isSearch){
-            SearchAddressView(geo: nil, isSearch: $isSearch)
+//            SearchAddressView(geo: nil, isSearch: $isSearch)
+            SearchAddressView()
                 .environmentObject(vm)
                 .environmentObject(vmAuth)
                 .environmentObject(location)

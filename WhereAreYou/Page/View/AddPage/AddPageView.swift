@@ -82,15 +82,15 @@ struct AddPageView: View {
         }
         .foregroundColor(.black)
        
-        .alert(isPresented: $changedDate) {
-            Alert(
-                title: Text("경고"),
-                message: Text("페이지의 날짜가 바뀌게 되면 해당 날짜의 일정은 모두 삭제 됩니다. 날짜를 수정하시겠습니까?"),
-                primaryButton: .destructive(Text("확인")) {
-                    isPage = true
-                    scheduleDelete()
-                }, secondaryButton: .cancel(Text("취소")))
-        }
+//        .alert(isPresented: $changedDate) {
+//            Alert(
+//                title: Text("경고"),
+//                message: Text("페이지의 날짜가 바뀌게 되면 해당 날짜의 일정은 모두 삭제 됩니다. 날짜를 수정하시겠습니까?"),
+//                primaryButton: .destructive(Text("확인")) {
+//                    isPage = true
+//                    scheduleDelete()
+//                }, secondaryButton: .cancel(Text("취소")))
+//        }
     }
 }
 

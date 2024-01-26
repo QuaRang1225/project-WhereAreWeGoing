@@ -25,6 +25,19 @@ class CustomDataSet{
     "https://firebasestorage.googleapis.com/v0/b/whereareyou-66f3a.appspot.com/o/basic%2FGroup%2023.png?alt=media&token=a1003133-8e84-435e-be01-d3633c5fa0a3"
     
     ]
+    let placeImage = [
+    "https://firebasestorage.googleapis.com/v0/b/whereareyou-66f3a.appspot.com/o/place%2F11e6e70a-e29c-4cc7-8024-34c0376f526a.png?alt=media&token=629b30c1-86e4-478a-b0dd-be32b732f925",
+    "https://firebasestorage.googleapis.com/v0/b/whereareyou-66f3a.appspot.com/o/place%2F13431970-51e2-44dd-bdd2-c0bb292a57e5.png?alt=media&token=a3d0df34-2d4f-47eb-a178-f93bed0a94b7",
+    "https://firebasestorage.googleapis.com/v0/b/whereareyou-66f3a.appspot.com/o/place%2F34dbe03e-6e0f-4ce5-a97c-9d4b8b5905ae.png?alt=media&token=409520fa-0191-4134-a1b5-707aa688a339",
+    "https://firebasestorage.googleapis.com/v0/b/whereareyou-66f3a.appspot.com/o/place%2F7178dcbc-ba69-4b02-b05a-28d0a91c8a94.png?alt=media&token=61748fa4-0d5a-4421-a564-2600021c53a1",
+    "https://firebasestorage.googleapis.com/v0/b/whereareyou-66f3a.appspot.com/o/place%2F773f6825-01ae-4c75-a106-118cc8b460ff.png?alt=media&token=5c9aa158-20c2-4683-a111-06ddd2e07ea0",
+    "https://firebasestorage.googleapis.com/v0/b/whereareyou-66f3a.appspot.com/o/place%2F905e12e3-82ba-4583-8750-6a8dd2ca1e17.png?alt=media&token=b0c57876-6267-48db-baf7-5804dec36e76",
+    "https://firebasestorage.googleapis.com/v0/b/whereareyou-66f3a.appspot.com/o/place%2Fa09fc673-e978-471b-b785-61692a05aea1.png?alt=media&token=2f0bab7c-d390-4823-8f94-3c36ea40c648",
+    "https://firebasestorage.googleapis.com/v0/b/whereareyou-66f3a.appspot.com/o/place%2Fceb1a063-7d9b-4d40-86dd-10d1b2c60fc7.png?alt=media&token=031ad50d-313d-4931-9230-e99201fe8bcd",
+    "https://firebasestorage.googleapis.com/v0/b/whereareyou-66f3a.appspot.com/o/place%2Fd204433e-d017-47df-94e7-cdc147edbca4.png?alt=media&token=e4e1a421-d2e1-475c-88fa-c8611d113abc",
+    "https://firebasestorage.googleapis.com/v0/b/whereareyou-66f3a.appspot.com/o/place%2Fdc3a3448-2cbb-474f-831d-32176f10450d.png?alt=media&token=58834ba4-03f2-4977-9759-4edcd859c66b",
+    "https://firebasestorage.googleapis.com/v0/b/whereareyou-66f3a.appspot.com/o/place%2Ffa62e1cc-07f4-43fc-8860-f4d4b4054e6e.png?alt=media&token=a9b5437e-5e80-49dc-8574-034f55cb0af8"
+    ]
     let backgroudImage = [
         "https://firebasestorage.googleapis.com/v0/b/whereareyou-66f3a.appspot.com/o/city%2F1639a559-1798-482f-ab70-a54b9093168c.png?alt=media&token=d4fbb014-b8a0-4d7c-b5db-34eb7bafd6c9",
         "https://firebasestorage.googleapis.com/v0/b/whereareyou-66f3a.appspot.com/o/city%2F16ac5928-08ff-4639-908d-af6a8d998c20.png?alt=media&token=a810522e-d2a5-4f22-98a0-d3336c7d3de5",
