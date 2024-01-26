@@ -38,4 +38,15 @@ extension Date {
     func toTomorrow() -> Date{
         Calendar.current.date(bySettingHour: 23, minute: 59, second: 59, of: self)! // (byAdding: .minute, value: 1, to: self)!
     }
+    
+    func calculateDaysDifference() -> Int {
+        let calendar = Calendar.current
+        let components = calendar.dateComponents([.day], from: Date(), to: self)
+        
+        if let daysDifference = components.day {
+            return daysDifference
+        } else {
+            return 0
+        }
+    }
 }

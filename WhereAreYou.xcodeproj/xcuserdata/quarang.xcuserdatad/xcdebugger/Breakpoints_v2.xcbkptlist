@@ -2691,54 +2691,6 @@
       <BreakpointProxy
          BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
          <BreakpointContent
-            uuid = "050A914E-EEA3-45BD-B8EE-67294BF08D33"
-            shouldBeEnabled = "No"
-            ignoreCount = "0"
-            continueAfterRunningActions = "No"
-            filePath = "WhereAreYou/Main/MainView.swift"
-            startingColumnNumber = "9223372036854775807"
-            endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "41"
-            endingLineNumber = "41"
-            landmarkName = "body"
-            landmarkType = "24">
-            <Locations>
-               <Location
-                  uuid = "050A914E-EEA3-45BD-B8EE-67294BF08D33 - 136175fe9b2a26c6"
-                  shouldBeEnabled = "Yes"
-                  ignoreCount = "0"
-                  continueAfterRunningActions = "No"
-                  symbolName = "closure #2 () -&gt; () in WhereAreYou.MainView.body.getter : some"
-                  moduleName = "WhereAreYou"
-                  usesParentBreakpointCondition = "Yes"
-                  urlString = "file:///Users/quarang/Documents/QUARANG&apos;S/Project/WhereAreYou/WhereAreYou/Main/MainView.swift"
-                  startingColumnNumber = "9223372036854775807"
-                  endingColumnNumber = "9223372036854775807"
-                  startingLineNumber = "57"
-                  endingLineNumber = "57"
-                  offsetFromSymbolStart = "36">
-               </Location>
-               <Location
-                  uuid = "050A914E-EEA3-45BD-B8EE-67294BF08D33 - 136175fe9b2a26c6"
-                  shouldBeEnabled = "Yes"
-                  ignoreCount = "0"
-                  continueAfterRunningActions = "No"
-                  symbolName = "closure #2 () -&gt; () in WhereAreYou.MainView.body.getter : some"
-                  moduleName = "WhereAreYou"
-                  usesParentBreakpointCondition = "Yes"
-                  urlString = "file:///Users/quarang/Documents/QUARANG&apos;S/Project/WhereAreYou/WhereAreYou/Main/MainView.swift"
-                  startingColumnNumber = "9223372036854775807"
-                  endingColumnNumber = "9223372036854775807"
-                  startingLineNumber = "57"
-                  endingLineNumber = "57"
-                  offsetFromSymbolStart = "128">
-               </Location>
-            </Locations>
-         </BreakpointContent>
-      </BreakpointProxy>
-      <BreakpointProxy
-         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
-         <BreakpointContent
             uuid = "F2EAB321-8DFE-4048-8D79-05EB72A29B6E"
             shouldBeEnabled = "No"
             ignoreCount = "0"

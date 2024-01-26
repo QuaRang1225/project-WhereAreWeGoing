@@ -20,13 +20,27 @@ struct MainView: View {
     @StateObject var vm = PageViewModel(page: nil, pages: [])
     @EnvironmentObject var vmAuth:AuthViewModel
     
-  
+    func relativeTime(index:Int) ->String{
+        if let day = vm.pages[index].dateRange.first?.dateValue().calculateDaysDifference(){
+            if day > 0{
+                return "D\(day)"
+            }
+            else if day < 0{
+                return "D+\(day)"
+            }
+            else{
+                return "오늘"
+            }
+        }
+        return "알수 없음"
+    }
+    
     
     var body: some View {
         VStack(alignment: .leading,spacing: 0){
             header
             ScrollView(showsIndicators: false){
-               contents
+                contents
                 search
                 page
             }
@@ -153,15 +167,16 @@ extension MainView{
                                     .font(.subheadline)
                                     .opacity(0.6)
                             }
-                            .opacity(currentPageIndex == index ? 1.0 : 0)
+                           
                             .bold()
                             .foregroundColor(.black)
                             Spacer()
-                            Text("D-15")
+                            Text(relativeTime(index:index))
                                 .font(.largeTitle)
                                 .foregroundColor(.black)
+                            
                         }
-                        
+                        .opacity(currentPageIndex == index ? 1.0 : 0)
                         KFImage(URL(string: vm.pages[index].pageImageUrl ?? ""))
                             .resizable()
                             .frame(width:vm.pages.count == 1 ? UIScreen.main.bounds.width - 20 : UIScreen.main.bounds.width/1.25,height: vm.pages.count == 1 ? UIScreen.main.bounds.height/3 : UIScreen.main.bounds.height/3.75)
@@ -185,7 +200,7 @@ extension MainView{
                                 .offset(x:-40,y:-30)
                             }
                             .opacity(currentPageIndex == index ? 1.0 : 0.5)
-                            .scaleEffect(currentPageIndex == index ? 1.2 : 0.8)
+                            .scaleEffect(currentPageIndex == index ? 1.2 : 0.7)
                             .cornerRadius(10)
                             .offset(x:CGFloat(index - currentPageIndex) * 300 + dragOffset)
                     }
