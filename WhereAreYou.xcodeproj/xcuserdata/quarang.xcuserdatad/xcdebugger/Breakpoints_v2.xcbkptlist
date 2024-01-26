@@ -3028,7 +3028,7 @@
             endingColumnNumber = "9223372036854775807"
             startingLineNumber = "131"
             endingLineNumber = "131"
-            landmarkName = "locationManagerDidChangeAuthorization(_:)"
+            landmarkName = "locationManager(_:didUpdateLocations:)"
             landmarkType = "7">
          </BreakpointContent>
       </BreakpointProxy>

@@ -17,6 +17,9 @@ struct PageMainView: View {
     @State var pageMode:PageTabFilter = .schedule
     var page:Page
     
+    @State var modifying = false
+    @State var delete = false   //삭제 버튼 활성화
+    @State var out = false
     @State var currentAmount:CGFloat = 0
     @State var currentDrageAmount:CGFloat = 0
     @State private var currentTime = Date()
@@ -25,13 +28,14 @@ struct PageMainView: View {
     
     let timer = Timer.publish(every: 1, on: .main, in: .common).autoconnect()
     
-
-
+    
+    
     var body: some View {
-        ZStack{
+        ZStack(alignment:.bottom){
             ScrollView(.vertical,showsIndicators: false){
-                VStack{
+                VStack(alignment: .leading){
                     background
+                    
                     ZStack{
                         switch pageMode {
                         case .schedule:
@@ -44,8 +48,10 @@ struct PageMainView: View {
                                 .padding(.bottom)
                                 .environmentObject(vmAuth)
                                 .environmentObject(vm)
-                        case .setting:
-                            PageSettingView(page: page, deletePage: $isPage)
+                        case .request:
+                            RequestTabView()
+                                .environmentObject(vm)
+                                
                         }
                     }.environmentObject(vm)
                     
@@ -58,6 +64,7 @@ struct PageMainView: View {
             .padding(.bottom,30)
             header
             tabBar
+            
             if vm.copy{
                 Text("클립보드에 복사되었습니다.")
                     .font(.caption)
@@ -70,7 +77,7 @@ struct PageMainView: View {
                             .opacity(0.5)
                     }
                     .padding(.bottom)
-                    
+                
             }
             if let photo = vm.photo{
                 Color.black.ignoresSafeArea().opacity(0.6).onTapGesture {
@@ -99,6 +106,44 @@ struct PageMainView: View {
                 CustomProgressView(title: "삭제 중..")
             }
         }
+        .confirmationDialog("일정 수정", isPresented: $modifying, actions: {
+            NavigationLink {
+                AddPageView(title: page.pageName ,text: page.pageSubscript,overseas: page.pageOverseas, startDate: page.dateRange.first?.dateValue() ?? Date(),endDate: page.dateRange.last?.dateValue() ?? Date())
+                    .environmentObject(vm)
+                    .environmentObject(vmAuth)
+                    .navigationBarBackButtonHidden()
+            } label: {
+                Text("수정하기")
+            }
+            Button(role:.destructive){
+                if page.pageAdmin == vmAuth.user?.userId{
+                    delete = true
+                }else{
+                    out = true
+                }
+            } label: {
+                Text("삭제")
+            }
+        })
+        .confirmationDialog("", isPresented: page.pageAdmin == vmAuth.user?.userId ? $delete : $out, actions: {
+            Button(role:.destructive){
+                if page.pageAdmin == vmAuth.user?.userId{
+                    guard let page = vm.page,let user = vmAuth.user else {return}
+                    dismiss()
+                    vm.deletePage(user:user,page: page)
+                }else{
+                    if let user = vmAuth.user,let page = vm.page{
+                        dismiss()
+                        vm.outPage(user: user, page:page)
+                    }
+                }
+                
+            } label: {
+                Text(page.pageAdmin == vmAuth.user?.userId ? "삭제하기" : "나가기")
+            }
+        },message: {
+            Text(page.pageAdmin == vmAuth.user?.userId ? "정말 이 페이지를 삭제하시겠습니까?" : "정말 이 페이지를 나가시겠습니까?")
+        })
         .onAppear{
             vm.getPage(pageId: page.pageId)
             vm.getSchedules(pageId: page.pageId)
@@ -122,23 +167,29 @@ struct PageMainView_Previews: PreviewProvider {
 extension PageMainView{
     
     var header:some View{
-        VStack{
+        VStack(alignment: .trailing){
             HStack{
-                    Button {
-                        dismiss()
-                    } label: {
-                        Image(systemName: "chevron.left")
-                            .foregroundColor(.white)
-                            .font(.title3)
-                            .bold()
-                            
-                            .padding(.leading)
-                            
-                    }.shadow(color:.black,radius: 20)
-                    Spacer()
+                Button {
+                    dismiss()
+                } label: {
+                    Image(systemName: "chevron.left")
+                        .foregroundColor(.white)
+                        .font(.title3)
+                        .bold()
+                    
+                        .padding(.leading)
+                    
+                }.shadow(color:.black,radius: 20)
+                Spacer()
+                Button{
+                    modifying = true
+                }label:{
+                    Image(systemName: "gearshape.fill")
+                        .foregroundColor(.white)
+                        .padding(.trailing)
+                }
             }
         }
-       
         .frame(maxHeight: .infinity,alignment: .top)
     }
     var tabBar:some View{
@@ -162,13 +213,25 @@ extension PageMainView{
                                     .foregroundColor(pageMode == tabItem ?  .customCyan2 : .gray.opacity(0.7))
                                     .padding(.vertical)
                                     .bold()
-                                
+                                    .overlay(alignment: .topTrailing) {
+                                        if tabItem == PageTabFilter.request,vm.request.count > 0{
+                                            Text("\(vm.request.count)")
+                                                .font(.caption2)
+                                                .foregroundStyle(.white)
+                                                .padding(1)
+                                                .padding(.horizontal,4)
+                                                .background(Color.red)
+                                                .cornerRadius(100)
+                                                .offset(x:6,y:-3)
+                                                
+                                        }
+                                    }
                             }
                         }
                     }.frame(maxWidth: .infinity)
                 }
             }.background(Color.white)
-                
+            
         }
         
         .frame(maxHeight: .infinity,alignment: .bottom)
@@ -182,15 +245,15 @@ extension PageMainView{
                         Color.black.opacity(0.3)
                     }
                     .offset(x: pro.frame(in: .global).minY > 0 ? -pro.frame(in: .global).minY : 0,
-                                y: pro.frame(in: .global).minY > 0 ? -pro.frame(in: .global).minY : 0)
-                            .frame(
-                                width: pro.frame(in: .global).minY > 0 ?
-                                    UIScreen.main.bounds.width + pro.frame(in: .global).minY * 2 :
-                                    UIScreen.main.bounds.width,
-                                height: pro.frame(in: .global).minY > 0 ?
-                                    UIScreen.main.bounds.height/3 + pro.frame(in: .global).minY :
-                                    UIScreen.main.bounds.height/3
-                            )
+                            y: pro.frame(in: .global).minY > 0 ? -pro.frame(in: .global).minY : 0)
+                    .frame(
+                        width: pro.frame(in: .global).minY > 0 ?
+                        UIScreen.main.bounds.width + pro.frame(in: .global).minY * 2 :
+                            UIScreen.main.bounds.width,
+                        height: pro.frame(in: .global).minY > 0 ?
+                        UIScreen.main.bounds.height/3 + pro.frame(in: .global).minY :
+                            UIScreen.main.bounds.height/3
+                    )
             }
             
             HStack(alignment: .bottom){
@@ -223,7 +286,7 @@ extension PageMainView{
                         
                     })
                     .padding()
-
+                    
                 }
                 Spacer()
                 VStack(alignment: .trailing,spacing: 5){
@@ -245,12 +308,10 @@ extension PageMainView{
                 .padding(.trailing)
                 .offset(y:-10)
             }
-            
-            
-           
         }
         .frame(height: UIScreen.main.bounds.height/3)
     }
+   
 }
 
 

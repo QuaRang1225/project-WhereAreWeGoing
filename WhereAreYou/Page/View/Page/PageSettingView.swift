@@ -50,7 +50,7 @@ struct PageSettingView: View {
             
         }
         
-        .padding(.leading)
+        .padding(.horizontal)
         .confirmationDialog("일정 수정", isPresented: $delete, actions: {
             Button(role:.destructive){
                 guard let page = vm.page,let user = vmAuth.user else {return}
@@ -74,6 +74,7 @@ struct PageSettingView: View {
         },message: {
             Text("정말 이 페이지를 나가시겠습니까?")
         })
+        .background(Color.white)
     }
 }
 

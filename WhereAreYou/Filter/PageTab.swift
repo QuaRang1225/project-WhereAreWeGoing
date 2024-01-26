@@ -10,7 +10,7 @@ import Foundation
 enum PageTabFilter:CaseIterable{
     case schedule
     case member
-    case setting
+    case request
     
     var image:String{
         switch self{
@@ -18,8 +18,8 @@ enum PageTabFilter:CaseIterable{
             return "list.bullet"
         case .member:
             return "person.2"
-        case .setting:
-            return "gearshape"
+        case .request:
+            return "bell.fill"
         }
     }
     var name:String{
@@ -28,8 +28,8 @@ enum PageTabFilter:CaseIterable{
             return "일정"
         case .member:
             return "맴버"
-        case .setting:
-            return "설정"
+        case .request:
+            return "요청"
         }
     }
 }
