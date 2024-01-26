@@ -2963,8 +2963,8 @@
             filePath = "WhereAreYou/Page/View/AddSchedule/AddScheduleView.swift"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "369"
-            endingLineNumber = "369"
+            startingLineNumber = "415"
+            endingLineNumber = "415"
             landmarkName = "modifyModeSchedule()"
             landmarkType = "7">
             <Locations>

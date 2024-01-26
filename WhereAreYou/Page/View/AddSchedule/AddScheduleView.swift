@@ -46,6 +46,38 @@ struct AddScheduleView: View {
                     .padding(.top)
                 ScrollView(showsIndicators: false){
                     VStack(alignment: .leading){
+                        HStack{
+                            Text(location.pickedPlaceMark?.country ?? "")
+                                .font(.title3)
+                            Text(location.pickedPlaceMark?.administrativeArea ?? "")
+                            Spacer()
+                            Button {
+                                vm.copyToPasteboard(text: "\(location.pickedPlaceMark?.thoroughfare ?? "") \(location.pickedPlaceMark?.subThoroughfare ?? "")")
+                            } label: {
+                                HStack{
+                                    Text("주소 복사")
+                                    Image(systemName: "square.on.square")
+                                }
+                                .foregroundColor(.gray)
+                                .font(.caption)
+                            }
+                        }
+                        .bold()
+                        HStack(spacing: 2){
+                            if location.pickedPlaceMark?.administrativeArea != location.pickedPlaceMark?.locality{
+                                Text(location.pickedPlaceMark?.locality ?? "")
+                            }   //서울특별시
+                            Text(location.pickedPlaceMark?.thoroughfare ?? "")
+                            Text(location.pickedPlaceMark?.subThoroughfare ?? "")
+                            Spacer()
+                            Text("우편번호 :")
+                            Text(location.pickedPlaceMark?.postalCode ?? "---")
+                                .foregroundColor(.black)
+                                .bold()
+                        }
+                        .font(.callout)
+                        .foregroundColor(.gray)
+                        .padding(.bottom)
                         Text("사진 선택")
                             .font(.title3)
                             .bold()
@@ -121,6 +153,20 @@ struct AddScheduleView: View {
                     .padding()
                     
                 }
+            }
+            if vm.copy{
+                Text("클립보드에 복사되었습니다.")
+                    .font(.caption)
+                    .foregroundColor(.white)
+                    .padding(.horizontal)
+                    .padding(5)
+                    .background{
+                        Capsule()
+                            .foregroundColor(.black)
+                            .opacity(0.5)
+                    }
+                    .padding(.bottom)
+                    
             }
             if progress{
                 CustomProgressView(title: vm.schedule != nil ?  "일정 변경 중.." : "일정 추가 중.." )

@@ -12,19 +12,19 @@ import FirebaseFirestore
 struct SearchAddressView: View {
     
     let startingOffset: CGFloat = UIScreen.main.bounds.height/2
-        @State private var currentOffset:CGFloat = 0
-        @State private var endOffset:CGFloat = UIScreen.main.bounds.height/2
+    @State private var currentOffset:CGFloat = 0
+    @State private var endOffset:CGFloat = 200
     
     
     @State var isOpenSearchBar = false
     
     
-//    let geo:GeoPoint?
-//    @State var modifyButton = false
-//    @State var modifySchedlue = false
-//    
-//    @State var isAddress = false
-//    @Binding var isSearch:Bool
+    //    let geo:GeoPoint?
+    //    @State var modifyButton = false
+    //    @State var modifySchedlue = false
+    //
+    //    @State var isAddress = false
+    //    @Binding var isSearch:Bool
     
     @Environment(\.dismiss) var dismiss
     @EnvironmentObject var vm:PageViewModel
@@ -39,65 +39,66 @@ struct SearchAddressView: View {
             Color.white.ignoresSafeArea()
             VStack{
                 header
-                    MapViewHelper()
-                        .environmentObject(location)
-                        .ignoresSafeArea()
-                        .overlay {
-                            Image("where")
-                                .resizable()
-                                .frame(width: 40,height: 50)
-                                .offset(y:location.isChanged ? -35 : -25)
-                                .background{
-                                    Capsule()
-                                        .frame(width: 10,height: 5)
-                                        .foregroundColor(.gray.opacity(0.5))
+                MapViewHelper()
+                    .environmentObject(location)
+                    .ignoresSafeArea()
+                    .overlay {
+                        Image("where")
+                            .resizable()
+                            .frame(width: 40,height: 50)
+                            .offset(y:location.isChanged ? -35 : -25)
+                            .background{
+                                Capsule()
+                                    .frame(width: 10,height: 5)
+                                    .foregroundColor(.gray.opacity(0.5))
+                            }
+                        
+                    }
+                    .overlay(alignment:.topTrailing){
+                        Button {
+                            location.mapView.setRegion(MKCoordinateRegion(center:location.mapCoordinate, span: location.mySpan), animated: true)
+                        } label: {
+                            Circle()
+                                .frame(width: 40,height: 40)
+                                .foregroundColor(.white)
+                                .shadow(color: .gray, radius: 5)
+                                .overlay {
+                                    Image(systemName: "dot.viewfinder")
+                                        .foregroundColor(.black)
                                 }
-                               
                         }
-                        .overlay(alignment:.topTrailing){
-                            Button {
-                                location.mapView.setRegion(MKCoordinateRegion(center:location.mapCoordinate, span: location.mySpan), animated: true)
-                            } label: {
-                                Circle()
-                                    .frame(width: 40,height: 40)
-                                    .foregroundColor(.white)
-                                    .shadow(color: .gray, radius: 5)
-                                    .overlay {
-                                        Image(systemName: "dot.viewfinder")
-                                            .foregroundColor(.black)
-                                    }
-                            }
-                            .padding()
+                        .padding()
+                    }
+                    .overlay(alignment: .top) {
+                        if isOpenSearchBar{
+                            searchList
                         }
-                        .overlay(alignment: .top) {
-                            if isOpenSearchBar{
-                                searchList
-                            }
-                        }
+                    }
             }
-            AddScheduleView()
-                .environmentObject(vm)
-                .environmentObject(location)
-                .environmentObject(vmAuth)
-                .cornerRadius(10)
-                .offset(y:startingOffset - 100)
-                       .offset(y:currentOffset)
-                       .offset(y:endOffset)
-                       .gesture(
-                           DragGesture()
-                               .onChanged{ value in
-                                   withAnimation(.spring()){
-                                       currentOffset = value.translation.height
-                                   }
-                               }
-                               .onEnded{ value in
-                                   withAnimation(.spring()){
-                                      offsetSetting()
-                                   }
-                               }
-                       )
-                       .ignoresSafeArea(.all,edges: .bottom)
-            
+            if !location.isChanged{
+                AddScheduleView()
+                    .environmentObject(vm)
+                    .environmentObject(location)
+                    .environmentObject(vmAuth)
+                    .cornerRadius(10)
+                    .offset(y:startingOffset - 100)
+                    .offset(y:currentOffset)
+                    .offset(y:endOffset)
+                    .gesture(
+                        DragGesture()
+                            .onChanged{ value in
+                                withAnimation(.spring()){
+                                    currentOffset = value.translation.height
+                                }
+                            }
+                            .onEnded{ value in
+                                withAnimation(.spring()){
+                                    offsetSetting()
+                                }
+                            }
+                    )
+                    .ignoresSafeArea(.all,edges: .bottom)
+            }
         }
         .ignoresSafeArea(.keyboard)
         .onChange(of: location.searchText){  newValue in
@@ -109,37 +110,37 @@ struct SearchAddressView: View {
         .onAppear{
             let region = MKCoordinateRegion(center: location.manager.location!.coordinate, span: location.mySpan)
             location.mapView.setRegion(region, animated: true)
-//            location.updatePlacemark(location: CLLocation(latitude: region.center.latitude, longitude: region.center.longitude))
-//            if let geo{
-//                location.updatePlacemark(location: CLLocation(latitude: geo.latitude, longitude: geo.longitude))
-//            }
-//            if vm.schedule != nil{
-//                modifyButton = true
-//            }
+            //            location.updatePlacemark(location: CLLocation(latitude: region.center.latitude, longitude: region.center.longitude))
+            //            if let geo{
+            //                location.updatePlacemark(location: CLLocation(latitude: geo.latitude, longitude: geo.longitude))
+            //            }
+            //            if vm.schedule != nil{
+            //                modifyButton = true
+            //            }
         }
-//        .confirmationDialog("일정 수정", isPresented: $modifyButton, actions: {
-//            Button(role:.none){
-//                modifySchedlue = true
-//            } label: {
-//                Text("건너뛰기")
-//            }
-//        },message: {
-//            Text("위치정보 수정을 건너 뛰시겠습니까?")
-//        })
-//        .navigationDestination(isPresented: $isAddress) {
-//            SelectAddressView(isPage: $isSearch)
-//                .environmentObject(vm)
-//                .environmentObject(location)
-//                .environmentObject(vmAuth)
-//                .navigationBarBackButtonHidden()
-//        }
-//        .navigationDestination(isPresented: $modifySchedlue) {
-//            AddScheduleView(isPage: $isSearch)
-//                .environmentObject(vm)
-//                .environmentObject(location)
-//                .environmentObject(vmAuth)
-//                .navigationBarBackButtonHidden()
-//        }
+        //        .confirmationDialog("일정 수정", isPresented: $modifyButton, actions: {
+        //            Button(role:.none){
+        //                modifySchedlue = true
+        //            } label: {
+        //                Text("건너뛰기")
+        //            }
+        //        },message: {
+        //            Text("위치정보 수정을 건너 뛰시겠습니까?")
+        //        })
+        //        .navigationDestination(isPresented: $isAddress) {
+        //            SelectAddressView(isPage: $isSearch)
+        //                .environmentObject(vm)
+        //                .environmentObject(location)
+        //                .environmentObject(vmAuth)
+        //                .navigationBarBackButtonHidden()
+        //        }
+        //        .navigationDestination(isPresented: $modifySchedlue) {
+        //            AddScheduleView(isPage: $isSearch)
+        //                .environmentObject(vm)
+        //                .environmentObject(location)
+        //                .environmentObject(vmAuth)
+        //                .navigationBarBackButtonHidden()
+        //        }
         
     }
 }
@@ -147,7 +148,7 @@ struct SearchAddressView: View {
 struct SearchAddressView_Previews: PreviewProvider {
     static var previews: some View {
         NavigationStack{
-//            SearchAddressView(geo: GeoPoint(latitude: 34, longitude: 127), isSearch: .constant(false))
+            //            SearchAddressView(geo: GeoPoint(latitude: 34, longitude: 127), isSearch: .constant(false))
             SearchAddressView()
                 .environmentObject(PageViewModel(page: nil, pages: CustomDataSet.shared.pages()))
                 .environmentObject(AuthViewModel(user: CustomDataSet.shared.user()))
@@ -165,7 +166,7 @@ extension SearchAddressView{
                 HStack{
                     Button {
                         dismiss()
-//                        isSearch = false
+                        //                        isSearch = false
                     } label: {
                         Image(systemName: "chevron.left")
                             .bold()
@@ -190,12 +191,12 @@ extension SearchAddressView{
         VStack(alignment: .leading){
             CustomTextField(placeholder: "지번,도로명으로 검색..", isSecure: false,  text: $location.searchText)
                 .padding(.horizontal)
-                
+            
             
         }
     }
- 
-
+    
+    
     var searchList:some View{
         VStack{
             if let place = location.fetchPlace, !place.isEmpty{
@@ -208,7 +209,7 @@ extension SearchAddressView{
                                 location.mapView.setRegion( MKCoordinateRegion(center: coordinate, span: location.mySpan), animated: true)
                                 isOpenSearchBar = false
                             }
-//                            isAddress = true
+                            //                            isAddress = true
                         } label: {
                             HStack(spacing:15){
                                 Image("where")
@@ -229,7 +230,7 @@ extension SearchAddressView{
                                         Text(place.subThoroughfare ?? "")
                                     }
                                     .font(.caption)
-                                        .foregroundColor(.gray)
+                                    .foregroundColor(.gray)
                                 }
                             }
                         }
@@ -246,29 +247,15 @@ extension SearchAddressView{
         
     }
     func offsetSetting(){
-       
-            if currentOffset < -50{
-                if currentOffset < -startingOffset{
-                    endOffset = -startingOffset + 100
-                }else if endOffset > 200{
-                    endOffset = 200
-                }
-                else if endOffset == 200{
-                     endOffset = -startingOffset + 100
-                 }
-            }
-             else if currentOffset > 50 {
-                 if currentOffset > startingOffset/2{
-                     endOffset = startingOffset
-                 }
-                 else if endOffset < 200{
-                     endOffset = 200
-                 }else if endOffset == 200{
-                     endOffset = startingOffset
-                 }
-             }
-             currentOffset = 0
+        
+        if currentOffset <  50{
+            endOffset = -startingOffset + 100
         }
+        else if currentOffset > 50{
+            endOffset = 200
+        }
+        currentOffset = 0
+    }
     
 }
 

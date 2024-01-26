@@ -26,7 +26,7 @@ struct MainView: View {
                 return "D\(day)"
             }
             else if day < 0{
-                return "D+\(day)"
+                return "D+\(-day)"
             }
             else{
                 return "오늘"
