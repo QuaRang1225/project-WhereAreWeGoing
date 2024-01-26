@@ -89,6 +89,7 @@ struct PageMainView: View {
                     .scaledToFit()
                     .scaleEffect(1 + currentAmount)
                     .offset(y: currentDrageAmount)
+                    .frame(maxHeight:.infinity)
                     .gesture(
                         MagnificationGesture()
                             .onChanged { value in
@@ -129,15 +130,12 @@ struct PageMainView: View {
             Button(role:.destructive){
                 if page.pageAdmin == vmAuth.user?.userId{
                     guard let page = vm.page,let user = vmAuth.user else {return}
-                    dismiss()
                     vm.deletePage(user:user,page: page)
                 }else{
                     if let user = vmAuth.user,let page = vm.page{
-                        dismiss()
                         vm.outPage(user: user, page:page)
                     }
                 }
-                
             } label: {
                 Text(page.pageAdmin == vmAuth.user?.userId ? "삭제하기" : "나가기")
             }
@@ -150,6 +148,8 @@ struct PageMainView: View {
             
         }
         .onReceive(vm.pageDismiss) {
+            vmAuth.user?.pages = vmAuth.user?.pages?.filter({$0 != page.pageId})
+            vm.pages.removeAll(where: {$0 != page})
             dismiss()
         }
     }

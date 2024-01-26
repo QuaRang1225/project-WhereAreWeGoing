@@ -236,6 +236,7 @@ extension AddScheduleView{
                    let uiImage = UIImage(data: selectedImageData) {
                     Image(uiImage: uiImage)
                         .resizable()
+                        .scaledToFill()
                 }else{
                     KFImage(URL(string: scheduleImage))
                         .resizable()
@@ -245,6 +246,7 @@ extension AddScheduleView{
                 }
             }
             .frame(height: 300)
+            .clipped()
             .cornerRadius(10)
             ScrollView(.horizontal) {
                 HStack{

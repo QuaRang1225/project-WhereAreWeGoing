@@ -23,7 +23,7 @@ struct MainView: View {
     func relativeTime(index:Int) ->String{
         if let day = vm.pages[index].dateRange.first?.dateValue().calculateDaysDifference(){
             if day > 0{
-                return "D\(day)"
+                return "D-\(day)"
             }
             else if day < 0{
                 return "D+\(-day)"

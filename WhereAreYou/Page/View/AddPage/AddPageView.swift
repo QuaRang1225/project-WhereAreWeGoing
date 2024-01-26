@@ -133,6 +133,7 @@ extension AddPageView{
                    let uiImage = UIImage(data: selectedImageData) {
                     Image(uiImage: uiImage)
                         .resizable()
+                        .scaledToFill()
                 }else{
                     KFImage(URL(string: pageImage))
                         .resizable()
@@ -142,6 +143,7 @@ extension AddPageView{
                 }
             }
             .frame(height: 200)
+            .clipped()
             .cornerRadius(10)
             ScrollView(.horizontal) {
                 HStack{

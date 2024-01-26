@@ -142,6 +142,7 @@ final class PageManager{
     }
     func deleteUserPage(pageId:String) async throws{
         try await pageDocument(pageId: pageId).delete()
+        
     }
     func updateMemberPage(userId:String,pageId:String)async throws{
         let user = userDocument(userId: userId)

@@ -140,9 +140,9 @@ final class AuthViewModel:ObservableObject{
     func delete(user:UserData){
         Task{
             try await AuthManager.shared.delete()   //유저 정보 삭제
-            try await StorageManager.shared.deleteImage(path: "/\(user.userId)")
+            try await StorageManager.shared.deleteImage(path: "\(user.userId)")
             try await StorageManager.shared.deleteAllPageImage(path: "\(user.userId)")  //본인의 페이지 사진 모두 삭제
-            try await StorageManager.shared.deleteAllScheuleImage(path: "\(user.userId)")   //본인의 스케쥴 사진 모두 삭제
+            try await StorageManager.shared.deleteAllScheuleImage(userId: "\(user.userId)",pageId: "")   //본인의 스케쥴 사진 모두 삭제
             try await UserManager.shared.deleteUser(user: user)
             
         }

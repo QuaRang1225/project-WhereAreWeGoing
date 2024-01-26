@@ -99,7 +99,8 @@ class PageViewModel:ObservableObject{
                     try await PageManager.shared.updateMemberPage(userId:member,pageId: page.pageId)    //해당 페이지에 속한 모든 멤버정보에서도 페이지id 삭제
                 }
             }
-            try await StorageManager.shared.deleteAllScheuleImage(path: user.userId)    //페이지에 속했었던 모든 스케쥴 사진 삭제 - 디렉토리를 알아서 삭제됨
+            try await StorageManager.shared.deleteAllScheuleImage(userId: user.userId ,pageId: page.pageId)//페이지에 속했었던 모든 스케쥴 사진 삭제 - 디렉토리를 알아서 삭제됨
+           
             pageDismiss.send()
         }
     }
@@ -136,7 +137,7 @@ class PageViewModel:ObservableObject{
             var path:String? = nil
             
             if let data = try await item?.loadTransferable(type: Data.self){
-                path = try await StorageManager.shared.saveImage(data:data,userId: user.userId, mode: .schedule)
+                path = try await StorageManager.shared.scheduleSaveImage(data:data,userId: user.userId, mode: .schedule, pageId: pageId)
                 url = try await StorageManager.shared.getUrlForImage(path: path ?? "").absoluteString
             }
             else if !image.isEmpty{
