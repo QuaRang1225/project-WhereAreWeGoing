@@ -56,7 +56,7 @@ struct AddPageView: View {
                                 if startDate != page.dateRange.first?.dateValue() || endDate != page.dateRange.last?.dateValue() {
                                     changedDate = true
                                 }
-                                vm.updatePage(user: user, pageInfo: setPage, item: selection)
+                                vm.updatePage(user: user, pageInfo: setPage, item: selection, image: pageImage)
                                 
                             }else{
                                 isPage = true
@@ -303,7 +303,7 @@ extension AddPageView{
                 guard let schedule = vm.schedules.first(where: {$0.startTime == change}) else{ return }
                 vm.deleteSchedule(pageId: page.pageId, schedule: schedule)
             }
-            vm.updatePage(user: user, pageInfo: modifiedPage,item: selection)
+            vm.updatePage(user: user, pageInfo: modifiedPage,item: selection, image: pageImage)
         }
         
     }

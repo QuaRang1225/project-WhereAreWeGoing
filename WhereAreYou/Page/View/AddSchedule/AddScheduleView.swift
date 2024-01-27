@@ -34,7 +34,6 @@ struct AddScheduleView: View {
     @EnvironmentObject var vmAuth:AuthViewModel
     @EnvironmentObject var vm:PageViewModel
     @EnvironmentObject var location:LocationMagager
-    //    @Binding var isPage:Bool
     
     
     var body: some View {
@@ -43,7 +42,7 @@ struct AddScheduleView: View {
                 Capsule()
                     .frame(width: 100,height: 5)
                     .opacity(0.3)
-                    .padding(.top)
+                    .padding(.vertical)
                 ScrollView(showsIndicators: false){
                     VStack(alignment: .leading){
                         HStack{
@@ -132,11 +131,11 @@ struct AddScheduleView: View {
                             
                             let schedule = Schedule(id:vm.schedule?.id ?? "",imageUrl:vm.schedule?.imageUrl,imageUrlPath: vm.schedule?.imageUrlPath , category: locationSelect.name, title: title, startTime: startDate.toTimestamp(), endTime: endDate.toTimestamp(), content: text.replacingOccurrences(of: "\n", with: "\\n"), location: GeoPoint(latitude: (location.pickedPlaceMark?.location?.coordinate.latitude)!, longitude: (location.pickedPlaceMark?.location?.coordinate.longitude)!),link: linksArr)
                             
-                            //                               if vm.schedule != nil{
-                            //                                   vm.updateSchedule(user: user, pageId: page.pageId, schedule: schedule, item: selection)
-                            //                               }else{
-                            vm.creagteShcedule(user: user, pageId: page.pageId, schedule: schedule,item: selection,image:scheduleImage)
-                            //                               }
+                            if vm.schedule != nil{
+                                vm.updateSchedule(user: user, pageId: page.pageId, schedule: schedule, item: selection, image: scheduleImage)
+                            }else{
+                                vm.creagteShcedule(user: user, pageId: page.pageId, schedule: schedule,item: selection,image:scheduleImage)
+                            }
                             
                         } label: {
                             RoundedRectangle(cornerRadius: 10)
@@ -179,41 +178,7 @@ struct AddScheduleView_Previews: PreviewProvider {
     }
 }
 extension AddScheduleView{
-    var header:some View{
-        VStack(alignment: .leading){
-            
-            
-            //            VStack{
-            //                HStack{
-            //
-            //                    if !text.isEmpty,!title.isEmpty,startDate != endDate{
-            //                        Button {
-            //                            progress = true
-            //                            for index in 0..<min(links.count, linktitles.count) {
-            //                                linksArr[linktitles[index]] = links[index]
-            //                            }
-            //                            guard let user = vmAuth.user,let page = vm.page else { return }
-            //                            let schedule = Schedule(id:vm.schedule?.id ?? "",imageUrl:vm.schedule?.imageUrl,imageUrlPath: vm.schedule?.imageUrlPath , category: locationSelect.name, title: title, startTime: startDate.toTimestamp(), endTime: endDate.toTimestamp(), content: text.replacingOccurrences(of: "\n", with: "\\n"), location: GeoPoint(latitude: (location.pickedPlaceMark?.location?.coordinate.latitude)!, longitude: (location.pickedPlaceMark?.location?.coordinate.longitude)!),link: linksArr)
-            //
-            //                            if vm.schedule != nil{
-            //                                vm.updateSchedule(user: user, pageId: page.pageId, schedule: schedule, item: selection)
-            //                            }else{
-            //                                vm.creagteShcedule(user: user, pageId: page.pageId, schedule: schedule,item: selection)
-            //                            }
-            //                        } label: {
-            //                            Text(vm.schedule != nil ? "변경" : "작성" )
-            //                        }
-            //                        .padding(.trailing)
-            //                        .bold()
-            //                    }
-            //                }
-            //
-            //            }
-            
-        }
-        .foregroundColor(.black)
-        
-    }
+    
     
     var photoPicker:some View{
         VStack{
@@ -278,60 +243,7 @@ extension AddScheduleView{
                 }
             }
         }
-        //        PhotosPicker(
-        //            selection: $selection,
-        //            matching: .images,
-        //            photoLibrary: .shared()) {
-        //                if let selectedImageData = data,
-        //                   let uiImage = UIImage(data: selectedImageData) {
-        //                    Image(uiImage: uiImage)
-        //                        .resizable()
-        //                        .scaledToFill()
-        //                        .frame(width: 100, height: 100)
-        //                        .clipShape(RoundedRectangle(cornerRadius: 20))
-        //
-        //                }else{
-        //                    if let image = vm.schedule?.imageUrl{
-        //                        KFImage(URL(string: image))
-        //                            .resizable()
-        //                            .scaledToFill()
-        //                            .frame(width: 100, height: 100)
-        //                            .clipShape(RoundedRectangle(cornerRadius: 20))
-        //                    }
-        //                    else{
-        //                        emptyImage
-        //                    }
-        //                }
-        //            }
-        //            .overlay(alignment:.topTrailing,content: {
-        //                if data != nil || vm.schedule?.imageUrl != nil{
-        //                    Button {
-        //                        data = nil
-        //                        vm.schedule?.imageUrl = nil
-        //                        vm.schedule?.imageUrlPath = nil
-        //                    } label: {
-        //                        Image(systemName: "xmark")
-        //                            .font(.subheadline)
-        //                            .bold()
-        //                            .foregroundColor(.white)
-        //                            .padding(5)
-        //                            .background{
-        //                                Circle().foregroundColor(.gray)
-        //                            }
-        //                    }
-        //                    .offset(x:5,y:-5)
-        //
-        //                }
-        //
-        //            }).onChange(of: selection) { newItem in
-        //                Task {
-        //                    if let data = try? await newItem?.loadTransferable(type: Data.self) {
-        //                        self.data = data
-        //
-        //                    }
-        //                }
-        //            }
-        //            .padding(.top)
+       
     }
     var timePicker:some View{
         VStack{

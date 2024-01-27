@@ -103,7 +103,6 @@ struct ScheduleRowView: View {
 
                         }
                         .navigationDestination(isPresented: $modify) {
-//                            SearchAddressView(geo: schedule.location, isSearch: $modify)
                             SearchAddressView()
                                 .navigationBarBackButtonHidden()
                                 .environmentObject(vmAuth)

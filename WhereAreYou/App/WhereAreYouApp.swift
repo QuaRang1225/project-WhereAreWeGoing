@@ -23,6 +23,7 @@ struct WhereAreYouApp: App {
         WindowGroup {
             NavigationStack{
                 ContentView()
+                    .navigationViewStyle(StackNavigationViewStyle())
             }
             .environment(\.colorScheme,.light)
         }

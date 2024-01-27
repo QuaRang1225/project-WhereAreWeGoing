@@ -25,7 +25,6 @@ struct SchduleListView: View {
     
     var days:[Schedule]{
         let currentDay = vm.page?.dateRange[date].dateValue() ?? Date()
-        
         return vm.schedules.filter({ $0.startTime.dateValue() <= currentDay && currentDay <= $0.endTime.dateValue() })
     }
     

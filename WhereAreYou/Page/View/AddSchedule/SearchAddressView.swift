@@ -15,23 +15,16 @@ struct SearchAddressView: View {
     @State private var currentOffset:CGFloat = 0
     @State private var endOffset:CGFloat = 200
     
-    
+    @State var linkTitle:[String] = []
+    @State var linkContents:[String] = []
     
     @State var isOpenSearchBar = false
     
-    //    let geo:GeoPoint?
-    //    @State var modifyButton = false
-    //    @State var modifySchedlue = false
-    //
-    //    @State var isAddress = false
-    //    @Binding var isSearch:Bool
     
     @Environment(\.dismiss) var dismiss
     @EnvironmentObject var vm:PageViewModel
     @EnvironmentObject var vmAuth:AuthViewModel
     @StateObject var location = LocationMagager()
-    
-    
     
     
     var body: some View {
@@ -76,7 +69,14 @@ struct SearchAddressView: View {
                     }
             }
             if !location.isChanged{
-                AddScheduleView()
+                Group{
+                    if let schedule = vm.schedule{
+                        AddScheduleView(title: schedule.title, text:schedule.content, locationSelect: LocationCategoryFilter.allCases.first(where: {$0.name == schedule.category}) ?? .cafe, links:linkContents, linktitles:linkTitle, startDate:schedule.startTime.dateValue(),endDate:schedule.endTime.dateValue(), scheduleImage: schedule.imageUrl ?? "")
+                    }else{
+                        AddScheduleView()
+                    }
+                }
+               
                     .environmentObject(vm)
                     .environmentObject(location)
                     .environmentObject(vmAuth)
@@ -118,43 +118,28 @@ struct SearchAddressView: View {
         .onChange(of: location.searchText){  newValue in
             isOpenSearchBar = true
         }
-        .onReceive(vm.addDismiss) { scheduleId in
+        .onReceive(vm.addDismiss) { _ in
             dismiss()
         }
         .onAppear{
-            let region = MKCoordinateRegion(center: location.manager.location!.coordinate, span: location.mySpan)
-            location.mapView.setRegion(region, animated: true)
-            //            location.updatePlacemark(location: CLLocation(latitude: region.center.latitude, longitude: region.center.longitude))
-            //            if let geo{
-            //                location.updatePlacemark(location: CLLocation(latitude: geo.latitude, longitude: geo.longitude))
-            //            }
-            //            if vm.schedule != nil{
-            //                modifyButton = true
-            //            }
+            if let schedule = vm.schedule{
+                if let links = schedule.link{
+                    for i in links{
+                        self.linkTitle.append(i.key)
+                        self.linkContents.append(i.value)
+                    }
+                }
+                let region = MKCoordinateRegion(center: CLLocationCoordinate2D(latitude: schedule.location.latitude, longitude: schedule.location.longitude), span: location.mySpan)
+                location.mapView.setRegion(region, animated: true)
+            }else{
+                let region = MKCoordinateRegion(center: location.manager.location!.coordinate, span: location.mySpan)
+                location.mapView.setRegion(region, animated: true)
+            }
+            
         }
-        //        .confirmationDialog("일정 수정", isPresented: $modifyButton, actions: {
-        //            Button(role:.none){
-        //                modifySchedlue = true
-        //            } label: {
-        //                Text("건너뛰기")
-        //            }
-        //        },message: {
-        //            Text("위치정보 수정을 건너 뛰시겠습니까?")
-        //        })
-        //        .navigationDestination(isPresented: $isAddress) {
-        //            SelectAddressView(isPage: $isSearch)
-        //                .environmentObject(vm)
-        //                .environmentObject(location)
-        //                .environmentObject(vmAuth)
-        //                .navigationBarBackButtonHidden()
-        //        }
-        //        .navigationDestination(isPresented: $modifySchedlue) {
-        //            AddScheduleView(isPage: $isSearch)
-        //                .environmentObject(vm)
-        //                .environmentObject(location)
-        //                .environmentObject(vmAuth)
-        //                .navigationBarBackButtonHidden()
-        //        }
+        .onDisappear{
+            vm.schedule = nil
+        }
         
     }
 }
@@ -162,7 +147,6 @@ struct SearchAddressView: View {
 struct SearchAddressView_Previews: PreviewProvider {
     static var previews: some View {
         NavigationStack{
-            //            SearchAddressView(geo: GeoPoint(latitude: 34, longitude: 127), isSearch: .constant(false))
             SearchAddressView()
                 .environmentObject(PageViewModel(page: nil, pages: CustomDataSet.shared.pages()))
                 .environmentObject(AuthViewModel(user: CustomDataSet.shared.user()))
@@ -174,13 +158,12 @@ struct SearchAddressView_Previews: PreviewProvider {
 extension SearchAddressView{
     var header:some View{
         ZStack(alignment: .top){
-            Text("일정 추가")
+            Text(vm.schedule != nil ? "일정 수정" : "일정 추가")
                 .bold()
             VStack{
                 HStack{
                     Button {
                         dismiss()
-                        //                        isSearch = false
                     } label: {
                         Image(systemName: "chevron.left")
                             .bold()
