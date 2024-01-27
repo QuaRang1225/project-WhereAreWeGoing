@@ -118,6 +118,16 @@ struct ScheduleRowView: View {
                                 .font(.subheadline)
                                 .foregroundColor(.red)
                         }
+                        .confirmationDialog("일정 삭제", isPresented: $delete, actions: {
+                            Button(role:.destructive){
+                                guard let page = vm.page else {return}
+                                vm.deleteSchedule(pageId: page.pageId, schedule: schedule)
+                            } label: {
+                                Text("삭제")
+                            }
+                        },message: {
+                            Text("\(schedule.title) 일정을 삭제하시겠습니까?").bold()
+                        })
 
 
                     }.foregroundColor(.gray)
@@ -162,16 +172,7 @@ struct ScheduleRowView: View {
                 .background(Color.gray.opacity(0.1))
             }
         }
-        .confirmationDialog("일정 삭제", isPresented: $delete, actions: {
-            Button(role:.destructive){
-                guard let page = vm.page else {return}
-                vm.deleteSchedule(pageId: page.pageId, schedule: schedule)
-            } label: {
-                Text("삭제")
-            }
-        },message: {
-            Text("\(schedule.title) 일정을 삭제하시겠습니까?").bold()
-        })
+        
 
         .sheet(isPresented: $goWebView) {
             LinkWebView(urlString: link).ignoresSafeArea()

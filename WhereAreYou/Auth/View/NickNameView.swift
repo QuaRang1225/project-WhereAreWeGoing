@@ -24,17 +24,20 @@ struct NickNameView: View {
                         vm.infoSetting = InfoSettingFilter.profile
                     }
                 }
-                Button {
-                    withAnimation(.linear){
-                        vm.user?.nickName = "으딩이\(Range(1...10).randomElement() ?? 1)"
-                        vm.infoSetting = InfoSettingFilter.profile
+                if !modify{
+                    Button {
+                        withAnimation(.linear){
+                            vm.user?.nickName = "으딩이\(Range(1...10).randomElement() ?? 1)"
+                            vm.infoSetting = InfoSettingFilter.profile
+                        }
+                    } label: {
+                        Text("건너뛰기")
+                            .font(.caption)
+                            .foregroundColor(.gray)
                     }
-                } label: {
-                    Text("건너뛰기")
-                        .font(.caption)
-                        .foregroundColor(.gray)
+                    .padding()
                 }
-                .padding()
+                
             }
         }
         .background(.white)

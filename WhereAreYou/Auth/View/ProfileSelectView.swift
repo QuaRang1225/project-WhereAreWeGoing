@@ -13,17 +13,20 @@ struct ProfileSelectView: View {
     
     @State var profile = ""
     @EnvironmentObject var vm:AuthViewModel
-//    @State var modify = false
     @State var create = false //계정 만드는 중..
     @Environment(\.dismiss) var dismiss
     
-    let colmun = [GridItem(.flexible()),GridItem(.flexible()),GridItem(.flexible())]
+    let columns: [GridItem] = [
+            GridItem(.fixed(100), spacing: nil, alignment: nil),
+            GridItem(.fixed(100), spacing: nil, alignment: nil),
+            GridItem(.fixed(100), spacing: nil, alignment: nil)
+            
+        ]
     
     var body: some View {
         ZStack{
             Color.white.ignoresSafeArea()
             VStack{
-//                Text(modify ? "프로필수정" : "프로필선택")
                 Text("프로필선택")
                     .font(.title)
                     .bold()
@@ -33,7 +36,7 @@ struct ProfileSelectView: View {
                     .foregroundColor(.black)
                 ScrollView {
                     
-                    LazyHGrid(rows: colmun,spacing: 10){
+                    LazyVGrid(columns: columns,spacing: 20){
                         ForEach(CustomDataSet.shared.images,id:\.self){ image in
                             Button {
                                 vm.selectedImageData = nil
@@ -48,16 +51,6 @@ struct ProfileSelectView: View {
                                                 Color.white.opacity(0.8)
                                             }
                                         }
-                                       
-//                                        if !profile.isEmpty{
-//                                            Color.white.opacity(0.8)
-//                                        }
-//                                        else if profile != image {//||
-////                                        if (profile != image && !profile.isEmpty) || (profile != image && vm.selectedItem != nil){
-//                                            Color.white.opacity(0.8)
-//                                        }else if vm.selectedItem != nil{
-//                                            Color.white.opacity(0.8)
-//                                        }
                                     }
                                     .frame(width: 80,height: 80)
                                     .cornerRadius(30)
@@ -100,39 +93,16 @@ struct ProfileSelectView: View {
                     SelectButton(color:vm.selectedItem != nil || !profile.isEmpty ? .customCyan3 : .gray, textColor: .white, text: "확인") {
                         if let item = vm.selectedItem {
                             create = true
-//                            guard let item = vm.selectedItem else { return vm.noImageSave() }
-//                            if !modify{
                                 vm.savePhotoProfileImage(item: item)
-//                            }else{
-//                                vm.updateProfileImage(item: item)
-//                            }
                         }else if !profile.isEmpty,profile != "photo" {
                             create = true
                             vm.saveImageProfileImage(item: profile)
                         }
                         
                     }
-//                    if !modify{
-//                        Button {
-//                            create = true
-//                            Task{
-//                                guard var user = vm.user else {return}
-//                                user.guestMode = false
-//                                user.profileImageUrl = CustomDataSet.shared.images.randomElement()
-//                                vm.user = user
-//                                try UserManager.shared.createNewUser(user: user)
-//                            }
-//                        } label: {
-//                            Text("건너뛰기")
-//                                .font(.caption)
-//                                .foregroundColor(.gray)
-//                        }
-//                        .padding()
-//                    }
                 }
             }
             if create{
-//                CustomProgressView(title: modify ? "프로필 변경 중.." : "계정 생성 중..").ignoresSafeArea()
                 CustomProgressView(title: "계정 생성 중..").ignoresSafeArea()
             }
         }

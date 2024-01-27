@@ -31,7 +31,7 @@ struct PageMainView: View {
     
     
     var body: some View {
-        ZStack(alignment:.bottom){
+        ZStack{
             ScrollView(.vertical,showsIndicators: false){
                 VStack(alignment: .leading){
                     background
@@ -106,44 +106,10 @@ struct PageMainView: View {
             if isPage{
                 CustomProgressView(title: "삭제 중..")
             }
+            
         }
-        .confirmationDialog("일정 수정", isPresented: $modifying, actions: {
-            NavigationLink {
-                if let page = vm.page {
-                    AddPageView(title: page.pageName ,text: page.pageSubscript,overseas: page.pageOverseas, startDate: page.dateRange.first?.dateValue() ?? Date(),endDate: page.dateRange.last?.dateValue() ?? Date(),pageImage: page.pageImageUrl ?? "")
-                        .environmentObject(vm)
-                        .environmentObject(vmAuth)
-                        .navigationBarBackButtonHidden()
-                }
-            } label: {
-                Text("수정하기")
-            }
-            Button(role:.destructive){
-                if vm.page?.pageAdmin == vmAuth.user?.userId{
-                    delete = true
-                }else{
-                    out = true
-                }
-            } label: {
-                Text("삭제")
-            }
-        })
-        .confirmationDialog("", isPresented: vm.page?.pageAdmin == vmAuth.user?.userId ? $delete : $out, actions: {
-            Button(role:.destructive){
-                if vm.page?.pageAdmin == vmAuth.user?.userId{
-                    guard let page = vm.page,let user = vmAuth.user else {return}
-                    vm.deletePage(user:user,page: page)
-                }else{
-                    if let user = vmAuth.user,let page = vm.page{
-                        vm.outPage(user: user, page:page)
-                    }
-                }
-            } label: {
-                Text(vm.page?.pageAdmin == vmAuth.user?.userId ? "삭제하기" : "나가기")
-            }
-        },message: {
-            Text(vm.page?.pageAdmin == vmAuth.user?.userId ? "정말 이 페이지를 삭제하시겠습니까?" : "정말 이 페이지를 나가시겠습니까?")
-        })
+        
+       
         .onAppear{
             vm.getPage(pageId: pageId)
             vm.getSchedules(pageId: pageId)
@@ -191,6 +157,43 @@ extension PageMainView{
                         .foregroundColor(.white)
                         .padding(.trailing)
                 }
+                .confirmationDialog("일정 수정", isPresented: $modifying, actions: {
+                    NavigationLink {
+                        if let page = vm.page {
+                            AddPageView(title: page.pageName ,text: page.pageSubscript,overseas: page.pageOverseas, startDate: page.dateRange.first?.dateValue() ?? Date(),endDate: page.dateRange.last?.dateValue() ?? Date(),pageImage: page.pageImageUrl ?? "")
+                                .environmentObject(vm)
+                                .environmentObject(vmAuth)
+                                .navigationBarBackButtonHidden()
+                        }
+                    } label: {
+                        Text("수정하기")
+                    }
+                    Button(role:.destructive){
+                        if vm.page?.pageAdmin == vmAuth.user?.userId{
+                            delete = true
+                        }else{
+                            out = true
+                        }
+                    } label: {
+                        Text("삭제")
+                    }
+                })
+                .confirmationDialog("", isPresented: vm.page?.pageAdmin == vmAuth.user?.userId ? $delete : $out, actions: {
+                    Button(role:.destructive){
+                        if vm.page?.pageAdmin == vmAuth.user?.userId{
+                            guard let page = vm.page,let user = vmAuth.user else {return}
+                            vm.deletePage(user:user,page: page)
+                        }else{
+                            if let user = vmAuth.user,let page = vm.page{
+                                vm.outPage(user: user, page:page)
+                            }
+                        }
+                    } label: {
+                        Text(vm.page?.pageAdmin == vmAuth.user?.userId ? "삭제하기" : "나가기")
+                    }
+                },message: {
+                    Text(vm.page?.pageAdmin == vmAuth.user?.userId ? "정말 이 페이지를 삭제하시겠습니까?" : "정말 이 페이지를 나가시겠습니까?")
+                })
             }
         }
         .frame(maxHeight: .infinity,alignment: .top)

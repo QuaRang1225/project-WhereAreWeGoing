@@ -95,10 +95,12 @@ final class AuthViewModel:ObservableObject{
     
     
     func deleteProfileImage(){
-        guard let user,let path = user.profileImagePath else {return}
+        guard let user else {return}
         
         Task{
-            try await StorageManager.shared.deleteImage(path: path)
+            if let path = user.profileImagePath{
+                try await StorageManager.shared.deleteImage(path: path)
+            }
             try await UserManager.shared.updateUserProfileImagePath(userId: user.userId, path: nil, url: nil)
             self.user = try await UserManager.shared.getUser(userId: user.userId)
             changedSuccess.send()

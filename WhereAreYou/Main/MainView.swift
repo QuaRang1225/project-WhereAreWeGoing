@@ -46,7 +46,7 @@ struct MainView: View {
             }
         }
         .sheet(isPresented: $profile){
-            ProfileChangeView()
+            ProfileChangeView(nickname:vmAuth.user?.nickName ?? "",preProfile:vmAuth.user?.profileImagePath != nil ? (vmAuth.user?.profileImageUrl ?? "") : "")
         }
         .background{
             Color.white.ignoresSafeArea()
@@ -69,6 +69,7 @@ struct MainView_Previews: PreviewProvider {
 
 extension MainView{
     var header:some View{
+        
         HStack(spacing: 20){
             Image("lofo")
                 .resizable()
@@ -80,7 +81,8 @@ extension MainView{
                 if let profile = vmAuth.user?.profileImageUrl{
                     KFImage(URL(string: (profile)))
                         .resizable()
-                        .frame(width: 50,height: 50)
+                        .frame(width: 40,height: 40)
+                        .scaledToFill()
                         .clipShape(/*@START_MENU_TOKEN@*/Circle()/*@END_MENU_TOKEN@*/)
                 }else{
                     ProgressView()
@@ -179,8 +181,12 @@ extension MainView{
                         .opacity(currentPageIndex == index ? 1.0 : 0)
                         KFImage(URL(string: vm.pages[index].pageImageUrl ?? ""))
                             .resizable()
-                            .frame(width:vm.pages.count == 1 ? UIScreen.main.bounds.width - 20 : UIScreen.main.bounds.width/1.25,height: vm.pages.count == 1 ? UIScreen.main.bounds.height/3 : UIScreen.main.bounds.height/3.75)
+                            .frame(width:UIScreen.main.bounds.width/1.25,height: UIScreen.main.bounds.width/1.25 * 0.8)
                             .shadow(radius: 5)
+                            
+                            .opacity(currentPageIndex == index ? 1.0 : 0.5)
+                            .scaleEffect(currentPageIndex == index ? 1.2 : 0.8)
+                            .cornerRadius(10)
                             .overlay(alignment: .bottomTrailing) {
                                 NavigationLink {
                                     PageMainView(pageId: vm.pages[index].pageId)
@@ -199,10 +205,7 @@ extension MainView{
                                 }
                                 .offset(x:-40,y:-30)
                             }
-                            .opacity(currentPageIndex == index ? 1.0 : 0.5)
-                            .scaleEffect(currentPageIndex == index ? 1.2 : 0.7)
-                            .cornerRadius(10)
-                            .offset(x:CGFloat(index - currentPageIndex) * 300 + dragOffset)
+                            .offset(x:CGFloat(index - currentPageIndex) *  (UIScreen.main.bounds.width/1.25 + 20) + dragOffset)
                     }
                 }
             }
