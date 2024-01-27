@@ -16,8 +16,8 @@ struct SearchAddressView: View {
     @State private var endOffset:CGFloat = 200
     
     
-    @State var isOpenSearchBar = false
     
+    @State var isOpenSearchBar = false
     
     //    let geo:GeoPoint?
     //    @State var modifyButton = false
@@ -98,6 +98,20 @@ struct SearchAddressView: View {
                             }
                     )
                     .ignoresSafeArea(.all,edges: .bottom)
+            }
+            if vm.copy{
+                Text("클립보드에 복사되었습니다.")
+                    .font(.caption)
+                    .foregroundColor(.white)
+                    .padding(.horizontal)
+                    .padding(5)
+                    .background{
+                        Capsule()
+                            .foregroundColor(.black)
+                            .opacity(0.5)
+                    }
+                    .padding(.bottom)
+                    
             }
         }
         .ignoresSafeArea(.keyboard)

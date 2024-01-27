@@ -29,11 +29,10 @@ struct AddPageView: View {
     @Environment(\.dismiss) var dismiss
     
     @State var pageImage = CustomDataSet.shared.backgroudImage.first!
-    
+
     var body: some View {
         ZStack{
             Color.white.ignoresSafeArea()
-            
             VStack{
                 header
                 ScrollView{
@@ -50,12 +49,18 @@ struct AddPageView: View {
                             guard overseas != nil && !text.isEmpty && !title.isEmpty else { return }
                             guard let user = vmAuth.user,let overseas else {return}
                             
-                            if  vm.page != nil{
-                                changedDate = true
+                            let setPage = Page(pageId: vm.page?.pageId ?? "", pageAdmin: vm.page?.pageAdmin ?? "",pageImageUrl: pageImage ,pageImagePath: vm.page?.pageImagePath, pageName: title, pageOverseas: overseas, pageSubscript: text, dateRange: vm.generateTimestamp(from: startDate, to: endDate))
+                            
+                            if let page = vm.page{
+                                
+                                if startDate != page.dateRange.first?.dateValue() || endDate != page.dateRange.last?.dateValue() {
+                                    changedDate = true
+                                }
+                                vm.updatePage(user: user, pageInfo: setPage, item: selection)
+                                
                             }else{
                                 isPage = true
-                                let page = Page(pageId: "", pageAdmin: "",pageImageUrl: "",pageImagePath: "", pageName: title, pageOverseas: overseas, pageSubscript: text, dateRange: vm.generateTimestamp(from: startDate, to: endDate))
-                                vm.creagtePage(user:user, pageInfo: page,item: selection, image: pageImage)
+                                vm.creagtePage(user:user, pageInfo: setPage,item: selection, image: pageImage)
                             }
                         } label: {
                             RoundedRectangle(cornerRadius: 10)
@@ -77,20 +82,21 @@ struct AddPageView: View {
             
         }
         .onReceive(vm.addDismiss){ pageId in
-            vmAuth.user?.pages?.append(pageId)
+            if !pageId.isEmpty{
+                vmAuth.user?.pages?.append(pageId)
+            }
             dismiss()
         }
         .foregroundColor(.black)
-       
-//        .alert(isPresented: $changedDate) {
-//            Alert(
-//                title: Text("경고"),
-//                message: Text("페이지의 날짜가 바뀌게 되면 해당 날짜의 일정은 모두 삭제 됩니다. 날짜를 수정하시겠습니까?"),
-//                primaryButton: .destructive(Text("확인")) {
-//                    isPage = true
-//                    scheduleDelete()
-//                }, secondaryButton: .cancel(Text("취소")))
-//        }
+        .alert(isPresented: $changedDate) {
+            Alert(
+                title: Text("경고"),
+                message: Text("페이지의 날짜가 바뀌게 되면 해당 날짜의 일정은 모두 삭제 됩니다. 날짜를 수정하시겠습니까?"),
+                primaryButton: .destructive(Text("확인")) {
+                    isPage = true
+                    scheduleDelete()
+                }, secondaryButton: .cancel(Text("취소")))
+        }
     }
 }
 
@@ -98,7 +104,7 @@ struct AddPageView_Previews: PreviewProvider {
     static var previews: some View {
         AddPageView()
             .environmentObject(AuthViewModel(user: CustomDataSet.shared.user()))
-            .environmentObject(PageViewModel(page: nil, pages: CustomDataSet.shared.pages()))
+            .environmentObject(PageViewModel(page: CustomDataSet.shared.page(), pages: CustomDataSet.shared.pages()))
     }
 }
 
@@ -211,7 +217,7 @@ extension AddPageView{
     var settingDate:some View{
         VStack(alignment:.leading){
             HStack{
-                DatePicker("가는날", selection: $startDate,in:(Date())...,displayedComponents: .date)
+                DatePicker("가는날", selection: $startDate,displayedComponents: .date)
                     .environment(\.locale, .init(identifier: "ko_KR"))
                 Text("부터")
             }

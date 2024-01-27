@@ -15,7 +15,7 @@ struct PageMainView: View {
     @EnvironmentObject var vm:PageViewModel
     @EnvironmentObject var vmAuth:AuthViewModel
     @State var pageMode:PageTabFilter = .schedule
-    var page:Page
+    var pageId:String
     
     @State var modifying = false
     @State var delete = false   //삭제 버튼 활성화
@@ -109,15 +109,17 @@ struct PageMainView: View {
         }
         .confirmationDialog("일정 수정", isPresented: $modifying, actions: {
             NavigationLink {
-                AddPageView(title: page.pageName ,text: page.pageSubscript,overseas: page.pageOverseas, startDate: page.dateRange.first?.dateValue() ?? Date(),endDate: page.dateRange.last?.dateValue() ?? Date())
-                    .environmentObject(vm)
-                    .environmentObject(vmAuth)
-                    .navigationBarBackButtonHidden()
+                if let page = vm.page {
+                    AddPageView(title: page.pageName ,text: page.pageSubscript,overseas: page.pageOverseas, startDate: page.dateRange.first?.dateValue() ?? Date(),endDate: page.dateRange.last?.dateValue() ?? Date(),pageImage: page.pageImageUrl ?? "")
+                        .environmentObject(vm)
+                        .environmentObject(vmAuth)
+                        .navigationBarBackButtonHidden()
+                }
             } label: {
                 Text("수정하기")
             }
             Button(role:.destructive){
-                if page.pageAdmin == vmAuth.user?.userId{
+                if vm.page?.pageAdmin == vmAuth.user?.userId{
                     delete = true
                 }else{
                     out = true
@@ -126,9 +128,9 @@ struct PageMainView: View {
                 Text("삭제")
             }
         })
-        .confirmationDialog("", isPresented: page.pageAdmin == vmAuth.user?.userId ? $delete : $out, actions: {
+        .confirmationDialog("", isPresented: vm.page?.pageAdmin == vmAuth.user?.userId ? $delete : $out, actions: {
             Button(role:.destructive){
-                if page.pageAdmin == vmAuth.user?.userId{
+                if vm.page?.pageAdmin == vmAuth.user?.userId{
                     guard let page = vm.page,let user = vmAuth.user else {return}
                     vm.deletePage(user:user,page: page)
                 }else{
@@ -137,19 +139,19 @@ struct PageMainView: View {
                     }
                 }
             } label: {
-                Text(page.pageAdmin == vmAuth.user?.userId ? "삭제하기" : "나가기")
+                Text(vm.page?.pageAdmin == vmAuth.user?.userId ? "삭제하기" : "나가기")
             }
         },message: {
-            Text(page.pageAdmin == vmAuth.user?.userId ? "정말 이 페이지를 삭제하시겠습니까?" : "정말 이 페이지를 나가시겠습니까?")
+            Text(vm.page?.pageAdmin == vmAuth.user?.userId ? "정말 이 페이지를 삭제하시겠습니까?" : "정말 이 페이지를 나가시겠습니까?")
         })
         .onAppear{
-            vm.getPage(pageId: page.pageId)
-            vm.getSchedules(pageId: page.pageId)
-            
+            vm.getPage(pageId: pageId)
+            vm.getSchedules(pageId: pageId)
         }
         .onReceive(vm.pageDismiss) {
-            vmAuth.user?.pages = vmAuth.user?.pages?.filter({$0 != page.pageId})
-            vm.pages.removeAll(where: {$0 != page})
+            vmAuth.user?.pages = vmAuth.user?.pages?.filter({$0 != vm.page?.pageId})
+            vm.pages.removeAll(where: {$0 != vm.page})
+            vm.page = nil
             dismiss()
         }
     }
@@ -158,7 +160,7 @@ struct PageMainView: View {
 struct PageMainView_Previews: PreviewProvider {
     static var previews: some View {
         NavigationStack{
-            PageMainView(page: CustomDataSet.shared.page())
+            PageMainView(pageId: CustomDataSet.shared.page().pageId)
                 .environmentObject(PageViewModel(page: CustomDataSet.shared.page(), pages: CustomDataSet.shared.pages()))
                 .environmentObject(AuthViewModel(user: CustomDataSet.shared.user()))
         }
@@ -170,6 +172,7 @@ extension PageMainView{
         VStack(alignment: .trailing){
             HStack{
                 Button {
+                    vm.page = nil
                     dismiss()
                 } label: {
                     Image(systemName: "chevron.left")

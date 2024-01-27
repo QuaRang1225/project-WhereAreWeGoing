@@ -154,20 +154,6 @@ struct AddScheduleView: View {
                     
                 }
             }
-            if vm.copy{
-                Text("클립보드에 복사되었습니다.")
-                    .font(.caption)
-                    .foregroundColor(.white)
-                    .padding(.horizontal)
-                    .padding(5)
-                    .background{
-                        Capsule()
-                            .foregroundColor(.black)
-                            .opacity(0.5)
-                    }
-                    .padding(.bottom)
-                    
-            }
             if progress{
                 CustomProgressView(title: vm.schedule != nil ?  "일정 변경 중.." : "일정 추가 중.." )
             }

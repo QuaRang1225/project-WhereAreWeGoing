@@ -183,7 +183,7 @@ extension MainView{
                             .shadow(radius: 5)
                             .overlay(alignment: .bottomTrailing) {
                                 NavigationLink {
-                                    PageMainView(page: vm.pages[index])
+                                    PageMainView(pageId: vm.pages[index].pageId)
                                         .environmentObject(vm)
                                         .environmentObject(vmAuth)
                                         .navigationBarBackButtonHidden()

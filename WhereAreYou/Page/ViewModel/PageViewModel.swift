@@ -83,7 +83,7 @@ class PageViewModel:ObservableObject{
             }
             try await PageManager.shared.upadateUserPage(userId: user.userId,url: url, path: path, pageInfo: pageInfo)
             self.page = try await PageManager.shared.getPage(pageId: pageInfo.pageId)
-//            addDismiss.send()
+            addDismiss.send("")
         }
     }
     //페이지 삭제
