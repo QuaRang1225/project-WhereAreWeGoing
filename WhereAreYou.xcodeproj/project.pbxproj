@@ -605,11 +605,12 @@
 			};
 			buildConfigurationList = 81D5BC9D2A4FE9F5001842FD /* Build configuration list for PBXProject "WhereAreYou" */;
 			compatibilityVersion = "Xcode 14.0";
-			developmentRegion = en;
+			developmentRegion = ko;
 			hasScannedForEncodings = 0;
 			knownRegions = (
 				en,
 				Base,
+				ko,
 			);
 			mainGroup = 81D5BC992A4FE9F5001842FD;
 			packageReferences = (

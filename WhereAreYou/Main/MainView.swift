@@ -20,8 +20,16 @@ struct MainView: View {
     @StateObject var vm = PageViewModel(page: nil, pages: [])
     @EnvironmentObject var vmAuth:AuthViewModel
     
-    func relativeTime(index:Int) ->String{
-        if let day = vm.pages[index].dateRange.first?.dateValue().calculateDaysDifference(){
+    let columns = [ GridItem(.flexible()),
+                    GridItem(.flexible())]
+    
+    
+    
+//    var sortedPages:[Page]{
+//        return vm.pages.sorted(by: {$0.dateRange.first?.dateValue() ?? Date() < $1.dateRange.last?.dateValue() ?? Date()})
+//    }
+    func relativeTime(page:Page) ->String{
+        if let day = page.dateRange.first?.dateValue().calculateDaysDifference(){
             if day > 0{
                 return "D-\(day)"
             }
@@ -34,8 +42,6 @@ struct MainView: View {
         }
         return "알수 없음"
     }
-    
-    
     var body: some View {
         VStack(alignment: .leading,spacing: 0){
             header
@@ -49,7 +55,7 @@ struct MainView: View {
             ProfileChangeView(nickname:vmAuth.user?.nickName ?? "",profile:vmAuth.user?.profileImageUrl ?? "", preProfile:vmAuth.user?.profileImagePath != nil ? (vmAuth.user?.profileImageUrl ?? "") : "")
         }
         .background{
-            Color.white.ignoresSafeArea()
+            Color.gray.opacity(0.1).ignoresSafeArea()
         }
         .onAppear{
             guard let user = vmAuth.user else {return}
@@ -111,7 +117,7 @@ extension MainView{
                     .foregroundColor(.customCyan3)
                     .overlay {
                         Text("여행 추가")
-                            .foregroundStyle(.white)
+                            .foregroundColor(.white)
                     }
             }
             NavigationLink{
@@ -158,74 +164,46 @@ extension MainView{
                 .padding(.bottom)
                 .foregroundColor(.black)
                 .bold()
-            ZStack{
-                ForEach(0..<vm.pages.count,id:\.self){ index in
-                    VStack(alignment:.leading){
-                        HStack{
-                            VStack(alignment:.leading){
-                                Text(vm.pages[index].pageName)
-                                Text(vm.pages[index].pageSubscript)
-                                    .foregroundStyle(.black.opacity(0.7))
+            LazyVGrid(columns: columns){
+                ForEach(vm.pages.sorted(by: {$0.dateRange.first?.dateValue() ?? Date() < $1.dateRange.first?.dateValue() ?? Date()}),id:\.self){ page in
+                    NavigationLink {
+                        PageMainView(pageId: page.pageId)
+                            .environmentObject(vm)
+                            .environmentObject(vmAuth)
+                            .navigationBarBackButtonHidden()
+                    }label:{
+                        VStack(alignment: .leading){
+                            HStack{
+                                Text(relativeTime(page:page))
+                                    .font(.title3)
+                                    .bold()
+                                    .foregroundColor(.black)
+                                Spacer()
+                                Text(page.dateRange.first?.dateValue().toString() ?? "")
+                                    .font(.caption)
+                                    .foregroundColor(.black)
+                            }
+                            
+                            VStack{
+                                KFImage(URL(string: page.pageImageUrl ?? ""))
+                                    .resizable()
+                                    .frame(height: UIScreen.main.bounds.width/3)
+                                Text(page.pageName)
+                                    .foregroundColor(.black)
+                                Text(page.pageSubscript)
+                                    .lineLimit(1)
+                                    .foregroundColor(.black.opacity(0.7))
                                     .font(.subheadline)
                                     .opacity(0.6)
+                                    .padding(.bottom,5)
                             }
-                           
-                            .bold()
-                            .foregroundColor(.black)
-                            Spacer()
-                            Text(relativeTime(index:index))
-                                .font(.largeTitle)
-                                .foregroundColor(.black)
-                            
-                        }
-                        .opacity(currentPageIndex == index ? 1.0 : 0)
-                        KFImage(URL(string: vm.pages[index].pageImageUrl ?? ""))
-                            .resizable()
-                            .frame(width:UIScreen.main.bounds.width/1.25,height: UIScreen.main.bounds.width/1.25 * 0.8)
-                            .shadow(radius: 5)
-                            
-                            .opacity(currentPageIndex == index ? 1.0 : 0.5)
-                            .scaleEffect(currentPageIndex == index ? 1.2 : 0.8)
+                            .background(Color.white)
                             .cornerRadius(10)
-                            .overlay(alignment: .bottomTrailing) {
-                                NavigationLink {
-                                    PageMainView(pageId: vm.pages[index].pageId)
-                                        .environmentObject(vm)
-                                        .environmentObject(vmAuth)
-                                        .navigationBarBackButtonHidden()
-                                } label: {
-                                    HStack{
-                                        Image(systemName:"chevron.forward.circle.fill")
-                                    }
-                                    .font(.largeTitle)
-                                    .bold()
-                                    .foregroundColor(.white)
-                                    .shadow(radius: 10)
-                                    
-                                }
-                                .offset(x:-40,y:-30)
-                            }
-                            .offset(x:CGFloat(index - currentPageIndex) *  (UIScreen.main.bounds.width/1.25 + 20) + dragOffset)
+                        }
                     }
                 }
             }
-            .frame(maxWidth:.infinity)
-            .gesture(
-                DragGesture()
-                    .onEnded({ value in
-                        let threshold:CGFloat = 50
-                        if value.translation.width > threshold{
-                            withAnimation {
-                                currentPageIndex = max(0,currentPageIndex - 1)
-                            }
-                        }else if value.translation.width < -threshold{
-                            withAnimation {
-                                currentPageIndex = min(vm.pages.count-1,currentPageIndex + 1)
-                            }
-                        }
-                    })
-            )
-            .padding(.bottom,20)
+           
         }
         .padding()
         

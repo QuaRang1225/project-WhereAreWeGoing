@@ -150,6 +150,20 @@ extension PageMainView{
                     
                 }.shadow(color:.black,radius: 20)
                 Spacer()
+                Button {
+                    vm.copyToPasteboard(text: vm.page?.pageId ?? "")
+                } label: {
+                    Capsule()
+                        .frame(width: 90,height: 25)
+                        .foregroundColor(.white)
+                        .overlay {
+                            Text("페이지ID 복사")
+                                .font(.caption)
+                                .bold()
+                                .foregroundColor(.black)
+                        }
+                }
+                    
                 Button{
                     modifying = true
                 }label:{

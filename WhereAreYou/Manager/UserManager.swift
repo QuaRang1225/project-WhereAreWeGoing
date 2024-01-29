@@ -86,10 +86,9 @@ final class UserManager{
     
     func getSearchPage(text:String)async throws -> [Page]{
         
-        var pages = try await pagesCollection.whereField("page_name", isGreaterThanOrEqualTo: text).getAllDocuments(as: Page.self)
-        pages.append(contentsOf: try await pagesCollection.whereField("page_id", isGreaterThanOrEqualTo: text).getAllDocuments(as: Page.self))
-        print(pages)
-        return Array(Set(pages))
+        let pages = try await pagesCollection.getAllDocuments(as: Page.self)
+        let search = pages.filter({$0.pageName.contains(text) || $0.pageId.contains(text)})
+        return search
         
     }
     func deleteUser(user:UserData)async throws{
