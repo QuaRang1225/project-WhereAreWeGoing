@@ -32,6 +32,7 @@ class PageViewModel:ObservableObject{
     //---------- 뷰 이벤트 -----------
     var addDismiss = PassthroughSubject<String,Never>()
     var pageDismiss = PassthroughSubject<(),Never>()
+    var requsetDismiss = PassthroughSubject<Page,Never>()
     
     //
     //--------------페이지-----------------------
@@ -147,10 +148,7 @@ class PageViewModel:ObservableObject{
     //일정 수정
     func updateSchedule(user:UserData,pageId:String,schedule:Schedule,item:PhotosPickerItem?,image:String){
         Task{
-            
-            print(item)
-            print(image)
-            
+           
             var url:String = ""
             var path:String? = nil
             
@@ -217,6 +215,7 @@ class PageViewModel:ObservableObject{
     func requestPage(user:UserData,pageId:String,cancel:Bool){
         Task{
             try await PageManager.shared.requestPage(userId:user.userId,pageId:pageId,cancel:!cancel)
+            self.requsetDismiss.send(try await PageManager.shared.getPage(pageId: pageId))
         }
     }
 

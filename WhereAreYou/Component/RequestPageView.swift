@@ -12,112 +12,115 @@ struct RequestPageView: View {
     
     @State var requested = false
     @State var user:UserData?
-    @Binding var page:Page?
+    
+    @State var requestLoading = false
+//    @Binding var page:Page?
+//    @Binding var pages:[Page]
     @EnvironmentObject var vm:PageViewModel
     @EnvironmentObject var vmAuth:AuthViewModel
     
     var body: some View {
-        ZStack(alignment: .bottomTrailing) {
-            VStack(alignment: .leading){
+            VStack{
                 
-                KFImage(URL(string: page?.pageImageUrl ?? ""))
-                    .resizable(resizingMode: .tile)
+                KFImage(URL(string: vm.page?.pageImageUrl ?? ""))
+                    .resizable()
                     .scaledToFill()
-                    .frame(height: 200)
+                    .frame(width: UIScreen.main.bounds.width,height: UIScreen.main.bounds.width * (3/4))
                     .clipped()
-                    .overlay{
-                        ZStack(alignment:.topTrailing){
-                            Color.black.opacity(0.2)
-                            Button {
-                                page = nil
-                            } label: {
-                                Image(systemName: "xmark")
-                                     .padding()
-                                     .foregroundColor(.white)
-                                     .bold()
-                                     .font(.title3)
-                            }
-                        }
-                    }
-                
-                HStack{
-                    Text(page?.pageName ?? "").bold().font(.title3)
-                    Text(page?.pageOverseas ?? false ? "해외여행" : "국내여행")
-                        .font(.caption)
-                        .foregroundColor(.gray)
-                        .padding(.top,8)
-                    Spacer()
-                    
-                    
-                    KFImage(URL(string: user?.profileImageUrl ?? ""))
-                        .resizable()
-                        .scaledToFill()
-                        .frame(width: 60,height: 60)
-                        .cornerRadius(20)
-                        .overlay(alignment:.topTrailing){
-                            Image("crown")
+                    .ignoresSafeArea(.all,edges: .top)
+                    .overlay(alignment: .bottomTrailing) {
+                        VStack{
+                            KFImage(URL(string: user?.profileImageUrl ?? CustomDataSet.shared.images.first!))
                                 .resizable()
-                                .frame(width: 30, height: 30)
-                                .offset(y:-15)
-                                .rotationEffect(Angle(degrees: 45))
-                        }
-                        .offset(y:-40)
-                        .overlay{
+                                .scaledToFill()
+                                .frame(width: 60,height: 60)
+                                .cornerRadius(20)
+                                .overlay{
+                                    Image("crown")
+                                        .resizable()
+                                        .frame(width: 30, height: 30)
+                                        .offset(y:-35)
+                                        .rotationEffect(Angle(degrees: 45))
+                                        
+                                }
                             Text("방장")
                                 .font(.subheadline)
                                 .padding(.top,2)
                         }
+                        .offset(y:40)
                         .padding(.trailing)
-                }.padding(.leading).frame(height: 40)
+                    }
                 VStack(alignment: .leading){
-                    Text("시작 : \(page?.dateRange.first?.dateValue().toString() ?? "")")
-                    Text("끝 : \(page?.dateRange.last?.dateValue().toString() ?? "")")
-                }.padding([.bottom,.leading])
-                Text("내용").padding(.leading).padding(.bottom,1).bold()
-                Text(page?.pageSubscript ?? "")
-                    .padding(.horizontal)
-                    .padding(.bottom,50)
+                    HStack{
+                        Text(vm.page?.pageName ?? "").bold().font(.title3)
+                        Text(vm.page?.pageOverseas ?? false ? "해외여행" : "국내여행")
+                            .font(.caption)
+                            .foregroundColor(.gray)
+                            .padding(.top,8)
+                        Spacer()
+                        
+                        
+                    }
+                    VStack(alignment: .leading){
+                        Text("시작 : \(vm.page?.dateRange.first?.dateValue().toString() ?? "")")
+                        Text("끝 : \(vm.page?.dateRange.last?.dateValue().toString() ?? "")")
+                    }.padding(.bottom)
+                    Text("내용").padding(.bottom,1).bold()
+                    Text(vm.page?.pageSubscript ?? "")
+                        .lineLimit(2)
+                        .padding(.bottom,50)
+                }.padding(.horizontal)
                 
-            }
-            .background(Color.white)
-            .cornerRadius(20)
-            .shadow(radius: 5)
-            if let pageMembers = page?.members, !pageMembers.contains(vmAuth.user?.userId ?? ""){
-                Button {
-                    requested.toggle()
-                    guard let user = vmAuth.user,let pageid = page?.pageId else {return}
-                    vm.requestPage(user:user,pageId:pageid,cancel:requested)
-                } label: {
-                    Text(requested ? "요청됨" : "요청")
-                        .padding(.horizontal).padding(5)
-                        .background(requested ? Color.gray.opacity(0.6) :  Color.customCyan2.opacity(0.7))
-                        .foregroundColor(.white)
-                        .bold()
-                        .cornerRadius(10)
-                        .padding()
+               
+                Spacer()
+                if let pageMembers = vm.page?.members, !pageMembers.contains(vmAuth.user?.userId ?? ""){
+                    SelectButton(color: requested ? Color.gray.opacity(0.6) :  Color.customCyan2.opacity(0.7), textColor: .white, text: requested ? "요청 취소" : "요청"){
+                        requested = true
+                        guard let user = vmAuth.user,let pageid = vm.page?.pageId else {return}
+                        requestLoading = true
+                        vm.requestPage(user:user,pageId:pageid,cancel:requested)
+                    }
                 }
             }
-            
-        }
+            .background(Color.white.ignoresSafeArea())
+            .foregroundColor(.black)
+            .overlay{
+                if requestLoading{
+                    CustomProgressView(title: "초대 요청 중")
+                }
+            }
+        
         .onAppear{
             Task{
-                self.user = try await UserManager.shared.getUser(userId: page?.pageAdmin ?? "")
+                //방장 화면
+                self.user = try await UserManager.shared.getUser(userId: vm.page?.pageAdmin ?? "")
             }
             
-            if let request = page?.request,let user = vmAuth.user?.userId, request.contains(user){
+            if let request = vm.page?.request,let user = vmAuth.user?.userId, request.contains(user){
                 self.requested = true
             }
             else {
                 self.requested = false
             }
         }
+        .onDisappear{
+            vm.page = nil
+        }
+        .onReceive(vm.requsetDismiss) { page in
+            if let oldPage = vm.page,let index = vm.pages.firstIndex(of: oldPage){
+                vm.pages[index] = page
+                requestLoading = false
+            }
+            
+        }
+        
     }
 }
 
 struct RequestPageView_Previews: PreviewProvider {
     static var previews: some View {
-        RequestPageView(page: .constant(CustomDataSet.shared.page()))
-            .environmentObject(PageViewModel(page: nil, pages: CustomDataSet.shared.pages()))
+        RequestPageView()
+            .environmentObject(PageViewModel(page: CustomDataSet.shared.page(), pages: CustomDataSet.shared.pages()))
             .environmentObject(AuthViewModel(user: CustomDataSet.shared.user()))
     }
 }
