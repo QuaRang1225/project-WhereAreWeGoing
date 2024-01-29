@@ -147,7 +147,11 @@ class PageViewModel:ObservableObject{
     //일정 수정
     func updateSchedule(user:UserData,pageId:String,schedule:Schedule,item:PhotosPickerItem?,image:String){
         Task{
-            var url:String? = nil
+            
+            print(item)
+            print(image)
+            
+            var url:String = ""
             var path:String? = nil
             
             if let data = try await item?.loadTransferable(type: Data.self){

@@ -74,14 +74,14 @@ final class PageManager{
         
     }
     
-    func createUserSchedule(pageId:String,url:String?,schedule:Schedule,path:String?)async throws -> String{
+    func createUserSchedule(pageId:String,url:String,schedule:Schedule,path:String?)async throws -> String{
         let field = pageDocument(pageId: pageId).collection("schedule").document()
         let schduleId = field.documentID
         
         
         let data:[String:Any] = [
             "id" : schduleId,
-            "image_url" : url as Any,
+            "image_url" : url,
             "image_url_path":path as Any,
             "category" : schedule.category,
             "title" : schedule.title,
@@ -96,7 +96,7 @@ final class PageManager{
         return schduleId
         
     }
-    func updateUSerSchedule(userId:String,pageId:String,url:String?,schedule:Schedule,path:String?)async throws{
+    func updateUSerSchedule(userId:String,pageId:String,url:String,schedule:Schedule,path:String?)async throws{
         
         let field = pageDocument(pageId: pageId).collection("schedule").document(schedule.id)
         var data:[String:Any] = [:]
@@ -104,17 +104,14 @@ final class PageManager{
         data = [
             "category" : schedule.category,
             "title" : schedule.title,
+            "image_url" : url,
+            "image_url_path" : path as Any,
             "start_time" : schedule.startTime,
             "end_time" : schedule.endTime,
             "content" : schedule.content,
             "location" : schedule.location,
             "link":schedule.link as Any
         ]
-        
-        if let url,let path{
-            data["image_url_path"] = url == "x" ? NSNull() : path
-            data["image_url"] = path == "x" ? NSNull(): url
-        }
         print("스케쥴 수정중..")
         try await field.updateData(data as [AnyHashable : Any])
         

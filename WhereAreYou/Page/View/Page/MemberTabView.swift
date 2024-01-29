@@ -49,8 +49,10 @@ struct MemberTabView: View {
                                     }
                                 }
                             }
+                            .padding(.top)
+                            
                     }
-                    .padding(.top)
+                    
                 }
             }
         }

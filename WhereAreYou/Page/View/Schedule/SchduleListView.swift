@@ -25,8 +25,9 @@ struct SchduleListView: View {
     
     var days:[Schedule]{
         let currentDay = vm.page?.dateRange[date].dateValue() ?? Date()
-        return vm.schedules.filter({ $0.startTime.dateValue() <= currentDay && currentDay <= $0.endTime.dateValue() })
-    }
+        return vm.schedules.filter{ ($0.startTime.dateValue().toDay()...$0.endTime.dateValue().toDay()).contains(currentDay) }.sorted{$0.startTime < $1.startTime}
+           
+        }
     
     var body: some View {
         ZStack{
