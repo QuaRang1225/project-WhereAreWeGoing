@@ -36,6 +36,7 @@ struct MemberTabView: View {
                                 if vmAuth.user?.userId == vm.page?.pageAdmin{
                                     Button {
                                         guard let page = vm.page else {return}
+                                        vm.accept = true
                                         vm.kickMember(userId: member.userId, pageId: page.pageId)
                                     } label: {
                                         Text("강퇴")
@@ -56,12 +57,10 @@ struct MemberTabView: View {
                 }
             }
         }
-        .padding()
-        .onAppear{
-            vm.getPage(pageId: vm.page?.pageId ?? "")
-            guard let page = vm.page else {return}
-            vm.getMembers(page: page)
+        .onReceive(vm.requsetDismiss){ page in
+            vm.accept = false
         }
+        .padding()
     }
 }
 

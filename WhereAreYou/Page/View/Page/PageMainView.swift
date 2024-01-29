@@ -120,6 +120,11 @@ struct PageMainView: View {
             vm.page = nil
             dismiss()
         }
+        .overlay {
+            if vm.accept{
+                CustomProgressView(title: "처리 중..")
+            }
+        }
     }
 }
 

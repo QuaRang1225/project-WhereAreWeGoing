@@ -8,6 +8,7 @@
 import SwiftUI
 
 struct RequestTabView: View {
+    
     @EnvironmentObject var vm:PageViewModel
     var body: some View {
         VStack(alignment: .leading){
@@ -20,6 +21,7 @@ struct RequestTabView: View {
                             .overlay(alignment:.trailing){
                                 Button {
                                     guard let page = vm.page else {return}
+                                    vm.accept = true
                                     vm.userAccept(page: page, requestUser: request)
                                 } label: {
                                     Text("수락")
@@ -38,6 +40,10 @@ struct RequestTabView: View {
         }
         .padding(.horizontal)
         .padding(.vertical)
+        .onReceive(vm.requsetDismiss){ page in
+            vm.accept = false
+        }
+        
     }
     var emptyrequest:some View{
         HStack{

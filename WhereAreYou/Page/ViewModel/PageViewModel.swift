@@ -30,6 +30,7 @@ class PageViewModel:ObservableObject{
     @Published var member:[UserData] = []
     
     //---------- 뷰 이벤트 -----------
+    @Published var accept = false
     var addDismiss = PassthroughSubject<String,Never>()
     var pageDismiss = PassthroughSubject<(),Never>()
     var requsetDismiss = PassthroughSubject<Page,Never>()
@@ -117,7 +118,9 @@ class PageViewModel:ObservableObject{
     //페이지 불러오기
     func getPage(pageId:String){
         Task{
-            self.page = try await PageManager.shared.getPage(pageId: pageId)
+            let page = try await PageManager.shared.getPage(pageId: pageId)
+            self.page = page
+            getMembers(page: page)
         }
     }
     
@@ -208,7 +211,9 @@ class PageViewModel:ObservableObject{
         Task{
             try await PageManager.shared.acceptUser(pageId:page.pageId,requestUser:requestUser)
             let pageInfo = try await PageManager.shared.getPage(pageId: page.pageId)
-            (self.request,self.member) = try await PageManager.shared.getMembersInfo(page:pageInfo)
+            getMembers(page: pageInfo)
+            self.page = pageInfo
+            self.requsetDismiss.send(pageInfo)
         }
     }
     //페이지 요청
@@ -224,7 +229,9 @@ class PageViewModel:ObservableObject{
             try await PageManager.shared.memberPage(userId:userId,pageId:pageId,cancel:true)
             try await PageManager.shared.updateMemberPage(userId: userId, pageId: pageId)
             let pageInfo = try await PageManager.shared.getPage(pageId: pageId)
-            (self.request,self.member) = try await PageManager.shared.getMembersInfo(page:pageInfo)
+            getMembers(page: pageInfo)
+            self.page = pageInfo
+            self.requsetDismiss.send(pageInfo)
         }
     }
     
