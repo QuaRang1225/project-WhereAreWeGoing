@@ -73,6 +73,22 @@ final class AuthViewModel:ObservableObject{
 //                                vm.user?.guestMode =
         }
     }
+    func updateImageProfileImage(item:String){
+        Task{
+            guard var user else {return}
+            user.profileImageUrl = item
+            user.guestMode = false
+            if let path = user.profileImagePath{
+                try await StorageManager.shared.deleteImage(path: path)
+            }
+            try await UserManager.shared.updateUserProfileImagePath(userId: user.userId, path: nil, url: item)
+            self.user = user
+            changedSuccess.send()
+//            try await UserManager.shared.updateUserProfileImagePath(userId: user.userId, path: nil, url: profile)
+//                                vm.user?.guestMode =
+        }
+    }
+    
     func savePhotoProfileImage(item:PhotosPickerItem){
         guard var user else {return}
         
@@ -92,47 +108,65 @@ final class AuthViewModel:ObservableObject{
 //            self.user = try await UserManager.shared.getUser(userId: user.userId)
         }
     }
-    
-    
-    func deleteProfileImage(){
-        guard let user else {return}
+    func updatePhotoProfileImage(item:PhotosPickerItem){
+        guard var user else {return}
         
         Task{
-            if let path = user.profileImagePath{
-                try await StorageManager.shared.deleteImage(path: path)
-            }
-            try await UserManager.shared.updateUserProfileImagePath(userId: user.userId, path: nil, url: nil)
-            self.user = try await UserManager.shared.getUser(userId: user.userId)
-            changedSuccess.send()
-        }
-    }
-    func updateProfileImage(item:PhotosPickerItem){
-        guard let user else {return}
-        Task{
-            
-            if let path = user.profileImagePath{
-                try await StorageManager.shared.deleteImage(path: path)
-            }
-            
             guard let data = try await item.loadTransferable(type: Data.self) else {return}
+           
             let path = try await StorageManager.shared.saveImage(data:data,userId: user.userId, mode: .profile)
             let url = try await StorageManager.shared.getUrlForImage(path: path)
-            try await UserManager.shared.updateUserProfileImagePath(userId: user.userId, path: path,url: url.absoluteString)
-            
-           
-            self.user = try await UserManager.shared.getUser(userId: user.userId)
+            user.profileImagePath = path
+            user.profileImageUrl = url.absoluteString
+//            user.guestMode = false
+//            try UserManager.shared.createNewUser(user: user)
+//            try await UserManager.shared.updateUserProfileImagePath(userId: user.userId, path: path,url: url.absoluteString)
+            try await UserManager.shared.updateUserProfileImagePath(userId: user.userId, path: path, url: url.absoluteString)
+            self.user = user
             changedSuccess.send()
+//            self.user = try await UserManager.shared.getUser(userId: user.userId)
         }
     }
-    func noImageSave(){
-        Task{
-            guard let user,let path = user.profileImagePath else {return}
-            try await StorageManager.shared.deleteImage(path: path)
-            try await UserManager.shared.updateUserProfileImagePath(userId: user.userId, path: nil,url:CustomDataSet.shared.images.randomElement())
-            self.user = try await UserManager.shared.getUser(userId: user.userId)
-            changedSuccess.send()
-        }
-    }
+    
+//    func deleteProfileImage(url:String){
+//        guard let user else {return}
+//        
+//        Task{
+//            if let path = user.profileImagePath{
+//                try await StorageManager.shared.deleteImage(path: path)
+//            }
+////            try await UserManager.shared.updateUserProfileImagePath(userId: user.userId, path: nil, url:url)
+//            self.user = try await UserManager.shared.getUser(userId: user.userId)
+//            changedSuccess.send()
+//        }
+//    }
+//    func updateProfileImage(item:PhotosPickerItem){
+//        guard let user else {return}
+//        Task{
+//            
+//            if let path = user.profileImagePath{
+//                try await StorageManager.shared.deleteImage(path: path)
+//            }
+//            
+//            guard let data = try await item.loadTransferable(type: Data.self) else {return}
+//            let path = try await StorageManager.shared.saveImage(data:data,userId: user.userId, mode: .profile)
+//            let url = try await StorageManager.shared.getUrlForImage(path: path)
+//            try await UserManager.shared.updateUserProfileImagePath(userId: user.userId, path: path,url: url.absoluteString)
+//            
+//           
+//            self.user = try await UserManager.shared.getUser(userId: user.userId)
+//            changedSuccess.send()
+//        }
+//    }
+//    func noImageSave(){
+//        Task{
+//            guard let user,let path = user.profileImagePath else {return}
+//            try await StorageManager.shared.deleteImage(path: path)
+//            try await UserManager.shared.updateUserProfileImagePath(userId: user.userId, path: nil,url:CustomDataSet.shared.images.randomElement())
+//            self.user = try await UserManager.shared.getUser(userId: user.userId)
+//            changedSuccess.send()
+//        }
+//    }
     
     
     func logOut(){

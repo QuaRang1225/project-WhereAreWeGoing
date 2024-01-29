@@ -48,7 +48,7 @@ struct AddPageView: View {
                         Button {
                             guard overseas != nil && !text.isEmpty && !title.isEmpty else { return }
                             guard let user = vmAuth.user,let overseas else {return}
-                            
+                            isPage = true
                             let setPage = Page(pageId: vm.page?.pageId ?? "", pageAdmin: vm.page?.pageAdmin ?? "",pageImageUrl: pageImage ,pageImagePath: vm.page?.pageImagePath, pageName: title, pageOverseas: overseas, pageSubscript: text, dateRange: vm.generateTimestamp(from: startDate, to: endDate))
                             
                             if let page = vm.page{
@@ -59,7 +59,7 @@ struct AddPageView: View {
                                 vm.updatePage(user: user, pageInfo: setPage, item: selection, image: pageImage)
                                 
                             }else{
-                                isPage = true
+                                
                                 vm.creagtePage(user:user, pageInfo: setPage,item: selection, image: pageImage)
                             }
                         } label: {

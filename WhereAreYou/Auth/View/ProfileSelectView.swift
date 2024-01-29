@@ -93,7 +93,7 @@ struct ProfileSelectView: View {
                     SelectButton(color:vm.selectedItem != nil || !profile.isEmpty ? .customCyan3 : .gray, textColor: .white, text: "확인") {
                         if let item = vm.selectedItem {
                             create = true
-                                vm.savePhotoProfileImage(item: item)
+                            vm.savePhotoProfileImage(item: item)
                         }else if !profile.isEmpty,profile != "photo" {
                             create = true
                             vm.saveImageProfileImage(item: profile)

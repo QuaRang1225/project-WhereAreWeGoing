@@ -46,7 +46,7 @@ struct MainView: View {
             }
         }
         .sheet(isPresented: $profile){
-            ProfileChangeView(nickname:vmAuth.user?.nickName ?? "",preProfile:vmAuth.user?.profileImagePath != nil ? (vmAuth.user?.profileImageUrl ?? "") : "")
+            ProfileChangeView(nickname:vmAuth.user?.nickName ?? "",profile:vmAuth.user?.profileImageUrl ?? "", preProfile:vmAuth.user?.profileImagePath != nil ? (vmAuth.user?.profileImageUrl ?? "") : "")
         }
         .background{
             Color.white.ignoresSafeArea()

@@ -70,7 +70,6 @@ final class StorageManager{
     
     func deleteImage(path:String) async throws{
         do {
-            print(getProfileImageURL(path: path))
             try await getProfileImageURL(path: path).delete()
         } catch let error {
             print("사진삭제실패 : \(error.localizedDescription)")

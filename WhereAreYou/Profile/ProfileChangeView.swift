@@ -10,17 +10,15 @@ import PhotosUI
 import Kingfisher
 
 struct ProfileChangeView: View {
-    
-
 
     
     let columns: [GridItem] = [
             GridItem(.fixed(100), spacing: nil, alignment: nil),
             GridItem(.fixed(100), spacing: nil, alignment: nil),
             GridItem(.fixed(100), spacing: nil, alignment: nil)
-            
         ]
     
+    @State var loading = false
     @State var nickname = ""
     @State var profile = ""
     @State var preProfile = ""
@@ -50,7 +48,7 @@ struct ProfileChangeView: View {
                             KFImage(URL(string:image))
                                 .resizable()
                                 .overlay{
-                                    if !profile.isEmpty || data != nil{
+                                    if !profile.isEmpty || data != nil {
                                         if selecteItem != nil || profile != image{
                                             Color.white.opacity(0.8)
                                         }
@@ -102,13 +100,15 @@ struct ProfileChangeView: View {
                 .foregroundColor(.black)
                 .padding(.vertical)
                     nicknameInputView
-                    SelectButton(color:.customCyan3 , textColor: .white, text: "수정") {
+                    SelectButton(color:.customCyan3 , textColor: .white, text: "수정"){
+                        loading = true
                         if let item = selecteItem {
-                            vmAuth.savePhotoProfileImage(item: item)
-                            vmAuth.deleteProfileImage()
-                        }else if !profile.isEmpty,profile != "photo" {
-                            vmAuth.saveImageProfileImage(item: profile)
-                            vmAuth.deleteProfileImage()
+//                            vmAuth.deleteProfileImage(url: <#String#>)
+                            vmAuth.updatePhotoProfileImage(item: item)
+                        }else if !profile.isEmpty{
+                            vmAuth.updateImageProfileImage(item: profile)
+//                            vmAuth.deleteProfileImage(url: <#String#>)
+//                            vmAuth.saveImageProfileImage(item: profile)
                         }
                     }
                     Divider()
@@ -141,6 +141,15 @@ struct ProfileChangeView: View {
                     })
                 }
             }
+        }
+        .onAppear{
+            print(preProfile)
+        }
+        .overlay{
+            if loading{
+                CustomProgressView(title: "계정 생성 중..").ignoresSafeArea()
+            }
+            
         }
         .onReceive(vmAuth.changedSuccess){
             dismiss()
