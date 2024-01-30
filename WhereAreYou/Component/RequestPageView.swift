@@ -14,6 +14,7 @@ struct RequestPageView: View {
     @State var user:UserData?
     
     @State var requestLoading = false
+    @Environment(\.horizontalSizeClass) var horizontalSizeClass
     @EnvironmentObject var vm:PageViewModel
     @EnvironmentObject var vmAuth:AuthViewModel
     
@@ -23,6 +24,7 @@ struct RequestPageView: View {
                 KFImage(URL(string: vm.page?.pageImageUrl ?? ""))
                     .resizable()
                     .scaledToFill()
+                    .frame(width: horizontalSizeClass == .regular ? .nan : UIScreen.main.bounds.width)
                     .frame(height: UIScreen.main.bounds.width * (3/4))
                     .clipped()
                     .ignoresSafeArea(.all,edges: .top)

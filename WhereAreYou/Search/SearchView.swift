@@ -64,6 +64,7 @@ struct SearchView: View {
                     .bold()
             }
            
+            
         }
         .onTapGesture {
             UIApplication.shared.endEditing()
