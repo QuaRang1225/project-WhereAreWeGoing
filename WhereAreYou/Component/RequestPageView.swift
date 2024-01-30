@@ -14,8 +14,6 @@ struct RequestPageView: View {
     @State var user:UserData?
     
     @State var requestLoading = false
-//    @Binding var page:Page?
-//    @Binding var pages:[Page]
     @EnvironmentObject var vm:PageViewModel
     @EnvironmentObject var vmAuth:AuthViewModel
     
@@ -25,7 +23,7 @@ struct RequestPageView: View {
                 KFImage(URL(string: vm.page?.pageImageUrl ?? ""))
                     .resizable()
                     .scaledToFill()
-                    .frame(width: UIScreen.main.bounds.width,height: UIScreen.main.bounds.width * (3/4))
+                    .frame(height: UIScreen.main.bounds.width * (3/4))
                     .clipped()
                     .ignoresSafeArea(.all,edges: .top)
                     .overlay(alignment: .bottomTrailing) {
