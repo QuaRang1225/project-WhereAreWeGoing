@@ -324,9 +324,9 @@
             filePath = "WhereAreYou/Page/ViewModel/PageViewModel.swift"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "192"
-            endingLineNumber = "192"
-            landmarkName = "getSchedules(pageId:)"
+            startingLineNumber = "183"
+            endingLineNumber = "183"
+            landmarkName = "deleteSchedule(pageId:schedule:)"
             landmarkType = "7">
          </BreakpointContent>
       </BreakpointProxy>
@@ -340,10 +340,10 @@
             filePath = "WhereAreYou/Page/ViewModel/PageViewModel.swift"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "194"
-            endingLineNumber = "194"
-            landmarkName = "getSchedules(pageId:)"
-            landmarkType = "7">
+            startingLineNumber = "185"
+            endingLineNumber = "185"
+            landmarkName = "PageViewModel"
+            landmarkType = "3">
             <Locations>
                <Location
                   uuid = "82E06576-0051-4B8A-A310-08D952E9109F - 7f63c29a9911ee3f"
@@ -792,8 +792,8 @@
             filePath = "WhereAreYou/Page/ViewModel/PageViewModel.swift"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "164"
-            endingLineNumber = "164"
+            startingLineNumber = "159"
+            endingLineNumber = "159"
             landmarkName = "updateSchedule(user:pageId:schedule:item:image:)"
             landmarkType = "7">
             <Locations>
@@ -870,8 +870,8 @@
             filePath = "WhereAreYou/Page/ViewModel/PageViewModel.swift"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "165"
-            endingLineNumber = "165"
+            startingLineNumber = "160"
+            endingLineNumber = "160"
             landmarkName = "updateSchedule(user:pageId:schedule:item:image:)"
             landmarkType = "7">
             <Locations>
@@ -1282,99 +1282,6 @@
       <BreakpointProxy
          BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
          <BreakpointContent
-            uuid = "7CCD8FF2-CFA0-4C3D-8E18-2D69E1E5CF04"
-            shouldBeEnabled = "No"
-            ignoreCount = "0"
-            continueAfterRunningActions = "No"
-            filePath = "WhereAreYou/Page/ViewModel/PageViewModel.swift"
-            startingColumnNumber = "9223372036854775807"
-            endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "161"
-            endingLineNumber = "161"
-            landmarkName = "updateSchedule(user:pageId:schedule:item:image:)"
-            landmarkType = "7">
-            <Locations>
-               <Location
-                  uuid = "7CCD8FF2-CFA0-4C3D-8E18-2D69E1E5CF04 - 4a10409c92b316d8"
-                  shouldBeEnabled = "Yes"
-                  ignoreCount = "0"
-                  continueAfterRunningActions = "No"
-                  symbolName = "(1) suspend resume partial function for closure #1 @Sendable () async throws -&gt; () in WhereAreYou.PageViewModel.updateSchedule(user: WhereAreYou.UserData, pageId: Swift.String, schedule: WhereAreYou.Schedule) -&gt; ()"
-                  moduleName = "WhereAreYou"
-                  usesParentBreakpointCondition = "Yes"
-                  urlString = "file:///Users/quarang/Documents/QUARANG&apos;S/Project/WhereAreYou/WhereAreYou/Page/ViewModel/PageViewModel.swift"
-                  startingColumnNumber = "9223372036854775807"
-                  endingColumnNumber = "9223372036854775807"
-                  startingLineNumber = "90"
-                  endingLineNumber = "90"
-                  offsetFromSymbolStart = "936">
-               </Location>
-               <Location
-                  uuid = "7CCD8FF2-CFA0-4C3D-8E18-2D69E1E5CF04 - 9b30caab37dc52da"
-                  shouldBeEnabled = "Yes"
-                  ignoreCount = "0"
-                  continueAfterRunningActions = "No"
-                  symbolName = "(3) suspend resume partial function for closure #1 @Sendable () async throws -&gt; () in WhereAreYou.PageViewModel.updateSchedule(user: WhereAreYou.UserData, pageId: Swift.String, schedule: WhereAreYou.Schedule) -&gt; ()"
-                  moduleName = "WhereAreYou"
-                  usesParentBreakpointCondition = "Yes"
-                  urlString = "file:///Users/quarang/Documents/QUARANG&apos;S/Project/WhereAreYou/WhereAreYou/Page/ViewModel/PageViewModel.swift"
-                  startingColumnNumber = "9223372036854775807"
-                  endingColumnNumber = "9223372036854775807"
-                  startingLineNumber = "90"
-                  endingLineNumber = "90"
-                  offsetFromSymbolStart = "684">
-               </Location>
-               <Location
-                  uuid = "7CCD8FF2-CFA0-4C3D-8E18-2D69E1E5CF04 - 7f58129f65be3ef9"
-                  shouldBeEnabled = "Yes"
-                  ignoreCount = "0"
-                  continueAfterRunningActions = "No"
-                  symbolName = "(4) await resume partial function for closure #1 @Sendable () async throws -&gt; () in WhereAreYou.PageViewModel.updateSchedule(user: WhereAreYou.UserData, pageId: Swift.String, schedule: WhereAreYou.Schedule) -&gt; ()"
-                  moduleName = "WhereAreYou"
-                  usesParentBreakpointCondition = "Yes"
-                  urlString = "file:///Users/quarang/Documents/QUARANG&apos;S/Project/WhereAreYou/WhereAreYou/Page/ViewModel/PageViewModel.swift"
-                  startingColumnNumber = "9223372036854775807"
-                  endingColumnNumber = "9223372036854775807"
-                  startingLineNumber = "90"
-                  endingLineNumber = "90"
-                  offsetFromSymbolStart = "36">
-               </Location>
-               <Location
-                  uuid = "7CCD8FF2-CFA0-4C3D-8E18-2D69E1E5CF04 - d4574cf958669ec4"
-                  shouldBeEnabled = "Yes"
-                  ignoreCount = "0"
-                  continueAfterRunningActions = "No"
-                  symbolName = "(5) suspend resume partial function for closure #1 @Sendable () async throws -&gt; () in WhereAreYou.PageViewModel.updateSchedule(user: WhereAreYou.UserData, pageId: Swift.String, schedule: WhereAreYou.Schedule) -&gt; ()"
-                  moduleName = "WhereAreYou"
-                  usesParentBreakpointCondition = "Yes"
-                  urlString = "file:///Users/quarang/Documents/QUARANG&apos;S/Project/WhereAreYou/WhereAreYou/Page/ViewModel/PageViewModel.swift"
-                  startingColumnNumber = "9223372036854775807"
-                  endingColumnNumber = "9223372036854775807"
-                  startingLineNumber = "90"
-                  endingLineNumber = "90"
-                  offsetFromSymbolStart = "84">
-               </Location>
-               <Location
-                  uuid = "7CCD8FF2-CFA0-4C3D-8E18-2D69E1E5CF04 - e1205ce85ac86219"
-                  shouldBeEnabled = "Yes"
-                  ignoreCount = "0"
-                  continueAfterRunningActions = "No"
-                  symbolName = "(13) suspend resume partial function for closure #1 @Sendable () async throws -&gt; () in WhereAreYou.PageViewModel.updateSchedule(user: WhereAreYou.UserData, pageId: Swift.String, schedule: WhereAreYou.Schedule) -&gt; ()"
-                  moduleName = "WhereAreYou"
-                  usesParentBreakpointCondition = "Yes"
-                  urlString = "file:///Users/quarang/Documents/QUARANG&apos;S/Project/WhereAreYou/WhereAreYou/Page/ViewModel/PageViewModel.swift"
-                  startingColumnNumber = "9223372036854775807"
-                  endingColumnNumber = "9223372036854775807"
-                  startingLineNumber = "90"
-                  endingLineNumber = "90"
-                  offsetFromSymbolStart = "68">
-               </Location>
-            </Locations>
-         </BreakpointContent>
-      </BreakpointProxy>
-      <BreakpointProxy
-         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
-         <BreakpointContent
             uuid = "86E5BE59-56F0-466F-A338-D93DAA8BADE5"
             shouldBeEnabled = "No"
             ignoreCount = "0"
@@ -1398,10 +1305,10 @@
             filePath = "WhereAreYou/Page/ViewModel/PageViewModel.swift"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "179"
-            endingLineNumber = "179"
-            landmarkName = "PageViewModel"
-            landmarkType = "3">
+            startingLineNumber = "170"
+            endingLineNumber = "170"
+            landmarkName = "updateSchedule(user:pageId:schedule:item:image:)"
+            landmarkType = "7">
          </BreakpointContent>
       </BreakpointProxy>
       <BreakpointProxy
@@ -1537,8 +1444,8 @@
             filePath = "WhereAreYou/Page/ViewModel/PageViewModel.swift"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "178"
-            endingLineNumber = "178"
+            startingLineNumber = "169"
+            endingLineNumber = "169"
             landmarkName = "updateSchedule(user:pageId:schedule:item:image:)"
             landmarkType = "7">
          </BreakpointContent>
@@ -1553,8 +1460,8 @@
             filePath = "WhereAreYou/Page/ViewModel/PageViewModel.swift"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "177"
-            endingLineNumber = "177"
+            startingLineNumber = "168"
+            endingLineNumber = "168"
             landmarkName = "updateSchedule(user:pageId:schedule:item:image:)"
             landmarkType = "7">
             <Locations>
@@ -2682,8 +2589,8 @@
             filePath = "WhereAreYou/Auth/ViewModel/AuthViewModel.swift"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "176"
-            endingLineNumber = "176"
+            startingLineNumber = "124"
+            endingLineNumber = "124"
             landmarkName = "delete(user:)"
             landmarkType = "7">
          </BreakpointContent>
@@ -2698,8 +2605,8 @@
             filePath = "WhereAreYou/Auth/ViewModel/AuthViewModel.swift"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "178"
-            endingLineNumber = "178"
+            startingLineNumber = "126"
+            endingLineNumber = "126"
             landmarkName = "delete(user:)"
             landmarkType = "7">
             <Locations>
@@ -3010,9 +2917,9 @@
             filePath = "WhereAreYou/Manager/LocationManager.swift"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "131"
-            endingLineNumber = "131"
-            landmarkName = "locationManager(_:didUpdateLocations:)"
+            startingLineNumber = "129"
+            endingLineNumber = "129"
+            landmarkName = "locationManagerDidChangeAuthorization(_:)"
             landmarkType = "7">
          </BreakpointContent>
       </BreakpointProxy>
@@ -3026,8 +2933,8 @@
             filePath = "WhereAreYou/Manager/LocationManager.swift"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "134"
-            endingLineNumber = "134"
+            startingLineNumber = "132"
+            endingLineNumber = "132"
             landmarkName = "locationManager(_:didUpdateLocations:)"
             landmarkType = "7">
          </BreakpointContent>

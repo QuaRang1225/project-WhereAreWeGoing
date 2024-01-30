@@ -156,11 +156,6 @@ class PageViewModel:ObservableObject{
             var path:String? = nil
             
             if let data = try await item?.loadTransferable(type: Data.self){
-//                if let image = schedule.imageUrlPath{
-//                    if image != ""{    //원래 사진이 있고(아예없거나 비어있을때) 다른 사진으로 바꾸는 경우
-//                        try await StorageManager.shared.deleteImage(path: image)
-//                    }
-//                }
                 path = try await StorageManager.shared.scheduleSaveImage(data:data,userId: user.userId, mode: .schedule, pageId: pageId)    //사진이 없었지만 추가하는 경우
                 url = try await StorageManager.shared.getUrlForImage(path: path ?? "").absoluteString
                 
@@ -168,10 +163,6 @@ class PageViewModel:ObservableObject{
             else if !image.isEmpty{
                 url = image
             }
-//            else if self.schedule?.imageUrl == nil{    //사진이 있다가 없애는경우
-//                url = "x"
-//                path = "x"
-//            }
             try await PageManager.shared.updateUSerSchedule(userId: user.userId, pageId: pageId, url: url, schedule: schedule,path: path)
             addDismiss.send("")
         }

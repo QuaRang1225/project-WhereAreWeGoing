@@ -103,12 +103,9 @@ struct ProfileChangeView: View {
                     SelectButton(color:.customCyan3 , textColor: .white, text: "수정"){
                         loading = true
                         if let item = selecteItem {
-//                            vmAuth.deleteProfileImage(url: <#String#>)
                             vmAuth.updatePhotoProfileImage(item: item)
                         }else if !profile.isEmpty{
                             vmAuth.updateImageProfileImage(item: profile)
-//                            vmAuth.deleteProfileImage(url: <#String#>)
-//                            vmAuth.saveImageProfileImage(item: profile)
                         }
                     }
                     Divider()

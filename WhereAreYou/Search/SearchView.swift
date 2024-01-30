@@ -10,8 +10,6 @@ import SwiftUI
 struct SearchView: View {
     @State var text = ""
     @State var noResult:Bool?
-//    @State var pages:[Page] = []
-//    @State var page:Page?
     
     @Environment(\.dismiss)var dismiss
     @StateObject var vm = PageViewModel(page: nil, pages: [])

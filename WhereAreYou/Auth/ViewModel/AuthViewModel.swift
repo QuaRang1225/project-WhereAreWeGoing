@@ -69,8 +69,6 @@ final class AuthViewModel:ObservableObject{
             user.guestMode = false
             try UserManager.shared.createNewUser(user: user)
             self.user = user
-//            try await UserManager.shared.updateUserProfileImagePath(userId: user.userId, path: nil, url: profile)
-//                                vm.user?.guestMode =
         }
     }
     func updateImageProfileImage(item:String){
@@ -84,8 +82,6 @@ final class AuthViewModel:ObservableObject{
             try await UserManager.shared.updateUserProfileImagePath(userId: user.userId, path: nil, url: item)
             self.user = user
             changedSuccess.send()
-//            try await UserManager.shared.updateUserProfileImagePath(userId: user.userId, path: nil, url: profile)
-//                                vm.user?.guestMode =
         }
     }
     
@@ -100,12 +96,8 @@ final class AuthViewModel:ObservableObject{
             user.profileImagePath = path
             user.profileImageUrl = url.absoluteString
             user.guestMode = false
-//            user.guestMode = false
-//            try UserManager.shared.createNewUser(user: user)
-//            try await UserManager.shared.updateUserProfileImagePath(userId: user.userId, path: path,url: url.absoluteString)
             try UserManager.shared.createNewUser(user: user)
             self.user = user
-//            self.user = try await UserManager.shared.getUser(userId: user.userId)
         }
     }
     func updatePhotoProfileImage(item:PhotosPickerItem){
@@ -118,55 +110,11 @@ final class AuthViewModel:ObservableObject{
             let url = try await StorageManager.shared.getUrlForImage(path: path)
             user.profileImagePath = path
             user.profileImageUrl = url.absoluteString
-//            user.guestMode = false
-//            try UserManager.shared.createNewUser(user: user)
-//            try await UserManager.shared.updateUserProfileImagePath(userId: user.userId, path: path,url: url.absoluteString)
             try await UserManager.shared.updateUserProfileImagePath(userId: user.userId, path: path, url: url.absoluteString)
             self.user = user
             changedSuccess.send()
-//            self.user = try await UserManager.shared.getUser(userId: user.userId)
         }
     }
-    
-//    func deleteProfileImage(url:String){
-//        guard let user else {return}
-//        
-//        Task{
-//            if let path = user.profileImagePath{
-//                try await StorageManager.shared.deleteImage(path: path)
-//            }
-////            try await UserManager.shared.updateUserProfileImagePath(userId: user.userId, path: nil, url:url)
-//            self.user = try await UserManager.shared.getUser(userId: user.userId)
-//            changedSuccess.send()
-//        }
-//    }
-//    func updateProfileImage(item:PhotosPickerItem){
-//        guard let user else {return}
-//        Task{
-//            
-//            if let path = user.profileImagePath{
-//                try await StorageManager.shared.deleteImage(path: path)
-//            }
-//            
-//            guard let data = try await item.loadTransferable(type: Data.self) else {return}
-//            let path = try await StorageManager.shared.saveImage(data:data,userId: user.userId, mode: .profile)
-//            let url = try await StorageManager.shared.getUrlForImage(path: path)
-//            try await UserManager.shared.updateUserProfileImagePath(userId: user.userId, path: path,url: url.absoluteString)
-//            
-//           
-//            self.user = try await UserManager.shared.getUser(userId: user.userId)
-//            changedSuccess.send()
-//        }
-//    }
-//    func noImageSave(){
-//        Task{
-//            guard let user,let path = user.profileImagePath else {return}
-//            try await StorageManager.shared.deleteImage(path: path)
-//            try await UserManager.shared.updateUserProfileImagePath(userId: user.userId, path: nil,url:CustomDataSet.shared.images.randomElement())
-//            self.user = try await UserManager.shared.getUser(userId: user.userId)
-//            changedSuccess.send()
-//        }
-//    }
     
     
     func logOut(){
