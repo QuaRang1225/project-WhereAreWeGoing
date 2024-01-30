@@ -15,29 +15,13 @@ struct NickNameView: View {
     @EnvironmentObject var vm:AuthViewModel
     var body: some View {
         VStack{
-            Text("닉네임설정")
-                .font(.title)
-                .bold()
-                .frame(maxWidth: .infinity,alignment: .leading)
-                .padding(.leading)
-                .padding(.vertical,30)
-                .foregroundColor(.black)
+            header
             ScrollView {
-                CustomTextField(placeholder: "입력..", isSecure: false, color: .customCyan, text: $text)
-                    .padding(.top,50)
-                Text("닉네임을 설정하지 않을 시 이메일로 자동설정 되며. 이후에 변경할 수 있습니다.")
-                    .foregroundColor(.gray)
-                    .font(.caption)
-                    .padding(.bottom)
-                SelectButton(color: .customCyan, textColor: .white, text: "확인") {
+                nicknameInputView
+                SelectButton(color: .customCyan3, textColor: .white, text: "확인") {
                     withAnimation(.linear){
-                        if !modify{
-                            vm.user?.nickName = text
-                            vm.infoSetting = InfoSettingFilter.profile
-                        }else{
-                            guard let userId = vm.user?.userId else {return}
-                            vm.updateNickname(userId: userId, text: text)
-                        }
+                        vm.user?.nickName = text
+                        vm.infoSetting = InfoSettingFilter.profile
                     }
                 }
                 if !modify{
@@ -53,20 +37,11 @@ struct NickNameView: View {
                     }
                     .padding()
                 }
+                
             }
         }
-        .background(Color.white.ignoresSafeArea())
-        .onReceive(vm.changedSuccess){
-            dismiss()
-        }
-//        .navigationDestination(isPresented: $isProfile) {
-//            ProfileSelectView()
-//                .environmentObject(vm)
-//        }
+        .background(.white)
         .onTapGesture { //이거 넣으면 탭뷰 터치 안됨
-            UIApplication.shared.endEditing()
-        }
-        .onDisappear{
             UIApplication.shared.endEditing()
         }
     }
@@ -75,6 +50,30 @@ struct NickNameView: View {
 struct NickNameView_Previews: PreviewProvider {
     static var previews: some View {
         NickNameView()
-            .environmentObject(AuthViewModel())
+            .environmentObject(AuthViewModel(user: CustomDataSet.shared.user()))
+    }
+}
+
+extension NickNameView{
+    var header:some View{
+        Text("닉네임설정")
+            .font(.title)
+            .bold()
+            .frame(maxWidth: .infinity,alignment: .leading)
+            .padding(.leading)
+            .padding(.vertical,30)
+            .foregroundColor(.black)
+    }
+    var nicknameInputView:some View{
+        VStack(alignment: .leading){
+            CustomTextField(placeholder: "입력..", isSecure: false, text: $text)
+                .padding(.top,30)
+            
+            Text("닉네임을 설정하지 않을 시 이메일로 자동설정 되며. 이후에 변경할 수 있습니다.")
+                .foregroundColor(.gray)
+                .font(.caption)
+                .padding(.bottom)
+        }
+        .padding(.horizontal)
     }
 }

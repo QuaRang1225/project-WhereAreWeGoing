@@ -10,44 +10,47 @@ import SwiftUI
 struct CustomTextField: View {
     let placeholder:String
     let isSecure:Bool
-    let color:Color
     @Binding var text:String
     var body: some View {
         VStack{
-            HStack{
-                if !isSecure{
-                    TextField("",text: $text)
-                        .overlay(alignment:.leading) {
-                            if text.isEmpty{
-                                Text(placeholder)
-                                    .foregroundColor(.gray)
-                                    .allowsHitTesting(false)
-                            }
+            Capsule()
+                .stroke(lineWidth: 1)
+                .foregroundColor(.gray)
+                .frame(height: 50)
+                .overlay {
+                    HStack{
+                        if !isSecure{
+                            TextField("",text: $text)
+                                .overlay(alignment:.leading) {
+                                    if text.isEmpty{
+                                        Text(placeholder)
+                                            .foregroundColor(.gray)
+                                            .allowsHitTesting(false)
+                                    }
+                                } .padding(.horizontal)
+                        }else{
+                            SecureField("",text: $text)
+                                .overlay(alignment:.leading) {
+                                    if text.isEmpty{
+                                        Text(placeholder)
+                                            .foregroundColor(.gray)
+                                            .allowsHitTesting(false)
+                                    }
+                                } .padding(.horizontal)
                         }
-                }else{
-                    SecureField("",text: $text)
-                        .overlay(alignment:.leading) {
-                            if text.isEmpty{
-                                Text(placeholder)
+                        if !text.isEmpty{
+                            Button {
+                                text = ""
+                            } label: {
+                                Image(systemName: "xmark.circle.fill")
                                     .foregroundColor(.gray)
-                                    .allowsHitTesting(false)
                             }
+                            .padding(.trailing)
                         }
-                }
-                if !text.isEmpty{
-                    Button {
-                        text = ""
-                    } label: {
-                        Image(systemName: "xmark.circle.fill")
-                            .foregroundColor(.gray)
                     }
                 }
-            }
-            Divider()
-                .frame(height: 3)
-                .overlay(color)
+            
         }
-        .padding(.horizontal)
         .foregroundColor(.black)
        
     }
@@ -55,6 +58,6 @@ struct CustomTextField: View {
 
 struct CustomTextField_Previews: PreviewProvider {
     static var previews: some View {
-        CustomTextField(placeholder: "입력..", isSecure: false, color: .customCyan, text: .constant(""))
+        CustomTextField(placeholder: "입력..", isSecure: false, text: .constant(""))
     }
 }

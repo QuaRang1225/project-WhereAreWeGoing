@@ -24,9 +24,10 @@ struct SchduleListView: View {
     
     
     var days:[Schedule]{
-        let calendar = Calendar.current
-        return vm.schedules.filter({calendar.isDate($0.startTime.dateValue(), equalTo: vm.page?.dateRange[date].dateValue() ?? Date(), toGranularity: .day) || calendar.isDate($0.endTime.dateValue(), equalTo: vm.page?.dateRange[date].dateValue() ?? Date(), toGranularity: .day)}).sorted{$0.startTime < $1.startTime}
-    }
+        let currentDay = vm.page?.dateRange[date].dateValue() ?? Date()
+        return vm.schedules.filter{ ($0.startTime.dateValue().toDay()...$0.endTime.dateValue().toDay()).contains(currentDay) }.sorted{$0.startTime < $1.startTime}
+           
+        }
     
     var body: some View {
         ZStack{
@@ -77,14 +78,12 @@ struct SchduleListView: View {
         }
         .padding()
         .navigationDestination(isPresented: $isSearch){
-            SearchAddressView(geo: nil, isSearch: $isSearch)
+            SearchAddressView()
                 .environmentObject(vm)
                 .environmentObject(vmAuth)
                 .environmentObject(location)
                 .navigationBarBackButtonHidden()
         }
-       
-
     }
     
 }
@@ -92,8 +91,8 @@ struct SchduleListView: View {
 struct SchduleListView_Previews: PreviewProvider {
     static var previews: some View {
         SchduleListView()
-            .environmentObject(PageViewModel())
-            .environmentObject(AuthViewModel())
+            .environmentObject(PageViewModel(page: CustomDataSet.shared.page(), pages: CustomDataSet.shared.pages()))
+            .environmentObject(AuthViewModel(user: CustomDataSet.shared.user()))
             .background(Color.white.ignoresSafeArea())
     }
 }

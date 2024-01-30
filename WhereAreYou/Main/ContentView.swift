@@ -8,13 +8,11 @@
 import SwiftUI
 
 struct ContentView: View {
-    @StateObject var vm = AuthViewModel()
-    
+    @StateObject var vm = AuthViewModel(user: nil)
     @State var isStart = false
     
     var body: some View {
         ZStack{
-            Color.white.ignoresSafeArea()
             if !isStart{
                 StartView()
             }else{
@@ -29,7 +27,7 @@ struct ContentView: View {
                         }
                     }
                 }else{
-                    LoginView()
+                    AuthSelectView()
                         .environmentObject(vm)
                 }
             }

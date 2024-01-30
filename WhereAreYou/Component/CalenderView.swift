@@ -81,7 +81,7 @@ struct CalenderView: View {
 struct CalenderView_Previews: PreviewProvider {
     static var previews: some View {
         CalenderView()
-            .environmentObject(PageViewModel())
+            .environmentObject(PageViewModel(page: nil, pages: CustomDataSet.shared.pages()))
     }
 }
 

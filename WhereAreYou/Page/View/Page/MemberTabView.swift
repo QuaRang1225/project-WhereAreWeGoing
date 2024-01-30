@@ -23,8 +23,9 @@ struct MemberTabView: View {
             Section("방장"){
                 MemberListRowView(image: admin?.profileImageUrl ?? "", name: admin?.nickName ?? "",admin: true)
             }
-            .padding(.vertical)
+            .padding(.bottom)
             Divider()
+                .padding(.bottom)
             Section("맴버"){
                 if vm.member.filter({$0 != admin}).isEmpty{
                     emptymember
@@ -35,6 +36,7 @@ struct MemberTabView: View {
                                 if vmAuth.user?.userId == vm.page?.pageAdmin{
                                     Button {
                                         guard let page = vm.page else {return}
+                                        vm.accept = true
                                         vm.kickMember(userId: member.userId, pageId: page.pageId)
                                     } label: {
                                         Text("강퇴")
@@ -48,42 +50,17 @@ struct MemberTabView: View {
                                     }
                                 }
                             }
+                            .padding(.top)
+                            
                     }
+                    
                 }
             }
-            .padding(.vertical)
-            Section("초대 요청"){
-                if vm.request.isEmpty{
-                    emptyrequest
-                }else{
-                    ForEach(vm.request,id:\.self) { request in
-                        MemberListRowView(image: request.profileImageUrl ?? "", name: request.nickName ?? "",admin: false)
-                            .overlay(alignment:.trailing){
-                                Button {
-                                    guard let page = vm.page else {return}
-                                    vm.userAccept(page: page, requestUser: request)
-                                } label: {
-                                    Text("수락")
-                                        .font(.caption)
-                                        .bold()
-                                        .foregroundColor(.white)
-                                        .padding(.horizontal)
-                                        .padding(5)
-                                        .background(Color.customCyan2.opacity(0.7))
-                                        .cornerRadius(20)
-                                }
-                            }
-                    }
-                }
-            }
-            .padding(.vertical)
+        }
+        .onReceive(vm.requsetDismiss){ page in
+            vm.accept = false
         }
         .padding()
-        .onAppear{
-            vm.getPage(pageId: vm.page?.pageId ?? "")
-            guard let page = vm.page else {return}
-            vm.getMembers(page: page)
-        }
     }
 }
 
@@ -91,8 +68,8 @@ struct MemberTabView_Previews: PreviewProvider {
     static var previews: some View {
         
         MemberTabView()
-            .environmentObject(PageViewModel())
-            .environmentObject(AuthViewModel())
+            .environmentObject(PageViewModel(page: nil, pages: CustomDataSet.shared.pages()))
+            .environmentObject(AuthViewModel(user: CustomDataSet.shared.user()))
         
     }
 }
@@ -104,14 +81,9 @@ extension MemberTabView{
             Text("아직 맴버가 없습니다.")
         }
         .foregroundColor(.gray.opacity(0.5))
+        .padding(.vertical)
     }
-    var emptyrequest:some View{
-        HStack{
-            Image(systemName: "bell.badge.fill")
-            Text("요청이 존재하지 않습니다.")
-        }
-        .foregroundColor(.gray.opacity(0.5))
-    }
+    
 }
 
 

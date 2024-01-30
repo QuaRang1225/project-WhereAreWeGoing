@@ -11,5 +11,6 @@ import SwiftUI
 extension Color{
     static let customCyan = Color("customCyan")
     static let customCyan2 = Color("customCyan2")
+    static let customCyan3 = Color("customCyan3")
     static let antiPrimary = Color("antiPrimary")
 }

@@ -21,16 +21,17 @@ struct InfoSettingTabView: View {
                 .environmentObject(vm)
         }
         .tabViewStyle(.page)
-        .background{
-            AuthBackground()
+        .onAppear{
+            vm.infoSetting = .nickname
         }
+        
     }
 }
 
 struct InfoSelectTabView_Previews: PreviewProvider {
     static var previews: some View {
         InfoSettingTabView()
-            .environmentObject(AuthViewModel())
+            .environmentObject(AuthViewModel(user: CustomDataSet.shared.user()))
     }
 }
 

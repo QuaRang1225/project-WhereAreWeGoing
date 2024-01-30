@@ -32,19 +32,19 @@ final class PageManager{
     private func scheduleDocument(pageId:String,scheduleId:String) -> DocumentReference{
         pageDocument(pageId: pageId).collection("schedule").document(scheduleId)
     }
-    func createUserPage(userId:String,url:URL?,path:String?,pageInfo:Page)async throws -> String{
+    func createUserPage(userId:String,url:String,path:String?,pageInfo:Page)async throws -> String{
         let document = pageCollection.document()
         
         let data:[String:Any] = [
             "page_id":document.documentID,
             "page_admin":userId,
-            "page_image_url":url?.absoluteString as Any,
+            "page_image_url":url,
             "page_image_path":path as Any,
             "page_name":pageInfo.pageName,
             "page_subscript":pageInfo.pageSubscript,
             "page_overseas":pageInfo.pageOverseas,
             "members":FieldValue.arrayUnion([userId]),
-            "date_range":pageInfo.dateRange,
+            "date_range":pageInfo.dateRange
             
         ]
         
@@ -74,14 +74,14 @@ final class PageManager{
         
     }
     
-    func createUserSchedule(pageId:String,url:String?,schedule:Schedule,path:String?)async throws{
+    func createUserSchedule(pageId:String,url:String,schedule:Schedule,path:String?)async throws -> String{
         let field = pageDocument(pageId: pageId).collection("schedule").document()
         let schduleId = field.documentID
         
         
         let data:[String:Any] = [
             "id" : schduleId,
-            "image_url" : url as Any,
+            "image_url" : url,
             "image_url_path":path as Any,
             "category" : schedule.category,
             "title" : schedule.title,
@@ -93,9 +93,10 @@ final class PageManager{
         ]
         print("스케쥴 생성중..")
         try await field.setData(data,merge: false)
+        return schduleId
         
     }
-    func updateUSerSchedule(userId:String,pageId:String,url:String?,schedule:Schedule,path:String?)async throws{
+    func updateUSerSchedule(userId:String,pageId:String,url:String,schedule:Schedule,path:String?)async throws{
         
         let field = pageDocument(pageId: pageId).collection("schedule").document(schedule.id)
         var data:[String:Any] = [:]
@@ -103,17 +104,14 @@ final class PageManager{
         data = [
             "category" : schedule.category,
             "title" : schedule.title,
+            "image_url" : url,
+            "image_url_path" : path as Any,
             "start_time" : schedule.startTime,
             "end_time" : schedule.endTime,
             "content" : schedule.content,
             "location" : schedule.location,
             "link":schedule.link as Any
         ]
-        
-        if let url,let path{
-            data["image_url_path"] = url == "x" ? NSNull() : path
-            data["image_url"] = path == "x" ? NSNull(): url
-        }
         print("스케쥴 수정중..")
         try await field.updateData(data as [AnyHashable : Any])
         
@@ -141,6 +139,7 @@ final class PageManager{
     }
     func deleteUserPage(pageId:String) async throws{
         try await pageDocument(pageId: pageId).delete()
+        
     }
     func updateMemberPage(userId:String,pageId:String)async throws{
         let user = userDocument(userId: userId)

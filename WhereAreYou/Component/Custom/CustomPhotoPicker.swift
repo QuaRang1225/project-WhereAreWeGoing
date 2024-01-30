@@ -39,8 +39,6 @@ struct CustomPhotoPicker: View {
                     }else{
                         empty
                     }
-                    
-                    
                 }
             }
             .overlay(alignment:.topTrailing){
@@ -60,7 +58,8 @@ struct CustomPhotoPicker: View {
                     }
                     .padding([.top,.trailing])
                 }
-            }.onChange(of: vm.selectedItem) { newItem in
+            }
+            .onChange(of: vm.selectedItem) { newItem in
                 Task {
                     if let data = try? await newItem?.loadTransferable(type: Data.self) {
                         vm.selectedImageData = data
@@ -81,7 +80,7 @@ struct CustomPhotoPicker: View {
 struct CustomPhotoPicker_Previews: PreviewProvider {
     static var previews: some View {
         CustomPhotoPicker()
-            .environmentObject(AuthViewModel())
+            .environmentObject(AuthViewModel(user: CustomDataSet.shared.user()))
     }
 }
 
@@ -96,6 +95,6 @@ extension CustomPhotoPicker{
                     .scaledToFill()
                     .frame(width: 50,height: 50)
             }
-            .foregroundColor(.customCyan)
+            .foregroundColor(.customCyan3)
     }
 }

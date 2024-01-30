@@ -30,52 +30,57 @@ class PageViewModel:ObservableObject{
     @Published var member:[UserData] = []
     
     //---------- 뷰 이벤트 -----------
-    var addDismiss = PassthroughSubject<(),Never>()
+    @Published var accept = false
+    var addDismiss = PassthroughSubject<String,Never>()
     var pageDismiss = PassthroughSubject<(),Never>()
+    var requsetDismiss = PassthroughSubject<Page,Never>()
     
     //
     //--------------페이지-----------------------
     //
     
+    init(page:Page?,pages:[Page]){
+        self.page = page
+        self.pages = pages
+    }
     //페이지 생성
-    func creagtePage(user:UserData,pageInfo:Page,item:PhotosPickerItem?){
+    func creagtePage(user:UserData,pageInfo:Page,item:PhotosPickerItem?,image:String){
         
         Task{
-            var url:URL? = nil
+            var url:String = ""
             var path:String? = nil
 
             if let data = try await item?.loadTransferable(type: Data.self){
                 path = try await StorageManager.shared.saveImage(data:data,userId: user.userId, mode: .page)
-                url = try await StorageManager.shared.getUrlForImage(path: path ?? "")
+                url = try await StorageManager.shared.getUrlForImage(path: path ?? "").absoluteString
+            }else if !image.isEmpty{
+                url = image
             }
+            
             let pageId = try await PageManager.shared.createUserPage(userId: user.userId,url: url ,path: path, pageInfo: pageInfo)
             try await UserManager.shared.updatePages(userId: user.userId, pagesId: pageId)
-            addDismiss.send()
+            pages = try await PageManager.shared.getAllUserPage(userId: user.userId)
+            addDismiss.send(pageId)
         }
     }
     //페이지 수정
-    func updatePage(user:UserData,pageInfo:Page,item:PhotosPickerItem?){
+    func updatePage(user:UserData,pageInfo:Page,item:PhotosPickerItem?,image:String){
         
         Task{
-            var url:String? = nil
+            var url:String = ""
             var path:String? = nil
             
             if let data = try await item?.loadTransferable(type: Data.self){
-                if let image = pageInfo.pageImagePath{
-                    if image != ""{    //원래 사진이 있고(아예없거나 비어있을때) 다른 사진으로 바꾸는 경우
-                        try await StorageManager.shared.deleteImage(path: image)
-                    }
-                }
                 path = try await StorageManager.shared.saveImage(data:data,userId: user.userId, mode: .page)    //사진이 없었지만 추가하는 경우
                 url = try await StorageManager.shared.getUrlForImage(path: path ?? "").absoluteString
                 
-            }else if self.page?.pageImageUrl == nil{    //사진이 있다가 없애는경우
-                url = "x"
-                path = "x"
+            }
+            else if !image.isEmpty{
+                url = image
             }
             try await PageManager.shared.upadateUserPage(userId: user.userId,url: url, path: path, pageInfo: pageInfo)
             self.page = try await PageManager.shared.getPage(pageId: pageInfo.pageId)
-            addDismiss.send()
+            addDismiss.send("")
         }
     }
     //페이지 삭제
@@ -91,7 +96,8 @@ class PageViewModel:ObservableObject{
                     try await PageManager.shared.updateMemberPage(userId:member,pageId: page.pageId)    //해당 페이지에 속한 모든 멤버정보에서도 페이지id 삭제
                 }
             }
-            try await StorageManager.shared.deleteAllScheuleImage(path: user.userId)    //페이지에 속했었던 모든 스케쥴 사진 삭제 - 디렉토리를 알아서 삭제됨
+            try await StorageManager.shared.deleteAllScheuleImage(userId: user.userId ,pageId: page.pageId)//페이지에 속했었던 모든 스케쥴 사진 삭제 - 디렉토리를 알아서 삭제됨
+           
             pageDismiss.send()
         }
     }
@@ -112,7 +118,9 @@ class PageViewModel:ObservableObject{
     //페이지 불러오기
     func getPage(pageId:String){
         Task{
-            self.page = try await PageManager.shared.getPage(pageId: pageId)
+            let page = try await PageManager.shared.getPage(pageId: pageId)
+            self.page = page
+            getMembers(page: page)
         }
     }
     
@@ -121,49 +129,51 @@ class PageViewModel:ObservableObject{
     //
     
     //일정 생성
-    func creagteShcedule(user:UserData,pageId:String,schedule:Schedule,item:PhotosPickerItem?){
+    func creagteShcedule(user:UserData,pageId:String,schedule:Schedule,item:PhotosPickerItem?,image:String){
         
         Task{
-            var url = URL(string: "")
-            var path:String? = nil
-            if let data = try await item?.loadTransferable(type: Data.self){
-                path = try await StorageManager.shared.saveImage(data:data,userId: user.userId, mode: .schedule)
-                url = try await StorageManager.shared.getUrlForImage(path: path ?? "")
-            }
-            try await PageManager.shared.createUserSchedule(pageId: pageId, url: url?.absoluteString, schedule: schedule,path:path)
-            addDismiss.send()
-        }
-    }
-    //일정 수정
-    func updateSchedule(user:UserData,pageId:String,schedule:Schedule,item:PhotosPickerItem?){
-        Task{
-            var url:String? = nil
+            var url:String = ""
             var path:String? = nil
             
             if let data = try await item?.loadTransferable(type: Data.self){
-                if let image = schedule.imageUrlPath{
-                    if image != ""{    //원래 사진이 있고(아예없거나 비어있을때) 다른 사진으로 바꾸는 경우
-                        try await StorageManager.shared.deleteImage(path: image)
-                    }
-                }
-                path = try await StorageManager.shared.saveImage(data:data,userId: user.userId, mode: .schedule)    //사진이 없었지만 추가하는 경우
+                path = try await StorageManager.shared.scheduleSaveImage(data:data,userId: user.userId, mode: .schedule, pageId: pageId)
+                url = try await StorageManager.shared.getUrlForImage(path: path ?? "").absoluteString
+            }
+            else if !image.isEmpty{
+                url = image
+            }
+            
+            let scheduleId = try await PageManager.shared.createUserSchedule(pageId: pageId, url: url, schedule: schedule,path:path)
+            schedules = try await PageManager.shared.getAllUserSchedule(pageId: pageId)
+            addDismiss.send(scheduleId)
+        }
+    }
+    //일정 수정
+    func updateSchedule(user:UserData,pageId:String,schedule:Schedule,item:PhotosPickerItem?,image:String){
+        Task{
+           
+            var url:String = ""
+            var path:String? = nil
+            
+            if let data = try await item?.loadTransferable(type: Data.self){
+                path = try await StorageManager.shared.scheduleSaveImage(data:data,userId: user.userId, mode: .schedule, pageId: pageId)    //사진이 없었지만 추가하는 경우
                 url = try await StorageManager.shared.getUrlForImage(path: path ?? "").absoluteString
                 
             }
-            else if self.schedule?.imageUrl == nil{    //사진이 있다가 없애는경우
-                url = "x"
-                path = "x"
+            else if !image.isEmpty{
+                url = image
             }
             try await PageManager.shared.updateUSerSchedule(userId: user.userId, pageId: pageId, url: url, schedule: schedule,path: path)
-            addDismiss.send()
+            addDismiss.send("")
         }
     }
     
     //일정 삭제
     func deleteSchedule(pageId:String,schedule:Schedule){
         Task{
-            guard let path = schedule.imageUrlPath else {return}
-            try await StorageManager.shared.deleteImage(path: path) //스케쥴 이미지가 없을 경우 필요가 없는 부분
+            if let path = schedule.imageUrlPath{
+                try await StorageManager.shared.deleteImage(path: path) //스케쥴 이미지가 없을 경우 필요가 없는 부분
+            }
             try await PageManager.shared.deleteUserSchedule(pageId: pageId, scheduleId: schedule.id)
             getSchedules(pageId: pageId)
         }
@@ -192,13 +202,16 @@ class PageViewModel:ObservableObject{
         Task{
             try await PageManager.shared.acceptUser(pageId:page.pageId,requestUser:requestUser)
             let pageInfo = try await PageManager.shared.getPage(pageId: page.pageId)
-            (self.request,self.member) = try await PageManager.shared.getMembersInfo(page:pageInfo)
+            getMembers(page: pageInfo)
+            self.page = pageInfo
+            self.requsetDismiss.send(pageInfo)
         }
     }
     //페이지 요청
     func requestPage(user:UserData,pageId:String,cancel:Bool){
         Task{
             try await PageManager.shared.requestPage(userId:user.userId,pageId:pageId,cancel:!cancel)
+            self.requsetDismiss.send(try await PageManager.shared.getPage(pageId: pageId))
         }
     }
 
@@ -207,7 +220,9 @@ class PageViewModel:ObservableObject{
             try await PageManager.shared.memberPage(userId:userId,pageId:pageId,cancel:true)
             try await PageManager.shared.updateMemberPage(userId: userId, pageId: pageId)
             let pageInfo = try await PageManager.shared.getPage(pageId: pageId)
-            (self.request,self.member) = try await PageManager.shared.getMembersInfo(page:pageInfo)
+            getMembers(page: pageInfo)
+            self.page = pageInfo
+            self.requsetDismiss.send(pageInfo)
         }
     }
     
