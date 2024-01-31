@@ -68,7 +68,7 @@ struct SearchAddressView: View {
                         }
                     }
             }
-            if !location.isChanged{
+//            if !location.isChanged{
                 Group{
                     if let schedule = vm.schedule{
                         AddScheduleView(title: schedule.title, text:schedule.content, locationSelect: LocationCategoryFilter.allCases.first(where: {$0.name == schedule.category}) ?? .cafe, links:linkContents, linktitles:linkTitle, startDate:schedule.startTime.dateValue(),endDate:schedule.endTime.dateValue(), scheduleImage: schedule.imageUrl ?? "")
@@ -76,29 +76,28 @@ struct SearchAddressView: View {
                         AddScheduleView()
                     }
                 }
-               
-                    .environmentObject(vm)
-                    .environmentObject(location)
-                    .environmentObject(vmAuth)
-                    .cornerRadius(10)
-                    .offset(y:startingOffset - 100)
-                    .offset(y:currentOffset)
-                    .offset(y:endOffset)
-                    .gesture(
-                        DragGesture()
-                            .onChanged{ value in
-                                withAnimation(.spring()){
-                                    currentOffset = value.translation.height
-                                }
+                .environmentObject(vm)
+                .environmentObject(location)
+                .environmentObject(vmAuth)
+                .cornerRadius(10)
+                .offset(y:startingOffset - 100)
+                .offset(y:currentOffset)
+                .offset(y:endOffset)
+                .gesture(
+                    DragGesture()
+                        .onChanged{ value in
+                            withAnimation(.spring()){
+                                currentOffset = value.translation.height
                             }
-                            .onEnded{ value in
-                                withAnimation(.spring()){
-                                    offsetSetting()
-                                }
+                        }
+                        .onEnded{ value in
+                            withAnimation(.spring()){
+                                offsetSetting()
                             }
-                    )
-                    .ignoresSafeArea(.all,edges: .bottom)
-            }
+                        }
+                )
+                .ignoresSafeArea(.all,edges: .bottom)
+//            }
             if vm.copy{
                 Text("클립보드에 복사되었습니다.")
                     .font(.caption)
@@ -111,10 +110,17 @@ struct SearchAddressView: View {
                             .opacity(0.5)
                     }
                     .padding(.bottom)
-                    
+                
             }
         }
         .ignoresSafeArea(.keyboard)
+        .onChange(of: location.isChanged){ newValue in
+            if newValue{
+                withAnimation(.spring()){
+                    endOffset = startingOffset - 20
+                }
+            }
+        }
         .onChange(of: location.searchText){  newValue in
             isOpenSearchBar = true
         }
@@ -244,13 +250,22 @@ extension SearchAddressView{
         
     }
     func offsetSetting(){
-        
-        if currentOffset <  50{
-            endOffset = -startingOffset + 100
+       
+        if endOffset ==  startingOffset - 20{
+            if currentOffset <  50{
+                endOffset = 200
+            }
         }
-        else if currentOffset > 50{
-            endOffset = 200
+        else if endOffset <= 200 {
+            if currentOffset <  50{
+                endOffset = -startingOffset + 100
+            }
+            else if currentOffset > 50{
+                endOffset = 200
+            }
         }
+       
+       
         currentOffset = 0
     }
     

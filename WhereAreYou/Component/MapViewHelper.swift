@@ -39,7 +39,7 @@ struct MapViewHelper: UIViewRepresentable {
         }
         func mapViewDidChangeVisibleRegion(_ mapView: MKMapView) {
             DispatchQueue.main.async {
-                self.parent.location.isChanged = true
+                    self.parent.location.isChanged = true
             }
         }
         
@@ -48,7 +48,7 @@ struct MapViewHelper: UIViewRepresentable {
             
             self.convertLocationToAddress(location: location)
             DispatchQueue.main.async {
-                self.parent.location.isChanged = false
+                    self.parent.location.isChanged = false
             }
         }
         
