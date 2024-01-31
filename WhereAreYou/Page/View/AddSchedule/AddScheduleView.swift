@@ -153,7 +153,7 @@ extension AddScheduleView{
                         }
                 }
             }
-            .frame(height: 300)
+            .frame(height: UIScreen.main.bounds.width/1.5)
             .clipped()
             .cornerRadius(10)
             ScrollView(.horizontal) {

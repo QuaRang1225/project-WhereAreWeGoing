@@ -68,7 +68,6 @@ struct SearchAddressView: View {
                         }
                     }
             }
-//            if !location.isChanged{
                 Group{
                     if let schedule = vm.schedule{
                         AddScheduleView(title: schedule.title, text:schedule.content, locationSelect: LocationCategoryFilter.allCases.first(where: {$0.name == schedule.category}) ?? .cafe, links:linkContents, linktitles:linkTitle, startDate:schedule.startTime.dateValue(),endDate:schedule.endTime.dateValue(), scheduleImage: schedule.imageUrl ?? "")
@@ -97,7 +96,6 @@ struct SearchAddressView: View {
                         }
                 )
                 .ignoresSafeArea(.all,edges: .bottom)
-//            }
             if vm.copy{
                 Text("클립보드에 복사되었습니다.")
                     .font(.caption)
@@ -138,7 +136,7 @@ struct SearchAddressView: View {
                 let region = MKCoordinateRegion(center: CLLocationCoordinate2D(latitude: schedule.location.latitude, longitude: schedule.location.longitude), span: location.mySpan)
                 location.mapView.setRegion(region, animated: true)
             }else{
-                let region = MKCoordinateRegion(center: location.manager.location!.coordinate, span: location.mySpan)
+                let region = MKCoordinateRegion(center: location.manager.location?.coordinate ?? CLLocationCoordinate2D(), span: location.mySpan)
                 location.mapView.setRegion(region, animated: true)
             }
             

@@ -148,7 +148,7 @@ extension AddPageView{
                         }
                 }
             }
-            .frame(height: 200)
+            .frame(height: UIScreen.main.bounds.width/1.5)
             .clipped()
             .cornerRadius(10)
             ScrollView(.horizontal) {
