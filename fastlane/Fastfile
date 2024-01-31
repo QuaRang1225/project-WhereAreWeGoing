@@ -16,8 +16,26 @@
 default_platform(:ios)
 
 platform :ios do
-  desc "Description of what the lane does"
-  lane :custom_lane do
-    # add actions here: https://docs.fastlane.tools/actions
+  desc "Push a new release build to the App Store"
+  lane :release do
+    increment_build_number(xcodeproj: "WhereAreYou.xcodeproj")
+    upload_to_app_store(
+      force: true,
+      skip_screenshots: true,
+			skip_metadata: false,
+      submit_for_review: true,
+      automatic_release: false,
+      submission_information: {
+        add_id_info_serves_ads: false,
+        add_id_info_tracks_action: true,
+        add_id_info_tracks_install: true,
+        add_id_info_uses_idfa: true
+      }
+    )
+
+    slack(
+      message: "App Store 배포 완료",
+      slack_url: "https://hooks.slack.com/services/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"
+    )
   end
 end
