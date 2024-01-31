@@ -18,6 +18,7 @@ default_platform(:ios)
 platform :ios do
   desc "Push a new release build to the App Store"
   lane :release do
+    build_app(workspace: "WhereAreYou.xcworkspace", scheme: "WhereAreYou")
     increment_build_number(xcodeproj: "WhereAreYou.xcodeproj")
     upload_to_app_store(
       force: true,
@@ -35,7 +36,7 @@ platform :ios do
 
     slack(
       message: "App Store 배포 완료",
-      slack_url: "https://hooks.slack.com/services/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"
+      slack_url: "https://hooks.slack.com/services/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"
     )
   end
 end
