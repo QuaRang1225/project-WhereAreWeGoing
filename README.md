@@ -4,12 +4,12 @@
 # 우리어디가
 
 <p align="leading">
-<img src="https://github.com/QuaRang1225/Project_WhereAreWeGo/assets/31721255/5cf61ea0-0100-46d5-ac55-1e5d728d50d5" width="12.5%" height="25%">
-<img src="https://github.com/QuaRang1225/Project_WhereAreWeGo/assets/31721255/0573f198-bc0a-4354-a6fd-f84c1151dc8c" width="12.5%" height="25%">
-<img src="https://github.com/QuaRang1225/Project_WhereAreWeGo/assets/31721255/0bfb6257-1bed-4a0c-aae6-4705d83f6aa5" width="12.5%" height="25%">
-<img src="https://github.com/QuaRang1225/Project_WhereAreWeGo/assets/31721255/0886f757-5264-4d51-bfca-6893c0893486" width="12.5%" height="25%">   
-<img src="https://github.com/QuaRang1225/Project_WhereAreWeGo/assets/31721255/cf18292c-bc37-4388-9f21-7338f3938863" width="12.5%" height="25%">
-<img src="https://github.com/QuaRang1225/Project_WhereAreWeGo/assets/31721255/785c85fe-412e-4f16-8692-2512e2b576f2" width="12.5%" height="25%">
+<img src="https://github.com/QuaRang1225/Project_WhereAreWeGo/assets/31721255/5cf61ea0-0100-46d5-ac55-1e5d728d50d5" width="16%" height="25%">
+<img src="https://github.com/QuaRang1225/Project_WhereAreWeGo/assets/31721255/0573f198-bc0a-4354-a6fd-f84c1151dc8c" width="16%" height="25%">
+<img src="https://github.com/QuaRang1225/Project_WhereAreWeGo/assets/31721255/0bfb6257-1bed-4a0c-aae6-4705d83f6aa5" width="16%" height="25%">
+<img src="https://github.com/QuaRang1225/Project_WhereAreWeGo/assets/31721255/0886f757-5264-4d51-bfca-6893c0893486" width="16%" height="25%">   
+<img src="https://github.com/QuaRang1225/Project_WhereAreWeGo/assets/31721255/cf18292c-bc37-4388-9f21-7338f3938863" width="16%" height="25%">
+<img src="https://github.com/QuaRang1225/Project_WhereAreWeGo/assets/31721255/785c85fe-412e-4f16-8692-2512e2b576f2" width="16%" height="25%">
 </p>
 
 
@@ -35,9 +35,9 @@
 
 > **레이아웃**
 > 
-<img src="https://github.com/QuaRang1225/WhereAreYou/assets/31721255/3ce90d58-cec8-4cb7-b8a0-558eca253a2b" width="250" height="500">
+<img src="https://github.com/QuaRang1225/WhereAreYou/assets/31721255/e6d18b9b-e775-4888-8119-136ad72d0316" width="250" height="500">
+<img src="https://github.com/QuaRang1225/WhereAreYou/assets/31721255/e1a3bc01-5a85-4360-9daf-2ffbce2c8584" width="250" height="500">
 
-<img src="https://github.com/QuaRang1225/WhereAreYou/assets/31721255/91d50567-a605-4ee7-88b1-ce27bb809acd" width="250" height="500">
 
 
 **여행 페이지 작성 및 메인화면**
@@ -45,27 +45,32 @@
 - 전체 여행 스케쥴 정보를 담은 내용 작성 후 페이지 생성
 - 생성한 페이지는 내 일정 리스트에 추가됨
 
-<img src="https://github.com/QuaRang1225/WhereAreYou/assets/31721255/62023fa1-b8ef-4207-b123-4d754ce32dcc" width="250" height="500">
-
-<img src="https://github.com/QuaRang1225/WhereAreYou/assets/31721255/329c045f-754d-462b-93e9-495ad2e43424" width="250" height="500">
+<img src="https://github.com/QuaRang1225/WhereAreYou/assets/31721255/0a796c3f-8df6-4807-94de-dc8d8f296d84" width="250" height="500">
+<img src="https://github.com/QuaRang1225/WhereAreYou/assets/31721255/7532e329-6ade-4459-89d8-de4f01840735" width="250" height="500">
 
 
 
 **게시물 작성 화면**
 
 - 일정 기간과 주소 검색, 일정 설명을 작성 후 게시
+  
+<img src="https://github.com/QuaRang1225/WhereAreYou/assets/31721255/34fec32a-122a-41c6-b5da-6128f3aae3fb" width="250" height="500">
 
 **일정 리스트 화면**
 
 - 작성된 일정은 페이지 멤버들은 모두 확인,수정,삭제가 가능하며 MapAnnotation으로도 확인가능
-<img src="https://github.com/QuaRang1225/WhereAreYou/assets/31721255/378a7cc3-f4d1-4cf4-baf4-eada3ca836d3" width="250" height="500">
 
-<img src="https://github.com/QuaRang1225/WhereAreYou/assets/31721255/a9a4db21-54ef-48b4-a54e-1055b3accb96" width="250" height="500">
+
+<img src="https://github.com/QuaRang1225/WhereAreYou/assets/31721255/5f7a9f9e-2f16-4da0-8597-a1cdf149aecd" width="250" height="500">
+
+<img src="https://github.com/QuaRang1225/WhereAreYou/assets/31721255/450fb0c8-294e-49b0-a5ea-291d2aaa5e35" width="250" height="500">
+
 
 
 **페이지 검색화면** 
 
 - 페이지 혹은 페이지 ID로 검색가능
+<img src="https://github.com/QuaRang1225/WhereAreYou/assets/31721255/5c8fd1b1-ec06-4992-ae98-533fb107887e" width="250" height="500">
 
 **멤버 목록화면**
 
