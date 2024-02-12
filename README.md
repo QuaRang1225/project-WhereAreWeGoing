@@ -1,15 +1,21 @@
-![where 복사본](https://github.com/QuaRang1225/WhereAreYou/assets/31721255/1973ec08-839f-4a60-8438-6ef642a4a312)
+
+<img src="https://github.com/QuaRang1225/Project_WhereAreWeGo/assets/31721255/bb4e5c3e-e336-46d3-9c4c-f2234aa25151" width="12.5%" height="25%">
+
 # 우리어디가
-<img width="989" alt="스크린샷 2023-12-04 오후 5 53 56" src="https://github.com/QuaRang1225/WhereAreYou/assets/31721255/b2e03aa2-0285-4373-bded-d6e063c7d908">
 
+<p align="leading">
+<img src="https://github.com/QuaRang1225/Project_WhereAreWeGo/assets/31721255/5cf61ea0-0100-46d5-ac55-1e5d728d50d5" width="12.5%" height="25%">
+<img src="https://github.com/QuaRang1225/Project_WhereAreWeGo/assets/31721255/0573f198-bc0a-4354-a6fd-f84c1151dc8c" width="12.5%" height="25%">
+<img src="https://github.com/QuaRang1225/Project_WhereAreWeGo/assets/31721255/0bfb6257-1bed-4a0c-aae6-4705d83f6aa5" width="12.5%" height="25%">
+<img src="https://github.com/QuaRang1225/Project_WhereAreWeGo/assets/31721255/0886f757-5264-4d51-bfca-6893c0893486" width="12.5%" height="25%">   
+<img src="https://github.com/QuaRang1225/Project_WhereAreWeGo/assets/31721255/cf18292c-bc37-4388-9f21-7338f3938863" width="12.5%" height="25%">
+<img src="https://github.com/QuaRang1225/Project_WhereAreWeGo/assets/31721255/785c85fe-412e-4f16-8692-2512e2b576f2" width="12.5%" height="25%">
+</p>
 
----
 
 ### 🔗 관련링크
 
 [‎우리어디가](https://apps.apple.com/kr/app/%EC%9A%B0%EB%A6%AC%EC%96%B4%EB%94%94%EA%B0%80/id6469308316)
-
-https://github.com/QuaRang1225/WhereAreYou
 
 <aside>
 💡 저는 여행을 가기 전에 꼭 여행지에서 무엇을 할 지와 어떤 음식을 먹을지 계획합니다. 가끔 다른 여행자들과 함께 회의하며 계획을 짜거나 이미 짜여진 일정을 공유해야 할 필요가 있을 때 불편한 점이 상당히 많다고 느꼈고, 추가로 일정을 간결하고 보기 쉽게 작성할 수 있으며, 일정 장소를 지도에 표시하여 저장할 수 있는 어플리케이션이 있다면 편할 것 같아 이 프로젝트를 시작하게 되었습니다.
