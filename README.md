@@ -22,9 +22,24 @@
 
 </aside>
 
+---
+
+### 💻 기술스택
+
+- SwiftUI
+- UIkit
+- Firebase/FireStorage
+- Kingfisher
+- CoreLocation
+- Mapkit
+- Concurrency
+- MVVM
+- fastlane
+ 
+---
+
 ### 📱 주요 기능 & 레이아웃
 
----
 
 > **앱 설명**
 > 
