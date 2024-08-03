@@ -1,5 +1,5 @@
 
-<img src="https://github.com/QuaRang1225/Project_WhereAreWeGo/assets/31721255/bb4e5c3e-e336-46d3-9c4c-f2234aa25151" width="12.5%" height="25%">
+<img src="https://github.com/user-attachments/assets/c4d0f859-47f1-4c5e-81c3-67e8eca4f204" width="12.5%" height="25%">
 
 # 우리어디가
 
